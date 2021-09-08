@@ -1,0 +1,36 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<p:panelGrid columns="2" id="painelNotaFiscal" style="width: 100%"
+		columnClasses="rotulo, campo">
+
+		<p:outputLabel value="Chave" />
+		<p:inputText value="#{aquisicaoBean.aquisicao.nota.chave}"
+			style="width: 95%" disabled="true" />
+		<p:outputLabel value="Número" />
+		<p:inputText value="#{aquisicaoBean.aquisicao.nota.numeroNota}"
+			disabled="true" />
+
+		<p:outputLabel value="Série" />
+		<p:inputText value="#{aquisicaoBean.aquisicao.nota.serie}"
+			disabled="true" />
+		<p:outputLabel value="Natureza Operação" />
+		<p:outputLabel
+			value="#{aquisicaoBean.aquisicao.nota.naturezaOperacao}"
+			disabled="true" />
+
+		<p:outputLabel value="Data Emissão" />
+		<h:outputText value="#{aquisicaoBean.aquisicao.nota.dataHoraEmissao}">
+			<f:convertDateTime pattern="dd/MM/yyyy HH:mm" timeZone="GMT-03:00" />
+		</h:outputText>
+		<p:outputLabel value="Forma Pagamento" />
+		<p:inputText
+			value="#{aquisicaoBean.aquisicao.nota.formaPagamento.descricao}"
+			disabled="true" />
+
+	</p:panelGrid>
+
+</ui:composition>

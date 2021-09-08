@@ -1,0 +1,66 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<p:commandButton value="Aplicar" process="@form" icon="ui-icon-check"
+		action="#{unidadeProdutivaBean.aplicar}" update="@form" />
+
+	<p:panelGrid columns="2" layout="grid" style="margin-top: 5px"
+		styleClass="panelgrid-noborder">
+
+		<p:outputLabel value="Nome da Unidade" />
+		<p:inputText
+			value="#{unidadeProdutivaBean.unidade.unidadeProdutiva.nomeDaLoja}"
+			maxlength="60" />
+
+		<p:outputLabel value="Atividade Principal" />
+		<p:selectOneMenu autoWidth="false"
+			disabled="#{unidadeProdutivaBean.unidade.atividade != null}"
+			value="#{unidadeProdutivaBean.unidade.atividade}">
+			<f:selectItems value="#{listaTipoBean.tipoAtividadePrincipal}"
+				var="atividade" itemValue="#{atividade}"
+				itemLabel="#{atividade.descricao}" />
+		</p:selectOneMenu>
+
+		<p:outputLabel value="Utiliza Nota Fiscal Eletrônica" />
+		<p:inputSwitch
+			value="#{unidadeProdutivaBean.unidade.unidadeProdutiva.usaNFe}" />
+
+		<p:outputLabel value="Utiliza Nota de Serviço Eletrônica" />
+		<p:inputSwitch
+			value="#{unidadeProdutivaBean.unidade.unidadeProdutiva.usaNFSe}" />
+
+		<p:outputLabel value="Utiliza Nota de Consumo Eletrônica" />
+		<p:inputSwitch
+			value="#{unidadeProdutivaBean.unidade.unidadeProdutiva.usaNFCe}" />
+
+	</p:panelGrid>
+
+</ui:composition>
+
+
+<!-- 		<p:outputLabel value="Inativa usuário recebido" /> -->
+<!-- 		<p:inputSwitch -->
+<!-- 			value="#{unidadeProdutivaBean.unidade.unidadeProdutiva.inativaUsuarioTransferido}" /> -->
+
+<!-- 		<p:outputLabel value="Permite Compartilhar Cliente" /> -->
+<!-- 		<p:inputSwitch -->
+<!-- 			value="#{unidadeProdutivaBean.unidade.unidadeProdutiva.permiteCompartilhaCliente}" /> -->
+
+<!-- 		<p:outputLabel value="Permite Compartilhar Fornecedor" /> -->
+<!-- 		<p:inputSwitch -->
+<!-- 			value="#{unidadeProdutivaBean.unidade.unidadeProdutiva.permiteCompartilhaFornecedor}" /> -->
+
+<!-- 		<p:outputLabel value="Permite Compartilhar Motorista" /> -->
+<!-- 		<p:inputSwitch -->
+<!-- 			value="#{unidadeProdutivaBean.unidade.unidadeProdutiva.permiteCompartilhaMotorista}" /> -->
+
+<!-- 		<p:outputLabel value="Permite Compartilhar Produto" /> -->
+<!-- 		<p:inputSwitch -->
+<!-- 			value="#{unidadeProdutivaBean.unidade.unidadeProdutiva.permiteCompartilhaProduto}" /> -->
+
+<!-- 		<p:outputLabel value="Permite Compartilhar Módulo POS" /> -->
+<!-- 		<p:inputSwitch -->
+<!-- 			value="#{unidadeProdutivaBean.unidade.unidadeProdutiva.permiteCompartilhaModulo}" /> -->

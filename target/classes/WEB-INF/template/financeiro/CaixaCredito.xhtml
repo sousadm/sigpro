@@ -1,0 +1,55 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<p:dialog id="dlgCredito" header="Cartão de Crédito"
+		widgetVar="dlgCredito" closeOnEscape="true" modal="true"
+		maximizable="false" width="400" >
+		<h:form id="formCadastroCredito">
+
+			<div class="ui-fluid">
+				<div class="ui-g">
+					<div class="ui-g-12">
+						<p:outputLabel value="Cartão de crédito" />
+						<p:inputText value="#{caixaBean.caixaValor.cartao.nome}"
+							readonly="true" class="bloqueado"
+							rendered="#{not caixaBean.caixa.podeGravar}" />
+						<p:selectOneMenu value="#{caixaBean.caixaValor.cartao}"
+							rendered="#{caixaBean.caixa.podeGravar}" autoWidth="false"
+							disabled="#{not caixaBean.caixa.podeGravar}">
+							<f:selectItems value="#{caixaBean.listaCartao}" var="c"
+								itemValue="#{c}" itemLabel="#{c.numero}" />
+						</p:selectOneMenu>
+					</div>
+					<div class="ui-g-6">
+						<p:outputLabel value="Quantidade de parcelas" />
+						<p:spinner value="#{caixaBean.caixaValor.parcelas}"
+							required="true" min="1" max="12"
+							readonly="#{not caixaBean.caixa.podeGravar}" />
+					</div>
+					<div class="ui-g-6">
+						<p:outputLabel value="Valor" />
+						<p:inputNumber minValue="0" decimalSeparator=","
+							thousandSeparator="." decimalPlaces="2"
+							class="#{caixaBean.caixa.podeGravar ? '' : 'bloqueado'}"
+							readonly="#{not caixaBean.caixa.podeGravar}" required="true"
+							value="#{caixaBean.caixaValor.valor}" />
+					</div>
+				</div>
+			</div>
+
+			<div align="right" style="margin-top: 5px">
+				<p:commandButton value="Confirma" icon="ui-icon-check"
+					disabled="#{not caixaBean.caixa.podeGravar}"
+					process="dlgCredito formCadastro:gridCaixaRecebimento"
+					update="formCadastro:tabView:gridCompensacao  formCadastro:txtValorNegociado formCadastro:txtValorFinal"
+					action="#{caixaBean.gravarCompensacao}"
+					oncomplete="if(!args.validationFailed) PF('dlgCredito').hide()" />
+			</div>
+
+		</h:form>
+	</p:dialog>
+
+</ui:composition>

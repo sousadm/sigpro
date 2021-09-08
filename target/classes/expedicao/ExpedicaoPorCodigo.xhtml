@@ -1,0 +1,36 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<p:dialog id="dlgPesquisaCodigo" header="Pesquisa por código"
+		widgetVar="dlgPesquisaCodigo" closeOnEscape="true" modal="true"
+		resizable="false" maximizable="false" >
+
+		<h:form id="formPesquisa">
+
+			<div class="ui-fluid">
+				<div class="ui-g">
+					<div class="ui-g-6">
+						<p:outputLabel value="Código" />
+						<p:inputText id="txtCodigoPesquisa"
+							value="#{expedicaoBean.codigoPesquisa}">
+							<f:convertNumber integerOnly="true" minIntegerDigits="1" />
+						</p:inputText>
+					</div>
+					<div class="ui-g-6">
+						<br/>
+						<p:commandButton value="Pesquisar" ajax="false"
+							icon="ui-icon-search" process="@form"
+							actionListener="#{expedicaoBean.pesquisaPorCodigo}"
+							oncomplete="if(!args.validationFailed) PF('dlgPesquisaCodigo').hide()" />
+					</div>
+				</div>
+			</div>
+
+		</h:form>
+
+	</p:dialog>
+
+</ui:composition>

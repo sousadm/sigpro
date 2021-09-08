@@ -1,0 +1,20 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<p:dialog id="dlgImportaXML" header="Importar arquivo XML"
+		widgetVar="dlgImportaXML" closeOnEscape="true" modal="true"
+		maximizable="false" height="140" width="800">
+
+		<h:form id="formCadastroDebito">
+			<p:fileUpload value="Importar" label="Selecione" fileLimit="1"
+				fileUploadListener="#{aquisicaoBean.upload}" auto="true"
+				allowTypes="/(\.|\/)(xml)$/" update=":formCadastro"
+				oncomplete="if(!args.validationFailed) PF('dlgImportaXML').hide()" />
+		</h:form>
+
+	</p:dialog>
+
+</ui:composition>

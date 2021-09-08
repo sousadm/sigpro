@@ -1,0 +1,155 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<div class="ui-fluid">
+		<div class="ui-g" style="margin-top: 5px; border: 1px solid gray;">
+			<div class="ui-g-12 ui-md-2">
+				<p:outputLabel value="Sequencia" />
+				<p:inputText value="#{expedicaoBean.expedicao.id}"
+					styleClass="bloqueado" readonly="true">
+					<f:convertNumber pattern="#####0" minIntegerDigits="6" />
+				</p:inputText>
+			</div>
+			<div class="ui-g-12 ui-md-3">
+				<h:panelGroup rendered="#{not expedicaoBean.expedicao.emitido}">
+					<p:outputLabel value="Data de cadastro" />
+					<p:inputText value="#{expedicaoBean.expedicao.dataCadastro}"
+						class="negrito">
+						<f:convertDateTime pattern="dd/MM/yyyy" />
+					</p:inputText>
+				</h:panelGroup>
+				<h:panelGroup rendered="#{expedicaoBean.expedicao.emitido}">
+					<p:outputLabel value="Data de emissão" />
+					<p:inputText value="#{expedicaoBean.expedicao.dataEmissao}"
+						class="negrito">
+						<f:convertDateTime pattern="dd/MM/yyyy" />
+					</p:inputText>
+				</h:panelGroup>
+			</div>
+			<div class="ui-g-12 ui-md-3">
+				<p:outputLabel value="Status" />
+				<div
+					class="ui-inputfield ui-inputtext ui-widget ui-state-default ui-corner-all bloqueado ui-state-focus">
+					<h:outputText value="#{expedicaoBean.expedicao.tipo.descricao}"
+						class="negrito" />
+				</div>
+			</div>
+			<div class="ui-g-12 ui-md-4">
+				<p:outputLabel value="Vendedor" for="vendedor" />
+				<p:inputText rendered="#{expedicaoBean.expedicao.naoAlteravel}"
+					value="#{expedicaoBean.expedicao.vendedor.nome}" />
+				<p:selectOneMenu id="vendedor"
+					value="#{expedicaoBean.expedicao.vendedor}"
+					rendered="#{not expedicaoBean.expedicao.naoAlteravel}">
+					<f:selectItem itemLabel="Selecione" />
+					<f:selectItems value="#{expedicaoBean.listaVendedores}" var="vend"
+						itemValue="#{vend.vendedor}" itemLabel="#{vend.nome}" />
+				</p:selectOneMenu>
+			</div>
+
+			<div class="ui-g-12 ui-md-6">
+				<p:outputLabel value="Cliente" />
+				<div class="ui-inputgroup">
+					<p:commandButton icon="ui-icon-person" title="Novo cliente"
+						class="button-grid"
+						rendered="#{not expedicaoBean.expedicao.naoAlteravel}"
+						process="@this" update="@none" ignoreAutoUpdate="true"
+						action="#{selecionaBean.clienteFast}">
+						<p:ajax event="dialogReturn"
+							listener="#{expedicaoBean.onClienteChosen}"
+							update="cliente formCadastro:view:gridEndereco"
+							ignoreAutoUpdate="true" />
+					</p:commandButton>
+					<p:commandButton icon="ui-icon-search" title="Pesquisar cliente"
+						rendered="#{not expedicaoBean.expedicao.naoAlteravel}"
+						process="@this" update="@none" ignoreAutoUpdate="true"
+						styleClass="button-grid" action="#{selecionaBean.cliente}">
+						<p:ajax event="dialogReturn"
+							update="cliente formCadastro:view:gridEndereco"
+							listener="#{expedicaoBean.onClienteChosen}"
+							ignoreAutoUpdate="true" />
+					</p:commandButton>
+					<p:inputText id="cliente"
+						value="#{expedicaoBean.expedicao.cliente.nome}" readonly="true" />
+				</div>
+			</div>
+
+			<div class="ui-g-12 ui-md-6">
+				<p:outputLabel value="Forma de pagamento" for="formaPagamento" />
+				<div class="ui-inputgroup">
+					<p:inputText rendered="#{expedicaoBean.expedicao.naoAlteravel}"
+						value="#{expedicaoBean.formaPgto.descricao}" />
+					<p:selectOneMenu id="formaPagamento" style="width:80%;"
+						value="#{expedicaoBean.formaPgto}" autoWidth="false"
+						rendered="#{not expedicaoBean.expedicao.naoAlteravel}">
+						<f:selectItem itemLabel="Selecione" />
+						<f:selectItems value="#{expedicaoBean.listaFormaPgtos}"
+							var="formaPgto" itemValue="#{formaPgto}"
+							itemLabel="#{formaPgto.descricao}" />
+						<p:ajax event="change" process="@this" update="parcela" />
+					</p:selectOneMenu>
+					<p:selectOneMenu id="parcela" style="left:5px; width:18%;"
+						autoWidth="false" value="#{expedicaoBean.expedicao.regraPgto}"
+						rendered="#{not expedicaoBean.expedicao.naoAlteravel}">
+						<f:selectItems value="#{expedicaoBean.formaPgto.regras}"
+							var="regra" itemValue="#{regra}" itemLabel="#{regra.quantidade}" />
+					</p:selectOneMenu>
+				</div>
+			</div>
+
+			<div class="ui-g-12 ui-md-3">
+				<p:outputLabel value="Valor do frete" for="valorFrete" />
+				<p:inputText rendered="#{expedicaoBean.expedicao.naoAlteravel}"
+					value="#{expedicaoBean.expedicao.valorFrete}">
+					<f:convertNumber type="currency" />
+				</p:inputText>
+				<p:inputNumber id="valorFrete" decimalPlaces="2" minValue="0"
+					value="#{expedicaoBean.expedicao.valorFrete}"
+					rendered="#{not expedicaoBean.expedicao.naoAlteravel}">
+					<p:ajax event="change" process="@this" update="totalPedido"
+						listener="#{expedicaoBean.recalcular}" />
+				</p:inputNumber>
+			</div>
+			<div class="ui-g-12 ui-md-3">
+				<p:outputLabel value="Valor de desconto" for="valorDesconto" />
+				<p:inputText rendered="#{expedicaoBean.expedicao.naoAlteravel}"
+					value="#{expedicaoBean.expedicao.valorDesconto}">
+					<f:convertNumber type="currency" />
+				</p:inputText>
+				<p:inputNumber id="valorDesconto" decimalPlaces="2" minValue="0"
+					value="#{expedicaoBean.expedicao.valorDesconto}"
+					rendered="#{not expedicaoBean.expedicao.naoAlteravel}">
+					<p:ajax event="change" process="@this" update="totalPedido"
+						listener="#{expedicaoBean.recalcular}" />
+				</p:inputNumber>
+			</div>
+			<div class="ui-g-12 ui-md-3">
+				<p:outputLabel value="Subtotal" />
+				<br />
+				<div
+					class="ui-inputfield ui-inputtext ui-widget ui-state-default ui-corner-all bloqueado ui-state-focus">
+					<p:outputLabel id="subtotal" class="negrito"
+						value="#{expedicaoBean.expedicao.valorSubTotal}">
+						<f:convertNumber type="currency" />
+					</p:outputLabel>
+				</div>
+			</div>
+
+			<div class="ui-g-12 ui-md-3">
+				<p:outputLabel value="Total do pedido" style="font-size: 1.1em" />
+				<div
+					class="ui-inputfield ui-inputtext ui-widget ui-state-default ui-corner-all bloqueado ui-state-focus">
+					<h:outputText value="#{expedicaoBean.expedicao.valorTotal}"
+						style="font-weight: bold; font-size: 1.1em" id="totalPedido">
+						<f:convertNumber type="currency" />
+					</h:outputText>
+				</div>
+			</div>
+		</div>
+
+	</div>
+
+</ui:composition>

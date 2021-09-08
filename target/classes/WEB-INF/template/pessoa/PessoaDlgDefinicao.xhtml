@@ -1,0 +1,43 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<p:dialog id="dlgDefinicao" header="Definição do cadastro"
+		widgetVar="dlgDefinicao" closeOnEscape="true" modal="true"
+		maximizable="false">
+		<h:form id="formDefinicao">
+			<h:panelGrid columns="1">
+				<p:selectBooleanCheckbox value="#{pessoaBean.pessoa.defineCliente}"
+					itemLabel="#{pessoaBean.opcaoCliente}" />
+				<p:selectBooleanCheckbox value="#{pessoaBean.pessoa.defineUsuario}"
+					itemLabel="Usuário" />
+				<p:selectBooleanCheckbox value="#{pessoaBean.pessoa.defineAgente}"
+					itemLabel="Agente Financeiro" />
+				<p:selectBooleanCheckbox
+					value="#{pessoaBean.pessoa.defineFornecedor}"
+					itemLabel="Fornecedor" />
+				<p:selectBooleanCheckbox value="#{pessoaBean.pessoa.defineVendedor}"
+					itemLabel="Vendedor" />
+				<p:selectBooleanCheckbox
+					value="#{pessoaBean.pessoa.defineTransportador}"
+					itemLabel="Transportador" />
+				<p:selectBooleanCheckbox
+					rendered="#{not pessoaBean.pessoa.pessoaJuridica}"
+					value="#{pessoaBean.pessoa.defineColaborador}"
+					itemLabel="Colaborador" />
+				<p:selectBooleanCheckbox
+					rendered="#{not pessoaBean.pessoa.pessoaJuridica}"
+					value="#{pessoaBean.pessoa.defineMotorista}" itemLabel="Motorista" />
+			</h:panelGrid>
+			<div align="right">
+				<p:commandButton value="Aplicar" icon="ui-icon-check"
+					process="dlgDefinicao" update="formCadastro"
+					action="#{pessoaBean.setTabDerivado}"
+					oncomplete="if(!args.validationFailed) PF('dlgDefinicao').hide()" />
+			</div>
+		</h:form>
+	</p:dialog>
+
+</ui:composition>

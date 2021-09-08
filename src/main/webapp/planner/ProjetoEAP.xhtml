@@ -1,0 +1,82 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<p:commandButton value="Carregar" action="#{projetoBean.preparaEAP}"
+		update="@form" />
+
+	<p:organigram id="organigram" widgetVar="organigram"
+		style="margin-top: 30px; width: 800px" value="#{projetoBean.rootNode}"
+		var="node"
+		leafNodeConnectorHeight="#{projetoBean.leafNodeConnectorHeight}"
+		autoScrollToSelection="#{projetoBean.autoScrollToSelection}"
+		zoom="#{projetoBean.zoom}" selection="#{projetoBean.selection}">
+
+		<p:ajax event="dragdrop" process="@this" update="organigram"
+			listener="#{projetoBean.nodeDragDropListener}" />
+			
+		<p:ajax event="select" process="@this" update="organigram"
+			listener="#{projetoBean.nodeSelectListener}" />
+			
+		<p:ajax event="contextmenu" process="@this" />
+		
+		<p:ajax event="collapse" process="@this" update="organigram"
+			listener="#{projetoBean.nodeCollapseListener}" />
+			
+		<p:ajax event="expand" process="@this" update="organigram"
+			listener="#{projetoBean.nodeExpandListener}" />
+
+		<p:organigramNode>
+			<h:outputText value="#{node.data}" />
+		</p:organigramNode>
+
+		<p:organigramNode type="root" style="border-radius: 10px;">
+			<h:outputText value="#{node.data}" />
+		</p:organigramNode>
+
+		<p:organigramNode type="division" styleClass="division"
+			icon="ui-icon-suitcase" iconPos="left">
+			<h:outputText value="#{node.data.que}" />
+		</p:organigramNode>
+
+		<p:organigramNode type="employee" styleClass="employee"
+			icon="ui-icon-person">
+			<h:outputText value="#{node.data.que}" />
+		</p:organigramNode>
+
+	</p:organigram>
+
+	<p:contextMenu for="organigram" nodeType="root">
+		<p:menuitem value="Add entrega" ajax="true" icon="ui-icon-plus"
+			action="#{projetoBean.novoEntreaEap()}" update="addEntregaNewDialog"
+			oncomplete="PF('addEntregaNewDialog').show()" />
+	</p:contextMenu>
+
+	<p:contextMenu for="organigram" nodeType="division">
+		<p:menuitem value="Add entrega" ajax="true" icon="ui-icon-plus"
+			action="#{projetoBean.novoEntreaEap()}" update="addEntregaNewDialog"
+			oncomplete="PF('addEntregaNewDialog').show()" />
+		<p:menuitem value="Add pacote" ajax="true" icon="ui-icon-plus"
+			action="#{projetoBean.novoPacoteEap()}" update="addPacoteDialog"
+			oncomplete="PF('addPacoteDialog').show()" />
+		<p:menuitem value="Remove item" update="organigram"
+			icon="ui-icon-close"
+			actionListener="#{projetoBean.removeEscopoItem()}" />
+
+		<p:menuitem value="Edita" ajax="true" icon="ui-icon-document"
+			update="addEntregaNewDialog"
+			oncomplete="PF('addEntregaNewDialog').show()" />
+
+	</p:contextMenu>
+
+	<p:contextMenu for="organigram" nodeType="employee">
+		<p:menuitem value="Remove item" update="organigram"
+			icon="ui-icon-close"
+			actionListener="#{projetoBean.removeEscopoItem()}" />
+		<p:menuitem value="Edita" ajax="true" icon="ui-icon-document"
+			update="addPacoteDialog" oncomplete="PF('addPacoteDialog').show()" />
+	</p:contextMenu>
+
+</ui:composition>

@@ -1,0 +1,36 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<p:dataTable selection="#{selecaoTituloBean.selecionado}"
+		selectionMode="single" value="#{selecaoTituloBean.lista}" var="item"
+		rowKey="#{item.id}" style="margin-top: 5px"
+		emptyMessage="Nenhum registro encontrado." rows="10" paginator="true"
+		paginatorAlwaysVisible="false" paginatorPosition="bottom" lazy="true">
+
+		<p:ajax event="rowSelect" update="@form" />
+
+		<p:column headerText="Vencimento" sortBy="#{item.vencimento}"
+			width="120">
+			<h:outputText value="#{item.vencimento}">
+				<f:convertDateTime pattern="dd/MM/yyyy" />
+			</h:outputText>
+		</p:column>
+		<p:column headerText="Responsável Nominal"
+			sortBy="#{item.responsavel.nome}">
+			<h:outputText value="#{item.nominal}" />
+		</p:column>
+		<p:column headerText="Histórico">
+			<h:outputText value="#{item.descricao}" />
+		</p:column>
+		<p:column headerText="Saldo" style="text-align: right; width: 100px">
+			<h:outputText value="#{item.saldo}">
+				<f:convertNumber type="currency" />
+			</h:outputText>
+		</p:column>
+
+	</p:dataTable>
+
+</ui:composition>

@@ -1,0 +1,60 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:c="http://java.sun.com/jstl/core">
+
+	<p:outputLabel class="negrito" value="#{produtoBean.produto.nome}"
+		style="margin-left: 10px" />
+
+	<div align="right">
+		<p:commandButton value="Add Composto" process="@this"
+			actionListener="#{selecionaBean.produto}">
+			<p:ajax event="dialogReturn"
+				listener="#{produtoBean.onProdutoCompostoChosen}"
+				update="formCadastro:tabView:tabelaComposto" />
+		</p:commandButton>
+	</div>
+
+	<p:dataTable id="tabelaComposto"
+		value="#{produtoBean.produto.listaComposto}" var="composto"
+		rowIndexVar="linha" style="margin-top: 5px"
+		emptyMessage="Nenhum item encontrado." rows="20" paginator="true"
+		paginatorAlwaysVisible="false" paginatorPosition="bottom">
+
+		<p:column headerText="Descrição do composto">
+			<p:link value="#{composto.componente.nome}"
+				outcome="/cadastros/CadastroProduto"
+				title="ir para cadastro #{composto.componente.nome}">
+				<f:param name="produto" value="#{composto.componente.id}" />
+			</p:link>
+		</p:column>
+		<p:column headerText="Unidade" style="width: 50px;">
+			<h:outputText value="#{composto.componente.unidade}" />
+		</p:column>
+		<p:column headerText="Quantidade" style="width: 100px;">
+			<p:inputNumber minValue="0" decimalSeparator=","
+				thousandSeparator="."
+				decimalPlaces="#{composto.componente.unidade.precisao}"
+				value="#{composto.quantidade}" />
+		</p:column>
+
+		<p:column style="width: 100px; text-align: center">
+
+			<p:commandButton icon="ui-icon-pencil" process="@this" title="Editar"
+				class="button-grid" update="formCadastro:tabView:tabelaComposto">
+				<f:setPropertyActionListener value="#{composto}"
+					target="#{produtoBean.composto}" />
+			</p:commandButton>
+
+			<p:commandButton icon="ui-icon-trash" process="@this" title="Excluir"
+				class="button-grid" update="formCadastro:tabView:tabelaComposto"
+				action="#{produtoBean.removerComposto(linha)}" />
+
+		</p:column>
+
+	</p:dataTable>
+
+
+</ui:composition>

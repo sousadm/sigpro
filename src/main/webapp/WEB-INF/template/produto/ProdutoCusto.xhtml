@@ -1,0 +1,117 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:c="http://java.sun.com/jstl/core">
+
+	<div class="ui-g-12 ui-md-6">
+		<p:panel>
+
+			<f:facet name="header">
+				<div class="ui-g" style="height: 10px">
+					<div class="ui-g-8">
+						<h:outputLabel value="Custo de Aquisição" />
+					</div>
+					<div class="ui-g-4">
+						<h:outputLabel id="txtCustoCompra"
+							value="#{produtoBean.produto.precoCusto}">
+							<f:convertNumber type="currency" />
+						</h:outputLabel>
+					</div>
+				</div>
+			</f:facet>
+
+			<div class="ui-g">
+				<div class="ui-g-12 ui-md-6">
+					<p:outputLabel value="Crédito tributário (%)" />
+					<p:inputNumber decimalPlaces="2" minValue="0"
+						value="#{produtoBean.produto.custo.credito}">
+						<p:ajax event="change" process="@this"
+							update="txtCustoCompra txtPrecoVenda labelPrecoVenda" />
+					</p:inputNumber>
+				</div>
+				<div class="ui-g-12 ui-md-6">
+					<p:outputLabel value="Carga de imposto (%)" />
+					<p:inputNumber decimalPlaces="2" minValue="0"
+						value="#{produtoBean.produto.custo.imposto}">
+						<p:ajax event="change" process="@this"
+							update="txtCustoCompra txtPrecoVenda labelPrecoVenda" />
+					</p:inputNumber>
+				</div>
+				<div class="ui-g-12 ui-md-6">
+					<p:outputLabel value="Despesas de aquisição (%)" />
+					<p:inputNumber decimalPlaces="2" minValue="0"
+						value="#{produtoBean.produto.custo.despesa}">
+						<p:ajax event="change" process="@this"
+							update="txtCustoCompra txtPrecoVenda labelPrecoVenda" />
+					</p:inputNumber>
+				</div>
+				<div class="ui-g-12 ui-md-6">
+					<p:outputLabel value="Despesas de frete (%)" />
+					<p:inputNumber decimalPlaces="2" minValue="0"
+						value="#{produtoBean.produto.custo.frete}">
+						<p:ajax event="change" process="@this"
+							update="txtCustoCompra txtPrecoVenda labelPrecoVenda" />
+					</p:inputNumber>
+				</div>
+			</div>
+		</p:panel>
+	</div>
+
+	<div class="ui-g-12 ui-md-6">
+		<p:panel header="Custo Vendas">
+
+			<f:facet name="header">
+				<div class="ui-g" style="height: 10px">
+					<div class="ui-g-8">
+						<p:outputLabel value="Preço de venda sugerido" />
+					</div>
+					<div class="ui-g-4">
+						<p:outputLabel id="txtPrecoVenda"
+							value="#{produtoBean.produto.precoVendaSugerido}"
+							styleClass="negrito">
+							<f:convertNumber type="currency" />
+						</p:outputLabel>
+					</div>
+				</div>
+			</f:facet>
+
+			<div class="ui-g">
+				<div class="ui-g-12 ui-md-6">
+					<p:outputLabel value="Margem de contribuição (%)" />
+					<p:inputNumber decimalPlaces="2" minValue="0"
+						value="#{produtoBean.produto.custo.margem}">
+						<p:ajax event="change" process="@this"
+							update="txtCustoCompra txtPrecoVenda labelPrecoVenda" />
+					</p:inputNumber>
+				</div>
+				<div class="ui-g-12 ui-md-6">
+					<p:outputLabel value="Margem de lucro (%)" />
+					<p:inputNumber decimalPlaces="2" minValue="0"
+						value="#{produtoBean.produto.custo.lucro}">
+						<p:ajax event="change" process="@this"
+							update="txtCustoCompra txtPrecoVenda labelPrecoVenda" />
+					</p:inputNumber>
+				</div>
+				<div class="ui-g-12 ui-md-6">
+					<p:outputLabel value="Margem residual (%)" />
+					<p:inputNumber decimalPlaces="2" minValue="0"
+						value="#{produtoBean.produto.custo.residual}">
+						<p:ajax event="change" process="@this"
+							update="txtCustoCompra txtPrecoVenda labelPrecoVenda" />
+					</p:inputNumber>
+				</div>
+				<div class="ui-g-12 ui-md-6">
+					<p:outputLabel value="Carga tributária (%)" />
+					<p:inputNumber decimalPlaces="2" minValue="0"
+						value="#{produtoBean.produto.custo.tributo}">
+						<p:ajax event="change" process="@this"
+							update="txtCustoCompra txtPrecoVenda labelPrecoVenda" />
+					</p:inputNumber>
+				</div>
+			</div>
+		</p:panel>
+	</div>
+
+</ui:composition>

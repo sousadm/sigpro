@@ -1,0 +1,100 @@
+<ui:composition template="/WEB-INF/template/LayoutPadrao.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui" xmlns:o="http://omnifaces.org/ui">
+
+	<ui:define name="titulo">swot</ui:define>
+
+	<f:metadata>
+		<o:viewParam name="planner" value="#{swotPlannerBean.planner}" />
+		<f:event listener="#{swotPlannerBean.inicializar}"
+			type="preRenderView"></f:event>
+	</f:metadata>
+
+	<ui:define name="corpo">
+		<h:form id="frmPesquisa">
+
+			<h1 style="margin-top: 65px">Análise SWOT</h1>
+
+			<p:messages autoUpdate="true" closable="true" />
+
+			<p:toolbar style="margin-top: 05px">
+				<p:toolbarGroup>
+
+					<p:commandButton value="Gravar" process="@this"
+						action="#{swotPlannerBean.gravar}" update="@form"
+						disabled="#{swotPlannerBean.naoPodeGravar}" />
+
+					<p:commandButton value="Aplicar" update="@form"
+						disabled="#{swotPlannerBean.naoPodeAplicar}"
+						action="#{swotPlannerBean.aplicar}" />
+
+				</p:toolbarGroup>
+				<p:toolbarGroup align="right">
+					<p:button value="SWOT" outcome="/planner/PesquisaSwot" />
+				</p:toolbarGroup>
+				<p:toolbarGroup align="right">
+					<p:button value="Plano de Ação" outcome="/planner/PesquisaPlanner" />
+				</p:toolbarGroup>
+			</p:toolbar>
+
+			<p:panelGrid columns="2" id="painelCadastro"
+				style="width: 100%; margin-top: 20px" columnClasses="rotulo, campo">
+
+				<p:outputLabel value="Condição para realização" for="porque" />
+				<p:inputTextarea id="porque" rows="2" style="width: 100%"
+					value="#{swotPlannerBean.planner.porque}" />
+
+				<p:outputLabel value="O que fazer?" for="que" />
+				<p:inputTextarea id="que" rows="2" style="width: 100%"
+					value="#{swotPlannerBean.planner.que}" />
+
+				<p:outputLabel value="Prazo?" for="quando" />
+				<p:calendar id="quando" size="10" pattern="dd/MM/yyyy"
+					value="#{swotPlannerBean.planner.quando}" />
+
+			</p:panelGrid>
+
+			<p:dataTable id="tabela" value="#{swotPlannerBean.lstPlanner}"
+				rowIndexVar="linha" var="planner" style="margin-top: 20px"
+				emptyMessage="Nenhum registro encontrado." rows="10"
+				paginator="true" paginatorAlwaysVisible="false"
+				paginatorPosition="bottom">
+
+				<p:column headerText="Ordem" width="3%">
+					<h:outputText value="#{linha+1}" />
+				</p:column>
+				<p:column headerText="Condição para realização">
+					<h:outputText value="#{planner.porque}" />
+				</p:column>
+				<p:column headerText="O que fazer?" width="30%">
+					<h:outputText value="#{planner.que}" />
+				</p:column>
+				<p:column headerText="Prazo?" width="5%">
+					<h:outputText value="#{planner.quando}">
+						<f:convertDateTime pattern="dd/MM/yyyy" />
+					</h:outputText>
+				</p:column>
+
+				<p:column style="width: 100px; text-align: center">
+
+					<p:commandButton icon="ui-icon-pencil" process="@this"
+						title="Editar" update="@form">
+						<f:setPropertyActionListener value="#{planner}"
+							target="#{swotPlannerBean.planner}" />
+					</p:commandButton>
+
+					<p:commandButton icon="ui-icon-trash" process="@this"
+						title="Excluir" update="@form"
+						action="#{swotPlannerBean.excluirItem(linha)}" />
+
+				</p:column>
+
+			</p:dataTable>
+
+		</h:form>
+	</ui:define>
+
+</ui:composition>

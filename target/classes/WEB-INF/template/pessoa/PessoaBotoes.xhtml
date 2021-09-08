@@ -1,0 +1,73 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<p:toolbar style="margin-top: 05px">
+		<p:toolbarGroup>
+
+			<p:splitButton id="botaoSalvar" value="Salvar" icon="ui-icon-disk"
+				disabled="#{pessoaBean.somenteLeitura}" process="@form"
+				actionListener="#{pessoaBean.salvar}" update="@form">
+				<p:menuitem value="#{pessoaBean.opcaoCliente}" process="@this"
+					action="#{pessoaBean.novo('cliente')}" update="@form" />
+				<p:menuitem value="Fornecedor" process="@this"
+					action="#{pessoaBean.novo('fornecedor')}" update="@form" />
+				<p:menuitem value="Vendedor" process="@this"
+					action="#{pessoaBean.novo('vendedor')}" update="@form" />
+				<p:menuitem value="Transportador" process="@this"
+					action="#{pessoaBean.novo('transportador')}" update="@form" />
+				<p:menuitem value="Agente financeiro" process="@this"
+					action="#{pessoaBean.novo('agente')}" update="@form" />
+				<p:menuitem value="Colaborador" process="@this"
+					action="#{pessoaBean.novo('colaborador')}" update="@form" />
+				<p:menuitem value="Motorista" process="@this"
+					action="#{pessoaBean.novo('motorista')}" update="@form" />
+
+				<p:separator />
+				<p:menuitem icon="ui-icon-trash" process="@this" value="Excluir"
+					update="@form" rendered="#{pessoaBean.pessoa.existe}"
+					action="#{pessoaBean.excluir(pessoaBean.pessoa)}">
+					<p:confirm icon="ui-icon-alert" header="Confirmação de exclusão"
+						message="Excluir #{pessoa.nome}  ?" />
+				</p:menuitem>
+
+				<p:menuitem icon="ui-icon-transferthick-e-w"
+					value="Enviar para plataforma digital" process="@this"
+					action="#{selecionaBean.boletoDigital(pessoaBean.pessoa)}" />
+
+				<p:menuitem icon="ui-icon-note" value="Eventos" process="@this"
+					update="dlgEventos" rendered="#{pessoaBean.pessoa.existe}"
+					actionListener="#{listaEventoBean.preparar(pessoaBean.pessoa)}"
+					oncomplete="PF('dlgEventos').show()" />
+
+			</p:splitButton>
+
+			<p:commandButton value="Contatos" icon="ui-icon-person"
+				action="#{contatoBean.setPessoa(pessoaBean.pessoa)}"
+				disabled="#{not pessoaBean.pessoa.existe}" process="@this"
+				oncomplete="PF('dlgContato').show()" update="dlgContato" />
+
+			<p:commandButton value="Enviar SMS" process="@this"
+				disabled="#{not pessoaBean.pessoa.existe}"
+				actionListener="#{pessoaBean.preparaSms}"
+				action="#{sendSMSBean.setSms(pessoaBean.sms)}" update="dlgSendSMS"
+				oncomplete="PF('dlgSendSMS').show()" />
+
+			<p:commandButton value="Ficha" icon="ui-icon-print" id="botaoFicha"
+				ajax="false" disabled="#{not pessoaBean.pessoa.existe}"
+				action="#{pessoaBean.imprimirFicha}"
+				onclick="this.form.target='_blank'" />
+
+		</p:toolbarGroup>
+
+		<p:toolbarGroup align="right">
+			<p:commandButton value="Pesquisa" icon="ui-icon-search"
+				actionListener="#{pessoaBean.setPessoa(null)}" process="@this"
+				update="@form" />
+		</p:toolbarGroup>
+
+	</p:toolbar>
+
+</ui:composition>

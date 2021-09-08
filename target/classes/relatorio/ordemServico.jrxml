@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ordemServico" language="groovy" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="27a8d71a-9e2e-46aa-9833-4238409ed7d8">
+	<property name="ireport.zoom" value="1.3310000000000004"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<property name="ireport.callouts" value="##Tue Jan 03 22:33:47 BRT 2017"/>
+	<parameter name="ordem" class="java.lang.Object"/>
+	<parameter name="empresa" class="java.lang.Object"/>
+	<field name="produto" class="java.lang.Object"/>
+	<pageHeader>
+		<band height="104">
+			<rectangle>
+				<reportElement uuid="b693b1be-b419-4483-9c47-79a2c98082ce" x="0" y="31" width="555" height="70"/>
+			</rectangle>
+			<staticText>
+				<reportElement uuid="6d678d8c-7151-4677-971f-f53edb309893" x="0" y="0" width="555" height="31"/>
+				<textElement>
+					<font fontName="DejaVu Sans" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Ordem de Serviço]]></text>
+			</staticText>
+			<textField>
+				<reportElement uuid="d13379bb-4e52-4e29-bcef-ce30c7cbf64d" x="90" y="47" width="216" height="14"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$P{ordem}.getResponsavel().getNome()]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="104f0dc9-a5cd-468f-aded-b16ea8c6d6e4" x="4" y="47" width="86" height="14"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Responsável:]]></text>
+			</staticText>
+			<textField>
+				<reportElement uuid="cba8ca44-000a-40cf-8365-7de28960040d" x="455" y="47" width="85" height="14"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$P{ordem}.getResponsavel().getFone()]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="bb05f663-beb7-499e-aec1-80d2e05c3e55" x="420" y="47" width="35" height="14"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Fone:]]></text>
+			</staticText>
+			<textField>
+				<reportElement uuid="c64ade6c-835c-4cde-b15d-544435b55175" x="107" y="73" width="51" height="14"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$P{ordem}.getVeiculo().getPlaca()]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="cbf91ece-f6d4-4c8d-a535-a84e020984d9" x="4" y="73" width="97" height="14"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Placa do veículo:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="22204c33-e7de-412d-9069-e6889838c302" x="186" y="73" width="43" height="14"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Marca:]]></text>
+			</staticText>
+			<textField>
+				<reportElement uuid="a2f52a42-2d37-47a8-9a99-8e54db55fbfe" x="235" y="73" width="109" height="14"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$P{ordem}.getVeiculo().getMarca().getDescricao()]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="3e2e6e8a-7629-4fb4-81ba-fa3d1ea31270" x="366" y="73" width="59" height="14"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Categoria:]]></text>
+			</staticText>
+			<textField>
+				<reportElement uuid="d79c6d93-4d91-4256-b294-1729d9c2f10b" x="431" y="73" width="109" height="14"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$P{ordem}.getVeiculo().getTipoVeiculo().getDescricao()]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<detail>
+		<band height="17">
+			<textField>
+				<reportElement uuid="62136345-62eb-414a-8dfa-59af26b3ef0b" x="1" y="1" width="100" height="14"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{produto}.getNome()]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<summary>
+		<band height="197">
+			<rectangle>
+				<reportElement uuid="69e33b76-f838-4088-b61e-ad0f108a729b" x="0" y="3" width="555" height="114"/>
+			</rectangle>
+			<textField isBlankWhenNull="true">
+				<reportElement uuid="8b252b4a-4352-4763-9369-ee3c0d52cf22" x="4" y="7" width="342" height="100"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$P{ordem}.getObservacao()]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy HH.mm.ss">
+				<reportElement uuid="6b35e20e-5a3b-4058-87c9-cfa333c1b00e" x="427" y="7" width="118" height="14"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$P{ordem}.getDataEmissao()]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="9bae975a-884f-42b4-80ef-3f8ec5b74e72" x="369" y="7" width="58" height="14"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Emissão:]]></text>
+			</staticText>
+			<textField pattern="dd/MM/yyyy HH.mm.ss" isBlankWhenNull="true">
+				<reportElement uuid="e3a3a45a-03dc-4595-a09b-8925dbf520d9" x="427" y="27" width="118" height="14"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$P{ordem}.getDataPrevisao()]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="84f35df4-37ad-43bb-a0ac-c23f0036058c" x="369" y="27" width="58" height="14"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Previsão:]]></text>
+			</staticText>
+			<textField pattern="dd/MM/yyyy HH.mm.ss" isBlankWhenNull="true">
+				<reportElement uuid="fcdfd827-5449-4e6e-a5a0-d5b31132895b" x="427" y="47" width="118" height="14"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$P{ordem}.getCronologia().getInicio()]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="24f675ce-0dd5-41a4-8614-daec1674795d" x="369" y="47" width="58" height="14"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Início:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="f6fe231b-597f-486a-b32a-ca030a109bdd" x="369" y="67" width="58" height="14"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Término:]]></text>
+			</staticText>
+			<textField pattern="dd/MM/yyyy HH.mm.ss" isBlankWhenNull="true">
+				<reportElement uuid="4f7cbea3-db4e-4f8e-8199-be16132ace4b" x="427" y="68" width="118" height="14"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$P{ordem}.getCronologia().getTermino()]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement uuid="d459989c-6bd6-4b85-9362-1e2eaff90f0f" x="359" y="5" width="1" height="110"/>
+			</line>
+		</band>
+	</summary>
+</jasperReport>

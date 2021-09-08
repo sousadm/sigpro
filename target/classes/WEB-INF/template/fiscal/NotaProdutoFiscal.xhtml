@@ -1,0 +1,302 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<p:dialog id="dlgProdutoFiscal"
+		header="#{notaFiscalBean.notaItem.prod.nome}"
+		widgetVar="dlgProdutoFiscal" closeOnEscape="true" modal="true"
+		maximizable="false" width="800">
+
+		<h:form id="formProdutoFiscal">
+
+			<p:tabView id="tabViewProduto" orientation="left" 
+				style="margin-top: 5px">
+
+				<p:ajax event="tabChange" process="dlgProdutoFiscal"
+					listener="#{notaFiscalBean.onTabProdTotaisChange}" />
+
+				<p:tab id="tabProduto" title="PRODUTO">
+					<p:panelGrid id="gridProduto" columns="2" styleClass="ui-noborder"
+						style="width:100%">
+
+						<p:outputLabel value="Quantidade" />
+						<p:inputNumber value="#{notaFiscalBean.notaItem.quantidade}"
+							decimalPlaces="3" padControl="false"
+							rendered="#{notaFiscalBean.nota.podeEditar}">
+							<p:ajax event="change" process="@this" update="@form" />
+						</p:inputNumber>
+						<p:inputText value="#{notaFiscalBean.notaItem.quantidade}"
+							rendered="#{not notaFiscalBean.nota.podeEditar}"
+							styleClass="bloqueado">
+							<f:convertNumber pattern="##########.###" />
+						</p:inputText>
+
+						<p:outputLabel value="Valor Unitário" />
+						<p:inputText value="#{notaFiscalBean.notaItem.valorUnitario}"
+							readonly="true" styleClass="bloqueado">
+							<f:convertNumber type="currency" decimalPlaces="3" />
+						</p:inputText>
+
+						<p:outputLabel value="Desconto Unitário" />
+						<p:inputNumber value="#{notaFiscalBean.notaItem.valorDesconto}"
+							rendered="#{notaFiscalBean.nota.podeEditar}" decimalPlaces="2">
+							<p:ajax event="change" process="@this" update="@form" />
+						</p:inputNumber>
+						<p:inputText value="#{notaFiscalBean.notaItem.valorDesconto}"
+							rendered="#{not notaFiscalBean.nota.podeEditar}"
+							styleClass="bloqueado">
+							<f:convertNumber type="currency" />
+						</p:inputText>
+
+						<p:outputLabel value="CFOP" />
+						<p:selectOneMenu id="txtProdCfop"
+							value="#{notaFiscalBean.notaItem.cfop}"
+							rendered="#{notaFiscalBean.nota.podeEditar}" autoWidth="false"
+							style="width:90%">
+							<f:selectItem itemValue="" itemLabel="" />
+							<f:selectItems value="#{notaFiscalBean.listaCfop}" var="prodCfop"
+								itemValue="#{prodCfop}" itemLabel="#{prodCfop.id}" />
+							<p:ajax event="change" process="@this" />
+						</p:selectOneMenu>
+						<p:outputLabel rendered="#{not notaFiscalBean.nota.podeEditar}"
+							value="#{notaFiscalBean.notaItem.cfop.id}" />
+
+						<p:outputLabel value="Unidade" />
+						<p:selectOneMenu value="#{notaFiscalBean.notaItem.unidade}"
+							rendered="#{notaFiscalBean.nota.podeEditar}" autoWidth="false"
+							style="width:90%">
+							<f:selectItems value="#{notaFiscalBean.listaUnidades}" var="und"
+								itemValue="#{und.unidade}" itemLabel="#{und.unidade.descricao}" />
+						</p:selectOneMenu>
+						<p:outputLabel rendered="#{not notaFiscalBean.nota.podeEditar}"
+							value="#{notaFiscalBean.notaItem.unidade.descricao}" />
+
+						<p:outputLabel value="Pedido de Compra" />
+						<p:inputNumber title="número do pedido de cliente" minValue="0"
+							thousandSeparator="." decimalPlaces="0"
+							rendered="#{notaFiscalBean.nota.podeEditar}"
+							value="#{notaFiscalBean.notaItem.pedidoCompra}" />
+						<p:inputText value="#{notaFiscalBean.notaItem.pedidoCompra}"
+							rendered="#{not notaFiscalBean.nota.podeEditar}"
+							styleClass="bloqueado" />
+
+						<p:outputLabel value="Item de pedido" />
+						<p:inputNumber title="número do item do pedido" minValue="0"
+							thousandSeparator="." decimalPlaces="0"
+							rendered="#{notaFiscalBean.nota.podeEditar}"
+							value="#{notaFiscalBean.notaItem.pedidoCompra}" />
+						<p:inputText value="#{notaFiscalBean.notaItem.pedidoCompra}"
+							rendered="#{not notaFiscalBean.nota.podeEditar}"
+							styleClass="bloqueado" />
+
+						<p:outputLabel value="Código no pedido" />
+						<p:inputText title="Código do produto no pedido"
+							rendered="#{notaFiscalBean.nota.podeEditar}"
+							value="#{notaFiscalBean.notaItem.pedidoCompraMaterial}" />
+						<p:inputText
+							value="#{notaFiscalBean.notaItem.pedidoCompraMaterial}"
+							rendered="#{not notaFiscalBean.nota.podeEditar}"
+							styleClass="bloqueado" />
+
+						<p:outputLabel value="Valor do Item" />
+						<h:outputText id="valorItem" style="font-weight:bold"
+							value="#{notaFiscalBean.notaItem.valorProduto}">
+							<f:convertNumber type="currency" />
+						</h:outputText>
+
+					</p:panelGrid>
+				</p:tab>
+				<p:tab title="ICMS">
+					<p:panelGrid columns="2" styleClass="ui-noborder"
+						style="width:100%">
+
+						<p:outputLabel value="CST" />
+						<h:panelGroup rendered="#{notaFiscalBean.nota.podeEditar}">
+							<p:selectOneMenu autoWidth="false"
+								value="#{notaFiscalBean.notaItem.icms.cst}"
+								readonly="#{not notaFiscalBean.nota.podeEditar}"
+								rendered="#{notaFiscalBean.empresaNormal}" style="width:90%">
+								<f:selectItems value="#{listaTipoBean.cstIcms.toString()}" var="cstIcms"
+									itemValue="#{cstIcms}" itemLabel="#{cstIcms}" />
+								<p:ajax event="change" process="@this" />
+							</p:selectOneMenu>
+							<p:selectOneMenu autoWidth="false"
+								value="#{notaFiscalBean.notaItem.icms.cstSN}"
+								readonly="#{not notaFiscalBean.nota.podeEditar}"
+								rendered="#{not notaFiscalBean.empresaNormal}" style="width:90%">
+								<f:selectItem itemValue="" itemLabel="" />
+								<f:selectItems value="#{listaTipoBean.cstIcmsSN}"
+									var="cstIcmsSN" itemValue="#{cstIcmsSN.toString()}"
+									itemLabel="#{cstIcmsSN}" />
+								<p:ajax event="change" process="@this" />
+							</p:selectOneMenu>
+						</h:panelGroup>
+						<h:panelGroup rendered="#{not notaFiscalBean.nota.podeEditar}">
+							<p:outputLabel rendered="#{notaFiscalBean.empresaNormal}"
+								value="#{notaFiscalBean.notaItem.icms.cst.toString()}" />
+							<p:outputLabel rendered="#{not notaFiscalBean.empresaNormal}"
+								value="#{notaFiscalBean.notaItem.icms.cstSN.toString()}" />
+						</h:panelGroup>
+
+						<p:outputLabel value="Alíquota (%)" />
+						<p:inputNumber decimalPlaces="2"
+							rendered="#{notaFiscalBean.nota.podeEditar}"
+							value="#{notaFiscalBean.notaItem.icms.aliquotaICMS}">
+							<p:ajax event="change" process="@this" />
+						</p:inputNumber>
+						<p:inputText value="#{notaFiscalBean.notaItem.icms.aliquotaICMS}"
+							rendered="#{not notaFiscalBean.nota.podeEditar}"
+							styleClass="bloqueado" />
+
+						<p:outputLabel />
+						<p:outputLabel />
+
+						<p:outputLabel />
+						<p:outputLabel />
+
+						<p:outputLabel />
+						<p:outputLabel />
+
+					</p:panelGrid>
+				</p:tab>
+				<p:tab title="PIS">
+					<p:panelGrid columns="2" styleClass="ui-noborder"
+						style="width:100%">
+
+						<p:outputLabel value="CST" />
+						<p:selectOneMenu value="#{notaFiscalBean.notaItem.pis.cstPIS}"
+							rendered="#{notaFiscalBean.nota.podeEditar}" autoWidth="false"
+							style="width:90%">
+							<f:selectItem itemValue="" itemLabel="" />
+							<f:selectItems value="#{listaTipoBean.cstPIS}" var="cstPis"
+								itemValue="#{cstPis}" itemLabel="#{cstPis.toString()}" />
+							<p:ajax event="change" process="@this" />
+						</p:selectOneMenu>
+						<p:outputLabel rendered="#{not notaFiscalBean.nota.podeEditar}"
+							value="#{notaFiscalBean.notaItem.pis.cstPIS.toString()}" />
+
+						<p:outputLabel value="Alíquota (%)" />
+						<p:inputNumber decimalPlaces="2"
+							rendered="#{notaFiscalBean.nota.podeEditar}"
+							value="#{notaFiscalBean.notaItem.pis.aliquotaPIS}">
+							<p:ajax event="change" process="@this" />
+						</p:inputNumber>
+						<p:inputText value="#{notaFiscalBean.notaItem.pis.aliquotaPIS}"
+							rendered="#{not notaFiscalBean.nota.podeEditar}"
+							styleClass="bloqueado" />
+
+						<p:outputLabel />
+						<p:outputLabel />
+
+						<p:outputLabel />
+						<p:outputLabel />
+
+						<p:outputLabel />
+						<p:outputLabel />
+
+					</p:panelGrid>
+				</p:tab>
+				<p:tab title="COFINS">
+					<p:panelGrid columns="2" styleClass="ui-noborder"
+						style="width:100%">
+
+						<p:outputLabel value="CST" />
+						<p:selectOneMenu
+							value="#{notaFiscalBean.notaItem.cofins.cstCofins}"
+							rendered="#{notaFiscalBean.nota.podeEditar}" autoWidth="false"
+							style="width:90%">
+							<f:selectItem itemValue="" itemLabel="" />
+							<f:selectItems value="#{listaTipoBean.cstCofins}" var="cstCofins"
+								itemValue="#{cstCofins}" itemLabel="#{cstCofins.toString()}" />
+							<p:ajax event="change" process="@this" />
+						</p:selectOneMenu>
+						<p:outputLabel rendered="#{not notaFiscalBean.nota.podeEditar}"
+							value="#{notaFiscalBean.notaItem.cofins.cstCofins.toString()}" />
+
+						<p:outputLabel value="Alíquota (%)" />
+						<p:inputNumber decimalPlaces="2"
+							rendered="#{notaFiscalBean.nota.podeEditar}"
+							value="#{notaFiscalBean.notaItem.cofins.aliquotaCofins}">
+							<p:ajax event="change" process="@this" />
+						</p:inputNumber>
+						<p:inputText styleClass="bloqueado"
+							value="#{notaFiscalBean.notaItem.cofins.aliquotaCofins}"
+							rendered="#{not notaFiscalBean.nota.podeEditar}" />
+
+						<p:outputLabel />
+						<p:outputLabel />
+
+						<p:outputLabel />
+						<p:outputLabel />
+
+						<p:outputLabel />
+						<p:outputLabel />
+
+					</p:panelGrid>
+				</p:tab>
+				<p:tab title="IPI">
+					<p:panelGrid columns="2" styleClass="ui-noborder"
+						style="width:100%">
+
+						<p:outputLabel value="CST" />
+						<p:selectOneMenu value="#{notaFiscalBean.notaItem.ipi.cstIPI}"
+							rendered="#{notaFiscalBean.nota.podeEditar}" autoWidth="false"
+							style="width:90%">
+							<f:selectItem itemLabel="Indefinido" itemValue="" />
+							<f:selectItems value="#{listaTipoBean.cstIPI}" var="cstIPI"
+								itemValue="#{cstIPI}" itemLabel="#{cstIPI.toString()}" />
+							<p:ajax event="change"
+								update="txtIpiAliquota txtIpiEnquadramento" />
+							<p:ajax event="change" process="@this" />
+						</p:selectOneMenu>
+						<p:outputLabel rendered="#{not notaFiscalBean.nota.podeEditar}"
+							value="#{notaFiscalBean.notaItem.ipi.cstIPI.toString()}" />
+
+						<p:outputLabel value="Alíquota (%)" />
+						<p:inputNumber id="txtIpiAliquota" decimalPlaces="2"
+							rendered="#{notaFiscalBean.nota.podeEditar}"
+							readonly="#{notaFiscalBean.notaItem.ipi.cstIPI == null}"
+							value="#{notaFiscalBean.notaItem.ipi.aliquotaIPI}">
+							<p:ajax event="change" process="@this" />
+						</p:inputNumber>
+						<p:inputText styleClass="bloqueado"
+							value="#{notaFiscalBean.notaItem.ipi.aliquotaIPI}"
+							rendered="#{not notaFiscalBean.nota.podeEditar}" />
+
+						<p:outputLabel value="Código de enquadramento" />
+						<p:inputText id="txtIpiEnquadramento"
+							rendered="#{notaFiscalBean.nota.podeEditar}"
+							readonly="#{notaFiscalBean.notaItem.ipi.cstIPI == null}"
+							value="#{notaFiscalBean.notaItem.ipi.codigoEnquadramento}">
+							<p:ajax event="change" process="@this" />
+						</p:inputText>
+						<p:inputText styleClass="bloqueado"
+							value="#{notaFiscalBean.notaItem.ipi.codigoEnquadramento}"
+							rendered="#{not notaFiscalBean.nota.podeEditar}" />
+
+						<p:outputLabel />
+						<p:outputLabel />
+
+						<p:outputLabel />
+						<p:outputLabel />
+
+					</p:panelGrid>
+				</p:tab>
+			</p:tabView>
+
+			<div align="right">
+				<p:commandButton value="Confirmar" style="margin-top: 5px"
+					icon="ui-icon-check" process="dlgProdutoFiscal"
+					actionListener="#{notaFiscalBean.gravarItemProduto}"
+					disable="#{not notaFiscalBean.nota.podeEditar}"
+					update="formCadastro:tabView:produtosTable formCadastro:tabView:gridTotais"
+					oncomplete="if(!args.validationFailed) PF('dlgProdutoFiscal').hide()" />
+			</div>
+
+		</h:form>
+
+	</p:dialog>
+
+</ui:composition>

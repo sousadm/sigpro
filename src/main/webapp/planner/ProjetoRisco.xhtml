@@ -1,0 +1,112 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+
+	<h1>Definição de Riscos</h1>
+
+	<h:panelGroup rendered="#{projetoBean.risco == null}">
+
+		<p:blockUI block="@form" trigger="botaoAtualizaRisco" />
+
+		<div align="right">
+			<p:commandButton id="botaoAtualizaRisco" value="Atualiza"
+				action="#{projetoBean.atualizaListaRisco}" update="@form" />
+			<p:commandButton value="Add Risco" process="@this" update="@form"
+				disabled="#{projetoBean.projeto.encerrado}"
+				actionListener="#{projetoBean.addRisco}" />
+		</div>
+
+		<p:dataTable value="#{projetoBean.listaRiscos}" var="risco"
+			rowIndexVar="linha" scrollable="true" style="margin-top: 5px"
+			emptyMessage="Nenhum registro encontrado." rows="10" paginator="true"
+			paginatorAlwaysVisible="false" paginatorPosition="bottom">
+
+			<p:column headerText="Entrega do projeto">
+				<h:outputText value="#{risco.origem.que}" />
+			</p:column>
+			<p:column headerText="Definição do risco">
+				<h:outputText value="#{risco.que}" />
+			</p:column>
+			<p:column headerText="Estratégia">
+				<h:outputText value="#{risco.estrategia}" />
+			</p:column>
+
+			<p:column style="width: 80px; text-align: center">
+				<p:commandButton icon="ui-icon-pencil" process="@this"
+					title="Editar" update="@form"
+					actionListener="#{projetoBean.setRisco(risco)}" />
+				<p:commandButton icon="ui-icon-closethick" process="@this"
+					update="@form" disabled="#{projetoBean.projeto.encerrado}"
+					actionListener="#{projetoBean.excluirRisco(linha)}"
+					title="Excluir risco">
+					<p:confirm icon="ui-icon-alert" header="Confirmação"
+						message="Excluir o risco atual?" />
+				</p:commandButton>
+			</p:column>
+
+		</p:dataTable>
+
+	</h:panelGroup>
+
+
+	<h:panelGroup rendered="#{projetoBean.risco != null}">
+
+		<div align="right">
+			<p:commandButton value="Voltar" process="@this"
+				actionListener="#{projetoBean.setRisco(null)}" update="@form" />
+			<p:splitButton value="Gravar" process="@form" update="@form"
+				disabled="#{projetoBean.projeto.encerrado}"
+				actionListener="#{projetoBean.gravar_risco}">
+				<p:menuitem value="Add Objetivo" process="@this"
+					actionListener="#{projetoBean.addRisco}" update="@form" />
+			</p:splitButton>
+		</div>
+
+		<div class="ui-fluid">
+			<div class="ui-g" style="margin-top: 5px; border: 1px solid silver;">
+				<div class="ui-g-12">
+					<p:outputLabel value="Evento de risco / Consequencia" />
+					<p:inputTextarea value="#{projetoBean.risco.que}" rows="3"
+						readonly="#{projetoBean.projeto.encerrado}" />
+				</div>
+				<div class="ui-g-12">
+					<p:outputLabel value="Pacote de entrega em análise" />
+					<p:selectOneMenu value="#{projetoBean.risco.origem}">
+						<f:selectItem itemLabel="Selecione" />
+						<f:selectItems value="#{projetoBean.listaEntregaMenu}" var="pct"
+							itemValue="#{pct}" itemLabel="#{pct.que}" />
+					</p:selectOneMenu>
+				</div>
+				<div class="ui-g-12 ui-md-4">
+					<p:outputLabel value="Impacto" />
+					<p:selectOneMenu value="#{projetoBean.risco.impacto}">
+						<f:selectItem itemLabel="Selecione" />
+						<f:selectItems value="#{listaTipoBean.tipoImpacto}" var="i"
+							itemValue="#{i}" itemLabel="#{i.descricao}" />
+					</p:selectOneMenu>
+				</div>
+				<div class="ui-g-12 ui-md-4">
+					<p:outputLabel value="Probabilidade" />
+					<p:selectOneMenu value="#{projetoBean.risco.probabilidade}">
+						<f:selectItem itemLabel="Selecione" />
+						<f:selectItems value="#{listaTipoBean.tipoProbabilidade}" var="p"
+							itemValue="#{p}" itemLabel="#{p.descricao}" />
+					</p:selectOneMenu>
+				</div>
+				<div class="ui-g-12 ui-md-4">
+					<p:outputLabel value="Estratégia" />
+					<p:selectOneMenu value="#{projetoBean.risco.estrategia}">
+						<f:selectItem itemLabel="Selecione" />
+						<f:selectItems value="#{listaTipoBean.tipoEstrategia}" var="e"
+							itemValue="#{e}" itemLabel="#{e.descricao}" />
+					</p:selectOneMenu>
+				</div>
+			</div>
+		</div>
+
+	</h:panelGroup>
+
+</ui:composition>

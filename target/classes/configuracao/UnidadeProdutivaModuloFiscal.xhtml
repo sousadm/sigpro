@@ -1,0 +1,53 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<p:commandButton value="Add Modulo" icon="ui-icon-document"
+		action="#{unidadeProdutivaBean.addModuloFiscal}"
+		update="dlgModuloFiscal" oncomplete="PF('dlgModuloFiscal').show()" />
+	<p:commandButton value="atualizar" icon="ui-icon-arrowrefresh-1-w"
+		process="@form"
+		actionListener="#{unidadeProdutivaBean.mostraModuloFiscais}"
+		update="listaModuloFiscal" />
+
+	<p:dataTable id="listaModuloFiscal"
+		value="#{unidadeProdutivaBean.listaModuloFiscal}" var="moduloFiscal"
+		style="margin-top: 5px" emptyMessage="Nenhum item encontrado."
+		rows="20" paginator="true" paginatorAlwaysVisible="false"
+		paginatorPosition="bottom">
+
+		<p:column headerText="Núm.Série">
+			<h:outputText value="#{moduloFiscal.numeroSerie}" />
+		</p:column>
+		<p:column headerText="Descrição">
+			<h:outputText value="#{moduloFiscal.descricao}" />
+		</p:column>
+		<p:column headerText="Fabricante">
+			<h:outputText value="#{moduloFiscal.nomeFabricante}" />
+		</p:column>
+
+		<p:column style="width: 100px; text-align: center">
+			<p:column style="text-align: center; width: 50px">
+				<p:commandButton icon="ui-icon-pencil" title="Editar"
+					class="button-grid"
+					action="#{unidadeProdutivaBean.setModuloFiscal(moduloFiscal)}"
+					update="dlgModuloFiscal" oncomplete="PF('dlgModuloFiscal').show()" />
+			</p:column>
+			<p:commandButton icon="ui-icon-trash" process="@this"
+				class="button-grid" title="Excluir" update="@form"
+				action="#{unidadeProdutivaBean.excluirModuloFiscal(moduloFiscal)}">
+				<p:confirm icon="ui-icon-alert" header="Confirma"
+					message="Excluir o registro atual?" />
+			</p:commandButton>
+			<p:commandButton icon="ui-icon-shuffle" process="@this"
+				update="dlgTransfereModulo"
+				title="movimenta módulo para outra unidade"
+				action="#{unidadeProdutivaBean.preparaTransferencia(moduloFiscal)}"
+				oncomplete="PF('dlgTransfereModuloFiscal').show()" />
+		</p:column>
+
+	</p:dataTable>
+
+</ui:composition>

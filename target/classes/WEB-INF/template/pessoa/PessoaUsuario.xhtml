@@ -1,0 +1,44 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<p:commandButton value="Senha" title="enviar senha por e-mail"
+		icon="ui-icon-key" id="botaoSenha"
+		action="#{pessoaBean.gerarNovaSenha}" update="@form"
+		onclick="jQuery(this).addClass('ui-state-disabled')">
+		<p:confirm icon="ui-icon-alert" header="Pessoa"
+			message="Enviar nova senha?" />
+	</p:commandButton>
+
+	<p:panelGrid id="painelUsuario2" columns="2" layout="grid"
+		rendered="#{pessoaBean.pessoa.defineUsuario}" style="margin-top: 20px"
+		styleClass="panelgrid-noborder">
+
+		<p:outputLabel value="Data de cadastro" />
+		<h:outputText value="#{pessoaBean.pessoa.usuario.dataCadastro}"
+			class="negrito">
+			<f:convertDateTime pattern="dd/MM/yyyy HH:mm" timeZone="GMT-03:00" />
+		</h:outputText>
+
+		<p:outputLabel value="Configura e-mail próprio" />
+		<p:selectBooleanCheckbox
+			value="#{pessoaBean.pessoa.usuario.permiteEmailProprio}" />
+
+		<p:outputLabel value="Nome do usuário" for="txtUserName" />
+		<p:inputText id="txtUserName" rendered="true"
+			requiredMessage="defina o usuário"
+			value="#{pessoaBean.pessoa.usuario.nome}" />
+
+		<p:outputLabel value="Grupos" for="grupoCheck" />
+		<p:selectManyCheckbox id="grupoCheck" styleClass="many-checkbox"
+			value="#{pessoaBean.pessoa.usuario.grupos}" converter="enumConverter">
+			<f:attribute name="collectionType" value="java.util.ArrayList" />
+			<f:selectItems value="#{listaTipoBean.tipoGrupo}" var="grupo"
+				itemLabel="#{grupo.descricao}" itemValue="#{grupo}" />
+		</p:selectManyCheckbox>
+
+	</p:panelGrid>
+
+</ui:composition>

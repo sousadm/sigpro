@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="formaPreco" language="groovy" pageWidth="595" pageHeight="842" columnWidth="575" leftMargin="10" rightMargin="10" topMargin="10" bottomMargin="10" uuid="040b7872-6506-4028-b4f9-cf2be9e50f7a">
+	<property name="ireport.zoom" value="1.2100000000000002"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="empresa" class="java.lang.Object"/>
+	<parameter name="empresa_endereco" class="java.lang.String"/>
+	<field name="sku" class="java.lang.String"/>
+	<field name="nome" class="java.lang.String"/>
+	<field name="precoCompra" class="java.lang.Double"/>
+	<field name="valorUnitario" class="java.lang.Double"/>
+	<field name="custo" class="java.lang.Object"/>
+	<field name="precoCusto" class="java.lang.Double"/>
+	<field name="precoVendaSugerido" class="java.lang.Double"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<pageHeader>
+		<band height="71">
+			<textField>
+				<reportElement x="3" y="4" width="407" height="20" uuid="4a860474-6837-4616-a24f-a34405d6104e"/>
+				<textElement markup="html">
+					<font fontName="Arial" size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{empresa}.getNome()]]></textFieldExpression>
+			</textField>
+			<textField pattern="HH.mm.ss">
+				<reportElement x="472" y="19" width="100" height="14" uuid="584b4576-a275-4db2-b99f-3b47b62bc96f"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="177" y="45" width="265" height="20" uuid="0d041ce5-5a4d-4265-ad6e-5bde403ace7e"/>
+				<textElement textAlignment="Center" markup="html">
+					<font fontName="Arial" size="16" isBold="true" isPdfEmbedded="false"/>
+				</textElement>
+				<text><![CDATA[FORMAÇÃO DE PREÇOS]]></text>
+			</staticText>
+			<textField evaluationTime="Report">
+				<reportElement x="554" y="36" width="19" height="14" uuid="b7c30979-0724-4bc3-8250-dd8a9c6211d9"/>
+				<textFieldExpression><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="472" y="36" width="81" height="14" uuid="37f50ac2-d2f7-48aa-8e79-cb2df9574713"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA["Página: "+$V{PAGE_NUMBER}+"/"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="3" y="25" width="407" height="15" uuid="129d03ae-da24-4eed-ac8d-75e21806e2fe"/>
+				<textFieldExpression><![CDATA[$P{empresa_endereco}.toString()]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="472" y="3" width="101" height="14" uuid="016e4f54-8bdd-427a-8d88-d80879d2358e"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="0" y="68" width="575" height="1" uuid="ed23f2af-be19-41f3-a23d-a890425bdffc"/>
+			</line>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="19">
+			<staticText>
+				<reportElement x="1" y="1" width="55" height="15" uuid="6bda6890-d85f-4a58-98dd-24a1e7397795"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Código]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="58" y="1" width="265" height="15" uuid="8ad3c685-ab7d-4cdc-a1d3-0f32a75162d5"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Descrição do Produto]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="333" y="1" width="53" height="15" uuid="db3709e9-2a16-4463-a408-06f2a147e65e"/>
+				<textElement textAlignment="Right">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[P.Compra]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="394" y="1" width="53" height="15" uuid="5db1fca2-a304-4210-afbb-404bf4bc3814"/>
+				<textElement textAlignment="Right">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[P.Custo]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="456" y="1" width="53" height="15" uuid="5dff647c-291f-45da-a894-8b8038945bb7"/>
+				<textElement textAlignment="Right">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[P.Sugerido]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="517" y="1" width="53" height="15" uuid="fb5d932e-cfb0-41f7-a908-9500cd96ae38"/>
+				<textElement textAlignment="Right">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[P.Venda]]></text>
+			</staticText>
+			<line>
+				<reportElement x="0" y="17" width="575" height="1" uuid="84e38950-218f-49b8-b1d4-8090a8194dfb"/>
+			</line>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="18">
+			<textField>
+				<reportElement x="1" y="2" width="55" height="15" uuid="3f5f3181-b1dd-47b7-b57c-23264515fe3e"/>
+				<textFieldExpression><![CDATA[$F{sku}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="58" y="3" width="265" height="15" uuid="0739cdd1-3cec-47d2-ba30-619c697f04e5"/>
+				<textFieldExpression><![CDATA[$F{nome}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="333" y="2" width="53" height="15" uuid="a47a4800-be33-4c59-878f-97b0017627ca"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{precoCompra}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="394" y="1" width="53" height="15" uuid="c2e9b1e7-4ff6-4b50-a4b3-3dce338494aa"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{precoCusto}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="456" y="1" width="53" height="15" uuid="8684c0da-7f56-46e0-a8b4-6655a9c1b56a"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{precoVendaSugerido}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="517" y="1" width="53" height="15" uuid="3c55ee40-6e4e-4f7a-8c80-eef8267a7407"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{valorUnitario}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

@@ -1,0 +1,112 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<h:panelGroup id="gridCaixaRecebimento">
+
+		<div class="ui-fluid">
+			<div class="ui-g" style="margin-top: 5px; border: 1px solid silver;">
+				<div class="ui-g-12 ui-md-2">
+					<p:outputLabel value="Sequencia" />
+					<p:inputText value="#{caixaBean.caixa.id}" styleClass="bloqueado"
+						readonly="true">
+						<f:convertNumber pattern="#####0" minIntegerDigits="6" />
+					</p:inputText>
+				</div>
+				<div class="ui-g-12 ui-md-3">
+					<p:outputLabel value="Emissão" />
+					<p:inputText value="#{caixaBean.caixa.emissao}" readonly="true"
+						styleClass="bloqueado">
+						<f:convertDateTime pattern="dd/MM/yyyy HH:mm" />
+					</p:inputText>
+				</div>
+				<div class="ui-g-12 ui-md-7">
+					<p:outputLabel value="Participante" />
+					<div class="ui-inputgroup">
+						<p:commandButton icon="ui-icon-search" title="Pesquisar pessoa"
+							disabled="#{not caixaBean.caixa.podeGravar}" process="@this"
+							update="@none" ignoreAutoUpdate="true" styleClass="button-grid"
+							action="#{selecionaBean.pessoa}">
+							<p:ajax event="dialogReturn" update="txtCliente txtNominal formCadastro:tabView:btnSaldoCaixa"
+								listener="#{caixaBean.onPessoaChosen}" ignoreAutoUpdate="true" />
+						</p:commandButton>
+						<p:inputText id="txtCliente" readonly="true"
+							value="#{caixaBean.caixa.pessoa.nome}" styleClass="bloqueado" />
+					</div>
+				</div>
+
+				<div class="ui-g-12 ui-md-5">
+					<p:outputLabel value="Centro de custo" />
+					<p:inputText value="#{caixaBean.caixa.centroDeCusto.descricao}"
+						class="bloqueado" readonly="true"
+						rendered="#{not caixaBean.caixa.podeGravar}" />
+					<p:selectOneMenu id="txtCentroCusto" autoWidth="false"
+						value="#{caixaBean.caixa.centroDeCusto}"
+						rendered="#{caixaBean.caixa.podeGravar}">
+						<f:selectItem itemLabel="Selecione ..." />
+						<f:selectItems value="#{caixaBean.listaCusto}" var="c"
+							itemValue="#{c}" itemLabel="#{c.descricao}" />
+					</p:selectOneMenu>
+				</div>
+				<div class="ui-g-12 ui-md-7">
+					<p:outputLabel value="Nominal" />
+					<p:inputText id="txtNominal" value="#{caixaBean.caixa.nominal}"
+						class="#{caixaBean.caixa.podeGravar ? '' : 'bloqueado'}"
+						readonly="#{not caixaBean.caixa.podeGravar}" />
+				</div>
+
+				<div class="ui-g-12 ui-md-6">
+					<p:outputLabel value="Memorando" />
+					<p:inputTextarea id="txtObs" rows="5"
+						class="#{caixaBean.caixa.podeGravar ? '' : 'bloqueado'}"
+						value="#{caixaBean.caixa.observacao}"
+						readonly="#{not caixaBean.caixa.podeGravar}" />
+				</div>
+
+
+				<div class="ui-g-12 ui-md-6">
+					<div class="ui-g-12 ui-md-6">
+						<p:outputLabel value="Valor dos títulos" for="txtValorTotal" />
+						<p:inputText id="txtValorTotal" value="#{caixaBean.caixa.valor}"
+							styleClass="bloqueado" readonly="true">
+							<f:convertNumber type="currency" />
+						</p:inputText>
+					</div>
+					<div class="ui-g-12 ui-md-6">
+						<p:outputLabel value="Valor negociado" />
+						<p:inputText id="txtValorNegociado" class="bloqueado"
+							value="#{caixaBean.caixa.valorLiquido}" readonly="true">
+							<f:convertNumber type="currency" />
+						</p:inputText>
+					</div>
+					<div class="ui-g-12 ui-md-6">
+						<p:outputLabel value="Desconto geral" />
+						<p:inputText id="txtDesconto" value="#{caixaBean.caixa.desconto}"
+							class="#{caixaBean.caixa.podeGravar ? '' : 'bloqueado'}"
+							readonly="#{not caixaBean.caixa.podeGravar}">
+							<f:convertNumber type="currency" />
+							<f:validateDoubleRange minimum="0" />
+							<p:ajax event="change" process="@this" update="txtValorFinal"
+								listener="#{caixaBean.caixa.calcular}" />
+						</p:inputText>
+					</div>
+					<div class="ui-g-12 ui-md-6">
+						<p:outputLabel value="Diferença" for="txtValorFinal" />
+						<div
+							class="ui-inputfield ui-inputtext ui-widget ui-state-default ui-corner-all bloqueado ui-state-focus">
+							<p:outputLabel id="txtValorFinal"
+								value="#{caixaBean.caixa.valorFinal}"
+								readonly="#{not caixaBean.caixa.podeGravar}"
+								style="font-weight: bold; font-size: 1.1em">
+								<f:convertNumber type="currency" />
+							</p:outputLabel>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</h:panelGroup>
+
+</ui:composition>

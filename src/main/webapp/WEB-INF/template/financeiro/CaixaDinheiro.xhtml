@@ -1,0 +1,35 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<p:dialog id="dlgDinheiro" header="Dinheiro" widgetVar="dlgDinheiro"
+		closeOnEscape="true" modal="true" maximizable="false">
+		<h:form id="formCadastroDinheiro">
+
+			<div class="ui-fluid">
+				<div class="ui-g">
+					<div class="ui-g-12">
+						<p:outputLabel value="Valor" for="dinheiro" />
+						<p:inputNumber id="dinheiro" minValue="0" decimalSeparator=","
+							thousandSeparator="." decimalPlaces="2"
+							class="#{caixaBean.caixa.podeGravar ? '' : 'bloqueado'}"
+							readonly="#{not caixaBean.caixa.podeGravar}" required="true"
+							value="#{caixaBean.caixaValor.valor}" />
+					</div>
+				</div>
+			</div>
+
+			<div align="right" style="margin-top: 5px">
+				<p:commandButton value="Confirma" icon="ui-icon-check"
+					process="dlgDinheiro" disabled="#{not caixaBean.caixa.podeGravar}"
+					update="formCadastro:tabView:gridCompensacao  formCadastro:txtValorNegociado formCadastro:txtValorFinal"
+					action="#{caixaBean.gravarCompensacao}"
+					oncomplete="if(!args.validationFailed) PF('dlgDinheiro').hide()" />
+			</div>
+
+		</h:form>
+	</p:dialog>
+
+</ui:composition>

@@ -1,0 +1,27 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+
+	<f:form>
+
+		<p:panelMenu model="#{loginBean.menuModel}"
+			style="width:300px; margin-top: 10px;" />
+
+		<p:confirmDialog global="true" closeOnEscape="true" responsive="true" >
+			<p:commandButton value="Sim" type="button"
+				styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+			<p:commandButton value="Não" type="button"
+				styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+		</p:confirmDialog>
+
+		<p:galleria value="#{promocionalBean.images}" var="image"
+			showFilmstrip="false" style="border: none;" panelWidth="300"
+			panelHeight="180" effect="slide">
+			<p:graphicImage library="sigpro" name="images/#{image}" />
+		</p:galleria>
+
+	</f:form>
+
+</ui:composition>

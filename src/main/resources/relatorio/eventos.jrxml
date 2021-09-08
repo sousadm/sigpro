@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="eventos" language="groovy" pageWidth="595" pageHeight="842" columnWidth="565" leftMargin="20" rightMargin="10" topMargin="20" bottomMargin="10" uuid="e345826d-aaca-4c6a-a76f-837282e30d11">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<field name="id" class="java.lang.Integer"/>
+	<field name="data" class="java.util.Date"/>
+	<field name="descritivo" class="java.lang.String"/>
+	<field name="documento" class="java.lang.String"/>
+	<pageHeader>
+		<band height="35" splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="26" splitType="Stretch">
+			<staticText>
+				<reportElement x="3" y="2" width="82" height="20" uuid="8b077f81-4827-48b2-93f0-49938fe5d254"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Data/hora]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="96" y="2" width="374" height="20" uuid="276c432d-a326-4dce-be67-45f55418affa"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Descritivo]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="480" y="2" width="82" height="20" uuid="35c905fd-329a-4c59-bf42-3622d7787425"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Documento]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="25">
+			<textField>
+				<reportElement x="3" y="3" width="82" height="20" uuid="41f4423e-fc73-48d8-81b3-56d9d2ebcc45"/>
+				<textFieldExpression><![CDATA[$F{data}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="96" y="3" width="374" height="20" uuid="0141d76a-360e-4d90-8528-deca1638049d"/>
+				<textFieldExpression><![CDATA[$F{descritivo}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="480" y="3" width="82" height="20" uuid="707cb757-9367-498c-b2f1-0f76392fb613"/>
+				<textFieldExpression><![CDATA[$F{documento}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

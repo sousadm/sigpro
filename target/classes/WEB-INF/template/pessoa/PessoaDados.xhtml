@@ -1,0 +1,297 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:c="http://java.sun.com/jstl/core">
+
+	<h:panelGroup id="gridPessoa">
+
+		<div class="ui-fluid">
+
+			<div class="ui-g">
+
+				<div class="ui-g-12 ui-md-8">
+					<div class="ui-g-12 ui-md-3 ui-lg-3">
+						<h:outputLabel value="Tipo de Pessoa" />
+						<p:selectOneMenu value="#{pessoaBean.pessoa.tipo}"
+							autoWidth="false">
+							<f:selectItems value="#{listaTipoBean.tipoPessoa}" var="a"
+								itemValue="#{a}" itemLabel="#{a.descricao}" />
+							<f:ajax render="@form" listener="#{pessoaBean.setTabGeral}"
+								update="gridPessoa" />
+						</p:selectOneMenu>
+					</div>
+					<div align="right" class="ui-g-12 ui-md-6 ui-lg-6">
+						<h:outputLabel />
+						<p:commandButton value="Definição" styleClass="botao-config"
+							process="@this" update="dlgDefinicao"
+							oncomplete="PF('dlgDefinicao').show()" />
+					</div>
+
+					<div class="ui-g-12">
+						<p:outputLabel
+							value="#{pessoaBean.pessoa.pessoaJuridica ? 'Razão Social' : 'Nome'}"
+							for="nome" />
+						<p:inputText id="nome" maxlength="100"
+							value="#{pessoaBean.pessoa.nome}" />
+					</div>
+
+					<div class="ui-g-12 ui-md-2">
+						<p:outputLabel value="DDD" for="ddd" />
+						<p:inputText id="ddd" maxlength="2"
+							value="#{pessoaBean.pessoa.ddd}" />
+					</div>
+					<div class="ui-g-12 ui-md-5">
+						<p:outputLabel value="Celular" for="celular" />
+						<p:inputText id="celular" maxlength="20"
+							value="#{pessoaBean.pessoa.celular}" />
+					</div>
+					<div class="ui-g-12 ui-md-5">
+						<p:outputLabel value="Fone" for="fone" />
+						<p:inputText id="fone" maxlength="20"
+							value="#{pessoaBean.pessoa.fone}" />
+					</div>
+
+					<div class="ui-g-12 ui-md-6">
+						<p:outputLabel value="E-mail" for="email" />
+						<p:inputText id="email" maxlength="150"
+							style="text-transform: lowercase"
+							value="#{pessoaBean.pessoa.email}" />
+					</div>
+					<div class="ui-g-12 ui-md-6">
+						<p:outputLabel value="Home page" for="home" />
+						<p:inputText id="home" maxlength="200"
+							value="#{pessoaBean.pessoa.home}" />
+					</div>
+
+				</div>
+				<div class="ui-g-12 ui-md-4" style="border: 1px solid silver;">
+
+					<div class="ui-g-10">
+						<p:graphicImage value="#{graphicImageBean.photo}"
+							rendered="#{graphicImageBean.existePhoto}" cache="false"
+							width="300" height="200" />
+					</div>
+					<div class="ui-g-2">
+						<p:commandButton icon="ui-icon-plus" title="adicionar imagem"
+							process="@this" update="@none" ignoreAutoUpdate="true"
+							action="#{selecionaBean.addImagem}">
+							<p:ajax event="dialogReturn" update="@form"
+								ignoreAutoUpdate="true" />
+						</p:commandButton>
+						<p:commandButton icon="ui-icon-flag"
+							title="adicionar imagem de câmera" process="@this" update="@none"
+							ignoreAutoUpdate="true" action="#{selecionaBean.addCamera}">
+							<p:ajax event="dialogReturn" update="@form"
+								ignoreAutoUpdate="true" />
+						</p:commandButton>
+					</div>
+
+				</div>
+
+			</div>
+		</div>
+	</h:panelGroup>
+
+	<h:panelGroup id="gridPJ"
+		rendered="#{pessoaBean.pessoa.pessoaJuridica}">
+		<div class="ui-fluid">
+			<div class="ui-g">
+
+				<div class="ui-g-12 ui-md-6">
+					<p:outputLabel value="Nome de Fantasia" for="txtFantasia" />
+					<p:inputText id="txtFantasia" maxlength="100"
+						value="#{pessoaBean.pessoa.PJ.fantasia}" />
+				</div>
+				<div class="ui-g-12 ui-md-2">
+					<p:outputLabel value="Data de Fundação" for="txtFundacao" />
+					<p:calendar id="txtFundacao"
+						value="#{pessoaBean.pessoa.PJ.fundacao}" locale="de"
+						navigator="true" pattern="dd-MM-yyyy" />
+				</div>
+				<div class="ui-g-12 ui-md-4">
+					<h:outputLabel value="Regime de tributação" />
+					<p:selectOneMenu value="#{pessoaBean.pessoa.PJ.regime}"
+						autoWidth="false">
+						<f:selectItems value="#{listaTipoBean.regimeTributario}"
+							var="regTrib" itemValue="#{regTrib}"
+							itemLabel="#{regTrib.descricao}" />
+					</p:selectOneMenu>
+				</div>
+
+
+				<div class="ui-g-12 ui-md-4">
+					<p:outputLabel value="CNPJ" for="txtCnpj" />
+					<p:inputMask mask="99.999.999/9999-99" id="txtCnpj"
+						value="#{pessoaBean.pessoa.PJ.cnpj}">
+						<f:ajax event="change" listener="#{pessoaBean.analisa_cnpj()}" />
+					</p:inputMask>
+				</div>
+				<div class="ui-g-12 ui-md-4">
+					<p:outputLabel value="Insc. Estadual" for="txtIE" />
+					<p:inputText id="txtIE" maxlength="20"
+						value="#{pessoaBean.pessoa.PJ.IE}" />
+				</div>
+				<div class="ui-g-12 ui-md-4">
+					<p:outputLabel value="Insc. Municipal" for="txtIM" />
+					<p:inputText id="txtIM" maxlength="20"
+						value="#{pessoaBean.pessoa.PJ.IM}" />
+				</div>
+
+
+				<div class="ui-g-12 ui-md-4">
+					<h:outputLabel value="Porte da empresa" />
+					<p:selectOneMenu value="#{pessoaBean.pessoa.PJ.porte}"
+						autoWidth="false">
+						<f:selectItems value="#{listaTipoBean.portesEmpresa}"
+							var="porteEmp" itemValue="#{porteEmp}"
+							itemLabel="#{porteEmp.descricao}" />
+					</p:selectOneMenu>
+				</div>
+				<div class="ui-g-12 ui-md-4">
+					<h:outputLabel value="Incentivador cultural" />
+					<p:selectOneMenu value="#{pessoaBean.pessoa.PJ.incentivoCultural}"
+						autoWidth="false">
+						<f:selectItem itemLabel="Sim" itemValue="true" />
+						<f:selectItem itemLabel="Não" itemValue="false" />
+					</p:selectOneMenu>
+				</div>
+				<div class="ui-g-12 ui-md-4">
+					<h:outputLabel value="Tipo Insc.Est" for="txtTipoIEDest" />
+					<p:selectOneMenu id="txtTipoIEDest" autoWidth="false"
+						value="#{pessoaBean.pessoa.PJ.tipoIE}">
+						<f:selectItems value="#{listaTipoBean.indicadorIEDestinatario}"
+							var="tipoIE" itemValue="#{tipoIE}" itemLabel="#{tipoIE}" />
+					</p:selectOneMenu>
+				</div>
+
+
+				<div class="ui-g-12 ui-md-4">
+					<h:outputLabel value="Código Suframa" for="txtSuframa" />
+					<p:inputText id="txtSuframa" maxlength="20"
+						value="#{pessoaBean.pessoa.PJ.codigoSuframa}" />
+				</div>
+				<div class="ui-g-12 ui-md-4">
+					<h:outputLabel value="Insc.Estadual S.T" for="txtIESt" />
+					<p:inputText id="txtIESt" maxlength="20"
+						value="#{pessoaBean.pessoa.PJ.IESub}" />
+				</div>
+				<div class="ui-g-12 ui-md-4">
+					<h:outputLabel value="CNAE"
+						title="Classificação Nacional de Atividades Econômicas"
+						for="txtAtividade" />
+					<p:inputText id="txtAtividade" maxlength="7"
+						value="#{pessoaBean.pessoa.PJ.codigoAtividade}">
+						<f:convertNumber integerOnly="true" minIntegerDigits="1" />
+					</p:inputText>
+				</div>
+
+			</div>
+		</div>
+	</h:panelGroup>
+
+	<h:panelGroup id="gridPF" rendered="#{pessoaBean.pessoa.pessoaFisica}">
+		<div class="ui-fluid">
+			<div class="ui-g">
+
+				<div class="ui-g-12 ui-md-3">
+					<p:outputLabel value="CPF" for="txtCpf" />
+					<p:inputMask mask="999.999.999-99" id="txtCpf"
+						value="#{pessoaBean.pessoa.PF.cpf}">
+						<f:ajax event="change" listener="#{pessoaBean.analisa_cpf()}" />
+					</p:inputMask>
+				</div>
+				<div class="ui-g-12 ui-md-3">
+					<p:outputLabel value="Identidade" for="txtIdentidade" />
+					<p:inputText id="txtIdentidade" maxlength="20"
+						value="#{pessoaBean.pessoa.PF.identidade}" />
+				</div>
+				<div class="ui-g-6 ui-md-3">
+					<p:outputLabel value="Órgão" for="txtOrgao" />
+					<p:inputText id="txtOrgao" maxlength="20"
+						value="#{pessoaBean.pessoa.PF.orgao}" />
+				</div>
+				<div class="ui-g-6 ui-md-3">
+					<p:outputLabel value="Emissão" for="txtEmissao" />
+					<p:calendar id="txtEmissao" value="#{pessoaBean.pessoa.PF.emissao}"
+						navigator="true" pattern="dd-MM-yyyy" mask="true" />
+				</div>
+
+
+				<div class="ui-g-12 ui-md-6">
+					<p:outputLabel value="Nome do pai" for="txtPai" />
+					<p:inputText id="txtPai" value="#{pessoaBean.pessoa.PF.pai}" />
+				</div>
+				<div class="ui-g-12 ui-md-6">
+					<p:outputLabel value="Nome da Mãe" for="txtMae" />
+					<p:inputText id="txtMae" value="#{pessoaBean.pessoa.PF.mae}" />
+				</div>
+
+
+				<div class="ui-g-12 ui-md-2">
+					<p:outputLabel value="Nascimento" for="txtDataNascimento" />
+					<p:calendar id="txtDataNascimento"
+						value="#{pessoaBean.pessoa.PF.nascimento}" navigator="true"
+						pattern="dd/MM/yyyy" mask="true" />
+				</div>
+				<div class="ui-g-12 ui-md-5">
+					<p:outputLabel value="Nacionalidade" for="txtNacionalidade" />
+					<p:inputText id="txtNacionalidade"
+						value="#{pessoaBean.pessoa.PF.nacionalidade}" />
+				</div>
+				<div class="ui-g-12 ui-md-5">
+					<p:outputLabel value="Naturalidade" for="txtNaturalidade" />
+					<p:inputText id="txtNaturalidade"
+						value="#{pessoaBean.pessoa.PF.naturalidade}" />
+				</div>
+
+
+				<div class="ui-g-12 ui-md-3">
+					<h:outputLabel value="Sexo" />
+					<p:selectOneMenu value="#{pessoaBean.pessoa.PF.sexo}"
+						autoWidth="false">
+						<f:selectItems value="#{listaTipoBean.tipoSexo}" var="sexo"
+							itemValue="#{sexo}" itemLabel="#{sexo.descricao}" />
+					</p:selectOneMenu>
+				</div>
+				<div class="ui-g-12 ui-md-3">
+					<p:outputLabel value="ID Estrangeira" for="txtEstrangeira" />
+					<p:inputText id="txtEstrangeira" maxlength="20"
+						value="#{pessoaBean.pessoa.PF.idEstrangeiro}" />
+				</div>
+
+				<div class="ui-g-12 ui-md-6">
+
+					<div class="ui-g-2">
+						<h:outputLabel value="Trat." />
+						<p:selectOneMenu value="#{pessoaBean.pessoa.PF.tratamento}"
+							autoWidth="false">
+							<f:selectItem itemLabel="Selecione" />
+							<f:selectItems value="#{listaTipoBean.tipoTratamento}"
+								var="tratamento" itemValue="#{tratamento}"
+								itemLabel="#{tratamento.descricao}" />
+						</p:selectOneMenu>
+					</div>
+
+					<div class="ui-g-2">
+						<p:commandButton value="Profissão" icon="ui-icon-person"
+							process="@this" update="@none" ignoreAutoUpdate="true"
+							action="#{selecionaBean.ocupacao}">
+							<p:ajax event="dialogReturn"
+								listener="#{pessoaBean.profissaoSelecionado}"
+								update="txtProfissaoDescricao" ignoreAutoUpdate="true" />
+						</p:commandButton>
+					</div>
+					<div class="ui-g-8">
+						<p:inputText id="txtProfissaoDescricao" readonly="true"
+							value="#{pessoaBean.pessoa.PF.profissao.descricao}" />
+					</div>
+				</div>
+
+			</div>
+		</div>
+
+	</h:panelGroup>
+
+</ui:composition>

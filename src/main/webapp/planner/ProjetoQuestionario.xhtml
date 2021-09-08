@@ -1,0 +1,76 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<p:dataTable id="tabelaResposta" scrollable="true"
+		value="#{projetoBean.projeto.respostas}" var="resposta"
+		style="margin-top: 5px" emptyMessage="Nenhum registro encontrado."
+		rows="10" paginator="true" paginatorAlwaysVisible="false"
+		paginatorPosition="bottom">
+
+		<p:column headerText="Área" width="15%">
+			<h:outputText value="#{resposta.pergunta.area.descricao}" />
+		</p:column>
+
+		<p:column headerText="Questionário" width="50%">
+			<h:outputText value="#{resposta.pergunta.descricao}" />
+		</p:column>
+
+		<p:column headerText="Resposta">
+
+			<h:panelGroup rendered="#{resposta.tipoValor}">
+				<p:inputNumber value="#{resposta.valor}"
+					rendered="#{not projetoBean.projeto.encerrado}" />
+				<p:outputLabel value="#{resposta.valor}"
+					rendered="#{projetoBean.projeto.encerrado}">
+					<f:convertNumber />
+				</p:outputLabel>
+			</h:panelGroup>
+
+			<h:panelGroup rendered="#{resposta.tipoTexto}">
+				<p:inputText value="#{resposta.texto}"
+					rendered="#{not projetoBean.projeto.encerrado}" />
+				<p:outputLabel value="#{resposta.texto}"
+					rendered="#{projetoBean.projeto.encerrado}" />
+			</h:panelGroup>
+
+			<h:panelGroup rendered="#{resposta.tipoData}">
+				<p:calendar showOn="button" mask="99/99/9999" pattern="dd/MM/yyyy"
+					rendered="#{not projetoBean.projeto.encerrado}"
+					value="#{resposta.data}" />
+				<p:outputLabel value="#{resposta.data}"
+					rendered="#{projetoBean.projeto.encerrado}">
+					<f:convertDateTime pattern="dd/MM/yyyy" />
+				</p:outputLabel>
+			</h:panelGroup>
+
+			<h:panelGroup rendered="#{resposta.tipoLogico}">
+				<p:selectOneMenu value="#{resposta.logico}" style="width: 70%"
+					rendered="#{not projetoBean.projeto.encerrado}" autoWidth="false">
+					<f:selectItem itemValue="" />
+					<f:selectItem itemValue="true" itemLabel="sim" />
+					<f:selectItem itemValue="false" itemLabel="não" />
+				</p:selectOneMenu>
+				<p:outputLabel value="#{resposta.logico == true ? 'sim' : 'não'}"
+					rendered="#{projetoBean.projeto.encerrado}" />
+			</h:panelGroup>
+
+			<h:panelGroup rendered="#{resposta.tipoImportancia}">
+				<p:selectOneMenu value="#{resposta.importancia}" autoWidth="false"
+					rendered="#{not projetoBean.projeto.encerrado}">
+					<f:selectItem itemValue="" />
+					<f:selectItems value="#{listaTipoBean.tipoImportancia}"
+						var="importancia" itemValue="#{importancia}"
+						itemLabel="#{importancia.descricao}" />
+				</p:selectOneMenu>
+				<p:outputLabel value="#{resposta.importancia.descricao}"
+					rendered="#{projetoBean.projeto.encerrado}" />
+			</h:panelGroup>
+
+		</p:column>
+
+	</p:dataTable>
+
+</ui:composition>

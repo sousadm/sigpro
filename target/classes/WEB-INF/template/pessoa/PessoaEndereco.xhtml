@@ -1,0 +1,142 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:c="http://java.sun.com/jstl/core">
+
+	<div class="ui-fluid">
+		<h:panelGroup id="gridEndereco">
+			<div class="ui-g">
+
+				<div class="ui-g-12 ui-md-2">
+					<p:commandLink update="@none" action="#{selecionaBean.endereco}"
+						process="@this" title="pesquisa endereço postal">
+						<h:outputText value="CEP" />
+						<p:ajax event="dialogReturn"
+							listener="#{pessoaBean.carregarPesquisaEndereco}"
+							update="gridEndereco" ignoreAutoUpdate="true" />
+					</p:commandLink>
+					<p:inputMask mask="99.999-999" id="cep"
+						value="#{pessoaBean.endereco.cep}">
+						<p:ajax event="change" update="gridEndereco"
+							listener="#{pessoaBean.carregarEndereco()}" />
+					</p:inputMask>
+				</div>
+				<div class="ui-g-12 ui-md-8">
+					<p:outputLabel value="Logradouro" for="logra" />
+					<p:inputText id="logra" value="#{pessoaBean.endereco.logradouro}" />
+				</div>
+				<div class="ui-g-12 ui-md-2">
+					<p:outputLabel value="Número" for="numero" />
+					<p:inputText id="numero" value="#{pessoaBean.endereco.numero}">
+						<f:convertNumber integerOnly="true" />
+					</p:inputText>
+				</div>
+
+				<div class="ui-g-12 ui-md-3">
+					<p:outputLabel value="UF" for="txtUF" />
+					<p:selectOneMenu id="txtUF" value="#{pessoaBean.xUf}"
+						autoWidth="false">
+						<f:selectItem itemLabel="Selecione" />
+						<f:selectItems value="#{listaTipoBean.unidadeFederativa}"
+							var="estado" itemValue="#{estado}"
+							itemLabel="#{estado.descricao}" />
+						<f:ajax render="txtMunicipios" event="change"
+							listener="#{pessoaBean.carregaMunicipios}" update="txtMunicipios" />
+					</p:selectOneMenu>
+				</div>
+				<div class="ui-g-12 ui-md-6">
+					<p:outputLabel value="Município" for="txtMunicipios" />
+					<p:selectOneMenu id="txtMunicipios" autoWidth="false"
+						value="#{pessoaBean.endereco.municipio}">
+						<f:selectItem itemLabel="Selecione" />
+						<f:selectItems value="#{pessoaBean.listaMunicipio}"
+							var="municipio" itemValue="#{municipio}"
+							itemLabel="#{municipio.descricao}" />
+						<f:ajax event="change" update="tableEndereco" />
+					</p:selectOneMenu>
+				</div>
+				<div class="ui-g-12 ui-md-3">
+					<p:outputLabel value="Tipo" for="txtTipoMunicipio" />
+					<p:selectOneMenu id="txtTipoMunicipio" autoWidth="false"
+						value="#{pessoaBean.endereco.tipoEndereco}">
+						<f:selectItems value="#{listaTipoBean.tipoEndereco}"
+							var="tipoEndereco" itemValue="#{tipoEndereco}"
+							itemLabel="#{tipoEndereco.descricao}" />
+					</p:selectOneMenu>
+				</div>
+
+				<div class="ui-g-12 ui-md-6">
+					<p:outputLabel value="Bairro" for="bairro" />
+					<p:inputText id="bairro" value="#{pessoaBean.endereco.bairro}" />
+				</div>
+				<div class="ui-g-12 ui-md-6">
+					<p:outputLabel value="Complemento" for="compl" />
+					<p:inputText id="compl" value="#{pessoaBean.endereco.complemento}" />
+				</div>
+
+			</div>
+		</h:panelGroup>
+
+	</div>
+
+	<div align="right">
+		<p:commandButton value="Aplicar" icon="ui-icon-check"
+			actionListener="#{pessoaBean.aplicarEndereco}"
+			update="gridEndereco tableEndereco formCadastro:msg" />
+
+		<p:commandButton value="Limpar" icon="ui-icon-document"
+			actionListener="#{pessoaBean.novoEndereco}" update="gridEndereco" />
+	</div>
+
+	<p:dataTable id="tableEndereco" scrollable="true"
+		value="#{pessoaBean.pessoa.enderecos}" var="endereco"
+		emptyMessage="sem endereço definido" rowIndexVar="linha"
+		styleClass="grid-dados">
+
+		<p:column headerText="Tipo">
+			<h:outputText value="#{endereco.tipoEndereco.descricao}" />
+		</p:column>
+		<p:column headerText="Logradouro">
+			<h:outputText value="#{endereco.logradouro}" />
+		</p:column>
+		<p:column headerText="Número">
+			<h:outputText value="#{endereco.numero}" />
+		</p:column>
+		<p:column headerText="Bairro">
+			<h:outputText value="#{endereco.bairro}" />
+		</p:column>
+		<p:column headerText="CEP">
+			<h:outputText value="#{endereco.cep}" />
+		</p:column>
+		<p:column headerText="Cidade">
+			<h:outputText value="#{endereco.municipio.descricao}" />
+		</p:column>
+		<p:column headerText="UF">
+			<h:outputText value="#{endereco.municipio.uf.codigo}" />
+		</p:column>
+		<p:column headerText="Complemento">
+			<h:outputText value="#{endereco.complemento}" />
+		</p:column>
+
+		<p:column style="text-align: center" width="70">
+
+			<p:commandButton title="Editar" icon="ui-icon-pencil"
+				class="button-grid" update="formCadastro:tabGrupo:gridEndereco"
+				actionListener="#{pessoaBean.setEndereco(endereco)}" process="@this" />
+
+			<p:commandButton icon="ui-icon-closethick" process="@this"
+				update="formCadastro:tabGrupo:tableEndereco formCadastro:msg"
+				actionListener="#{pessoaBean.excluirEnderecoItem(linha)}"
+				title="Remover" class="button-grid">
+				<p:confirm icon="ui-icon-alert" header="Confirma exclusão" update="tableEndereco"
+					message="Remover o endereço atual?" />
+			</p:commandButton>
+
+		</p:column>
+
+	</p:dataTable>
+
+
+</ui:composition>

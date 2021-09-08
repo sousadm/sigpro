@@ -1,0 +1,30 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<p:dialog id="dlgModificaValor" header="Dinheiro"
+		widgetVar="dlgModificaValor" closeOnEscape="true" modal="true"
+		maximizable="false" height="120" width="280">
+		<h:form id="formModificaValor">
+
+			<p:outputLabel value="Valor de acréscimo ao orçamento" />
+			<br />
+			<p:inputNumber id="dinheiro" minValue="0" decimalSeparator=","
+				thousandSeparator="." decimalPlaces="2"
+				value="#{projetoBean.valorIncrementoFinanceiro}" />
+			<br />
+			<br />
+			<p:commandButton value="Confirma" icon="ui-icon-check"
+				process="dlgModificaValor" update="formCadastro"
+				action="#{projetoBean.incrementarValorAoProjeto}"
+				oncomplete="if(!args.validationFailed) PF('dlgModificaValor').hide()">
+				<p:confirm icon="ui-icon-alert" header="Projeto"
+					message="Confirma incrementar valor ao orçamento?" />
+			</p:commandButton>
+
+		</h:form>
+	</p:dialog>
+
+</ui:composition>

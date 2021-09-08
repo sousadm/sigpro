@@ -1,0 +1,79 @@
+<ui:composition template="/WEB-INF/template/LayoutPadrao.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<ui:define name="titulo">Pesquisa de Pergunta</ui:define>
+
+	<ui:define name="corpo">
+
+		<h:form id="frmPesquisa">
+
+			<p:focus />
+
+			<h1 style="margin-top: 65px">CADASTRO DE QUESTÕES</h1>
+
+			<p:messages autoUpdate="true" closable="true" />
+
+			<p:toolbar>
+				<p:toolbarGroup>
+					<p:commandButton value="Pesquisar"
+						action="#{perguntaBean.pesquisar}" update="@form" />
+				</p:toolbarGroup>
+				<p:toolbarGroup align="right">
+					<p:button value="Novo" outcome="/cadastros/CadastroPergunta" />
+				</p:toolbarGroup>
+			</p:toolbar>
+
+			<p:panelGrid columns="2" id="painel"
+				style="width: 100%; margin-top: 5px" columnClasses="rotulo, campo">
+
+				<h:outputLabel value="Profissão" for="profissao" />
+				<p:selectOneMenu id="profissao" value="#{perguntaBean.profissao}"
+					autoWidth="false">
+					<f:selectItems value="#{perguntaBean.lstProfissao}" var="profissao"
+						itemValue="#{profissao}" itemLabel="#{profissao.descricao}" />
+				</p:selectOneMenu>
+
+			</p:panelGrid>
+
+			<p:dataTable id="tabela" value="#{perguntaBean.lista}" var="pergunta"
+				style="margin-top: 5px" emptyMessage="Nenhum item encontrado."
+				rows="20" paginator="true" paginatorAlwaysVisible="false"
+				paginatorPosition="bottom" scrollable="true">
+
+				<p:column headerText="Descrição">
+					<h:outputText value="#{pergunta.descricao}" />
+				</p:column>
+
+				<p:column headerText="Tipo" width="20%">
+					<h:outputText value="#{pergunta.tipo.descricao}" />
+				</p:column>
+
+				<p:column style="width: 100px; text-align: center">
+
+					<p:column style="text-align: center; width: 50px">
+						<p:button icon="ui-icon-pencil" title="Editar"
+							outcome="/cadastros/CadastroPergunta">
+							<f:param name="pergunta" value="#{pergunta.id}" />
+						</p:button>
+					</p:column>
+
+					<p:commandButton icon="ui-icon-trash" process="@this"
+						title="Excluir" update="tabela"
+						action="#{perguntaBean.excluir(pergunta)}">
+						<p:confirm icon="ui-icon-alert" header="Confirmação de exclusão"
+							message="Excluir o registro atual?" />
+					</p:commandButton>
+
+				</p:column>
+
+			</p:dataTable>
+
+		</h:form>
+
+	</ui:define>
+
+</ui:composition>

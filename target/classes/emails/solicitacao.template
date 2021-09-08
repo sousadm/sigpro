@@ -1,0 +1,48 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html><head><meta content="text/html; charset=ISO-8859-1" http-equiv="content-type"><title>ajustes</title></head><body><big><big><big>Solicitação de Ajustes</big></big></big><br>
+<br>
+<table style="text-align: left; width: 742px; height: 172px;" border="1" cellpadding="2" cellspacing="2">
+  <tbody>
+    <tr>
+      <td style="vertical-align: top; width: 291px;"><span style="font-weight: bold;">Data</span><br>
+      </td>
+      <td style="vertical-align: top; width: 660px;">$data<br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top; width: 291px;"><span style="font-weight: bold;">Módulo do sistema</span><br>
+      </td>
+      <td style="vertical-align: top; width: 660px;">$modulo<br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top; width: 291px;"><span style="font-weight: bold;">Solicitante</span><br>
+      </td>
+      <td style="vertical-align: top; width: 660px;">$nome<br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top; width: 291px;"><span style="font-weight: bold;">E-mail</span><br>
+      </td>
+      <td style="vertical-align: top; width: 660px;">$email<br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top; width: 291px;"><span style="font-weight: bold;">Telefone</span><br>
+      </td>
+      <td style="vertical-align: top; width: 660px;">$fone<br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top; width: 291px;"><span style="font-weight: bold;">Justificativa</span><br>
+      </td>
+      <td style="vertical-align: top; width: 660px;">$solicitacao<br>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<br>
+
+
+<br>
+</body></html>

@@ -1,0 +1,113 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<h1 style="margin-top: 65px">Controle de Saída de Veículos</h1>
+
+	<p:toolbar style="margin-top: 5px">
+		<p:toolbarGroup>
+			<p:commandButton id="botaoSalvar" value="Salvar" icon="ui-icon-disk"
+				disabled="#{saidaVeiculoBean.saida.encerrado}"
+				action="#{saidaVeiculoBean.iniciar}" update="@form">
+				<p:confirm icon="ui-icon-alert" header="Confirma"
+					message="Confirma saída de veículo?" />
+			</p:commandButton>
+			<p:commandButton value="Novo" icon="ui-icon-document"
+				action="#{saidaVeiculoBean.novo}" update="@form" />
+		</p:toolbarGroup>
+		<p:toolbarGroup align="right">
+			<p:commandButton value="Pesquisa"
+				actionListener="#{saidaVeiculoBean.setSaida(null)}"
+				icon="ui-icon-search" process="@this" update="@form" />
+		</p:toolbarGroup>
+	</p:toolbar>
+
+	<p:messages autoUpdate="true" closable="true" />
+
+	<div class="ui-fluid">
+		<div class="ui-g" style="margin-top: 5px; border: 1px solid silver;">
+			<div class="ui-g-12 ui-md-3">
+				<p:outputLabel value="Veículo" />
+				<div class="ui-inputgroup">
+					<p:commandButton icon="ui-icon-search" title="pesquisa veículo"
+						disabled="#{saidaVeiculoBean.saida.iniciado}" process="@this"
+						update="@none" ignoreAutoUpdate="true" styleClass="button-grid"
+						action="#{selecionaBean.veiculo}">
+						<p:ajax event="dialogReturn" update="txtPlaca txtDescricao"
+							listener="#{saidaVeiculoBean.onVeiculoChosen}"
+							ignoreAutoUpdate="true" />
+					</p:commandButton>
+					<p:inputText id="txtPlaca" readonly="true" required="true"
+						requiredMessage="informe o veículo"
+						value="#{saidaVeiculoBean.saida.veiculo.placa}"
+						styleClass="bloqueado" />
+				</div>
+			</div>
+			<div class="ui-g-12 ui-md-3">
+				<p:outputLabel value="Descrição" />
+				<p:inputText id="txtDescricao" readonly="true"
+					value="#{saidaVeiculoBean.saida.veiculo.descricao}"
+					styleClass="bloqueado" />
+			</div>
+			<div class="ui-g-12 ui-md-6">
+				<p:outputLabel value="Motorista" />
+				<div class="ui-inputgroup">
+					<p:commandButton icon="ui-icon-person" title="pesquisa motorista"
+						process="@this" update="@none" ignoreAutoUpdate="true"
+						disabled="#{saidaVeiculoBean.saida.iniciado}"
+						styleClass="button-grid" action="#{selecionaBean.motorista}">
+						<p:ajax event="dialogReturn" update="txtNome"
+							listener="#{saidaVeiculoBean.onMotoristaChosen}"
+							ignoreAutoUpdate="true" />
+					</p:commandButton>
+					<p:inputText id="txtNome" readonly="true" required="true"
+						requiredMessage="informe o motorista"
+						value="#{saidaVeiculoBean.saida.motorista.nome}"
+						styleClass="bloqueado" />
+				</div>
+			</div>
+
+			<div class="ui-g-12">
+				<div class="ui-g-6">
+					<p:outputLabel value="Observação" />
+					<p:inputTextarea value="#{saidaVeiculoBean.saida.observacao}"
+						disabled="#{saidaVeiculoBean.saida.encerrado}" rows="5" />
+				</div>
+				<div class="ui-g-6">
+
+					<div class="ui-g-8">
+						<p:outputLabel value="Data de saída" />
+						<p:calendar locale="pt_BR" mask="99/99/9999" pattern="dd/MM/yyyy"
+							navigator="true" showOn="button"
+							disabled="#{saidaVeiculoBean.saida.iniciado}"
+							value="#{saidaVeiculoBean.saida.dataSaida}" />
+					</div>
+					<div class="ui-g-4">
+						<p:outputLabel value="Hora" />
+						<p:datePicker value="#{saidaVeiculoBean.horaSaida}"
+							disabled="#{saidaVeiculoBean.saida.iniciado}" timeOnly="true"
+							pattern="HH:mm" />
+					</div>
+
+					<div class="ui-g-8">
+						<p:outputLabel value="Data de retorno" />
+						<p:calendar locale="pt_BR" mask="99/99/9999" pattern="dd/MM/yyyy"
+							navigator="true" showOn="button" disabled="true"
+							value="#{saidaVeiculoBean.saida.dataRetorno}" />
+					</div>
+					<div class="ui-g-4">
+						<p:outputLabel value="Hora" />
+						<p:datePicker value="#{saidaVeiculoBean.horaRetorno}"
+							disabled="true" timeOnly="true" pattern="HH:mm" />
+					</div>
+
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<p:blockUI trigger="botaoSalvar" />
+
+</ui:composition>

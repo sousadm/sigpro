@@ -1,0 +1,313 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="diario" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="0595ddb8-bff0-411d-8ecc-69a50ce46d97">
+	<property name="ireport.zoom" value="1.2100000000000002"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["C:\\projeto\\mrp21SysRelatorio\\"]]></defaultValueExpression>
+	</parameter>
+	<field name="inicialDinheiro" class="java.lang.Double"/>
+	<field name="inicialCheque" class="java.lang.Double"/>
+	<field name="inicialBanco" class="java.lang.Double"/>
+	<field name="previsaoRecebimento" class="java.lang.Double"/>
+	<field name="previsaoPagamento" class="java.lang.Double"/>
+	<field name="contingencias" class="java.util.List"/>
+	<field name="capacidadePagamento" class="java.lang.Double"/>
+	<field name="saldoContingente" class="java.lang.Double"/>
+	<field name="dataMov" class="java.util.Date"/>
+	<field name="totalEntrada" class="java.lang.Double"/>
+	<field name="totalSaida" class="java.lang.Double"/>
+	<field name="totalFinal" class="java.lang.Double"/>
+	<field name="finalDinheiro" class="java.lang.Double"/>
+	<field name="finalCheque" class="java.lang.Double"/>
+	<field name="finalBanco" class="java.lang.Double"/>
+	<field name="diferencaSaldoInicial" class="java.lang.Double"/>
+	<field name="diferencaSaldoFinal" class="java.lang.Double"/>
+	<field name="observacao" class="java.lang.String"/>
+	<field name="diferencaInicialMotivo" class="java.lang.String"/>
+	<field name="diferencaFinalMotivo" class="java.lang.String"/>
+	<title>
+		<band height="27" splitType="Stretch">
+			<staticText>
+				<reportElement x="2" y="3" width="234" height="22" uuid="13b8654e-3a1d-4822-b443-7a177006c31f"/>
+				<textElement>
+					<font fontName="Arial" size="16" isBold="true" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[DIÁRIO FINANCEIRO]]></text>
+			</staticText>
+		</band>
+	</title>
+	<detail>
+		<band height="541">
+			<staticText>
+				<reportElement x="304" y="393" width="251" height="65" uuid="6ca596b6-edb6-48c8-91c0-0667a5059c33"/>
+				<box topPadding="1" leftPadding="1">
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<text><![CDATA[Motivo Diferença Final]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="304" y="323" width="251" height="70" uuid="ea507a30-966d-4bcb-9995-40ee91e0fa05"/>
+				<box topPadding="1" leftPadding="1">
+					<topPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<text><![CDATA[Motivo Diferença Inicial]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="323" width="304" height="135" uuid="0aed8eff-ae85-4b6a-8edb-577449dd30c5"/>
+				<box topPadding="1" leftPadding="1">
+					<topPen lineWidth="0.25"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<text><![CDATA[Observação]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement x="0" y="0" width="555" height="278" uuid="735ffc1f-75e8-4dea-9886-5f40251f8bea"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="376" y="278" width="179" height="39" uuid="553c09fc-c863-410f-9e2a-e433ae20e079"/>
+				<box topPadding="1" leftPadding="3">
+					<topPen lineWidth="0.25"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<text><![CDATA[Saldo Final em Banco]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="189" y="278" width="187" height="39" uuid="332a3122-b86e-40ed-9343-0dcb2255bd6a"/>
+				<box topPadding="1" leftPadding="3">
+					<topPen lineWidth="0.25"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<text><![CDATA[Saldo Final em Cheque]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="278" width="189" height="39" uuid="c58909ab-5876-42d7-a745-09c78faecc82"/>
+				<box topPadding="1" leftPadding="3">
+					<topPen lineWidth="0.25"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<text><![CDATA[Saldo Final em Dinheiro]]></text>
+			</staticText>
+			<textField pattern="¤ #,##0.00">
+				<reportElement x="429" y="107" width="117" height="16" uuid="388f8cca-e1f1-4e24-9a86-83911c86954d"/>
+				<textElement textAlignment="Right">
+					<font fontName="Courier New"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{previsaoRecebimento}]]></textFieldExpression>
+			</textField>
+			<textField pattern="¤ #,##0.00">
+				<reportElement x="429" y="68" width="117" height="16" uuid="26e9613d-4724-4df9-b831-b3ab62f6d03e"/>
+				<textElement textAlignment="Right">
+					<font fontName="Courier New"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{inicialBanco}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="7" y="26" width="392" height="16" uuid="016dfdf4-2797-4d67-afff-bfcd85ba50ee"/>
+				<textElement>
+					<font fontName="Courier New"/>
+				</textElement>
+				<text><![CDATA[( + ) Saldo inicial em dinheiro:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="7" y="107" width="392" height="16" uuid="540174d0-4b39-43c8-9886-1fd39f5f8b4f"/>
+				<textElement>
+					<font fontName="Courier New"/>
+				</textElement>
+				<text><![CDATA[( + ) Previsão de recebimento]]></text>
+			</staticText>
+			<textField pattern="¤ #,##0.00">
+				<reportElement x="429" y="47" width="117" height="16" uuid="87af4f2d-faf8-42a7-a89d-a1a101cd8193"/>
+				<textElement textAlignment="Right">
+					<font fontName="Courier New"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{inicialCheque}]]></textFieldExpression>
+			</textField>
+			<textField pattern="¤ #,##0.00">
+				<reportElement x="429" y="126" width="117" height="16" uuid="d150b1ef-0791-4d66-b21e-a5c645dd2124"/>
+				<textElement textAlignment="Right">
+					<font fontName="Courier New"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{previsaoPagamento}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="6" y="68" width="392" height="16" uuid="ad58f333-fb5a-46e9-a2b2-69acd69fbce1"/>
+				<textElement>
+					<font fontName="Courier New"/>
+				</textElement>
+				<text><![CDATA[( + ) Saldo inicial em banco:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="7" y="87" width="392" height="16" uuid="f9036049-a712-4d54-ba94-f8e4cdcd8181"/>
+				<textElement>
+					<font fontName="Courier New" isBold="true"/>
+				</textElement>
+				<text><![CDATA[( = ) Capacidade de Pagamento]]></text>
+			</staticText>
+			<textField pattern="¤ #,##0.00">
+				<reportElement x="429" y="26" width="117" height="16" uuid="98c93a74-1176-4b74-8315-375a8f004d68"/>
+				<textElement textAlignment="Right">
+					<font fontName="Courier New"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{inicialDinheiro}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="7" y="47" width="392" height="16" uuid="f8698ad5-6fa1-48fd-86e7-86be3a49536f"/>
+				<textElement>
+					<font fontName="Courier New"/>
+				</textElement>
+				<text><![CDATA[( + ) Saldo inicial em cheque:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="7" y="126" width="392" height="16" uuid="1377826f-2513-4a6d-b45c-b21e7d721251"/>
+				<textElement>
+					<font fontName="Courier New"/>
+				</textElement>
+				<text><![CDATA[( - ) Previsão de pagamento]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="7" y="147" width="392" height="16" uuid="add2c349-8411-4866-b71e-e684abfc948d"/>
+				<textElement>
+					<font fontName="Courier New" isBold="true"/>
+				</textElement>
+				<text><![CDATA[( = ) Saldo Contingencial]]></text>
+			</staticText>
+			<textField pattern="¤ #,##0.00">
+				<reportElement x="429" y="87" width="117" height="16" uuid="d4e4c651-df36-47ac-8625-0c611c01165c"/>
+				<textElement textAlignment="Right">
+					<font fontName="Courier New" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{capacidadePagamento}]]></textFieldExpression>
+			</textField>
+			<textField pattern="¤ #,##0.00">
+				<reportElement x="429" y="147" width="117" height="16" uuid="d0705761-4132-47e7-9fe2-9065b9448535"/>
+				<textElement textAlignment="Right">
+					<font fontName="Courier New" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{saldoContingente}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="429" y="6" width="117" height="17" uuid="dc5961f2-7a2b-47ca-8281-ae4b5484c3a3"/>
+				<textElement textAlignment="Right">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{dataMov}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="7" y="7" width="392" height="16" uuid="287e17bb-8684-48e9-a426-3762650b8088"/>
+				<textElement>
+					<font fontName="Courier New"/>
+				</textElement>
+				<text><![CDATA[Data do Movimento Financeiro]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="7" y="207" width="392" height="16" uuid="4f834c31-977d-4547-9488-1140c69ff849"/>
+				<textElement>
+					<font fontName="Courier New"/>
+				</textElement>
+				<text><![CDATA[( - ) Valor total de saídas]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="7" y="167" width="392" height="16" uuid="fdc4c58f-c721-439e-a883-fa551e2947be"/>
+				<textElement>
+					<font fontName="Courier New"/>
+				</textElement>
+				<text><![CDATA[( + ) Valor total de entradas]]></text>
+			</staticText>
+			<textField pattern="¤ #,##0.00">
+				<reportElement x="429" y="167" width="117" height="16" uuid="b3840345-97fe-4a59-9dd5-78cb484dd19f"/>
+				<textElement textAlignment="Right">
+					<font fontName="Courier New"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{totalEntrada}]]></textFieldExpression>
+			</textField>
+			<textField pattern="¤ #,##0.00">
+				<reportElement x="429" y="207" width="117" height="16" uuid="29c5c356-00e9-4851-b17a-5770f47533d0"/>
+				<textElement textAlignment="Right">
+					<font fontName="Courier New"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{totalSaida}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="7" y="251" width="392" height="16" uuid="b970d3e4-9c99-40f2-b9fa-307f2a983c17"/>
+				<textElement>
+					<font fontName="Courier New" isBold="true"/>
+				</textElement>
+				<text><![CDATA[( = ) Saldo Final]]></text>
+			</staticText>
+			<textField pattern="¤ #,##0.00">
+				<reportElement x="429" y="251" width="117" height="16" uuid="2342a212-7d26-4404-89b5-6b2e8ca999e7"/>
+				<textElement textAlignment="Right">
+					<font fontName="Courier New" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{totalFinal}]]></textFieldExpression>
+			</textField>
+			<textField pattern="¤ #,##0.00">
+				<reportElement x="34" y="296" width="130" height="20" uuid="4c08bab6-7d23-4c65-a24b-9391522202d6"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{finalDinheiro}]]></textFieldExpression>
+			</textField>
+			<textField pattern="¤ #,##0.00">
+				<reportElement x="222" y="296" width="119" height="20" uuid="af4ece30-2884-4679-9e57-54e86b5d4550"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{finalCheque}]]></textFieldExpression>
+			</textField>
+			<textField pattern="¤ #,##0.00">
+				<reportElement x="399" y="296" width="121" height="20" uuid="c7262bb3-d729-4b3e-96a3-8fbb643018b6"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{finalBanco}]]></textFieldExpression>
+			</textField>
+			<textField pattern="¤ #,##0.00">
+				<reportElement x="429" y="187" width="117" height="16" uuid="b280a779-7d33-46e8-8fc2-b2fe5e4d4feb"/>
+				<textElement textAlignment="Right">
+					<font fontName="Courier New"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{diferencaSaldoInicial}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="34" y="187" width="365" height="16" uuid="46fdf56f-3a4f-4fcf-9d76-43dae4555ccf"/>
+				<textElement>
+					<font fontName="Courier New"/>
+				</textElement>
+				<text><![CDATA[diferença saldo inicial]]></text>
+			</staticText>
+			<textField pattern="¤ #,##0.00">
+				<reportElement x="429" y="228" width="117" height="16" uuid="4df37dc1-f6ae-47cf-913e-b03431a82aaf"/>
+				<textElement textAlignment="Right">
+					<font fontName="Courier New"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{diferencaSaldoFinal}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="34" y="228" width="365" height="16" uuid="2ce9f730-1681-4210-8930-4eac82e6a291"/>
+				<textElement>
+					<font fontName="Courier New"/>
+				</textElement>
+				<text><![CDATA[diferença saldo final]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="4" y="340" width="294" height="114" uuid="1ac23fc2-c066-410e-a7d1-4aedf1765944"/>
+				<textFieldExpression><![CDATA[$F{observacao}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="306" y="339" width="246" height="50" uuid="55842971-c6d2-435c-b716-f2ddb0dad853"/>
+				<textFieldExpression><![CDATA[$F{diferencaInicialMotivo}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="309" y="411" width="240" height="43" uuid="e67448cd-68f6-4395-b609-4e0140b36cb5"/>
+				<textFieldExpression><![CDATA[$F{diferencaFinalMotivo}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

@@ -1,0 +1,18 @@
+<html>
+	<big><span style="font-weight: bold;">CONTRATE
+	GESTÃO &amp; CONSULTORIA</span></big><br><br><br>
+	
+	Agradecemos a sua preferência por usar nosso sistema.<br>
+	Agora você terá uma experiência diferenciada no seu trabalho.<br>
+	Estamos à disposição para orientá-lo quanto ao uso correto.<br>
+	<br>
+	<span style="font-weight: bold;">Usuário</span>:
+	$usuario<br>
+	<span style="font-weight: bold;">Senha</span>: $senha<br>
+	<br>
+	<br>
+	Atenciosamente<br>
+	<br>
+	<span style="font-family: DejaVu Sans;">Francisco Sousa</span><br>
+	CONTRATE
+</html>

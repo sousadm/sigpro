@@ -1,0 +1,106 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<p:panelGrid id="gridbarra" style=" width: 100%; margin-top: 55px">
+		<p:row>
+			<p:column colspan="6" rowspan="1" style=" width: 66px;">
+				<h1>NFCe - Nota Fiscal do Consumidor Eletrônica</h1>
+			</p:column>
+			<p:column colspan="1" rowspan="3"
+				style="width: 250px; text-align: center;">
+				<h:outputLabel value="SUBTOTAL" />
+				<br />
+				<h:outputText id="txtSubTotal"
+					value="#{notaConsumidorBean.nota.valorProduto}"
+					class="fiscal-titulo">
+					<f:convertNumber type="currency" />
+				</h:outputText>
+			</p:column>
+		</p:row>
+		<p:row>
+			<p:column colspan="6" rowspan="1" style=" width: 66px;">
+
+				<p:toolbar id="barra" style="margin-top: 5px">
+					<p:toolbarGroup>
+						<p:commandButton value="Produto" process="@this"
+							disabled="#{not notaConsumidorBean.nota.existe}"
+							actionListener="#{selecionaBean.produto}">
+							<p:ajax event="dialogReturn"
+								update="formCadastro:gridbarra formCadastro:items"
+								listener="#{notaConsumidorBean.onProdutoChosen}" />
+						</p:commandButton>
+					</p:toolbarGroup>
+					<p:toolbarGroup align="right">
+
+						<p:commandButton value="Iniciar"
+							rendered="#{not notaConsumidorBean.nota.existe}" process="@this"
+							update="dlgInicio" oncomplete="PF('dlgInicio').show()" />
+
+						<p:commandButton value="Encerrar"
+							rendered="#{notaConsumidorBean.nota.existe}" process="@this"
+							update="dlgEncerramento"
+							actionListener="#{notaConsumidorBean.preparaNovoCliente}"
+							oncomplete="PF('dlgEncerramento').show()"
+							disabled="#{not notaConsumidorBean.podeEncerrar}" />
+
+					</p:toolbarGroup>
+				</p:toolbar>
+
+			</p:column>
+		</p:row>
+		<p:row>
+			<p:column style="background-color: #ffa500;">
+				<p:outputLabel value="Código" class="negrito" />
+				<br />
+				<p:inputText id="txtCodigo" value="#{notaConsumidorBean.codigo}">
+					<p:ajax event="change" listener="#{notaConsumidorBean.vendeitem}"
+						update="formCadastro:gridbarra formCadastro:items" />
+				</p:inputText>
+			</p:column>
+			<p:column style="width: 15%; background-color: #ffa500;">
+				<p:outputLabel value="Quantidade" class="negrito" />
+				<br />
+				<p:inputNumber id="txtQuantidade"
+					value="#{notaConsumidorBean.quantidade}" minValue="0.0">
+					<f:ajax event="change"
+						oncomplete="$(function(){PrimeFaces.focus('txtCodigo');});" />
+				</p:inputNumber>
+			</p:column>
+			<p:column style=" width: 15px;">
+				<h:outputLabel value="X" />
+			</p:column>
+			<p:column style="width: 15%; background-color: #ffa500;">
+				<h:outputLabel value="Preço R$" class="negrigo" />
+				<br />
+				<h:outputText value="#{notaConsumidorBean.notaItem.valorUnitario}"
+					class="negrito">
+					<f:convertNumber type="currency" />
+				</h:outputText>
+			</p:column>
+			<p:column style=" width: 15px;">
+				<h:outputLabel value="=" />
+			</p:column>
+			<p:column style="width: 15%; background-color: #ffa500;">
+				<h:outputLabel value="TOTAL R$" />
+				<br />
+				<h:outputText value="#{notaConsumidorBean.notaItem.valorItem}"
+					class="negrito">
+					<f:convertNumber type="currency" />
+				</h:outputText>
+			</p:column>
+		</p:row>
+		<p:row>
+			<p:column colspan="6" style="text-align: center;">
+				<p:outputLabel value="#{notaConsumidorBean.informacaoProduto}" />
+			</p:column>
+			<p:column colspan="2" style="text-align: center;">
+				<p:outputLabel id="txtInformacaoVenda"
+					value="#{notaConsumidorBean.informacaoVenda}" />
+			</p:column>
+		</p:row>
+	</p:panelGrid>
+
+</ui:composition>

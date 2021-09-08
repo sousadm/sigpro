@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="giroDeEstoque" language="groovy" pageWidth="595" pageHeight="842" columnWidth="575" leftMargin="10" rightMargin="10" topMargin="10" bottomMargin="10" uuid="ed5881f9-8606-481d-83c2-29b7cac25676">
+	<property name="ireport.zoom" value="1.3310000000000004"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="empresa" class="java.lang.Object"/>
+	<parameter name="titulo" class="java.lang.Object"/>
+	<parameter name="empresa_endereco" class="java.lang.String"/>
+	<field name="produto" class="java.lang.Object"/>
+	<field name="precoMedio" class="java.lang.Double"/>
+	<field name="estoqueContabil" class="java.lang.Double"/>
+	<field name="valorContabil" class="java.lang.Double"/>
+	<group name="categoria" isReprintHeaderOnEachPage="true">
+		<groupExpression><![CDATA[$F{produto}.getCategoria().getCategoriaPai()]]></groupExpression>
+		<groupHeader>
+			<band height="22">
+				<textField>
+					<reportElement x="3" y="2" width="266" height="17" uuid="1c19e864-d83b-4b7d-9a81-9a5bd9c48058"/>
+					<textElement>
+						<font isBold="true" isItalic="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{produto}.getCategoria().getCategoriaPai().getDescricao()]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupHeader>
+	</group>
+	<pageHeader>
+		<band height="63" splitType="Stretch">
+			<textField>
+				<reportElement x="3" y="3" width="407" height="20" uuid="cd14c47b-2fcc-4209-8ac1-5b5b7093e9c9"/>
+				<textElement markup="html">
+					<font fontName="Arial" size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{empresa}.getNome()]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="472" y="3" width="100" height="14" uuid="0eb8907c-8875-48dc-8037-3bbd627ed8b3"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="81" y="41" width="390" height="19" uuid="9d90ba5b-ba63-4221-b773-83915cbe71a9"/>
+				<textElement textAlignment="Center">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{titulo}.equals(null) ? "ESTOQUE DE PRODUTOS" : $P{titulo}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="472" y="33" width="100" height="14" uuid="d98b2c45-6c33-4a8b-956f-c92c3e022ec1"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA["Página: "+$V{PAGE_NUMBER}+"/ " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="3" y="24" width="407" height="15" uuid="8ec7434f-094a-4970-b19d-ea3f8d57fd20"/>
+				<textFieldExpression><![CDATA[$P{empresa_endereco}.toString()]]></textFieldExpression>
+			</textField>
+			<textField pattern="HH.mm.ss">
+				<reportElement x="472" y="18" width="100" height="14" uuid="ce30cb1c-feff-433c-a82c-80bf1aa8c283"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="19" splitType="Stretch">
+			<staticText>
+				<reportElement x="1" y="2" width="46" height="14" uuid="ebfc61af-0a57-4c2d-a950-88a5853cf2b2"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Código]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="51" y="2" width="421" height="14" uuid="c75c05a4-bac6-443f-90c7-5322da800e23"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Descrição do Produto]]></text>
+			</staticText>
+			<line>
+				<reportElement x="0" y="17" width="575" height="1" uuid="a682d97f-8c1f-4dc1-9972-e9f2483287c9"/>
+			</line>
+			<line>
+				<reportElement x="0" y="0" width="575" height="1" uuid="cc610850-9aa8-429e-8b5d-01225c2cf24f"/>
+			</line>
+			<staticText>
+				<reportElement x="483" y="1" width="26" height="14" uuid="349632a4-1738-4c5c-9c91-a54f00d261a9"/>
+				<text><![CDATA[Und]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="513" y="1" width="59" height="14" uuid="7b5a3d48-f6c8-4222-9ad4-a19fc80d18d3"/>
+				<textElement textAlignment="Right"/>
+				<text><![CDATA[Estoque]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="17" splitType="Stretch">
+			<textField>
+				<reportElement x="1" y="1" width="46" height="14" uuid="bd634261-f0e6-4c1e-8e3f-c684d0341e0b"/>
+				<textFieldExpression><![CDATA[$F{produto}.getSku()]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="51" y="1" width="421" height="14" uuid="bde8f3d8-73eb-4a5c-9c8b-9685186464b0"/>
+				<textFieldExpression><![CDATA[$F{produto}.getNome()]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="483" y="1" width="26" height="14" uuid="d7bde3fa-eb84-46f0-bf22-3adeaecea754"/>
+				<textFieldExpression><![CDATA[$F{produto}.getUnidade().getCodigo()]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0">
+				<reportElement x="513" y="1" width="59" height="14" uuid="e5bc5a25-5a1b-420a-945f-ed0c3e1000a0"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{estoqueContabil}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

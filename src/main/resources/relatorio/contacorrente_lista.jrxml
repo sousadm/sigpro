@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="categoria_lista" language="groovy" pageWidth="595" pageHeight="842" columnWidth="565" leftMargin="20" rightMargin="10" topMargin="20" bottomMargin="10" uuid="d31dc979-6fd4-4f6d-a115-881458ac2d90">
+	<property name="ireport.zoom" value="2.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="empresa" class="java.lang.Object"/>
+	<field name="banco" class="java.lang.Object"/>
+	<field name="agenciaToStr" class="java.lang.String"/>
+	<field name="numeroToStr" class="java.lang.String"/>
+	<field name="gerente" class="java.lang.String"/>
+	<field name="fone" class="java.lang.String"/>
+	<field name="permiteCheque" class="java.lang.Boolean"/>
+	<field name="permiteDebito" class="java.lang.Boolean"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<pageHeader>
+		<band height="50" splitType="Stretch">
+			<textField>
+				<reportElement x="465" y="33" width="100" height="14" uuid="97047fea-b54e-4bae-910a-8d99ef93c7bc"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA["Pág. "+$V{PAGE_NUMBER}+" de  " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="2" y="4" width="441" height="20" uuid="28cafa46-2f99-4dc8-8c76-a55f218051a6"/>
+				<textElement>
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Lista de Conta Bancária]]></text>
+			</staticText>
+			<textField pattern="HH.mm.ss">
+				<reportElement x="465" y="19" width="100" height="14" uuid="867fbb6a-a4dc-46f4-9b51-8110fd04d7b2"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="465" y="4" width="100" height="14" uuid="a33ed2b2-0f4e-4fa4-a26d-dac0c108435a"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="2" y="28" width="446" height="14" uuid="657a3c9f-674d-45c8-a4c8-2e7dcbf7c22b"/>
+				<textFieldExpression><![CDATA[$P{empresa}.getUnidadeProdutiva().getNomeDaLoja()]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="19" splitType="Stretch">
+			<line>
+				<reportElement x="0" y="1" width="565" height="1" uuid="d02cf3d0-19c0-478e-bdf1-1a30e73011f5"/>
+			</line>
+			<line>
+				<reportElement x="0" y="17" width="565" height="1" uuid="11d17a40-7a4d-4bf4-a1b1-9715de6d5959"/>
+			</line>
+			<staticText>
+				<reportElement x="1" y="2" width="139" height="15" uuid="25f72704-375d-435a-9a4a-20ec555a582f"/>
+				<text><![CDATA[Banco]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="144" y="2" width="70" height="15" uuid="40ffb2f7-d3f9-4616-8f04-545e768a76d8"/>
+				<text><![CDATA[Agência]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="285" y="2" width="100" height="15" uuid="c745eb2c-27b3-49a6-9cc2-fabfebbfc01d"/>
+				<text><![CDATA[Gerente]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="389" y="2" width="88" height="15" uuid="4750f35e-083f-4f69-8fcf-7c96aea11794"/>
+				<text><![CDATA[Fone]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="219" y="2" width="60" height="15" uuid="0515464b-3f5c-49be-8051-504d24d2972e"/>
+				<text><![CDATA[Número]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="480" y="2" width="40" height="15" uuid="c4c8282d-d980-4dc7-9b04-51f3c79b462c"/>
+				<text><![CDATA[Cheque]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="524" y="2" width="40" height="15" uuid="4f2f7d8a-8b8b-4fef-a265-e679ca301454"/>
+				<text><![CDATA[Débito]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="17" splitType="Stretch">
+			<textField isBlankWhenNull="true">
+				<reportElement x="1" y="1" width="139" height="15" uuid="140e97e9-0ad6-4f95-a116-867daee41f5a"/>
+				<textFieldExpression><![CDATA[$F{banco}.toString()]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="144" y="1" width="70" height="15" uuid="33bd76c8-7366-4ee9-beb3-acc519bb0d87"/>
+				<textFieldExpression><![CDATA[$F{agenciaToStr}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="285" y="1" width="100" height="15" uuid="b4203525-f323-4a10-8969-ebfdec8c36a8"/>
+				<textFieldExpression><![CDATA[$F{gerente}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="389" y="1" width="88" height="15" uuid="699f8815-9581-4154-9bdb-a43dba78427f"/>
+				<textFieldExpression><![CDATA[$F{fone}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="219" y="1" width="60" height="15" uuid="4e5a2355-2797-4e7b-a3f6-ec16547e1ac0"/>
+				<textFieldExpression><![CDATA[$F{numeroToStr}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="480" y="1" width="40" height="15" uuid="9d086cbb-1de7-474a-8b69-b005a0e647e6"/>
+				<textFieldExpression><![CDATA[$F{permiteCheque} == true ? "Sim" : "Não"]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="524" y="1" width="40" height="15" uuid="e55bea2a-18c0-4207-b932-d092d0e55716"/>
+				<textFieldExpression><![CDATA[$F{permiteDebito} == true ? "Sim" : "Não"]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

@@ -1,0 +1,119 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<p:toolbar style="margin-top: 05px">
+
+		<p:toolbarGroup>
+			<p:splitButton id="botaoPesquisa" value="Pesquisar"
+				icon="ui-icon-search" action="#{notaFiscalBean.pesquisar}"
+				update="@form">
+				<p:menuitem value="Pesquisa detalhada" update="dlgPesquisaFiltro"
+					oncomplete="PF('dlgPesquisaFiltro').show()" />
+				<p:menuitem value="Limpar" actionListener="#{notaFiscalBean.limpar}"
+					update="@form" />
+			</p:splitButton>
+		</p:toolbarGroup>
+
+		<p:toolbarGroup align="right">
+			<p:commandButton value="Novo" icon="ui-icon-document" process="@this"
+				disabled="#{seguranca.bloqueioValidade}"
+				actionListener="#{selecionaBean.operacaoFiscalNFe}">
+				<p:ajax event="dialogReturn"
+					listener="#{notaFiscalBean.onOperacaoChosenNFeIncluir}"
+					ignoreAutoUpdate="true" update="@form" />
+			</p:commandButton>
+		</p:toolbarGroup>
+
+	</p:toolbar>
+
+	<div class="ui-fluid">
+		<div class="ui-g" style="margin-top: 5px; border: 1px solid gray;">
+			<div class="ui-g-6 ui-md-3">
+				<p:outputLabel value="Emissão" />
+				<p:calendar navigator="true" showOn="button" mask="99/99/9999"
+					pattern="dd/MM/yyyy"
+					value="#{notaFiscalBean.filtro.emissaoInicial}" />
+			</div>
+			<div class="ui-g-6 ui-md-3">
+				<p:outputLabel value="Término" />
+				<p:calendar navigator="true" showOn="button" mask="99/99/9999"
+					pattern="dd/MM/yyyy" value="#{notaFiscalBean.filtro.emissaoFinal}" />
+			</div>
+			<div class="ui-g-12 ui-md-6">
+				<p:outputLabel value="Nome do cliente" />
+				<p:inputText value="#{notaFiscalBean.filtro.nome}" />
+			</div>
+		</div>
+	</div>
+
+	<p:dataTable id="tabela" value="#{notaFiscalBean.lista}" var="nota"
+		rowIndexVar="item" style="margin-top: 5px" lazy="true"
+		scrollable="true" emptyMessage="Nenhum registro encontrado." rows="10"
+		paginator="true" paginatorAlwaysVisible="false"
+		paginatorPosition="bottom">
+
+		<p:column headerText="Ordem" sortBy="#{nota.id}" width="80">
+			<h:outputText value="#{nota.id}"
+				style="color: #{nota.fiscal.dataCancelamento == null ? 'black' : 'red'} ">
+				<f:convertNumber pattern="000000" />
+			</h:outputText>
+		</p:column>
+		<p:column headerText="Número" sortBy="#{nota.fiscal.numero}"
+			width="80">
+			<h:outputText value="#{nota.fiscal.numero}"
+				style="color: #{nota.fiscal.dataCancelamento == null ? 'black' : 'red'} ">
+				<f:convertNumber pattern="000000" />
+			</h:outputText>
+		</p:column>
+		<p:column headerText="Data" sortBy="#{nota.fiscal.dataEmissao}"
+			width="130">
+			<h:outputText value="#{nota.fiscal.dataEmissao}"
+				style="color: #{nota.fiscal.dataCancelamento == null ? 'black' : 'red'} ">
+				<f:convertDateTime pattern="dd/MM/yyyy hh:mm" />
+			</h:outputText>
+		</p:column>
+		<p:column headerText="Nome do Cliente"
+			sortBy="#{nota.fiscal.cliente.nome}" width="250">
+			<p:link value="#{nota.fiscal.cliente.nome}"
+				style="color: #{nota.fiscal.dataCancelamento == null ? 'black' : 'red'} "
+				outcome="/cadastros/CadastroPessoa"
+				title="ir para cadastro #{nota.fiscal.cliente.nome}">
+				<f:param name="cliente" value="#{nota.fiscal.cliente.id}" />
+			</p:link>
+		</p:column>
+		<p:column headerText="Valor" style="text-align: right; width: 100px">
+			<h:outputText value="#{nota.valorTotal}"
+				style="color: #{nota.fiscal.dataCancelamento == null ? 'black' : 'red'} ">
+				<f:convertNumber type="currency" />
+			</h:outputText>
+		</p:column>
+		<p:column headerText="Status" width="100" priority="1">
+			<h:outputText value="#{nota.fiscal.status.descricao}"
+				style="color: #{nota.fiscal.dataCancelamento == null ? 'black' : 'red'} " />
+		</p:column>
+		<p:column headerText="Ambiente" width="100" priority="2">
+			<h:outputText value="#{nota.fiscal.ambiente.descricao}"
+				style="color: #{nota.fiscal.dataCancelamento == null ? 'black' : 'red'} " />
+		</p:column>
+
+		<p:column width="80">
+			<p:commandButton title="Editar" icon="ui-icon-pencil"
+				class="button-grid" update="@form"
+				actionListener="#{notaFiscalBean.setNota(nota)}" process="@this" />
+			<p:commandButton icon="ui-icon-trash" process="@this"
+				class="button-grid" title="Excluir" update="tabela"
+				action="#{notaFiscalBean.excluir(item)}">
+				<p:confirm icon="ui-icon-alert" header="Confirma"
+					message="Excluir registro de nota fiscal?" />
+			</p:commandButton>
+		</p:column>
+
+
+	</p:dataTable>
+
+	<p:blockUI block="formCadastro" trigger="botaoPesquisa" />
+
+</ui:composition>

@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+<h:head>
+	<title>Plataforma Digital</title>
+	<h:outputStylesheet library="sigpro" name="styles/custom.css" />
+	<style>
+body {
+	margin: 10px
+}
+</style>
+
+	<f:metadata>
+		<f:param name="dummy" />
+		<f:event listener="#{boletoDigitalBean.inicializar}"
+			type="preRenderView"></f:event>
+	</f:metadata>
+
+</h:head>
+<h:body>
+
+	<h:form id="form">
+
+		<p:focus />
+
+		<p:growl id="msg" />
+
+		<div class="ui-fluid">
+			<div class="ui-g">
+				<div class="ui-g-8">
+					<p:selectOneMenu value="#{boletoDigitalBean.agenteCobrancaAPI}">
+						<f:selectItem itemLabel="selecione..." />
+						<f:selectItems value="#{boletoDigitalBean.listaAgenteAPI}" var="a"
+							itemValue="#{a}" itemLabel="#{a.nome}" />
+						<p:ajax event="change" update="@form" />
+					</p:selectOneMenu>
+				</div>
+				<div class="ui-g-4">
+
+					<p:commandButton value="Gerar" icon="ui-icon-check" update="@form"
+						rendered="#{boletoDigitalBean.titulo != null}"
+						action="#{boletoDigitalBean.emitirBoletoBancario}" />
+
+					<p:commandButton value="Gerar" icon="ui-icon-check" update="@form"
+						rendered="#{boletoDigitalBean.expedicao != null}"
+						action="#{boletoDigitalBean.emitirBoletoBancarioByExpedicao}" />
+
+					<p:commandButton value="Gerar" icon="ui-icon-check" update="@form"
+						disabled="#{boletoDigitalBean.agenteCobrancaAPI == null or boletoDigitalBean.clienteDigital.identificador != null}"
+						rendered="#{boletoDigitalBean.pessoa != null}"
+						action="#{boletoDigitalBean.enviarParaPlataforma}" />
+
+				</div>
+			</div>
+		</div>
+
+		<div class="ui-fluid">
+			<p:panelGrid rendered="#{boletoDigitalBean.clienteDigital != null}"
+				columns="2" style="margin-top: 20px" layout="grid"
+				columnClasses="ui-grid-col-6, ui-grid-col-6"
+				styleClass="panelgrid-noborder">
+
+				<h:outputLabel value="Identificador" />
+				<h:outputLabel class="negrito"
+					value="#{boletoDigitalBean.clienteDigital.identificador}" />
+
+				<h:outputLabel />
+				<h:outputLabel />
+
+				<h:outputLabel value="Data de cadastro" />
+				<h:outputLabel class="negrito"
+					value="#{boletoDigitalBean.clienteDigital.dataCadastro}">
+					<f:convertDateTime pattern="dd/MM/yyyy" />
+				</h:outputLabel>
+
+				<h:outputLabel />
+				<h:outputLabel />
+
+				<h:outputLabel value="Ambiente de cadastro" />
+				<h:outputLabel class="negrito"
+					value="#{boletoDigitalBean.clienteDigital.ambiente.descricao}" />
+
+			</p:panelGrid>
+		</div>
+
+		<p:dataTable id="tabelaDigital"
+			rendered="#{not empty boletoDigitalBean.listaBoletoDigital}"
+			value="#{boletoDigitalBean.listaBoletoDigital}" var="digital"
+			rowIndexVar="linha" style="margin-top: 5px"
+			emptyMessage="Nenhum registro encontrado.">
+
+			<f:facet name="header">Boleto de Cobrança</f:facet>
+
+			<p:column headerText="Agente Financeiro">
+				<h:outputText value="#{digital.agente.nome}" />
+			</p:column>
+			<p:column headerText="Status">
+				<h:outputText value="#{digital.status}" />
+			</p:column>
+			<p:column headerText="Fatura" width="100">
+				<h:outputText value="#{digital.numeroDaFatura}" />
+			</p:column>
+			<p:column headerText="Vencimento" width="100">
+				<h:outputText value="#{digital.dataCadastro}">
+					<f:convertDateTime pattern="dd/MM/yyyy" />
+				</h:outputText>
+			</p:column>
+
+			<p:column width="40">
+				<p:button title="Imprimir" href="#{digital.urlDoArquivo}"
+					icon="ui-icon-print" target="_blank" />
+			</p:column>
+
+		</p:dataTable>
+	</h:form>
+
+</h:body>
+
+</html>

@@ -1,0 +1,68 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:c="http://java.sun.com/jstl/core">
+
+	<p:outputLabel class="negrito" value="#{produtoBean.produto.nome}" style="margin-left: 10px" />
+
+	<div class="ui-fluid" style="margin-top: 5px">
+		<div class="ui-g">
+			<div class="ui-g-12 ui-md-4">
+				<p:commandLink update="@none" action="#{selecionaBean.ncm}"
+					process="@this" title="pesquisa código ncm">
+					<h:outputText value="NCM" />
+					<p:ajax event="dialogReturn"
+						listener="#{produtoBean.carregarPesquisaNcm}"
+						update="txtCodigoNcm" ignoreAutoUpdate="true" />
+				</p:commandLink>
+				<p:inputText id="txtCodigoNcm" maxlength="20"
+					value="#{produtoBean.produto.codigoNCM}" />
+			</div>
+			<div class="ui-g-12 ui-md-4">
+				<p:outputLabel value="CEST" for="cest" />
+				<p:inputText id="cest" maxlength="20"
+					title="Código Especificador da Substituição Tributária"
+					value="#{produtoBean.produto.codigoCEST}" />
+			</div>
+			<div class="ui-g-12 ui-md-4">
+				<p:outputLabel value="RECOPI" for="recopi" />
+				<p:inputNumber id="recopi" thousandSeparator="" decimalSeparator=""
+					decimalPlaces="0" value="#{produtoBean.produto.codigoRECOPI}" />
+			</div>
+			<div class="ui-g-12 ui-md-4">
+				<p:outputLabel value="GTIN / EAN" for="ean" />
+				<p:inputText id="ean" maxlength="20" title="código de barras"
+					value="#{produtoBean.produto.codigoEAN}" />
+			</div>
+			<div class="ui-g-12 ui-md-4">
+				<p:outputLabel value="GTIN / EAN embalagem" for="eanTrib" />
+				<p:inputText id="eanTrib" maxlength="20"
+					title="código de barras de comercialização"
+					value="#{produtoBean.produto.codigoEanTrib}" />
+			</div>
+			<div class="ui-g-12 ui-md-4">
+				<p:outputLabel value="TIPI" for="tipi" />
+				<p:inputText id="tipi" maxlength="10"
+					value="#{produtoBean.produto.codigoTIPI}" />
+			</div>
+			<div class="ui-g-12 ui-md-4">
+				<p:outputLabel value="Volume" for="volume" />
+				<p:inputNumber id="volume" thousandSeparator="" decimalSeparator=""
+					decimalPlaces="3" value="#{produtoBean.produto.volume}" />
+			</div>
+			<div class="ui-g-12 ui-md-4">
+				<p:outputLabel value="Peso" for="peso" />
+				<p:inputNumber id="peso" thousandSeparator="" decimalSeparator=""
+					decimalPlaces="3" value="#{produtoBean.produto.peso}" />
+			</div>
+			<div class="ui-g-12 ui-md-4">
+				<p:outputLabel value="Área" for="area" />
+				<p:inputNumber id="area" thousandSeparator="" decimalSeparator=""
+					decimalPlaces="3" value="#{produtoBean.produto.area}" />
+			</div>
+		</div>
+	</div>
+
+</ui:composition>

@@ -1,0 +1,204 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<h:panelGroup rendered="#{projetoBean.participante == null}">
+
+		<div align="right">
+			<p:commandButton value="Add Participante" process="@this"
+				update="@form" disabled="#{projetoBean.projeto.encerrado}"
+				actionListener="#{projetoBean.addParticipante}" />
+			<p:commandButton icon="ui-icon-person" value="Pesquisar participante"
+				process="@this" update="@none" ignoreAutoUpdate="true"
+				disabled="#{projetoBean.projeto.encerrado}"
+				action="#{selecionaBean.pessoa}">
+				<p:ajax event="dialogReturn" update="@form"
+					listener="#{projetoBean.onParticipanteChosen}"
+					ignoreAutoUpdate="true" />
+			</p:commandButton>
+		</div>
+
+		<p:dataTable id="tabelaParticipante" scrollable="true"
+			value="#{projetoBean.projeto.participantes}" var="participante"
+			rowIndexVar="participanteLinha" style="margin-top: 5px"
+			emptyMessage="Nenhum participante encontrado" rows="8"
+			paginator="true" paginatorAlwaysVisible="false"
+			paginatorPosition="bottom">
+
+			<p:column headerText="Nome">
+				<h:outputText value="#{participante.pessoa.nome}" />
+			</p:column>
+			<p:column headerText="Celular">
+				<h:outputText value="#{participante.pessoa.celular}" />
+			</p:column>
+			<p:column headerText="Tipo">
+				<h:outputText value="#{participante.tipo.descricao}" />
+			</p:column>
+
+			<p:column style="width: 80px; text-align: center">
+				<p:commandButton icon="ui-icon-pencil" process="@this"
+					title="Editar" update="@form"
+					actionListener="#{projetoBean.setParticipante(participante)}" />
+				<p:commandButton icon="ui-icon-closethick" process="@this"
+					disabled="#{projetoBean.projeto.encerrado}"
+					title="remover participante" update="tabelaParticipante"
+					actionListener="#{projetoBean.excluirParticipante(participanteLinha)}">
+					<p:confirm icon="ui-icon-alert" header="Confirmação"
+						message="Remover o registro atual?" />
+				</p:commandButton>
+			</p:column>
+
+		</p:dataTable>
+
+	</h:panelGroup>
+
+	<h:panelGroup id="dados" rendered="#{projetoBean.participante != null}">
+
+		<div align="right">
+			<p:commandButton value="Voltar" process="@this" update="@form"
+				actionListener="#{projetoBean.voltarListaParticipante}" />
+			<p:splitButton value="Aplicar" process="@form" update="@form"
+				disabled="#{projetoBean.projeto.encerrado}"
+				actionListener="#{projetoBean.aplicar_participante}">
+				<p:menuitem value="Add Participante" process="@this" update="@form"
+					actionListener="#{projetoBean.addParticipante}" />
+			</p:splitButton>
+		</div>
+
+		<div class="ui-fluid">
+			<div class="ui-g" style="margin-top: 5px; border: 1px solid silver;">
+
+				<div class="ui-g-12 ui-md-6">
+					<p:outputLabel value="Nome" for="txtParticipanteNome" />
+					<p:inputText id="txtParticipanteNome"
+						readonly="#{projetoBean.projeto.encerrado}"
+						value="#{projetoBean.participante.pessoa.nome}" required="true"
+						requiredMessage="informe o nome do participante" />
+				</div>
+				<div class="ui-g-4 ui-md-2">
+					<p:outputLabel value="DDD" for="ddd" />
+					<p:inputText id="ddd" maxlength="2"
+						readonly="#{projetoBean.projeto.encerrado}"
+						value="#{projetoBean.participante.pessoa.ddd}" />
+				</div>
+				<div class="ui-g-8 ui-md-4">
+					<p:outputLabel value="Celular" for="txtParticipanteCelular" />
+					<p:inputNumber id="txtParticipanteCelular" minValue="0"
+						readonly="#{projetoBean.projeto.encerrado}" decimalSeparator=""
+						thousandSeparator="" decimalPlaces="0"
+						value="#{projetoBean.participante.pessoa.celular}" />
+				</div>
+
+
+				<div class="ui-g-12 ui-md-6">
+					<p:outputLabel value="Atribuições" />
+					<p:inputTextarea value="#{projetoBean.participante.atribuicao}"
+						readonly="#{projetoBean.projeto.encerrado}"
+						placeholder="contribuições para este projeto" rows="1" />
+				</div>
+				<div class="ui-g-12 ui-md-6">
+					<p:outputLabel value="E-mail" for="txtParticipanteEmail" />
+					<p:inputText id="txtParticipanteEmail"
+						readonly="#{projetoBean.projeto.encerrado}"
+						value="#{projetoBean.participante.pessoa.email}"
+						style="text-transform: lowercase" />
+				</div>
+
+				<div class="ui-g-12 ui-md-4">
+					<p:outputLabel value="Tipo" for="txtParticipanteTipo" />
+					<p:selectOneMenu id="txtParticipanteTipo"
+						rendered="#{not projetoBean.projeto.encerrado}"
+						value="#{projetoBean.participante.tipo}" required="true"
+						requiredMessage="defina o tipo">
+						<f:selectItem itemLabel="Selecione ..." />
+						<f:selectItems value="#{listaTipoBean.tipoStakeHolder}" var="tipo"
+							itemValue="#{tipo}" itemLabel="#{tipo.descricao}" />
+					</p:selectOneMenu>
+					<p:inputText readonly="true"
+						rendered="#{projetoBean.projeto.encerrado}"
+						value="#{projetoBean.participante.tipo.descricao}" />
+				</div>
+				<div class="ui-g-12 ui-md-4">
+					<p:outputLabel value="Engajamento" for="txtParticipanteEngajamento" />
+					<p:selectOneMenu id="txtParticipanteEngajamento"
+						rendered="#{not projetoBean.projeto.encerrado}"
+						value="#{projetoBean.participante.engajamento}" required="true"
+						requiredMessage="defina o engajamento">
+						<f:selectItem itemLabel="Selecione ..." />
+						<f:selectItems value="#{listaTipoBean.tipoEngajamento}"
+							var="engajamento" itemValue="#{engajamento}"
+							itemLabel="#{engajamento.descricao}" />
+					</p:selectOneMenu>
+					<p:inputText readonly="true"
+						rendered="#{projetoBean.projeto.encerrado}"
+						value="#{projetoBean.participante.engajamento.descricao}" />
+				</div>
+				<div class="ui-g-12 ui-md-4">
+					<p:outputLabel value="Poder" for="txtParticipantePoder" />
+					<p:selectOneMenu id="txtParticipantePoder"
+						rendered="#{not projetoBean.projeto.encerrado}"
+						value="#{projetoBean.participante.poder}" required="true"
+						requiredMessage="defina o nível de poder">
+						<f:selectItem itemLabel="Selecione ..." />
+						<f:selectItems value="#{listaTipoBean.tipoImportancia}"
+							var="poder" itemValue="#{poder}" itemLabel="#{poder.descricao}" />
+					</p:selectOneMenu>
+					<p:inputText readonly="true"
+						rendered="#{projetoBean.projeto.encerrado}"
+						value="#{projetoBean.participante.poder.descricao}" />
+				</div>
+
+				<div class="ui-g-12 ui-md-4">
+					<p:outputLabel value="Interesse" for="txtParticipanteInteresse" />
+					<p:selectOneMenu id="txtParticipanteInteresse"
+						rendered="#{not projetoBean.projeto.encerrado}"
+						value="#{projetoBean.participante.interesse}" required="true"
+						requiredMessage="defina o grau de interesse">
+						<f:selectItem itemLabel="Selecione ..." />
+						<f:selectItems value="#{listaTipoBean.tipoImportancia}"
+							var="interesse" itemValue="#{interesse}"
+							itemLabel="#{interesse.descricao}" />
+					</p:selectOneMenu>
+					<p:inputText readonly="true"
+						rendered="#{projetoBean.projeto.encerrado}"
+						value="#{projetoBean.participante.interesse.descricao}" />
+				</div>
+				<div class="ui-g-12 ui-md-4">
+					<p:outputLabel value="Influência" for="txtParticipanteInfluencia" />
+					<p:selectOneMenu id="txtParticipanteInfluencia"
+						rendered="#{not projetoBean.projeto.encerrado}"
+						value="#{projetoBean.participante.influencia}" required="true"
+						requiredMessage="defina a influência">
+						<f:selectItem itemLabel="Selecione ..." />
+						<f:selectItems value="#{listaTipoBean.tipoImportancia}"
+							var="influencia" itemValue="#{influencia}"
+							itemLabel="#{influencia.descricao}" />
+					</p:selectOneMenu>
+					<p:inputText readonly="true"
+						rendered="#{projetoBean.projeto.encerrado}"
+						value="#{projetoBean.participante.influencia.descricao}" />
+				</div>
+				<div class="ui-g-12 ui-md-4">
+					<p:outputLabel value="Impacto" for="txtParticipanteImpacto" />
+					<p:selectOneMenu id="txtParticipanteImpacto"
+						rendered="#{not projetoBean.projeto.encerrado}"
+						value="#{projetoBean.participante.impacto}" required="true"
+						requiredMessage="defina o impacto nas decisões">
+						<f:selectItem itemLabel="Selecione ..." />
+						<f:selectItems value="#{listaTipoBean.tipoImportancia}"
+							var="impacto" itemValue="#{impacto}"
+							itemLabel="#{impacto.descricao}" />
+					</p:selectOneMenu>
+					<p:inputText readonly="true"
+						rendered="#{projetoBean.projeto.encerrado}"
+						value="#{projetoBean.participante.impacto.descricao}" />
+				</div>
+			</div>
+
+		</div>
+
+	</h:panelGroup>
+
+</ui:composition>

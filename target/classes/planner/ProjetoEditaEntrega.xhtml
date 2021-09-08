@@ -1,0 +1,46 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<p:dialog id="addEntregaNewDialog" header="Entrega" width="600"
+		widgetVar="addEntregaNewDialog" closeOnEscape="true" modal="true"
+		maximizable="false">
+
+		<h:form id="formEntregaNew">
+
+			<div class="ui-fluid">
+				<div class="ui-g" style="margin-top: 5px; border: 1px solid silver;">
+					<div class="ui-g-12">
+						<p:outputLabel value="O que será entregue" />
+						<p:inputText value="#{projetoBean.planner.que}" maxlength="100" />
+					</div>
+					<div class="ui-g-12">
+						<p:outputLabel value="Qual a importância desta entrega" />
+						<p:inputText value="#{projetoBean.planner.porque}" maxlength="100" />
+					</div>
+					<div class="ui-g-12">
+						<p:outputLabel value="Objetivo específico" />
+						<p:selectOneMenu value="#{projetoBean.planner.origem}"
+							title="Específico Realista Mensurável Alcanável Rápido">
+							<f:selectItem itemLabel="Selecione" />
+							<f:selectItems value="#{projetoBean.listaObjetivos}" var="objetivo"
+								itemValue="#{objetivo}" itemLabel="#{objetivo.que}" />
+						</p:selectOneMenu>
+					</div>
+				</div>
+			</div>
+
+			<div align="right" style="margin-top: 5px;">
+				<p:commandButton process="@form" value="Confirmar"
+					actionListener="#{projetoBean.gravarPacoteEap}"
+					oncomplete="PF('addEntregaNewDialog').hide();"
+					update="formCadastro" />
+			</div>
+
+		</h:form>
+
+	</p:dialog>
+
+</ui:composition>

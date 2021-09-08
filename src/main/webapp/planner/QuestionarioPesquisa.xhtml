@@ -1,0 +1,45 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<h1 style="margin-top: 65px">Lista de Questionário</h1>
+
+	<p:toolbar style="margin-top: 05px">
+		<p:toolbarGroup>
+			<p:commandButton value="Pesquisar" icon="ui-icon-search"
+				update="@form" action="#{questionarioBean.pesquisar}" />
+		</p:toolbarGroup>
+		<p:toolbarGroup align="right">
+			<p:commandButton value="Novo" icon="ui-icon-document" update="@form"
+				actionListener="#{questionarioBean.novo}" />
+		</p:toolbarGroup>
+	</p:toolbar>
+
+	<p:messages autoUpdate="true" closable="true" />
+
+	<p:dataTable id="tabela" value="#{questionarioBean.lista}"
+		var="questionario" scrollable="true" style="margin-top: 5px"
+		emptyMessage="Nenhum registro encontrado." rows="10" paginator="true"
+		paginatorAlwaysVisible="false" paginatorPosition="bottom">
+
+		<p:column headerText="Questionamento">
+			<h:outputText value="#{questionario.descricao}" />
+		</p:column>
+
+		<p:column style="width: 80px; text-align: center">
+			<p:commandButton title="Editar" icon="ui-icon-pencil"
+				class="button-grid" update="@form" process="@this"
+				actionListener="#{questionarioBean.setQuestionario(questionario)}" />
+			<p:commandButton icon="ui-icon-trash" process="@this"
+				class="button-grid" title="Excluir" update="@form"
+				action="#{questionarioBean.excluir(linha)}">
+				<p:confirm icon="ui-icon-alert" header="Confirma"
+					message="Excluir registro atual ?" />
+			</p:commandButton>
+		</p:column>
+
+	</p:dataTable>
+
+</ui:composition>

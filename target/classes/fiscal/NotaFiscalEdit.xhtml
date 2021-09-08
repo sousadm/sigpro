@@ -1,0 +1,133 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<p:toolbar id="barra" style="margin-top: 5px">
+		<p:toolbarGroup>
+
+			<p:commandButton value="Novo" icon="ui-icon-document" process="@this"
+				disabled="#{expedicaoBean.somenteLeitura or seguranca.bloqueioValidade}"
+				update="@form" actionListener="#{selecionaBean.operacaoFiscalNFe}">
+				<p:ajax event="dialogReturn"
+					listener="#{notaFiscalBean.onOperacaoChosenNFeIncluir}"
+					ignoreAutoUpdate="true" update="@form" />
+			</p:commandButton>
+
+			<p:splitButton id="botaoSalvar" value="Salvar" icon="ui-icon-disk"
+				rendered="#{notaFiscalBean.nota.notaTipoNFe}"
+				action="#{notaFiscalBean.salvar}" update="@form">
+
+				<p:menuitem value="Importar nota aquisição" update="@form"
+					process="@none"
+					rendered="#{notaFiscalBean.nota.podeImportarCompra}"
+					oncomplete="PF('dlgImportaCompra').show()" />
+
+				<p:menuitem id="botaoAutorizar" value="Autorizar documento fiscal"
+					title="autoriza documento fiscal"
+					disabled="#{not notaFiscalBean.nota.podeEmitirDocumento}"
+					actionListener="#{notaFiscalBean.emitir}" update="@form" />
+
+				<p:menuitem id="botaoModificaAmbiete" value="Modificar Ambiente"
+					title="modificar ambiente de envio"
+					rendered="#{notaFiscalBean.nota.podeModificarAmbiente}"
+					actionListener="#{notaFiscalBean.modificarAmbiente}" update="@form">
+					<p:confirm icon="ui-icon-alert" header="Ambiente"
+						message="Deseja converter nota para ambiente de produção?" />
+				</p:menuitem>
+
+				<p:menuitem id="botaoConsultar" value="Consulta situação"
+					title="consulta status da nota" update="@form formCadastro:msg"
+					disabled="#{not notaFiscalBean.nota.podeConsultarStatus}"
+					actionListener="#{notaFiscalBean.consultar}" />
+
+				<p:menuitem id="botaoReenviar" value="Reenvio de e-mail"
+					actionListener="#{notaFiscalBean.preparaEmail}"
+					update="dlgEnvioEmail" title="encaminhar para e-mail"
+					disabled="#{not notaFiscalBean.nota.podeEnviarEmail}"
+					oncomplete="PF('dlgEnvioEmail').show()" />
+
+				<p:menuitem value="Cancelamento" title="solicitar cancelamento"
+					rendered="#{notaFiscalBean.nota.podeCancelarNota}"
+					update="dlgJustificativa"
+					oncomplete="PF('dlgJustificativa').show()" />
+
+				<p:menuitem value="Carta de correção"
+					title="enviar carta de correção"
+					disabled="#{not notaFiscalBean.nota.podeEmitirCorrecao}"
+					oncomplete="PF('dlgCartaCorrecao').show()" />
+
+				<p:menuitem value="Lista carta de correção"
+					disabled="#{not notaFiscalBean.nota.podeEmitirCorrecao}"
+					actionListener="#{notaFiscalBean.preparaListaCartaCorrecao}"
+					oncomplete="PF('dlgListaCartaCorrecao').show()" />
+
+				<p:separator rendered="#{notaFiscalBean.nota.podeImprimir}" />
+
+				<p:menuitem value="Imprimir Danfe" title="danfe pdf"
+					rendered="#{notaFiscalBean.nota.podeImprimir}"
+					url="#{notaFiscalBean.danfeNFe}" target="_blank" />
+
+				<p:menuitem value="Imprimir Xml" title="xml fiscal"
+					rendered="#{notaFiscalBean.nota.podeImprimir}"
+					url="#{notaFiscalBean.xmlNFe}" target="_blank" />
+
+				<p:menuitem value="Imprimir Xml" title="xml fiscal"
+					rendered="#{notaFiscalBean.nota.podeImprimirCancelamento}"
+					url="#{notaFiscalBean.xmlNFeCancelamento }" target="_blank" />
+
+				<p:menuitem value="Carta Correção PDF" title="pdf carta de correção"
+					rendered="#{notaFiscalBean.nota.podeImprimirCorrecao}"
+					url="#{notaFiscalBean.danfeCorrecaoNFe}" target="_blank" />
+
+				<p:menuitem value="Carta Correção XML" title="xml carta de correção"
+					rendered="#{notaFiscalBean.nota.podeImprimirCorrecao}"
+					url="#{notaFiscalBean.xmlCorrecaoNFe}" target="_blank" />
+
+				<p:menuitem value="Recibo" icon="ui-icon-print" ajax="false"
+					action="#{notaFiscalBean.imprimirRecibo}" update="@form"
+					rendered="#{notaFiscalBean.nota.podeImprimir}" target="_blank" />
+
+			</p:splitButton>
+
+		</p:toolbarGroup>
+
+		<p:toolbarGroup align="right">
+			<p:commandButton value="Pesquisa" icon="ui-icon-search"
+				actionListener="#{notaFiscalBean.setNota(null)}" process="@this"
+				update="@form" />
+		</p:toolbarGroup>
+
+	</p:toolbar>
+
+	<ui:include src="/WEB-INF/template/fiscal/CapaNotaFiscal.xhtml" />
+
+	<p:tabView id="tabView" orientation="left" style="margin-top: 5px">
+		<p:tab title="Produtos" id="tabProduto">
+			<ui:include src="/WEB-INF/template/fiscal/DadosProdutoFiscal.xhtml" />
+		</p:tab>
+		<p:tab title="Ambiente" id="tabAmbiente">
+			<ui:include src="/WEB-INF/template/fiscal/DadosAmbienteFiscal.xhtml" />
+		</p:tab>
+		<p:tab title="Observação" id="tabObserva">
+			<ui:include src="/WEB-INF/template/fiscal/DadosObservaFiscal.xhtml" />
+		</p:tab>
+		<p:tab title="Entrega" id="tabEntrega">
+			<ui:include src="/WEB-INF/template/fiscal/DadosEntregaFiscal.xhtml" />
+		</p:tab>
+		<p:tab title="Volumes" id="tabVolume">
+			<ui:include src="/WEB-INF/template/fiscal/DadosVolumeFiscal.xhtml" />
+		</p:tab>
+		<p:tab title="Pagamento" id="tabPgto">
+			<ui:include src="/WEB-INF/template/fiscal/DadosPgtoFiscal.xhtml" />
+		</p:tab>
+		<p:tab title="Totais" id="tabTotais">
+			<ui:include src="/WEB-INF/template/fiscal/DadosTotalFiscal.xhtml" />
+		</p:tab>
+	</p:tabView>
+
+	<p:blockUI block="formCadastro"
+		trigger="botaoSalvar botaoAutorizar botaoConsultar botaoReenviar" />
+
+</ui:composition>

@@ -1,0 +1,34 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<p:dialog id="dlgCartaCorrecao" header="Carta de Correção"
+		widgetVar="dlgCartaCorrecao" closeOnEscape="true" modal="true"
+		maximizable="false" width="600">
+		<h:form id="formCartaCorrecao">
+
+			<div class="ui-fluid ui-g">
+				<p:outputLabel value="Justificativa (de 15 a 255 caracteres)" />
+				<p:inputTextarea value="#{notaFiscalBean.justificativa}"
+					minQueryLength="15" rows="2" cols="60" counter="display"
+					maxlength="255" counterTemplate="{0} restante." autoResize="true" />
+				<h:outputText id="display" />
+			</div>
+
+			<div align="right">
+				<p:commandButton value="Confirmar" process="@form"
+					update="formCadastro:msg"
+					actionListener="#{notaFiscalBean.gerarNotaDeCorrecao}"
+					oncomplete="if(!args.validationFailed) PF('dlgCartaCorrecao').hide()"
+					onclick="jQuery(this).addClass('ui-state-disabled')">
+					<p:confirm icon="ui-icon-alert" header="Confirma"
+						message="Enviar carta de correção?" />
+				</p:commandButton>
+			</div>
+
+		</h:form>
+	</p:dialog>
+
+</ui:composition>

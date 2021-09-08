@@ -1,0 +1,104 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<h1 style="margin-top: 65px">Cadastro de Produto</h1>
+
+	<p:toolbar style="margin-top: 5px">
+		<p:toolbarGroup>
+
+			<p:splitButton id="botaoSalvar" value="Salvar" icon="ui-icon-disk"
+				disabled="#{produtoBean.somenteLeitura}"
+				action="#{produtoBean.salvar}" update="@form">
+				<p:menuitem value="Novo" icon="ui-icon-document"
+					actionListener="#{produtoBean.novo}" update="@form" />
+				<p:menuitem value="Duplicar" title="duplicar produto atual"
+					rendered="#{produtoBean.produto.existe}"
+					actionListener="#{produtoBean.duplicarProduto}" update="@form">
+					<p:confirm icon="ui-icon-alert" header="produto"
+						message="Duplicar produto atual?" />
+				</p:menuitem>
+				<p:menuitem icon="ui-icon-note" value="Eventos" process="@this"
+					update="dlgEventos" rendered="#{produtoBean.produto.existe}"
+					actionListener="#{listaEventoBean.produto(produtoBean.produto)}"
+					oncomplete="PF('dlgEventos').show()" />
+			</p:splitButton>
+
+			<p:menuButton id="menuImagem" value="Imagem"
+				disabled="#{not produtoBean.produto.existe}">
+				<p:menuitem value="Visualizar"
+					disabled="#{not produtoBean.produto.existeImagem}"
+					action="#{produtoBean.defineImagem}"
+					oncomplete="PF('dlgGraphicImagem').show()"
+					update="dlgGraphicImagem" />
+				<p:menuitem value="Adicionar" title="adicionar imagem"
+					update="dlgImagem" process="@this"
+					disabled="#{not produtoBean.produto.existe}"
+					oncomplete="PF('dlgImagem').show()" />
+				<p:menuitem ajax="false" value="Remover" title="remover imagem"
+					action="#{produtoBean.removerImagem}" update="menuImagem"
+					disabled="#{not produtoBean.produto.existeImagem}">
+					<p:confirm icon="ui-icon-alert" header="Imagem do produto"
+						message="Remover imagem do produto?" />
+				</p:menuitem>
+			</p:menuButton>
+
+		</p:toolbarGroup>
+
+		<p:toolbarGroup align="right">
+			<p:commandButton value="Pesquisa" icon="ui-icon-search"
+				update="@form" actionListener="#{produtoBean.setProduto(null)}"
+				process="@this" />
+		</p:toolbarGroup>
+
+	</p:toolbar>
+
+	<p:tabView style="margin-top: 5px" id="tabView">
+
+		<p:tab title="Dados">
+			<ui:include src="/WEB-INF/template/produto/ProdutoDados.xhtml" />
+		</p:tab>
+
+		<p:tab title="Classificação"
+			rendered="#{not produtoBean.produto.tipoServico}">
+			<ui:include
+				src="/WEB-INF/template/produto/ProdutoClassificacao.xhtml" />
+		</p:tab>
+
+		<p:tab title="Comercialização"
+			rendered="#{produtoBean.produto.tipoProduto}">
+			<ui:include
+				src="/WEB-INF/template/produto/ProdutoComercializacao.xhtml" />
+		</p:tab>
+
+		<p:tab title="Fiscal"
+			rendered="#{not produtoBean.produto.tipoServico}">
+			<ui:include src="/WEB-INF/template/produto/ProdutoFiscal.xhtml" />
+		</p:tab>
+
+		<p:tab title="Composto" id="tabComposto"
+			rendered="#{not produtoBean.produto.tipoServico}">
+			<ui:include src="/WEB-INF/template/produto/ProdutoComposto.xhtml" />
+		</p:tab>
+
+		<!-- 				<p:tab title="Resíduo" id="tabResiduo" -->
+		<!-- 					rendered="#{produtoBean.naoServico}"> -->
+		<!-- 										<ui:include src="/WEB-INF/template/produto/ProdutoResiduo.xhtml" /> -->
+		<!-- 				</p:tab> -->
+
+		<!-- 				<p:tab title="Processo" id="tabProcesso"> -->
+
+		<!-- 				</p:tab> -->
+
+	</p:tabView>
+
+	<p:blockUI block="tabView" trigger="botaoSalvar" />
+
+</ui:composition>
+
+
+<!-- 					<p:commandButton value="Ficha Técnica" ajax="false" -->
+<!-- 						rendered="#{produtoBean.produto.existe}" -->
+<!-- 						action="#{produtoBean.emitir}" update="@form" /> -->

@@ -1,0 +1,42 @@
+<ui:composition template="/WEB-INF/template/LayoutPadrao.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui" xmlns:o="http://omnifaces.org/ui">
+
+	<f:metadata>
+		<f:param name="dummy" />
+		<o:viewParam name="agenda" value="#{agendaBean.agenda}" />
+		<f:event listener="#{agendaBean.inicializar}" type="preRenderView"></f:event>
+	</f:metadata>
+
+	<ui:define name="titulo">Produto</ui:define>
+
+	<ui:define name="dialogo">
+
+	</ui:define>
+
+	<ui:define name="corpo">
+
+		<p:focus context="formCadastro" />
+
+		<h:form id="formCadastro">
+
+			<h1 style="margin-top: 65px">Agenda de contato</h1>
+
+			<p:growl />
+
+			<h:panelGroup rendered="#{agendaBean.agenda == null}">
+				<ui:include src="/cadastros/AgendaPesquisa.xhtml" />
+			</h:panelGroup>
+
+			<h:panelGroup rendered="#{agendaBean.agenda != null}">
+				<ui:include src="/cadastros/AgendaEdit.xhtml" />
+			</h:panelGroup>
+
+		</h:form>
+
+	</ui:define>
+
+</ui:composition>

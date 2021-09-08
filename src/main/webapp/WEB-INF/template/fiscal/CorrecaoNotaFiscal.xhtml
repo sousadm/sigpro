@@ -1,0 +1,33 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<p:dialog id="dlgListaCartaCorrecao" header="Correções"
+		widgetVar="dlgListaCartaCorrecao" closeOnEscape="true" modal="true"
+		maximizable="false" width="600">
+		<h:form id="formNotaCorrecao">
+
+			<p:dataTable value="#{notaFiscalBean.listaNotaFiscalCorrecao}"
+				styleClass="linha" var="correcao" style="margin-top: 5px"
+				emptyMessage="Nenhum registro encontrado." rows="10"
+				paginator="true" paginatorAlwaysVisible="true"
+				paginatorPosition="bottom">
+				<p:column headerText="Data" width="130">
+					<h:outputText value="#{correcao.dataEvento}">
+						<f:convertDateTime pattern="dd/MM/yyyy HH:mm" />
+					</h:outputText>
+				</p:column>
+				<p:column headerText="Conteúdo">
+					<h:panelGroup layout="block" style="padding-right: 10px">
+						<p:inputTextarea rows="2" style="width: 100%"
+							value="#{correcao.justificativa}" readonly="true" />
+					</h:panelGroup>
+				</p:column>
+			</p:dataTable>
+
+		</h:form>
+	</p:dialog>
+
+</ui:composition>

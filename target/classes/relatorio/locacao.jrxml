@@ -1,0 +1,825 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="locacao" language="groovy" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="575" leftMargin="10" rightMargin="10" topMargin="7" bottomMargin="7" uuid="e8d70457-5bc5-4049-b3a8-e9d40eb0555e">
+	<property name="ireport.zoom" value="1.5"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="156"/>
+	<property name="ireport.callouts" value="##Tue Oct 02 09:39:00 BRT 2018"/>
+	<parameter name="listaVistoria" class="java.lang.Object"/>
+	<parameter name="empresa" class="java.lang.Object"/>
+	<parameter name="logo" class="java.lang.String">
+		<defaultValueExpression><![CDATA["C:\\Users\\sousa\\OneDrive\\mrp21sys\\logo.png"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="cliente" class="java.lang.Object"/>
+	<parameter name="condutor" class="java.lang.Object"/>
+	<parameter name="empresa_endereco" class="java.lang.String"/>
+	<field name="servico" class="java.lang.Object"/>
+	<field name="quantidade" class="java.lang.Double"/>
+	<field name="unitario" class="java.lang.Double"/>
+	<field name="valorTotal" class="java.lang.Double"/>
+	<field name="produto" class="java.lang.Object"/>
+	<pageHeader>
+		<band height="634" splitType="Stretch">
+			<staticText>
+				<reportElement x="3" y="570" width="281" height="62" uuid="fc15e7d6-fd53-4d5d-9c94-d016e92fded7"/>
+				<box leftPadding="2">
+					<topPen lineWidth="0.25"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Observação:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="294" y="247" width="281" height="56" uuid="a41ad370-3e8e-4179-ad40-86e5f4e8bf2e"/>
+				<box>
+					<topPen lineWidth="0.0"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="6" isBold="true"/>
+				</textElement>
+				<text><![CDATA[]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="294" y="162" width="280" height="23" uuid="48fdbd09-c382-428e-84f5-915d80abd8c3"/>
+				<box leftPadding="3">
+					<topPen lineWidth="0.0"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement>
+					<font size="6" isBold="true"/>
+				</textElement>
+				<text><![CDATA[DATA/HORA DE RETORNO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="294" y="138" width="280" height="23" uuid="d408ac46-3c4e-4e3c-8c2a-6669940c7253"/>
+				<box leftPadding="3">
+					<topPen lineWidth="0.0"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement>
+					<font size="6" isBold="true"/>
+				</textElement>
+				<text><![CDATA[DATA/HORA DE SAÍDA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="3" y="430" width="132" height="23" uuid="130e14a9-d6f4-4691-88c5-80b92faf4745"/>
+				<box leftPadding="2">
+					<topPen lineWidth="0.0"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement>
+					<font size="6" isBold="true"/>
+				</textElement>
+				<text><![CDATA[PLACA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="3" y="224" width="168" height="23" uuid="2294042c-d4eb-4364-80ed-f81aa64a47fd"/>
+				<box leftPadding="2">
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement>
+					<font size="6" isBold="true"/>
+				</textElement>
+				<text><![CDATA[E-MAIL]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="3" y="155" width="280" height="23" uuid="f1c86c25-a5d3-4f77-8dd5-0feba9c40233"/>
+				<box leftPadding="2">
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement>
+					<font size="6" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ENDEREÇO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="3" y="201" width="243" height="23" uuid="15fbba56-b768-4140-94e4-44d3aa789176"/>
+				<box leftPadding="2">
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement>
+					<font size="6" isBold="true"/>
+				</textElement>
+				<text><![CDATA[CIDADE]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="3" y="407" width="132" height="23" uuid="417ddd67-9e9d-4e81-84a3-e2fd8c81d137"/>
+				<box leftPadding="2">
+					<topPen lineWidth="0.0"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement>
+					<font size="6" isBold="true"/>
+				</textElement>
+				<text><![CDATA[MARCA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="3" y="390" width="280" height="17" uuid="4f32c467-df08-4acc-808e-bb4b02c39ede"/>
+				<box>
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Center" rotation="None">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[VEÍCULO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="3" y="269" width="280" height="23" uuid="6ca57ebd-2768-45bb-a422-a2bd1ed1fc57"/>
+				<box leftPadding="2">
+					<topPen lineWidth="0.0"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement>
+					<font size="6" isBold="true"/>
+				</textElement>
+				<text><![CDATA[CPF]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="135" y="338" width="148" height="23" uuid="631d0da5-ee53-46ec-9979-526ac8042374"/>
+				<box leftPadding="2">
+					<topPen lineWidth="0.0"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement>
+					<font size="6" isBold="true"/>
+				</textElement>
+				<text><![CDATA[DATA VALIDADE]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="3" y="315" width="280" height="23" uuid="68e3eab6-7469-441c-8924-f881bf1f9046"/>
+				<box leftPadding="2">
+					<topPen lineWidth="0.0"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement>
+					<font size="6" isBold="true"/>
+				</textElement>
+				<text><![CDATA[EMITIDA POR]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="221" y="292" width="62" height="23" uuid="ac80ea49-d1b7-4ba9-9711-b0bfe7c0f601"/>
+				<box leftPadding="2">
+					<topPen lineWidth="0.0"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement>
+					<font size="6" isBold="true"/>
+				</textElement>
+				<text><![CDATA[CATEGORIA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="3" y="115" width="280" height="17" uuid="975e0547-eb03-4f26-89b9-5640f7e56d03"/>
+				<box>
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Center" rotation="None">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[CONTRATO DE LOCAÇÃO]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="4" y="84" width="270" height="14" uuid="7d1ea801-1bd5-4377-8a4c-41f1dc000130"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{empresa}.getEmail()]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="293" y="23" width="280" height="46" uuid="f0c4f76e-0691-4e25-afec-229496e2ec80"/>
+				<textElement textAlignment="Center" markup="html">
+					<font size="18" isBold="true"/>
+				</textElement>
+				<text><![CDATA[FICHA DE LOCAÇÃO E VISTORIA DE VEÍCULO]]></text>
+			</staticText>
+			<image>
+				<reportElement x="4" y="2" width="270" height="50" uuid="33031cb2-7e31-4c90-947d-fd2697d63d79"/>
+				<imageExpression><![CDATA[$P{logo}]]></imageExpression>
+			</image>
+			<textField isBlankWhenNull="true">
+				<reportElement x="4" y="99" width="270" height="14" uuid="6bc2da32-d0b7-4f41-a55f-40686342f316"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{empresa_endereco}.toString()]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="4" y="69" width="270" height="14" uuid="76503a6e-149b-42b8-b201-32c6f282778c"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{empresa}.getEndereco().toString()]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="4" y="55" width="270" height="14" uuid="8519e036-d88a-4eb2-82c3-80e304a2d857"/>
+				<textElement>
+					<font fontName="Arial" size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{empresa}.getPJ().getFantasia()]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="3" y="132" width="280" height="23" uuid="7ae77fb0-b47f-4407-a821-0e7e44a74015"/>
+				<box leftPadding="2">
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement>
+					<font size="6" isBold="true"/>
+				</textElement>
+				<text><![CDATA[NOME DO LOCATÁRIO]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="5" y="142" width="267" height="12" uuid="b0683ed6-a9e0-4aaa-9d72-b06dcbec9e13"/>
+				<textElement>
+					<font fontName="Courier New" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{cliente}.getNome()]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="5" y="165" width="267" height="12" uuid="9d05e347-cf9a-443f-9069-3f08aff66cc5"/>
+				<textElement>
+					<font fontName="Courier New" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{cliente}.getEndereco().toString()]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="3" y="178" width="222" height="23" uuid="b8f17774-5d11-459b-b121-43a6da972688"/>
+				<box leftPadding="2">
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement>
+					<font size="6" isBold="true"/>
+				</textElement>
+				<text><![CDATA[BAIRRO]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="6" y="189" width="215" height="12" uuid="d6061780-ab92-4cd7-8a97-21c87903a3bd"/>
+				<textElement>
+					<font fontName="Courier New" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{cliente}.getEndereco().getBairro()]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="5" y="211" width="238" height="12" uuid="74f4fd0a-8eac-48a4-8b9d-7437c2758d47"/>
+				<textElement>
+					<font fontName="Courier New" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{cliente}.getEndereco().getMunicipio().getDescricao()]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="246" y="201" width="37" height="23" uuid="35c56b79-50d6-40b6-af0e-07fa5d2f5147"/>
+				<box leftPadding="2">
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font size="6" isBold="true"/>
+				</textElement>
+				<text><![CDATA[UF]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="253" y="211" width="13" height="12" uuid="14fc4d64-0d8c-4592-afee-ca683735b984"/>
+				<textElement>
+					<font fontName="Courier New" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{cliente}.getEndereco().getMunicipio().getUf()]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="225" y="178" width="58" height="23" uuid="2a842d4c-acdc-462e-bef0-79963f5fe774"/>
+				<box leftPadding="2">
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement>
+					<font size="6" isBold="true"/>
+				</textElement>
+				<text><![CDATA[CEP]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="228" y="188" width="44" height="12" uuid="9875cbe4-f41c-4619-ab1a-58e822db2695"/>
+				<textElement>
+					<font fontName="Courier New" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{cliente}.getEndereco().getCep()]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="5" y="279" width="267" height="12" uuid="a41ce3c2-3898-49f3-bd69-713e5723a9ca"/>
+				<textElement>
+					<font fontName="Courier New" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{cliente}.getPF().getCpf()]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="3" y="252" width="280" height="17" uuid="d7798c06-2c53-4765-b297-81a99e5d1b5a"/>
+				<box>
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Center" rotation="None">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[DADOS DO CONDUTOR]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="3" y="292" width="218" height="23" uuid="11e50043-c428-4203-8301-9816d0f86207"/>
+				<box leftPadding="2">
+					<topPen lineWidth="0.0"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement>
+					<font size="6" isBold="true"/>
+				</textElement>
+				<text><![CDATA[CARTEIRA DE HABILITAÇÃO / NÚMERO]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="5" y="302" width="213" height="12" uuid="f428079b-f802-4cb1-b3c8-b2078cd52954"/>
+				<textElement>
+					<font fontName="Courier New" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{condutor}.getPF().getCnhNumero()]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="5" y="325" width="267" height="12" uuid="e79e3fc0-abc1-45c2-aeb5-a3a51afc9b92"/>
+				<textElement>
+					<font fontName="Courier New" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{condutor}.getPF().getCnhOrgao()]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="223" y="302" width="50" height="12" uuid="214d6028-1a29-4c6e-9e99-dfb6f4e5e14d"/>
+				<textElement>
+					<font fontName="Courier New" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{condutor}.getPF().getCnhCategoria()]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="3" y="338" width="132" height="23" uuid="888b33a1-21af-4597-9a2c-5977e3349340"/>
+				<box leftPadding="2">
+					<topPen lineWidth="0.0"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement>
+					<font size="6" isBold="true"/>
+				</textElement>
+				<text><![CDATA[DATA 1ª HABILITAÇÃO]]></text>
+			</staticText>
+			<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
+				<reportElement x="5" y="348" width="127" height="12" uuid="95a2364e-e2e4-4fa0-b162-7cf4c4166956"/>
+				<textElement>
+					<font fontName="Courier New" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{condutor}.getPF().getCnhPrimeira()]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
+				<reportElement x="138" y="348" width="137" height="12" uuid="eae446ac-faf5-46b9-bcca-7eba4add96a1"/>
+				<textElement>
+					<font fontName="Courier New" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{condutor}.getPF().getCnhValidade()]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="5" y="417" width="127" height="12" uuid="3e033ddc-6f00-42db-9f4a-3f2f7da7a3c3"/>
+				<textElement>
+					<font fontName="Courier New" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{servico}.getVeiculo().getMarca().getDescricao()]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="5" y="440" width="127" height="12" uuid="8a882c61-6c88-452b-b804-cab13951a87a"/>
+				<textElement>
+					<font fontName="Courier New" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{servico}.getVeiculo().getPlaca()]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="135" y="407" width="148" height="23" uuid="356198ab-2739-4c73-8a23-f74798c83929"/>
+				<box leftPadding="2">
+					<topPen lineWidth="0.0"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement>
+					<font size="6" isBold="true"/>
+				</textElement>
+				<text><![CDATA[MODELO]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="137" y="417" width="135" height="12" uuid="a86632bb-a5b5-434c-8e72-47e9de950bdd"/>
+				<textElement>
+					<font fontName="Courier New" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{servico}.getVeiculo().getModelo()]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="5" y="233" width="162" height="12" uuid="49f046b0-f6e7-48b4-aee9-6b25031a543f"/>
+				<textElement>
+					<font fontName="Courier New" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{cliente}.getEmail()]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="171" y="224" width="112" height="23" uuid="3d4f987c-635f-4f6e-ab9d-3ea57c50df95"/>
+				<box leftPadding="2">
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement>
+					<font size="6" isBold="true"/>
+				</textElement>
+				<text><![CDATA[FONE]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="174" y="233" width="98" height="12" uuid="fee8444c-f64e-4998-8686-1a9e2ce12217"/>
+				<textElement>
+					<font fontName="Courier New" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{cliente}.getFone() == null ? $P{cliente}.getCelular() : $P{cliente}.getFone()]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="3" y="361" width="168" height="23" uuid="b9d90a66-a7b8-44ca-8062-1a15b652385a"/>
+				<box leftPadding="2">
+					<topPen lineWidth="0.0"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement>
+					<font size="6" isBold="true"/>
+				</textElement>
+				<text><![CDATA[E-MAIL]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="171" y="361" width="112" height="23" uuid="6bb0613f-a9a1-4f16-bd41-a8e33e3d7f41"/>
+				<box leftPadding="2">
+					<topPen lineWidth="0.0"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement>
+					<font size="6" isBold="true"/>
+				</textElement>
+				<text><![CDATA[FONE]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="5" y="370" width="162" height="12" uuid="43046ba1-cc52-4211-ba39-2bd3c6499e5e"/>
+				<textElement>
+					<font fontName="Courier New" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{condutor}.getEmail()]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="174" y="370" width="98" height="12" uuid="5c4c5389-12bd-4878-8e06-ac6bbce8358c"/>
+				<textElement>
+					<font fontName="Courier New" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{condutor}.getFone() == null ? $P{condutor}.getCelular() : $P{condutor}.getFone()]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="135" y="430" width="148" height="23" uuid="3c0a90aa-6eed-4795-8cf6-2d7b0d3bd053"/>
+				<box leftPadding="2">
+					<topPen lineWidth="0.0"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement>
+					<font size="6" isBold="true"/>
+				</textElement>
+				<text><![CDATA[COR PREDOMINANTE]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="137" y="440" width="135" height="12" uuid="e65b40d0-ad6b-4fdc-8e18-26ca134e8615"/>
+				<textElement>
+					<font fontName="Courier New" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{servico}.getVeiculo().getCor().getDescricao()]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="3" y="457" width="280" height="17" uuid="c927f11e-2cda-4c38-b0c7-28ccd6324bae"/>
+				<box>
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Center" rotation="None">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[VISTORIA DO VEÍCULO]]></text>
+			</staticText>
+			<elementGroup/>
+			<elementGroup/>
+			<textField>
+				<reportElement x="3" y="474" width="280" height="88" uuid="157c88d1-18b2-4ff6-af68-e1f33f7ea80d"/>
+				<box topPadding="3" leftPadding="3" bottomPadding="3" rightPadding="3">
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.0"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textFieldExpression><![CDATA[$P{listaVistoria}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="294" y="75" width="280" height="39" uuid="28268749-0052-4ddd-8e81-662f1c5e0bf8"/>
+				<box leftPadding="3">
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement verticalAlignment="Middle" rotation="None">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[FRANQUIA OBRIGATÓRIA EM CASO DE SINISTRO NO VALOR DE R$]]></text>
+			</staticText>
+			<textField pattern="¤ #,##0.00" isBlankWhenNull="true">
+				<reportElement x="472" y="98" width="96" height="12" uuid="b4c02f85-58d3-460f-83de-f85b8b3d4045"/>
+				<textElement>
+					<font fontName="Courier New" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{servico}.getLocacao().getLocacaoFranquiaSinistro()]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="294" y="114" width="280" height="24" uuid="1e819966-a250-440a-a1bc-cd62afc6e241"/>
+				<box>
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle" rotation="None">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[KILOMETRAGEM]]></text>
+			</staticText>
+			<textField pattern="dd/MM/yyyy h.mm a" isBlankWhenNull="true">
+				<reportElement x="372" y="148" width="191" height="12" uuid="e220a074-2171-4dbd-a655-ffbe97550c89"/>
+				<textElement textAlignment="Center">
+					<font fontName="Courier New" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{servico}.getDataEmissao()]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="294" y="185" width="141" height="23" uuid="b616be9c-6ed4-4ede-b549-0fa5306bcea2"/>
+				<box leftPadding="3">
+					<topPen lineWidth="0.0"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement>
+					<font size="6" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ODOMETRO DE SAÍDA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="435" y="185" width="140" height="23" uuid="967da76d-4235-4389-876c-99d0c3920d43"/>
+				<box leftPadding="3">
+					<topPen lineWidth="0.0"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement>
+					<font size="6" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ODÔMETRO DE RETORNO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="294" y="234" width="131" height="13" uuid="8215b621-e196-49b9-9959-617d5d9f7dcb"/>
+				<box>
+					<topPen lineWidth="0.0"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="6" isBold="true"/>
+				</textElement>
+				<text><![CDATA[DISCRIMINAÇÃO DO ITEM]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="294" y="211" width="281" height="23" uuid="c1814d75-9049-4e1c-8689-75150a84916f"/>
+				<box>
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle" rotation="None">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[LOCAÇÃO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="425" y="234" width="42" height="13" uuid="55ca9e3a-30e5-49c1-a614-df679be75e6d"/>
+				<box>
+					<topPen lineWidth="0.0"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="6" isBold="true"/>
+				</textElement>
+				<text><![CDATA[QUANT]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="467" y="234" width="42" height="13" uuid="068f9aac-6348-4bb2-8540-79fd710473bf"/>
+				<box>
+					<topPen lineWidth="0.0"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="6" isBold="true"/>
+				</textElement>
+				<text><![CDATA[UNITÁRIO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="509" y="234" width="66" height="13" uuid="3d6b1bd2-fa7c-416e-b0e9-a95cc65d98ee"/>
+				<box>
+					<topPen lineWidth="0.0"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="6" isBold="true"/>
+				</textElement>
+				<text><![CDATA[VALOR TOTAL]]></text>
+			</staticText>
+			<textField pattern="¤ #,##0.00" isBlankWhenNull="true">
+				<reportElement x="468" y="249" width="39" height="12" uuid="de6874b7-bb07-44f4-ad8b-71d126096345"/>
+				<textElement textAlignment="Right">
+					<font fontName="Courier New" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{unitario}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0" isBlankWhenNull="true">
+				<reportElement x="428" y="249" width="39" height="12" uuid="a2e3a968-2917-4ecc-89c9-efaeea2909dd"/>
+				<textElement textAlignment="Center">
+					<font fontName="Courier New" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{quantidade}]]></textFieldExpression>
+			</textField>
+			<textField pattern="¤ #,##0.00" isBlankWhenNull="true">
+				<reportElement x="514" y="249" width="54" height="12" uuid="d664a379-e790-4382-9c1b-617c3bbd77b5"/>
+				<textElement textAlignment="Right">
+					<font fontName="Courier New" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{valorTotal}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="297" y="249" width="127" height="12" uuid="9fa313c0-e83c-497e-8707-ffa237a2059e"/>
+				<textElement>
+					<font fontName="Courier New" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{produto}.getNome()]]></textFieldExpression>
+			</textField>
+			<textField pattern="¤ #,##0.00" isBlankWhenNull="true">
+				<reportElement x="506" y="303" width="68" height="20" uuid="21c89443-2183-4971-8a4e-418da913f738"/>
+				<box rightPadding="3">
+					<topPen lineWidth="0.25"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Courier New" size="10" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{valorTotal}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="402" y="304" width="100" height="19" uuid="ffddad19-088a-4b55-8ace-a9639d58850e"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[VALOR TOTAL]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="295" y="358" width="276" height="97" uuid="81403e98-9454-4d7f-a4ab-9bcd2d40b9ca"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[O cliente é responsável por todas as infrações de trânsito, autorizando a locadora a debitar despesas extras em seu cartão de crédito.
+Customer is liable for all parking and trafic violions.
+Terminantemente proibido o tráfego de carro em dunas e beira-mar, caso seja constatado incidirá em multa e recisão de contrato por parte da locadora.
+Em caso de sinistro com veículo em areia, praia, dunas, terreno alagadiço e leitos carroçáveis inadequados, o cliente responderá integralmente pelos danos causados.
+Depois de ter lido devidamente os termos e condições do contrato no anverso e verso, concordo expressamente, firmo o presente.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="295" y="328" width="278" height="29" forecolor="#FFFFFF" backcolor="#333333" uuid="d02cab52-924d-4a24-9391-f71e209d3eb8"/>
+				<box topPadding="3" leftPadding="3" bottomPadding="3" rightPadding="3"/>
+				<textElement textAlignment="Center">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[EVENTUAIS MULTAS SERÃO COBRADAS POSTERIORMENTE.
+DECLARO-ME CIENTE DO CONTEÚDO DESTE CONTRATO.]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="318" y="459" width="250" height="15" uuid="e35be37f-f45a-47aa-b505-828b25ce6a5c"/>
+				<box topPadding="3">
+					<topPen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{cliente}.getNome() == null ? "assinatura do cliente" : $P{cliente}.getNome()]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="296" y="499" width="277" height="133" uuid="5d5aaeaf-6206-4b6c-88d1-506a9aeb3b37"/>
+				<box topPadding="3" leftPadding="3" bottomPadding="3" rightPadding="3">
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Declaro conhecer a legislação em vigor relativo ao novo Código de Trânsito Brasileiro e me responsabilizo inteiramente por quaisquer penalidades decorrentes das infrações por mim cometidas na condução do veículo locado, que pecuniárias ou pontuação, que serão informadas pela Locadora.
+O Locatário, desde já constitui a LOCADORA sua bastante procuradora para o im especófico de atender a resolução nº 72/98 do COTRAN, ficando a LOCADORA autorizada a assinar, em nome deste infrator, no formulário de identificação, em caso de infração de trânsito.
+Fica ainda estabelecido, que esta autorização só será válida, se o contrato acima estiver devidamente preenchido e assinado.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="296" y="480" width="277" height="20" uuid="0d76a7b5-d67e-411e-bc1d-67c584b13b82"/>
+				<box topPadding="3" leftPadding="3" bottomPadding="0" rightPadding="3">
+					<topPen lineWidth="0.25"/>
+					<leftPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[TERMO DE DECLARAÇÃO DE MULTAS]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="4" y="582" width="278" height="49" uuid="b1636fde-867b-4392-b133-cf1eaa40021d"/>
+				<box topPadding="3" leftPadding="3" bottomPadding="3" rightPadding="3">
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.0"/>
+					<leftPen lineWidth="0.0"/>
+					<bottomPen lineWidth="0.0"/>
+					<rightPen lineWidth="0.0"/>
+				</box>
+				<textFieldExpression><![CDATA[$F{servico}.getObservacao()]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+</jasperReport>

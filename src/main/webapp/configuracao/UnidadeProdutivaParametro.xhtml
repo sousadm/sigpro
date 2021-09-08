@@ -1,0 +1,29 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<p:dialog id="dlgParametro" header="Parâmetros"
+		widgetVar="dlgParametro" closeOnEscape="true" modal="true" width="500">
+
+		<h:form id="formParametro">
+			<p:panelGrid id="gridParametro" columns="1" layout="grid"
+				styleClass="panelgrid-noborder">
+
+				<p:selectBooleanCheckbox
+					value="#{unidadeProdutivaBean.usuario.parametro.liberaLimiteParaDescontoNoPedido}"
+					itemLabel="Libera limite de desconto no pedido" />
+
+			</p:panelGrid>
+			<div align="right">
+				<p:commandButton value="Confirma" icon="ui-icon-check"
+					process="@form"
+					action="#{unidadeProdutivaBean.gravarParametroUsuario}"
+					oncomplete="if(!args.validationFailed) PF('dlgParametro').hide()" />
+			</div>
+		</h:form>
+
+	</p:dialog>
+
+</ui:composition>

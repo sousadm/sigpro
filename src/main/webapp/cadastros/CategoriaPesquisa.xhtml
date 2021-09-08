@@ -1,0 +1,59 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<p:toolbar style="margin-top: 05px">
+		<p:toolbarGroup>
+			<p:splitButton id="botaoPesquisar" value="Pesquisar" update="@form"
+				icon="ui-icon-search" action="#{categoriaBean.pesquisar}">
+				<p:menuitem value="Imprimir lista" icon="ui-icon-print" ajax="false"
+					process="@form" action="#{categoriaBean.imprimir}" target="_blank" />
+			</p:splitButton>
+		</p:toolbarGroup>
+		<p:toolbarGroup align="right">
+			<p:commandButton value="Novo" icon="ui-icon-document"
+				actionListener="#{categoriaBean.novo}" update="@form" />
+		</p:toolbarGroup>
+	</p:toolbar>
+
+	<div class="ui-fluid">
+		<div class="ui-g" style="margin-top: 5px; border: 1px solid silver;">
+			<div class="ui-g-12">
+				<p:outputLabel value="Descrição" />
+				<p:inputText value="#{categoriaBean.filtro.descricao}" />
+			</div>
+		</div>
+	</div>
+
+	<p:dataTable id="tabela" scrollable="true"
+		value="#{categoriaBean.lista}" var="categoria" style="margin-top: 5px"
+		emptyMessage="nenhum item encontrado." rows="10" paginator="true"
+		paginatorAlwaysVisible="false" paginatorPosition="bottom" lazy="true">
+
+		<p:column headerText="Descrição da categoria" priority="1">
+			<h:outputText value="#{categoria.descricao}" />
+		</p:column>
+
+		<p:column headerText="Tipo de Produto" priority="2">
+			<h:outputText value="#{categoria.tipoProduto.descricao}" />
+		</p:column>
+
+		<p:column style="width: 80px; text-align: center">
+			<p:commandButton title="Editar" icon="ui-icon-pencil"
+				actionListener="#{categoriaBean.setCategoria(categoria)}"
+				class="button-grid" process="@this" update="@form" />
+			<p:commandButton icon="ui-icon-trash" process="@this" title="Excluir"
+				update="@form" class="button-grid"
+				action="#{categoriaBean.excluir(categoria)}">
+				<p:confirm icon="ui-icon-alert" header="Confirmação de exclusão"
+					message="Excluir o registro atual?" />
+			</p:commandButton>
+		</p:column>
+
+	</p:dataTable>
+
+	<p:blockUI block="formCadastro" trigger="botaoPesquisar" />
+
+</ui:composition>

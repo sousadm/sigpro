@@ -1,0 +1,137 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<h:panelGroup id="gridEndereco">
+
+		<div align="right">
+			<p:commandButton icon="ui-icon-search" value="Pesquisar endereço"
+				rendered="#{expedicaoBean.expedicao.cliente != null}"
+				disabled="#{expedicaoBean.expedicao.naoAlteravel}" process="@this"
+				update="@none" ignoreAutoUpdate="true"
+				actionListener="#{expedicaoBean.preparaPesquisaEndereco}"
+				action="#{selecionaBean.enderecoPessoa}">
+				<p:ajax event="dialogReturn" update="gridEndereco"
+					listener="#{expedicaoBean.onEnderecoChosen}"
+					ignoreAutoUpdate="true" />
+			</p:commandButton>
+			<p:commandButton icon="ui-icon-document-b" value="Limpar Endereco"
+				disabled="#{expedicaoBean.expedicao.naoAlteravel}" process="@this"
+				update="gridEndereco"
+				action="#{expedicaoBean.limparEnderecoEntrega}" />
+		</div>
+
+		<div class="ui-fluid">
+			<div class="ui-g">
+				<div class="ui-g-12 ui-md-2">
+					<p:outputLabel value="Data da entrega" for="dataEntrega" />
+					<p:inputText value="#{expedicaoBean.expedicao.dataEntrega}"
+						rendered="#{expedicaoBean.expedicao.emitido}">
+						<f:convertDateTime pattern="dd/MM/yyyy" />
+					</p:inputText>
+					<p:calendar id="dataEntrega" mask="99/99/9999" pattern="dd/MM/yyyy"
+						value="#{expedicaoBean.expedicao.dataEntrega}"
+						rendered="#{not expedicaoBean.expedicao.naoAlteravel}" />
+				</div>
+				<div class="ui-g-12 ui-md-2">
+					<p:outputLabel rendered="#{expedicaoBean.expedicao.emitido}"
+						value="CEP" />
+					<p:commandLink update="@none" action="#{selecionaBean.endereco}"
+						rendered="#{not expedicaoBean.expedicao.emitido}" process="@this"
+						title="pesquisa endereço postal">
+						<h:outputText value="CEP" />
+						<p:ajax event="dialogReturn" ignoreAutoUpdate="true"
+							listener="#{expedicaoBean.carregarPesquisaEndereco}"
+							update="formCadastro:view:gridEndereco" />
+					</p:commandLink>
+					<p:inputMask mask="99.999-999" id="cep"
+						readonly="#{expedicaoBean.expedicao.emitido}"
+						value="#{expedicaoBean.expedicao.enderecoEntrega.cep}">
+						<p:ajax event="change" update="formCadastro:view:gridEndereco"
+							listener="#{expedicaoBean.carregarEndereco}" />
+					</p:inputMask>
+				</div>
+				<div class="ui-g-12 ui-md-6">
+					<p:outputLabel value="Logradouro" for="logra" />
+					<p:inputText id="logra"
+						readonly="#{expedicaoBean.expedicao.emitido}"
+						value="#{expedicaoBean.expedicao.enderecoEntrega.logradouro}" />
+				</div>
+				<div class="ui-g-12 ui-md-2">
+					<p:outputLabel value="Número" for="numero" />
+					<p:inputText id="numero"
+						readonly="#{expedicaoBean.expedicao.emitido}"
+						value="#{expedicaoBean.expedicao.enderecoEntrega.numero}">
+						<f:convertNumber integerOnly="true" />
+					</p:inputText>
+				</div>
+
+				<div class="ui-g-12 ui-md-6">
+					<p:outputLabel value="Município" for="txtMunicipios" />
+					<p:selectOneMenu id="txtMunicipios" autoWidth="false"
+						rendered="#{not expedicaoBean.expedicao.emitido}"
+						value="#{expedicaoBean.expedicao.enderecoEntrega.municipio}">
+						<f:selectItem itemLabel="Selecione" />
+						<f:selectItems value="#{expedicaoBean.listaMunicipio}"
+							var="municipio" itemValue="#{municipio}"
+							itemLabel="#{municipio.descricao}" />
+					</p:selectOneMenu>
+					<h:panelGroup rendered="#{expedicaoBean.expedicao.emitido}">
+						<p:inputText readonly="true"
+							value="#{expedicaoBean.expedicao.enderecoEntrega.municipio.descricao}"
+							rendered="#{expedicaoBean.expedicao.temMunicipioEntrega}" />
+						<p:inputText readonly="true"
+							rendered="#{not expedicaoBean.expedicao.temMunicipioEntrega}" />
+					</h:panelGroup>
+				</div>
+				<div class="ui-g-12 ui-md-4">
+					<p:outputLabel value="UF" for="txtUF" />
+					<p:selectOneMenu id="txtUF" value="#{expedicaoBean.xUf}"
+						rendered="#{not expedicaoBean.expedicao.emitido}"
+						autoWidth="false">
+						<f:selectItem itemLabel="Selecione" />
+						<f:selectItems value="#{listaTipoBean.unidadeFederativa}"
+							var="estado" itemValue="#{estado}"
+							itemLabel="#{estado.descricao}" />
+						<f:ajax render="txtMunicipios" event="change"
+							listener="#{expedicaoBean.carregaMunicipios}"
+							update="txtMunicipios" />
+					</p:selectOneMenu>
+					<h:panelGroup rendered="#{expedicaoBean.expedicao.emitido}">
+						<p:inputText readonly="true"
+							value="#{expedicaoBean.expedicao.enderecoEntrega.municipio.uf.descricao}"
+							rendered="#{expedicaoBean.expedicao.temMunicipioEntrega}" />
+						<p:inputText readonly="true"
+							rendered="#{not expedicaoBean.expedicao.temMunicipioEntrega}" />
+					</h:panelGroup>
+				</div>
+				<div class="ui-g-12 ui-md-2">
+					<p:outputLabel value="Tipo" />
+					<div
+						class="ui-inputfield ui-inputtext ui-widget ui-state-default ui-corner-all bloqueado ui-state-focus">
+						<h:outputText
+							value="#{expedicaoBean.expedicao.enderecoEntrega.tipoEndereco.descricao}" />
+					</div>
+				</div>
+
+				<div class="ui-g-12 ui-md-6">
+					<p:outputLabel value="Bairro" for="bairro" />
+					<p:inputText id="bairro"
+						readonly="#{expedicaoBean.expedicao.emitido}"
+						value="#{expedicaoBean.expedicao.enderecoEntrega.bairro}" />
+				</div>
+				<div class="ui-g-12 ui-md-6">
+					<p:outputLabel value="Complemento" for="compl" />
+					<p:inputText id="compl"
+						readonly="#{expedicaoBean.expedicao.emitido}"
+						value="#{expedicaoBean.expedicao.enderecoEntrega.complemento}" />
+				</div>
+
+			</div>
+		</div>
+
+	</h:panelGroup>
+
+</ui:composition>

@@ -1,0 +1,92 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<div class="ui-fluid">
+		<div class="ui-g" style="margin-top: 5px; border: 1px solid silver;">
+
+			<div class="ui-g-12 ui-md-2">
+				<p:outputLabel styleClass="negrito"
+					value="#{notaFiscalBean.nota.fiscal.numero == null ? 'Identificação' : 'Número' }" />
+				<p:inputText class="negrito bloqueado" readonly="true"
+					rendered="#{notaFiscalBean.nota.fiscal.numero == null}"
+					value="#{notaFiscalBean.nota.id}">
+					<f:convertNumber pattern="#####0" minIntegerDigits="6" />
+				</p:inputText>
+				<p:inputText class="negrito bloqueado" readonly="true"
+					rendered="#{notaFiscalBean.nota.fiscal.numero != null}"
+					value="#{notaFiscalBean.nota.fiscal.numero}">
+					<f:convertNumber pattern="#####0" minIntegerDigits="6" />
+				</p:inputText>
+			</div>
+
+			<div class="ui-g-12 ui-md-7">
+				<p:outputLabel value="Cliente" />
+				<div class="ui-inputgroup">
+					<p:commandButton icon="ui-icon-person" title="Pesquisar cliente"
+						disabled="#{not notaFiscalBean.nota.podeEditar or notaFiscalBean.nota.notaDevolucao}"
+						process="@this" update="@none" ignoreAutoUpdate="true"
+						class="button-grid" action="#{selecionaBean.cliente}">
+						<p:ajax event="dialogReturn"
+							listener="#{notaFiscalBean.onPessoaChosen}"
+							ignoreAutoUpdate="true"
+							update="txtCliente formCadastro:tabView:gridEndereco formCadastro:tabView:botaoProduto" />
+					</p:commandButton>
+					<p:inputText id="txtCliente" readonly="true"
+						value="#{notaFiscalBean.nota.fiscal.cliente.nome}" />
+				</div>
+			</div>
+			<div class="ui-g-12 ui-md-3">
+				<p:outputLabel
+					value="#{notaFiscalBean.nota.fiscal.documentoCancelado ? 'Data de Cancelamento' : 'Data de Emissão' }" />
+				<p:inputText
+					rendered="#{notaFiscalBean.nota.fiscal.documentoCancelado}"
+					value="#{notaFiscalBean.nota.fiscal.dataCancelamento}">
+					<f:convertDateTime pattern="dd/MM/yyyy hh:mm" />
+				</p:inputText>
+				<p:inputText
+					rendered="#{not notaFiscalBean.nota.fiscal.documentoCancelado}"
+					value="#{notaFiscalBean.nota.fiscal.dataEmissao}">
+					<f:convertDateTime pattern="dd/MM/yyyy hh:mm" />
+				</p:inputText>
+			</div>
+
+
+			<div class="ui-g-12 ui-md-5">
+				<p:outputLabel value="Operação" />
+				<div class="ui-inputgroup">
+					<p:commandButton icon="ui-icon-search" title="operação fiscal"
+						process="@this" class="button-grid"
+						actionListener="#{selecionaBean.operacaoFiscalNFe}"
+						disabled="#{not notaFiscalBean.nota.podeEditar}" update="@form">
+						<p:ajax event="dialogReturn"
+							listener="#{notaFiscalBean.onOperacaoChosenNFe}"
+							ignoreAutoUpdate="true" update="txtOpercaoFiscal" />
+					</p:commandButton>
+					<div
+						class="ui-inputfield ui-inputtext ui-widget ui-state-default ui-corner-all bloqueado ui-state-focus">
+						<p:outputLabel id="txtOpercaoFiscal"
+							value="#{notaFiscalBean.nota.fiscal.operacao.toString()}" />
+					</div>
+				</div>
+			</div>
+			<div class="ui-g-12 ui-md-5">
+				<p:outputLabel value="Chave Eletrônica" />
+				<p:inputText value="#{notaFiscalBean.nota.fiscal.chave}"
+					class="bloqueado" readonly="true" />
+			</div>
+			<div class="ui-g-12 ui-md-2">
+				<p:outputLabel value="Status" />
+				<div
+					class="ui-inputfield ui-inputtext ui-widget ui-state-default ui-corner-all bloqueado ui-state-focus">
+					<p:outputLabel
+						value="#{notaFiscalBean.nota.fiscal.status.descricao}" />
+				</div>
+			</div>
+
+		</div>
+	</div>
+
+</ui:composition>

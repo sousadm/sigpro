@@ -1,0 +1,79 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<p:panelGrid>
+		<p:row>
+			<p:column styleClass="resumo-texto">
+				<h:outputLabel value="Valor Total" />
+			</p:column>
+			<p:column styleClass="resumo-campo">
+				<h:outputLabel value="#{notaConsumidorBean.nota.valorProduto}">
+					<f:convertNumber type="currency" currencySymbol="" />
+				</h:outputLabel>
+			</p:column>
+		</p:row>
+
+		<p:row>
+			<p:column styleClass="resumo-texto">
+				<h:outputLabel value="Acréscimo" />
+			</p:column>
+			<p:column styleClass="resumo-campo">
+				<h:outputLabel value="#{notaConsumidorBean.nota.valorOutros}">
+					<f:convertNumber type="currency" currencySymbol="" />
+				</h:outputLabel>
+			</p:column>
+		</p:row>
+
+		<p:row>
+			<p:column styleClass="resumo-texto">
+				<h:outputLabel value="Desconto" />
+			</p:column>
+			<p:column styleClass="resumo-campo">
+				<p:inputNumber minValue="0" decimalSeparator=","
+					thousandSeparator="." decimalPlaces="2"
+					value="#{notaConsumidorBean.nota.valorDesconto}">
+					<p:ajax event="change" update="@form"
+						listener="#{notaConsumidorBean.gravaDesconto}" />
+				</p:inputNumber>
+			</p:column>
+		</p:row>
+
+		<p:row>
+			<p:column styleClass="resumo-texto">
+				<h:outputLabel value="Pagamentos" />
+			</p:column>
+			<p:column styleClass="resumo-campo">
+				<h:outputLabel value="#{notaConsumidorBean.nota.valorPgto}">
+					<f:convertNumber type="currency" currencySymbol="" />
+				</h:outputLabel>
+			</p:column>
+		</p:row>
+
+		<p:row>
+			<p:column styleClass="resumo-texto">
+				<h:outputLabel value="Falta" />
+			</p:column>
+			<p:column styleClass="resumo-campo" style="background-color: red;">
+				<h:outputLabel value="#{notaConsumidorBean.nota.valorFalta}">
+					<f:convertNumber type="currency" currencySymbol="" />
+				</h:outputLabel>
+			</p:column>
+		</p:row>
+
+		<p:row>
+			<p:column styleClass="resumo-texto">
+				<h:outputLabel value="Troco" />
+			</p:column>
+			<p:column styleClass="resumo-campo">
+				<h:outputLabel value="#{notaConsumidorBean.nota.valorTroco}">
+					<f:convertNumber type="currency" currencySymbol="" />
+				</h:outputLabel>
+			</p:column>
+		</p:row>
+
+	</p:panelGrid>
+
+</ui:composition>

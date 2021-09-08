@@ -1,0 +1,60 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<p:dialog id="addPacoteDialog" header="Pacote"
+		widgetVar="addPacoteDialog" closeOnEscape="true" modal="true"
+		maximizable="false" width="600">
+
+		<h:form id="formPacote">
+
+			<div class="ui-fluid">
+				<div class="ui-g" style="margin-top: 5px; border: 1px solid silver;">
+					<div class="ui-g-12">
+						<p:outputLabel value="Nome do pacote" />
+						<p:inputText value="#{projetoBean.planner.que}" maxlength="100" />
+					</div>
+					<div class="ui-g-12">
+						<p:outputLabel value="Tarefas" />
+						<p:inputText value="#{projetoBean.planner.como}" maxlength="100" />
+					</div>
+					<div class="ui-g-12">
+						<p:outputLabel value="Critérios" />
+						<p:inputText value="#{projetoBean.planner.porque}" maxlength="100" />
+					</div>
+					<div class="ui-g-12 ui-md-6">
+						<p:outputLabel value="Data limite" />
+						<p:calendar showOn="button" mask="99/99/9999" pattern="dd/MM/yyyy"
+							value="#{projetoBean.planner.quando}"
+							mindate="#{projetoBean.projeto.abertura.dataAbertura}"
+							maxdate="#{projetoBean.projeto.abertura.dataPrevistaTermino}"
+							rendered="#{not projetoBean.projeto.encerrado}" />
+						<p:inputText value="#{projetoBean.planner.quando}" readonly="true"
+							rendered="#{projetoBean.projeto.encerrado}">
+							<f:convertDateTime pattern="dd/MM/yyyy" />
+						</p:inputText>
+					</div>
+					<div class="ui-g-12 ui-md-6">
+						<p:outputLabel value="Responsável" for="txtResponsavelEntrega" />
+						<p:selectOneMenu id="txtResponsavelEntrega" autoWidth="false"
+							value="#{projetoBean.planner.quem}">
+							<f:selectItems value="#{projetoBean.listaParticipantes}" var="c"
+								itemValue="#{c.pessoa}" itemLabel="#{c.pessoa.nome}" />
+						</p:selectOneMenu>
+					</div>
+				</div>
+			</div>
+
+			<div align="right" style="margin-top: 5px;">
+				<p:commandButton process="formPacote" value="Confirmar"
+					actionListener="#{projetoBean.gravarPacoteEap}"
+					oncomplete="PF('addPacoteDialog').hide();" update="formCadastro" />
+			</div>
+
+		</h:form>
+
+	</p:dialog>
+
+</ui:composition>

@@ -1,0 +1,124 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<h1 style="margin-top: 65px">Pesquisa de produtos/serviços</h1>
+
+	<p:toolbar style="margin-top: 05px">
+		<p:toolbarGroup>
+			<p:splitButton id="botaoPesquisa" value="Pesquisar"
+				icon="ui-icon-search" action="#{produtoBean.pesquisar}"
+				update="@form">
+				<p:menuitem value="Imprimir lista" icon="ui-icon-print" ajax="false"
+					process="@form" action="#{produtoBean.imprimir}" target="_blank" />
+			</p:splitButton>
+		</p:toolbarGroup>
+		<p:toolbarGroup align="right">
+			<p:commandButton value="Novo" icon="ui-icon-document"
+				disabled="#{produtoBean.somenteLeitura}"
+				actionListener="#{produtoBean.novo}" update="@form" />
+		</p:toolbarGroup>
+	</p:toolbar>
+
+	<div class="ui-fluid">
+		<div class="ui-g" style="margin-top: 5px; border: 1px solid silver;">
+			<div class="ui-g-12 ui-md-6">
+				<p:outputLabel value="Descrição produto/serviço" for="nome" />
+				<p:inputText id="nome" value="#{produtoBean.filtro.nome}" />
+			</div>
+
+			<h:panelGroup rendered="#{not produtoBean.oficina}">
+				<div class="ui-g-12 ui-md-6">
+					<p:outputLabel value="Categoria" />
+					<p:selectCheckboxMenu value="#{produtoBean.filtro.categorias}"
+						label="selecione" filter="true" filterMatchMode="startsWith">
+						<f:selectItems value="#{produtoBean.listaCategoria}" var="categ"
+							itemValue="#{categ}" itemLabel="#{categ.descricao}" />
+					</p:selectCheckboxMenu>
+				</div>
+			</h:panelGroup>
+
+			<h:panelGroup rendered="#{produtoBean.oficina}">
+				<div class="ui-g-12 ui-md-4">
+					<p:outputLabel value="Categoria" />
+					<p:selectCheckboxMenu value="#{produtoBean.filtro.categorias}"
+						label="selecione" filter="true" filterMatchMode="startsWith">
+						<f:selectItems value="#{produtoBean.listaCategoria}" var="categ"
+							itemValue="#{categ}" itemLabel="#{categ.descricao}" />
+					</p:selectCheckboxMenu>
+				</div>
+				<div class="ui-g-12 ui-md-2">
+					<p:outputLabel value="Reposição" />
+					<p:selectOneMenu value="#{produtoBean.filtro.tipoReposicao}"
+						autoWidth="false">
+						<f:selectItem itemLabel="todos" />
+						<f:selectItems value="#{listaTipoBean.reposicao}" var="repo"
+							itemValue="#{repo}" itemLabel="#{repo.descricao}" />
+					</p:selectOneMenu>
+				</div>
+			</h:panelGroup>
+
+		</div>
+
+		<p:dataTable id="produtosTable" scrollable="true"
+			value="#{produtoBean.lista}" var="produto" style="margin-top: 5px"
+			emptyMessage="Nenhum produto encontrado." rows="8" paginator="true"
+			paginatorAlwaysVisible="false" paginatorPosition="bottom" lazy="true">
+
+			<p:column headerText="Descrição" style="width: 40%;"
+				sortBy="#{produto.nome}">
+				<h:outputText value="#{produto.nome}" />
+			</p:column>
+			<p:column headerText="Categoria">
+				<h:outputText value="#{produto.categoria.categoriaPai.descricao}" />
+			</p:column>
+			<p:column headerText="Estoque">
+				<div align="right">
+					<h:outputText value="#{produto.quantidadeEstoque}">
+						<f:convertNumber currencySymbol="" />
+					</h:outputText>
+				</div>
+			</p:column>
+			<p:column headerText="Preço unitário">
+				<div align="right">
+					<h:outputText value="#{produto.valorUnitario}">
+						<f:convertNumber type="currency" currencySymbol="" />
+					</h:outputText>
+				</div>
+			</p:column>
+			<p:column headerText="P.Venda (sug.)">
+				<div align="right">
+					<h:outputText value="#{produto.precoVendaSugerido}">
+						<f:convertNumber type="currency" currencySymbol="" />
+					</h:outputText>
+				</div>
+			</p:column>
+			<p:column headerText="Preço Mínimo">
+				<div align="right">
+					<h:outputText value="#{produto.precoMinimo}">
+						<f:convertNumber type="currency" currencySymbol="" />
+					</h:outputText>
+				</div>
+			</p:column>
+
+			<p:column width="80">
+				<p:commandButton title="Editar" icon="ui-icon-pencil"
+					class="button-grid" update="@form"
+					actionListener="#{produtoBean.setProduto(produto)}" process="@this" />
+				<p:commandButton icon="ui-icon-trash" process="@this"
+					class="button-grid" title="Excluir" update="@form"
+					disabled="#{cadastroProdutoBean.somenteLeitura}"
+					action="#{produtoBean.excluir(produto)}">
+					<p:confirm icon="ui-icon-alert" header="Confirma"
+						message="Excluir #{produto.nome}  ?" />
+				</p:commandButton>
+			</p:column>
+
+		</p:dataTable>
+	</div>
+
+	<p:blockUI block="formCadastro" trigger="botaoPesquisa" />
+
+</ui:composition>

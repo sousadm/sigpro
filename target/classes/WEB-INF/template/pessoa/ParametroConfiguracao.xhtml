@@ -1,0 +1,65 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<p:panelGrid id="painelPrincipal" columns="2" style="margin-top: 5px"
+		layout="grid" columnClasses="ui-grid-col-4, ui-grid-col-8"
+		styleClass="panelgrid-noborder">
+
+		<p:outputLabel value="Logomarca"
+			rendered="#{parametroBean.usuarioPrincipal}" />
+		<h:panelGroup rendered="#{parametroBean.usuarioPrincipal}">
+			<p:commandButton value="Adicionar"
+				title="Adicionar logomarca da empresa" process="@this"
+				oncomplete="PF('dlgAddLogomarca').show()"
+				rendered="#{not parametroBean.mail.estaComLogomarca}" />
+			<p:commandButton value="Remover Logomarca"
+				title="Remover logomarca da empresa" process="@this"
+				action="#{parametroBean.removerLogomarca}"
+				onclick="jQuery(this).addClass('ui-state-disabled')" update="@form"
+				rendered="#{parametroBean.mail.estaComLogomarca}">
+				<p:confirm icon="ui-icon-alert" header="Confirma"
+					message="Remover logomarca?" />
+			</p:commandButton>
+			<p:outputLabel id="txtLogomarca"
+				value="#{parametroBean.mail.logomarca}" />
+		</h:panelGroup>
+
+		<p:outputLabel value="Mensagem envio de pedido"
+			rendered="#{parametroBean.usuarioPrincipal}" />
+		<p:inputTextarea rows="2" cols="50"
+			rendered="#{parametroBean.usuarioPrincipal}"
+			value="#{parametroBean.mail.msgMailPedido}" />
+
+		<p:outputLabel value="E-mail da contabilidade"
+			rendered="#{parametroBean.usuarioPrincipal}" />
+		<p:inputText size="40" maxlength="150"
+			placeholder="e-mail para envio de documento fiscal"
+			rendered="#{parametroBean.usuarioPrincipal}"
+			style="text-transform: lowercase; width: 100%"
+			value="#{parametroBean.mail.userMailContabilidade}" />
+
+		<p:outputLabel value="Thema de ambiente" />
+		<p:selectOneMenu value="#{parametroBean.mail.theme}">
+			<f:selectItems value="#{listaTipoBean.tipoTheme}" var="theme"
+				itemValue="#{theme}" itemLabel="#{theme}" />
+			<p:ajax update="@all" listener="#{parametroBean.gravarThema}" />
+		</p:selectOneMenu>
+
+		<p:outputLabel value="Análise Inicial" />
+		<p:selectOneMenu value="#{parametroBean.mail.modelo}"
+			autoWidth="false">
+			<f:selectItems value="#{listaTipoBean.tipoGraficoModelo}"
+				var="modelo" itemValue="#{modelo}" itemLabel="#{modelo}" />
+		</p:selectOneMenu>
+
+	</p:panelGrid>
+
+	<div align="right">
+		<p:commandButton value="Aplicar" icon="ui-icon-check" process="@form"
+			update="@all" actionListener="#{parametroBean.gravarMail}" />
+	</div>
+
+</ui:composition>

@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+<h:head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<title>Login</title>
+	<h:outputStylesheet library="sigpro" name="styles/components.css" />
+	<h:outputStylesheet library="sigpro" name="styles/layout.css" />
+	<h:outputStylesheet library="sigpro" name="styles/custom.css" />
+
+	<style>
+#login-dialog {
+	max-width: 1170px;
+	margin: 0 auto;
+	width: 300px;
+	margin-top: 50px;
+	background: url('sigpro/images/logo.png');
+}
+
+body {
+	width: 100%;
+	height: 100%;
+	background-color: #eeeeee;
+	background-image: url("#{resource['sigpro/images/fundo.jpg']}");
+}
+
+.empresa {
+	text-transform: uppercase;
+	font-weight: bold
+}
+
+.texto {
+	margin: 3px 0;
+	padding: 5px 10px;
+}
+
+.botao {
+	height: 50px;
+	/* 	background-image: url("#{resource['sigpro/images/login.png']}"); */
+}
+</style>
+
+</h:head>
+
+<h:body>
+
+	<f:metadata>
+		<f:viewParam name="dummy" />
+		<f:event listener="#{loginBean.preRender}" type="preRenderView" />
+	</f:metadata>
+
+	<h:form id="form" prependId="false">
+
+		<div id="login-dialog">
+
+			<p:focus rendered="#{loginBean.nome == null}" for="empresa" />
+
+			<p:focus rendered="#{loginBean.nome != null}" for="j_password" />
+
+			<p:graphicImage library="sigpro" name="images/sigpro.png" />
+
+			<p:growl id="msg" />
+
+			<div class="ui-fluid grid-login">
+
+				<div class="ui-g">
+					<div class="ui-g-12">
+						<p:inputText id="empresa" value="#{loginBean.empresa}"
+							required="true" requiredMessage="informe a empresa"
+							placeholder="empresa" class="empresa texto" />
+					</div>
+					<div class="ui-g-12">
+						<p:inputText id="j_username" value="#{loginBean.nome}"
+							required="true" requiredMessage="informe o usuário" class="texto"
+							placeholder="usuário" />
+					</div>
+					<div class="ui-g-12">
+						<p:password id="j_password" placeholder="senha" class="texto"
+							required="true" requiredMessage="digite a senha" />
+					</div>
+					<div class="ui-g-12">
+						<p:commandButton id="botaoSalvar" value="Acessar"
+							icon="fa fa-2x fa-user"
+							onclick="jQuery(this).addClass('ui-state-disabled')"
+							action="#{loginBean.login}" class="botao" ajax="false" />
+					</div>
+				</div>
+
+			</div>
+		</div>
+
+		<p:blockUI block="form" trigger="botaoSalvar" />
+
+	</h:form>
+
+</h:body>
+
+</html>

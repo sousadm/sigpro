@@ -1,0 +1,99 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<h1 style="margin-top: 65px">Remessa de Títulos</h1>
+
+	<p:messages autoUpdate="true" closable="true" />
+
+	<p:toolbar style="margin-top: 05px">
+		<p:toolbarGroup>
+
+			<p:splitButton id="botaoPesquisa" value="Pesquisar"
+				icon="ui-icon-search" action="#{remessaBean.pesquisar}"
+				process="@form" update="@form">
+				<p:menuitem value="Imprimir lista" icon="ui-icon-print" ajax="false"
+					process="@form" action="#{remessaBean.imprimir_lista}"
+					target="_blank" />
+			</p:splitButton>
+		</p:toolbarGroup>
+
+		<p:toolbarGroup align="right">
+			<p:commandButton value="Novo" icon="ui-icon-document"
+				action="#{remessaBean.novo}" update="@form" />
+		</p:toolbarGroup>
+
+	</p:toolbar>
+
+	<div class="ui-fluid">
+		<div class="ui-g" style="margin-top: 5px; border: 1px solid gray;">
+			<div class="ui-g-6 ui-md-3">
+				<p:outputLabel value="Emissão" />
+				<p:calendar navigator="true" showOn="button" mask="99/99/9999"
+					pattern="dd/MM/yyyy" value="#{remessaBean.filtro.emissaoInicial}" />
+			</div>
+			<div class="ui-g-6 ui-md-3">
+				<p:outputLabel value="Término" />
+				<p:calendar navigator="true" showOn="button" mask="99/99/9999"
+					pattern="dd/MM/yyyy" value="#{remessaBean.filtro.emissaoFinal}" />
+			</div>
+			<div class="ui-g-12 ui-md-6">
+				<p:outputLabel value="Agente" />
+				<p:selectOneMenu value="#{remessaBean.filtro.agente}"
+					autoWidth="false">
+					<f:selectItem itemLabel="Selecione" />
+					<f:selectItems value="#{remessaBean.agentes}" var="p"
+						itemLabel="#{p.nome}" itemValue="#{p.agente}" />
+				</p:selectOneMenu>
+			</div>
+		</div>
+	</div>
+
+	<p:dataTable id="tabela" value="#{remessaBean.lista}" var="remessa"
+		rowIndexVar="linha" lazy="true" scrollable="true"
+		style="margin-top: 5px" emptyMessage="Nenhum registro encontrado."
+		rows="10" paginator="true" paginatorAlwaysVisible="false"
+		paginatorPosition="bottom">
+		<p:column headerText="Cadastro" sortBy="#{remessa.dataCadastro}"
+			style="width: 80px">
+			<h:outputText value="#{remessa.dataCadastro}">
+				<f:convertDateTime pattern="dd/MM/yyyy" />
+			</h:outputText>
+		</p:column>
+		<p:column headerText="Emissão" sortBy="#{remessa.dataEmissao}"
+			style="width: 80px">
+			<h:outputText value="#{remessa.dataEmissao}">
+				<f:convertDateTime pattern="dd/MM/yyyy" />
+			</h:outputText>
+		</p:column>
+		<p:column headerText="Tipo" style="width: 55px">
+			<h:outputText value="#{remessa.tipo}"
+				title="#{remessa.tipo.descricao}" />
+		</p:column>
+		<p:column headerText="Destino" sortBy="#{remessa.destino.nome}">
+			<h:outputText value="#{remessa.destino.nome}" />
+		</p:column>
+		<p:column headerText="Volume" style="text-align: right; width: 65px">
+			<h:outputText value="#{remessa.volume}">
+				<f:convertNumber />
+			</h:outputText>
+		</p:column>
+		<p:column headerText="Valor" style="text-align: right; width: 65px">
+			<h:outputText value="#{remessa.valorTotal}">
+				<f:convertNumber type="currency" currencySymbol="" />
+			</h:outputText>
+		</p:column>
+
+		<p:column style="width: 40px; text-align: center">
+			<p:commandButton title="Editar" icon="ui-icon-pencil"
+				class="button-grid" update="@form"
+				actionListener="#{remessaBean.setRemessa(remessa)}" process="@this" />
+		</p:column>
+
+	</p:dataTable>
+
+	<p:blockUI block="formCadastro" trigger="botaoPesquisa" />
+
+</ui:composition>

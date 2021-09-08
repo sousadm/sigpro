@@ -1,0 +1,93 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<div align="right">
+		<p:commandButton value="Add Produto" icon="ui-icon-search"
+			title="Pesquisa produto" process="@this"
+			actionListener="#{selecionaBean.produtoAquisicao}"
+			disabled="#{not aquisicaoBean.aquisicao.podeAdicionarItem}">
+			<p:ajax event="dialogReturn"
+				listener="#{aquisicaoBean.onProdutoChosen}"
+				update="formCadastro:tabView:tabelaItems formCadastro:totalPedido" />
+		</p:commandButton>
+	</div>
+
+	<p:dataTable id="tabelaItems" value="#{aquisicaoBean.aquisicao.items}"
+		var="item" rowIndexVar="linha" style="margin-top: 5px"
+		scrollable="true" emptyMessage="Nenhum item encontrado." rows="10"
+		paginator="true" paginatorAlwaysVisible="false"
+		paginatorPosition="bottom">
+
+		<p:column headerText="Código" width="80">
+			<p:link value="#{item.produto.sku}"
+				outcome="/cadastros/CadastroProduto"
+				title="ir para cadastro #{item.produto.nome}">
+				<f:param name="produto" value="#{item.produto.id}" />
+			</p:link>
+		</p:column>
+		<p:column headerText="Produto" with="100%">
+			<p:link value="#{item.produto.nome}"
+				outcome="/cadastros/CadastroProduto"
+				title="ir para cadastro #{item.produto.nome}">
+				<f:param name="produto" value="#{item.produto.id}" />
+			</p:link>
+		</p:column>
+
+		<p:column headerText="Quantidade" style="text-align: right" width="80">
+			<p:inputNumber value="#{item.quantidade}" size="6"
+				decimalPlaces="#{item.produto.unidade.precisao}" minValue="0"
+				rendered="#{aquisicaoBean.aquisicao.podeModificarItem}">
+				<p:ajax event="change" process="@this"
+					listener="#{aquisicaoBean.calcularItem(item)}"
+					update="formCadastro:totalPedido" />
+			</p:inputNumber>
+			<h:outputText value="#{item.quantidade}"
+				rendered="#{not aquisicaoBean.aquisicao.podeModificarItem}">
+				<f:convertNumber />
+			</h:outputText>
+		</p:column>
+
+		<p:column headerText="Vr.Unitário" style="text-align: right"
+			width="80">
+			<p:inputNumber value="#{item.valorUnitario}" decimalPlaces="2"
+				minValue="0" size="6"
+				rendered="#{aquisicaoBean.aquisicao.podeModificarItem}">
+				<p:ajax event="change" process="@this"
+					listener="#{aquisicaoBean.calcularItem(item)}"
+					update="formCadastro:totalPedido" />
+			</p:inputNumber>
+			<h:outputText value="#{item.valorUnitario}"
+				rendered="#{not aquisicaoBean.aquisicao.podeModificarItem}">
+				<f:convertNumber type="currency" />
+			</h:outputText>
+		</p:column>
+
+		<p:column headerText="Desconto" style="text-align: right" width="80">
+			<p:inputNumber value="#{item.valorDesconto}" decimalPlaces="2"
+				minValue="0" size="6"
+				rendered="#{aquisicaoBean.aquisicao.podeModificarItem}">
+				<p:ajax event="change" process="@this"
+					listener="#{aquisicaoBean.calcularItem(item)}"
+					update="formCadastro:totalPedido" />
+			</p:inputNumber>
+			<h:outputText value="#{item.valorDesconto}"
+				rendered="#{not aquisicaoBean.aquisicao.podeModificarItem}">
+				<f:convertNumber type="currency" />
+			</h:outputText>
+		</p:column>
+
+		<p:column style="text-align: center" width="50">
+			<p:commandButton title="remover" icon="ui-icon-trash"
+				actionListener="#{aquisicaoBean.excluirItem(linha)}"
+				disabled="#{not aquisicaoBean.aquisicao.podeModificarItem}"
+				update="@form">
+				<p:confirm icon="ui-icon-alert" header="Remover"
+					message="Remover item atual?" />
+			</p:commandButton>
+		</p:column>
+	</p:dataTable>
+
+</ui:composition>

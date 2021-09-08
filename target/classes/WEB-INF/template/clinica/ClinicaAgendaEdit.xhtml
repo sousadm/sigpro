@@ -1,0 +1,131 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<h1 style="margin-top: 65px">Agendamento Clínico</h1>
+
+	<p:toolbar style="margin-top: 5px">
+		<p:toolbarGroup>
+			<p:commandButton value="Salvar" />
+		</p:toolbarGroup>
+
+		<p:toolbarGroup align="right">
+			<p:commandButton value="Agenda"
+				action="#{clinicaAtendimentoBean.setAgenda(null)}" update="@form" />
+		</p:toolbarGroup>
+	</p:toolbar>
+
+
+	<div class="ui-fluid" style="margin-top: 5px">
+		<div class="ui-g">
+
+			<div class="ui-g-12 ui-md-6">
+				<p:outputLabel value="Especialista" />
+				<p:inputText value="#{clinicaAtendimentoBean.consultor.nome}"
+					styleClass="negrito desabilitado" />
+			</div>
+			<div class="ui-g-12 ui-md-6">
+				<p:outputLabel value="Horário" />
+				<p:inputText value="#{clinicaAtendimentoBean.agenda.dataMarcada}"
+					styleClass="negrito desabilitado">
+					<f:convertDateTime pattern="dd/MM/yyyy HH:mm" />
+				</p:inputText>
+			</div>
+
+			<div class="ui-g-12 ui-md-3">
+				<p:outputLabel value="CPF" for="txtCpf" />
+				<p:inputMask mask="999.999.999-99" id="txtCpf" size="25"
+					value="#{clinicaAtendimentoBean.paciente.PF.cpf}">
+					<f:ajax event="change" render="@form"
+						listener="#{clinicaAtendimentoBean.pesquisaPorCpf}" />
+				</p:inputMask>
+			</div>
+			<div class="ui-g-12 ui-md-6">
+				<p:outputLabel value="Nome" for="nome" />
+				<p:inputText id="nome" size="40"
+					value="#{clinicaAtendimentoBean.paciente.nome}" />
+			</div>
+			<div class="ui-g-12 ui-md-3">
+				<p:outputLabel value="Celular" for="celular" />
+				<p:inputText id="celular" size="20"
+					value="#{clinicaAtendimentoBean.paciente.celular}" />
+			</div>
+
+			<div class="ui-g-12 ui-md-9">
+				<p:outputLabel value="E-mail" for="email" />
+				<p:inputText id="email" size="40" maxlength="150"
+					style="text-transform: lowercase"
+					value="#{clinicaAtendimentoBean.paciente.email}" />
+			</div>
+			<div class="ui-g-12 ui-md-3">
+				<p:outputLabel value="Fone" for="fone" />
+				<p:inputText id="fone" size="20"
+					value="#{clinicaAtendimentoBean.paciente.fone}" />
+			</div>
+
+			<div class="ui-g-12 ui-md-2">
+				<p:commandLink update="@none" action="#{selecionaBean.endereco}"
+					process="@this" title="pesquisa endereço postal">
+					<h:outputText value="CEP" />
+					<p:ajax event="dialogReturn"
+						listener="#{clinicaAtendimentoBean.carregarPesquisaEndereco}"
+						update="@form" ignoreAutoUpdate="true" />
+				</p:commandLink>
+				<p:inputMask mask="99.999-999" id="cep"
+					value="#{clinicaAtendimentoBean.paciente.endereco.cep}">
+					<p:ajax event="change" update="@form"
+						listener="#{clinicaAtendimentoBean.carregarEndereco()}" />
+				</p:inputMask>
+			</div>
+			<div class="ui-g-12 ui-md-8">
+				<p:outputLabel value="Logradouro" for="logra" />
+				<p:inputText id="logra"
+					value="#{clinicaAtendimentoBean.paciente.endereco.logradouro}" />
+			</div>
+			<div class="ui-g-12 ui-md-2">
+				<p:outputLabel value="Número" for="numero" />
+				<p:inputText id="numero"
+					value="#{clinicaAtendimentoBean.paciente.endereco.numero}">
+					<f:convertNumber integerOnly="true" />
+				</p:inputText>
+			</div>
+
+			<div class="ui-g-12 ui-md-6">
+				<p:outputLabel value="Complemento" for="compl" />
+				<p:inputText id="compl"
+					value="#{clinicaAtendimentoBean.paciente.endereco.complemento}" />
+			</div>
+			<div class="ui-g-12 ui-md-6">
+				<p:outputLabel value="UF" for="txtUF" />
+				<p:selectOneMenu id="txtUF" value="#{clinicaAtendimentoBean.xUf}"
+					autoWidth="false">
+					<f:selectItem itemLabel="Selecione" />
+					<f:selectItems value="#{listaTipoBean.unidadeFederativa}"
+						var="estado" itemValue="#{estado}" itemLabel="#{estado.descricao}" />
+					<f:ajax render="txtMunicipios" event="change"
+						listener="#{clinicaAtendimentoBean.carregaMunicipios}"
+						update="formCadastro:tabGrupo:txtMunicipios" />
+				</p:selectOneMenu>
+			</div>
+			<div class="ui-g-12 ui-md-6">
+				<p:outputLabel value="Município" for="txtMunicipios" />
+				<p:selectOneMenu id="txtMunicipios" autoWidth="false"
+					value="#{clinicaAtendimentoBean.paciente.endereco.municipio}">
+					<f:selectItem itemLabel="Selecione" />
+					<f:selectItems value="#{clinicaAtendimentoBean.listaMunicipio}"
+						var="municipio" itemValue="#{municipio}"
+						itemLabel="#{municipio.descricao}" />
+				</p:selectOneMenu>
+			</div>
+			<div class="ui-g-12 ui-md-6">
+				<p:outputLabel value="Bairro" for="bairro" />
+				<p:inputText id="bairro"
+					value="#{clinicaAtendimentoBean.paciente.endereco.bairro}" />
+			</div>
+
+		</div>
+	</div>
+
+</ui:composition>

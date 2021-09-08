@@ -1,0 +1,95 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<h1 style="margin-top: 65px">Acolhimento clínico</h1>
+
+	<p:toolbar style="margin-top: 5px">
+
+		<p:toolbarGroup>
+			<p:commandButton value="Pesquisar" icon="ui-icon-search"
+				action="#{clinicaAcolhimentoBean.pesquisar}" update="@form" />
+		</p:toolbarGroup>
+
+		<p:toolbarGroup align="right">
+			<p:commandButton value="Novo" icon="ui-icon-document"
+				action="#{clinicaAcolhimentoBean.novo}" update="@form" />
+		</p:toolbarGroup>
+
+	</p:toolbar>
+
+	<div class="ui-fluid">
+		<div class="ui-g" style="margin-top: 5px; border: 1px solid silver;">
+			<div class="ui-g-12 ui-md-2">
+				<p:outputLabel value="CPF / Documento" />
+				<p:inputText id="txtPesqCpf"
+					value="#{clinicaAcolhimentoBean.filtro.codigo}" />
+			</div>
+			<div class="ui-g-12 ui-md-6">
+				<p:outputLabel value="Nome do Paciente" />
+				<p:inputText id="txtPesqNome"
+					value="#{clinicaAcolhimentoBean.filtro.nome}" />
+			</div>
+			<div class="ui-g-6 ui-md-2">
+				<p:outputLabel value="Cadastro" />
+				<p:calendar navigator="true" showOn="button" mask="99/99/9999"
+					pattern="dd/MM/yyyy"
+					value="#{clinicaAcolhimentoBean.filtro.inicio}" />
+			</div>
+			<div class="ui-g-6 ui-md-2">
+				<p:outputLabel value="Término" />
+				<p:calendar navigator="true" showOn="button" mask="99/99/9999"
+					pattern="dd/MM/yyyy"
+					value="#{clinicaAcolhimentoBean.filtro.termino}" />
+			</div>
+		</div>
+	</div>
+
+	<p:dataTable id="pedidosTable" var="agenda"
+		value="#{clinicaAcolhimentoBean.listaClinicaAgenda}"
+		style="margin-top: 5px; width: 100%" rows="8" scrollable="true"
+		paginator="true" paginatorAlwaysVisible="false"
+		paginatorPosition="bottom" emptyMessage="Nenhum pedido encontrado."
+		lazy="true">
+
+		<p:column headerText="Data/Hora">
+			<h:outputText value="#{agenda.acolhimento.dataAcolhimento}">
+				<f:convertDateTime pattern="dd/MM/yyyy HH:mm" />
+			</h:outputText>
+		</p:column>
+		<p:column headerText="Nome do Paciente">
+			<h:outputText value="#{agenda.paciente.nome}" />
+		</p:column>
+		<p:column headerText="Convênio">
+			<h:outputText value="#{agenda.convenio.descricao}" />
+		</p:column>
+		<p:column headerText="Padrão">
+			<h:outputText value="#{agenda.acolhimento.padrao.descricao}" />
+		</p:column>
+		<p:column headerText="Liberado em">
+			<h:outputText value="#{agenda.acolhimento.dataLiberaClinica}">
+				<f:convertDateTime pattern="dd/MM/yyyy HH:mm" />
+			</h:outputText>
+		</p:column>
+		<p:column headerText="Atendido em">
+			<h:outputText value="#{agenda.atendimento.dataInicioAtendimento}">
+				<f:convertDateTime pattern="dd/MM/yyyy HH:mm" />
+			</h:outputText>
+		</p:column>
+		<p:column headerText="Cancelado em">
+			<h:outputText value="#{agenda.dataCancela}">
+				<f:convertDateTime pattern="dd/MM/yyyy HH:mm" />
+			</h:outputText>
+		</p:column>
+
+		<p:column style="text-align: center;">
+			<p:commandButton icon="ui-icon-pencil" title="Editar" update="@form"
+				class="button-grid"
+				action="#{clinicaAcolhimentoBean.setAgenda(agenda)}" />
+		</p:column>
+
+	</p:dataTable>
+
+</ui:composition>

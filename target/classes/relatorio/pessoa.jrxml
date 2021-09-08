@@ -1,0 +1,669 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="pessoa" language="groovy" pageWidth="595" pageHeight="842" columnWidth="575" leftMargin="10" rightMargin="10" topMargin="10" bottomMargin="10" uuid="d077607a-7c5e-49d7-8bdc-0988211ebe65">
+	<property name="ireport.zoom" value="1.4641000000000015"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<subDataset name="dataset1" uuid="1c803ca0-425f-4d99-835a-00219809e63f"/>
+	<parameter name="contatos" class="java.lang.Object"/>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["C:\\Users\\sousa\\Documents\\JAVA\\sigpro\\src\\main\\webapp\\relatorio\\"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="analise" class="java.lang.Object"/>
+	<parameter name="endereco" class="java.lang.Object"/>
+	<queryString>
+		<![CDATA[]]>
+	</queryString>
+	<field name="nome" class="java.lang.String"/>
+	<field name="fone" class="java.lang.String"/>
+	<field name="PF" class="java.lang.Object"/>
+	<field name="tipo" class="java.lang.Object"/>
+	<field name="celular" class="java.lang.String"/>
+	<field name="PJ" class="java.lang.Object"/>
+	<field name="cliente" class="java.lang.Object"/>
+	<field name="email" class="java.lang.String"/>
+	<field name="atividade" class="java.lang.Object"/>
+	<detail>
+		<band height="173" splitType="Stretch">
+			<textField isBlankWhenNull="true">
+				<reportElement x="0" y="51" width="335" height="14" uuid="df07c028-b17a-43a2-b16d-cb246266fe49"/>
+				<box leftPadding="3" bottomPadding="1" rightPadding="3">
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
+					<rightPen lineWidth="0.75"/>
+				</box>
+				<textElement markup="html"/>
+				<textFieldExpression><![CDATA[$F{nome}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="1" y="72" width="275" height="14" uuid="e6cb7b85-45b1-4e3a-af53-63dfb3815485"/>
+				<textElement>
+					<font isBold="false"/>
+				</textElement>
+				<text><![CDATA[Logradouro]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="1" y="106" width="169" height="14" uuid="c5772a33-4b36-4db2-916a-8d664594fb1f"/>
+				<textElement markup="html">
+					<font isBold="false"/>
+				</textElement>
+				<text><![CDATA[Complemento]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="528" y="72" width="47" height="14" uuid="08565ea0-8825-437e-ba70-8049dd1a5b38"/>
+				<textElement markup="html">
+					<font isBold="false"/>
+				</textElement>
+				<text><![CDATA[Número]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="528" y="86" width="47" height="14" uuid="a35e991f-b4ad-495f-b0f0-ea0ac07c464b"/>
+				<box leftPadding="3" bottomPadding="1" rightPadding="3">
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
+					<rightPen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Center" markup="html"/>
+				<textFieldExpression><![CDATA[$P{endereco}.getNumero()]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="340" y="37" width="115" height="14" uuid="72e8977a-d16d-4ccd-bc73-a2a74bbcf2a1"/>
+				<textElement markup="html">
+					<font isBold="false"/>
+				</textElement>
+				<text><![CDATA[Fone]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="340" y="51" width="115" height="14" uuid="f54577b5-3e05-4aae-b9c7-23268bcde04a"/>
+				<box leftPadding="3" bottomPadding="1" rightPadding="3">
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
+					<rightPen lineWidth="0.75"/>
+				</box>
+				<textElement markup="html"/>
+				<textFieldExpression><![CDATA[$F{fone}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="1" y="86" width="275" height="14" uuid="2aa445f2-7e2a-4f59-a0b0-47f7db162544"/>
+				<box leftPadding="3" bottomPadding="1" rightPadding="3">
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
+					<rightPen lineWidth="0.75"/>
+				</box>
+				<textElement markup="html"/>
+				<textFieldExpression><![CDATA[$P{endereco}.getLogradouro()]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="1" y="120" width="169" height="14" uuid="a879d697-2a38-404f-96c1-913815f94616"/>
+				<box leftPadding="3" bottomPadding="1" rightPadding="3">
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
+					<rightPen lineWidth="0.75"/>
+				</box>
+				<textElement markup="html"/>
+				<textFieldExpression><![CDATA[$P{endereco}.getComplemento()]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="177" y="106" width="261" height="14" uuid="1f8f4271-3478-4f60-8740-08485b49f300"/>
+				<textElement markup="html">
+					<font isBold="false"/>
+				</textElement>
+				<text><![CDATA[Cidade]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="177" y="120" width="261" height="14" uuid="a0993cd8-3b4d-4b95-86a9-e3a476bbed52"/>
+				<box leftPadding="3" bottomPadding="1" rightPadding="3">
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
+					<rightPen lineWidth="0.75"/>
+				</box>
+				<textElement markup="html"/>
+				<textFieldExpression><![CDATA[$P{endereco}.getMunicipio().getDescricao()]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="444" y="106" width="36" height="14" uuid="33e5dd54-edd1-4e69-a7e9-6e0bdc9f2c16"/>
+				<textElement markup="html">
+					<font isBold="false"/>
+				</textElement>
+				<text><![CDATA[UF]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="444" y="120" width="36" height="14" uuid="c479069a-82b0-4627-810b-441ba4bd3c06"/>
+				<box leftPadding="3" bottomPadding="1" rightPadding="3">
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
+					<rightPen lineWidth="0.75"/>
+				</box>
+				<textElement markup="html"/>
+				<textFieldExpression><![CDATA[$P{endereco}.getMunicipio().getUf().getCodigo()]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="487" y="120" width="88" height="14" uuid="f61f8910-c773-4459-88ff-dc96bff62d5f"/>
+				<box leftPadding="3" bottomPadding="1" rightPadding="3">
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
+					<rightPen lineWidth="0.75"/>
+				</box>
+				<textElement markup="html"/>
+				<textFieldExpression><![CDATA[($P{endereco}.getCep().length() == 8 ? ($P{endereco}.getCep().substring(0, 2) + "." + $P{endereco}.getCep().substring(2, 5) + "-" + $P{endereco}.getCep().substring(5, 8)) : $P{endereco}.getCep())]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="487" y="106" width="88" height="14" uuid="d1c04c80-fe45-43d5-bba4-ee74094a644c"/>
+				<textElement markup="html">
+					<font isBold="false"/>
+				</textElement>
+				<text><![CDATA[CEP]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="460" y="37" width="115" height="14" uuid="f1fc65ef-b4db-4f26-b577-3b1cf1f10e5b"/>
+				<textElement markup="html">
+					<font isBold="false"/>
+				</textElement>
+				<text><![CDATA[Fone]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="460" y="51" width="115" height="14" uuid="4e017e97-c59c-4419-ab2c-994e01996ffd"/>
+				<box leftPadding="3" bottomPadding="1" rightPadding="3">
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
+					<rightPen lineWidth="0.75"/>
+				</box>
+				<textElement markup="html"/>
+				<textFieldExpression><![CDATA[$F{celular}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="37" width="335" height="14" uuid="92818da5-ee7d-42cd-b9a2-0c97a2f91bf1"/>
+				<textElement>
+					<font isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{tipo}.toString() == "PJ" ? "Razão Social" : "Nome"]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="225" y="140" width="350" height="14" uuid="d34ae949-5915-4288-b2fd-e9add2e40361"/>
+				<textElement>
+					<font isBold="false"/>
+				</textElement>
+				<text><![CDATA[E-mail]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="225" y="154" width="350" height="14" uuid="0fef080c-ebb7-4b50-a480-5aa7f00cf955"/>
+				<box leftPadding="3" bottomPadding="1" rightPadding="3">
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
+					<rightPen lineWidth="0.75"/>
+				</box>
+				<textElement markup="html"/>
+				<textFieldExpression><![CDATA[$F{email}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="140" width="220" height="14" uuid="401d09f4-2852-4958-ba2d-5e309ddcc2dc"/>
+				<textElement markup="html">
+					<font isBold="false"/>
+				</textElement>
+				<text><![CDATA[Atividade Principal]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="0" y="154" width="220" height="14" uuid="2954c8e2-3b73-41b5-a2d6-4ece5fbc7e76"/>
+				<box leftPadding="3" bottomPadding="1" rightPadding="3">
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
+					<rightPen lineWidth="0.75"/>
+				</box>
+				<textElement markup="html"/>
+				<textFieldExpression><![CDATA[$F{atividade}.getDescricao()]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement mode="Opaque" x="1" y="1" width="574" height="25" backcolor="#CCCCCC" uuid="ed943bfb-4af2-47c7-bb8e-44d80253a269"/>
+				<box topPadding="2" leftPadding="2">
+					<bottomPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" markup="html">
+					<font size="16" isBold="true"/>
+				</textElement>
+				<text><![CDATA[FICHA CADASTRAL]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="283" y="72" width="239" height="14" uuid="c141a1f3-5429-4c16-ad69-b1daab2de90c"/>
+				<textElement markup="html">
+					<font isBold="false"/>
+				</textElement>
+				<text><![CDATA[Bairro]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="283" y="86" width="239" height="14" uuid="07a71251-5d4a-48fe-ab76-8bd9e48060f0"/>
+				<box leftPadding="3" bottomPadding="1" rightPadding="3">
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
+					<rightPen lineWidth="0.75"/>
+				</box>
+				<textElement markup="html"/>
+				<textFieldExpression><![CDATA[$P{endereco}.getBairro()]]></textFieldExpression>
+			</textField>
+		</band>
+		<band height="101">
+			<printWhenExpression><![CDATA[$F{tipo}.toString() == "PF"]]></printWhenExpression>
+			<staticText>
+				<reportElement x="1" y="3" width="94" height="14" uuid="7681ea1b-b921-4913-b009-adda5e06574b"/>
+				<textElement>
+					<font isBold="false"/>
+				</textElement>
+				<text><![CDATA[CPF]]></text>
+			</staticText>
+			<textField pattern="###.###.###-##" isBlankWhenNull="true">
+				<reportElement x="1" y="18" width="94" height="14" uuid="fb8029bf-5bd2-4255-8a00-94d8861903f5"/>
+				<box leftPadding="3" bottomPadding="1" rightPadding="3">
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
+					<rightPen lineWidth="0.75"/>
+				</box>
+				<textElement markup="html"/>
+				<textFieldExpression><![CDATA[$F{PF}.getCpf()]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="100" y="18" width="101" height="14" uuid="7f9f335c-81ff-42a8-8514-3c4241427b2e"/>
+				<box leftPadding="3" bottomPadding="1" rightPadding="3">
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
+					<rightPen lineWidth="0.75"/>
+				</box>
+				<textElement markup="html"/>
+				<textFieldExpression><![CDATA[$F{PF}.getIdentidade()]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="100" y="3" width="101" height="14" uuid="d3956a45-118a-404a-808f-668ec787c712"/>
+				<textElement markup="html">
+					<font isBold="false"/>
+				</textElement>
+				<text><![CDATA[Identidade]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="253" y="4" width="115" height="14" uuid="750b1f28-114f-4280-9fc3-70ae98a76c27"/>
+				<textElement markup="html">
+					<font isBold="false"/>
+				</textElement>
+				<text><![CDATA[Data de Emissão]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="206" y="3" width="41" height="14" uuid="78c2da71-62ff-442a-9fbb-cd287a1c570d"/>
+				<textElement markup="html">
+					<font isBold="false"/>
+				</textElement>
+				<text><![CDATA[Órgão]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="206" y="18" width="41" height="14" uuid="5706141e-9c37-4512-b2c4-431967366fc5"/>
+				<box leftPadding="3" bottomPadding="1" rightPadding="3">
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
+					<rightPen lineWidth="0.75"/>
+				</box>
+				<textElement markup="html"/>
+				<textFieldExpression><![CDATA[$F{PF}.getOrgao()]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
+				<reportElement x="253" y="19" width="115" height="15" uuid="42bca20c-7798-4cdb-823d-d20236172d4e"/>
+				<box leftPadding="3" bottomPadding="1" rightPadding="3">
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
+					<rightPen lineWidth="0.75"/>
+				</box>
+				<textElement markup="html"/>
+				<textFieldExpression><![CDATA[$F{PF}.getEmissao()]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="1" y="38" width="284" height="14" uuid="20fcf145-a424-474f-9d4c-481dacea01d0"/>
+				<textElement>
+					<font isBold="false"/>
+				</textElement>
+				<text><![CDATA[Nome do Pai]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="1" y="52" width="284" height="14" uuid="f5632352-4e0f-4f09-b7ca-ee5c66895c5b"/>
+				<box leftPadding="3" bottomPadding="1" rightPadding="3">
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
+					<rightPen lineWidth="0.75"/>
+				</box>
+				<textElement markup="html"/>
+				<textFieldExpression><![CDATA[$F{PF}.getPai()]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="291" y="38" width="284" height="14" uuid="ce93a9c9-97ca-41d0-9f49-6614beb9d992"/>
+				<textElement>
+					<font isBold="false"/>
+				</textElement>
+				<text><![CDATA[Nome da Mãe]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="291" y="52" width="284" height="14" uuid="12040d98-4fb7-4273-9b00-08c38cf7c421"/>
+				<box leftPadding="3" bottomPadding="1" rightPadding="3">
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
+					<rightPen lineWidth="0.75"/>
+				</box>
+				<textElement markup="html"/>
+				<textFieldExpression><![CDATA[$F{PF}.getMae()]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
+				<reportElement x="464" y="19" width="111" height="15" uuid="66360887-c22b-4f59-b693-fb7269bdf342"/>
+				<box leftPadding="3" bottomPadding="1" rightPadding="3">
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
+					<rightPen lineWidth="0.75"/>
+				</box>
+				<textElement markup="html"/>
+				<textFieldExpression><![CDATA[$F{PF}.getNascimento()]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="464" y="5" width="111" height="14" uuid="e7914418-56cf-4cff-a34e-e205b3c4bc64"/>
+				<textElement markup="html">
+					<font isBold="false"/>
+				</textElement>
+				<text><![CDATA[Data de Nascimento]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="0" y="86" width="284" height="14" uuid="507ec8bd-4278-4fdf-91ea-31e2c01fb360"/>
+				<box leftPadding="3" bottomPadding="1" rightPadding="3">
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
+					<rightPen lineWidth="0.75"/>
+				</box>
+				<textElement markup="html"/>
+				<textFieldExpression><![CDATA[$F{PF}.getNacionalidade()]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="72" width="284" height="14" uuid="f19b2a6c-226c-4aee-a470-a285ebbcc5c8"/>
+				<textElement>
+					<font isBold="false"/>
+				</textElement>
+				<text><![CDATA[Nacionalidade]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="291" y="86" width="284" height="14" uuid="87bbca8f-6e22-4856-96eb-4f7a83718e4a"/>
+				<box leftPadding="3" bottomPadding="1" rightPadding="3">
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
+					<rightPen lineWidth="0.75"/>
+				</box>
+				<textElement markup="html"/>
+				<textFieldExpression><![CDATA[$F{PF}.getNaturalidade()]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="291" y="72" width="284" height="14" uuid="f29381f7-9430-47b0-847f-5bba41f8ff36"/>
+				<textElement markup="html">
+					<font isBold="false"/>
+				</textElement>
+				<text><![CDATA[Naturalidade:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="375" y="5" width="83" height="14" uuid="70219bf6-6967-48cc-966f-d2786d47d25a"/>
+				<textElement markup="html">
+					<font isBold="false"/>
+				</textElement>
+				<text><![CDATA[Sexo]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="375" y="19" width="83" height="14" uuid="69c39b5a-4110-4c06-9281-11b47d79ae4e"/>
+				<box leftPadding="3" bottomPadding="1" rightPadding="3">
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
+					<rightPen lineWidth="0.75"/>
+				</box>
+				<textElement markup="html"/>
+				<textFieldExpression><![CDATA[$F{PF}.getSexo().getDescricao()]]></textFieldExpression>
+			</textField>
+		</band>
+		<band height="169" splitType="Stretch">
+			<printWhenExpression><![CDATA[$F{tipo}.toString() == "PJ"]]></printWhenExpression>
+			<staticText>
+				<reportElement x="438" y="2" width="137" height="14" uuid="7a546137-a726-4112-a370-8ed05a1f03dd"/>
+				<textElement>
+					<font isBold="false"/>
+				</textElement>
+				<text><![CDATA[CNPJ]]></text>
+			</staticText>
+			<textField pattern="##.###.###/####-##" isBlankWhenNull="true">
+				<reportElement x="438" y="16" width="137" height="14" uuid="04ec2aa3-b430-4015-a477-d1647484f9c4"/>
+				<box leftPadding="3" bottomPadding="1" rightPadding="3">
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
+					<rightPen lineWidth="0.75"/>
+				</box>
+				<textElement markup="html"/>
+				<textFieldExpression><![CDATA[$F{PJ}.getCnpj()]]></textFieldExpression>
+			</textField>
+			<textField pattern="##.###.###/####-##" isBlankWhenNull="true">
+				<reportElement x="0" y="16" width="432" height="14" uuid="4014b1ef-e164-4465-8e95-bf30803626df"/>
+				<box leftPadding="3" bottomPadding="1" rightPadding="3">
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
+					<rightPen lineWidth="0.75"/>
+				</box>
+				<textElement markup="html"/>
+				<textFieldExpression><![CDATA[$F{PJ}.getFantasia()]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="2" width="432" height="14" uuid="6f14de6c-d688-4dff-a8dc-048cbcbb2599"/>
+				<textElement>
+					<font isBold="false"/>
+				</textElement>
+				<text><![CDATA[Nome de Fantasia]]></text>
+			</staticText>
+			<textField pattern="##.###.###/####-##" isBlankWhenNull="true">
+				<reportElement x="0" y="53" width="110" height="14" uuid="0c9fcbfd-34aa-46a4-9796-f7e5e39821ae"/>
+				<box leftPadding="3" bottomPadding="1" rightPadding="3">
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
+					<rightPen lineWidth="0.75"/>
+				</box>
+				<textElement markup="html"/>
+				<textFieldExpression><![CDATA[$F{PJ}.getIE()]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="39" width="110" height="14" uuid="4e9e70c9-302c-4fd3-bf7a-874704104132"/>
+				<textElement markup="html">
+					<font isBold="false"/>
+				</textElement>
+				<text><![CDATA[Insc.Estadual]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="114" y="39" width="110" height="14" uuid="2b23ff02-7eef-41ef-963a-6ab0b39bc2f8"/>
+				<textElement markup="html">
+					<font isBold="false"/>
+				</textElement>
+				<text><![CDATA[Insc.Municipal]]></text>
+			</staticText>
+			<textField pattern="##.###.###/####-##" isBlankWhenNull="true">
+				<reportElement x="114" y="53" width="110" height="14" uuid="0ae773ae-5d3f-4678-9fea-bb30bded4b07"/>
+				<box leftPadding="3" bottomPadding="1" rightPadding="3">
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
+					<rightPen lineWidth="0.75"/>
+				</box>
+				<textElement markup="html"/>
+				<textFieldExpression><![CDATA[$F{PJ}.getIM()]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="229" y="39" width="100" height="14" uuid="9c2b5ee9-a83b-404e-b109-c58de9cde836"/>
+				<textElement>
+					<font isBold="false"/>
+				</textElement>
+				<text><![CDATA[Data Fundação]]></text>
+			</staticText>
+			<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
+				<reportElement x="229" y="53" width="100" height="14" uuid="f49649a3-81eb-45c8-ac0f-67cb01b5fd21"/>
+				<box leftPadding="3" bottomPadding="1" rightPadding="3">
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
+					<rightPen lineWidth="0.75"/>
+				</box>
+				<textFieldExpression><![CDATA[$F{PJ}.getFundacao()]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="333" y="39" width="242" height="14" uuid="0b14d5e6-5468-4a72-8f3e-1ea8158f99be"/>
+				<textElement>
+					<font isBold="false"/>
+				</textElement>
+				<text><![CDATA[Regime Tributário]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="333" y="53" width="242" height="14" uuid="0fb4dfdc-8e2e-4c10-90d5-8790ef5b72ab"/>
+				<box leftPadding="3" bottomPadding="1" rightPadding="3">
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
+					<rightPen lineWidth="0.75"/>
+				</box>
+				<textFieldExpression><![CDATA[$F{PJ}.getRegime().getDescricao()]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="1" y="74" width="341" height="14" uuid="9f6d238e-803f-4d2f-84dd-6afe2c2b13d9"/>
+				<textElement>
+					<font isBold="false"/>
+				</textElement>
+				<text><![CDATA[Porte]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="1" y="88" width="341" height="14" uuid="f017c682-a6dd-4632-87c8-a83ae50fd50f"/>
+				<box leftPadding="3" bottomPadding="1" rightPadding="3">
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
+					<rightPen lineWidth="0.75"/>
+				</box>
+				<textFieldExpression><![CDATA[$F{PJ}.getPorte().getDescricao()]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="349" y="74" width="100" height="14" uuid="910da1af-7960-487a-969b-6a7c37ff968e"/>
+				<textElement>
+					<font isBold="false"/>
+				</textElement>
+				<text><![CDATA[Código Atividade]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="349" y="88" width="100" height="14" uuid="22f58ea2-8449-486f-8797-8613890e4548"/>
+				<box leftPadding="3" bottomPadding="1" rightPadding="3">
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
+					<rightPen lineWidth="0.75"/>
+				</box>
+				<textFieldExpression><![CDATA[$F{PJ}.getCodigoAtividade()]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="455" y="74" width="120" height="14" uuid="74757e19-062c-4ec3-bbc6-e13e99478979"/>
+				<textElement>
+					<font isBold="false"/>
+				</textElement>
+				<text><![CDATA[Código Suframa]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="455" y="88" width="120" height="14" uuid="fa962af0-beae-49af-8176-ce047936fbdf"/>
+				<box leftPadding="3" bottomPadding="1" rightPadding="3">
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
+					<rightPen lineWidth="0.75"/>
+				</box>
+				<textFieldExpression><![CDATA[$F{PJ}.getCodigoSuframa()]]></textFieldExpression>
+			</textField>
+			<elementGroup/>
+			<subreport>
+				<reportElement x="0" y="112" width="575" height="50" uuid="df8fa19e-b14d-42e8-8a46-0b6240c6d332"/>
+				<dataSourceExpression><![CDATA[$P{contatos}]]></dataSourceExpression>
+				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "pessoa_contatos.jasper"]]></subreportExpression>
+			</subreport>
+		</band>
+		<band height="92">
+			<staticText>
+				<reportElement x="2" y="24" width="160" height="14" uuid="38e2b268-e13d-47e7-a045-b90cbaba40f8"/>
+				<text><![CDATA[Data da primeira compra]]></text>
+			</staticText>
+			<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
+				<reportElement x="2" y="38" width="160" height="14" uuid="af408061-55b1-43a7-b07d-4dce881f1d43"/>
+				<box leftPadding="3" bottomPadding="1" rightPadding="3">
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
+					<rightPen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$P{analise}.getDataPrimeiraCompra()]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
+				<reportElement x="205" y="39" width="160" height="14" uuid="f5dde761-8a96-4e3b-a650-b512a6c61629"/>
+				<box leftPadding="3" bottomPadding="1" rightPadding="3">
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
+					<rightPen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$P{analise}.getDataUltimaCompra()]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="205" y="25" width="160" height="14" uuid="d763be6a-4c3d-4333-b592-5929f8684eb6"/>
+				<text><![CDATA[Data da última compra]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="2" y="56" width="160" height="14" uuid="13e44234-313a-4615-a0fe-9947bab5f1f1"/>
+				<text><![CDATA[Prazo médio negociado]]></text>
+			</staticText>
+			<textField pattern="#,##0.0" isBlankWhenNull="true">
+				<reportElement x="2" y="70" width="160" height="14" uuid="aa27a967-920f-4f69-9db3-30bdbfd3ad0a"/>
+				<box leftPadding="3" bottomPadding="1" rightPadding="3">
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
+					<rightPen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$P{analise}.getPrazoNegociacao()]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="205" y="56" width="160" height="14" uuid="7ee896f3-1d1b-4d1e-bd34-c988be1890f3"/>
+				<text><![CDATA[Prazo médio de recebimento]]></text>
+			</staticText>
+			<textField pattern="#,##0.0" isBlankWhenNull="true">
+				<reportElement x="205" y="70" width="160" height="14" uuid="e856962f-adc2-41c3-b750-09450681db28"/>
+				<box leftPadding="3" bottomPadding="1" rightPadding="3">
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
+					<rightPen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$P{analise}.getPrazoRecebimento()]]></textFieldExpression>
+			</textField>
+			<textField pattern="¤ #,##0.00" isBlankWhenNull="true">
+				<reportElement x="414" y="40" width="160" height="14" uuid="1bf9e7fa-6cba-42e3-b561-85ed4e13cd22"/>
+				<box leftPadding="3" bottomPadding="1" rightPadding="3">
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
+					<rightPen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$P{analise}.getValorTicketMedio()]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="414" y="26" width="160" height="14" uuid="9d2e4c1c-98cd-4b21-9fba-3f2881a10326"/>
+				<text><![CDATA[Valor do ticket médio]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="414" y="56" width="160" height="14" uuid="ab9710b8-9238-4e55-b754-af8c28933dac"/>
+				<text><![CDATA[Volume médio de compras]]></text>
+			</staticText>
+			<textField pattern="¤ #,##0.00" isBlankWhenNull="true">
+				<reportElement x="414" y="70" width="160" height="14" uuid="109ace08-55e3-49ea-83b4-e225cddfde3a"/>
+				<box leftPadding="3" bottomPadding="1" rightPadding="3">
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
+					<rightPen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$P{analise}.getVolumeCompras()]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement mode="Opaque" x="0" y="0" width="575" height="18" backcolor="#CCCCCC" uuid="92e2a5c1-89ce-4221-8b9d-20206612cb3f"/>
+				<box topPadding="2" leftPadding="2">
+					<bottomPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" markup="html">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ANÁLISE DE DADOS]]></text>
+			</staticText>
+		</band>
+	</detail>
+</jasperReport>

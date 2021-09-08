@@ -1,0 +1,92 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<p:toolbar style="margin-top: 05px">
+		<p:toolbarGroup>
+			<p:splitButton value="Pesquisar"
+				actionListener="#{agendaBean.pesquisar}" process="@form"
+				update="@form" icon="ui-icon-search"
+				onclick="jQuery(this).addClass('ui-state-disabled')">
+				<p:menuitem value="Imprimir lista" icon="ui-icon-print" ajax="false"
+					action="#{agendaBean.imprimir}" update="@form" target="_blank" />
+			</p:splitButton>
+		</p:toolbarGroup>
+		<p:toolbarGroup align="right">
+			<p:commandButton value="Novo" icon="ui-icon-document"
+				actionListener="#{agendaBean.novo}" process="@this" update="@form" />
+			<p:commandButton icon="ui-icon-search" value="Novo de contato"
+				process="@this" update="@none" ignoreAutoUpdate="true"
+				action="#{selecionaBean.contato}">
+				<p:ajax event="dialogReturn" update="@form"
+					listener="#{agendaBean.onContatoChosen}" ignoreAutoUpdate="true" />
+			</p:commandButton>
+		</p:toolbarGroup>
+	</p:toolbar>
+
+	<div class="ui-fluid">
+		<div class="ui-g" style="margin-top: 5px; border: 1px solid silver;">
+			<div class="ui-g-12 ui-md-3">
+				<p:outputLabel value="Nome" />
+				<p:inputText value="#{agendaBean.filtro.nome}" />
+			</div>
+			<div class="ui-g-6 ui-md-3">
+				<p:outputLabel value="Data prevista" />
+				<p:calendar navigator="true" showOn="button" mask="99/99/9999"
+					pattern="dd/MM/yyyy" value="#{agendaBean.filtro.inicio}" />
+			</div>
+			<div class="ui-g-6 ui-md-3">
+				<p:outputLabel value="Término" />
+				<p:calendar navigator="true" showOn="button" mask="99/99/9999"
+					pattern="dd/MM/yyyy" value="#{agendaBean.filtro.termino}" />
+			</div>
+			<div class="ui-g-12 ui-md-3">
+				<p:outputLabel value="Status" />
+				<p:selectOneMenu value="#{agendaBean.filtro.tipoAgendaStatus}">
+					<f:selectItem itemLabel="todos" />
+					<f:selectItems value="#{listaTipoBean.tipoAgendaStatus}" var="tipo"
+						itemValue="#{tipo}" itemLabel="#{tipo}" />
+				</p:selectOneMenu>
+			</div>
+		</div>
+	</div>
+
+	<p:dataTable id="tabela" scrollable="true" value="#{agendaBean.lista}"
+		var="agenda" style="margin-top: 5px"
+		emptyMessage="Nenhum item encontrado." rows="10" paginator="true"
+		paginatorAlwaysVisible="false" paginatorPosition="bottom" lazy="true">
+
+		<p:column headerText="Data prevista" width="140">
+			<h:outputText value="#{agenda.dataPrevista}"
+				style="color: #{agenda.statusCor}">
+				<f:convertDateTime pattern="dd/MM/yyyy hh:mm" />
+			</h:outputText>
+		</p:column>
+		<p:column headerText="Nome do contato">
+			<h:outputText value="#{agenda.contato.nome}"
+				style="color: #{agenda.statusCor}" />
+		</p:column>
+		<p:column headerText="DDD" width="20"
+			style="color: #{agenda.statusCor}">
+			<h:outputText value="#{agenda.contato.ddd}" />
+		</p:column>
+		<p:column headerText="Celular" width="100"
+			style="color: #{agenda.statusCor}">
+			<h:outputText value="#{agenda.contato.celular}" />
+		</p:column>
+		<p:column headerText="Telefone" width="100"
+			style="color: #{agenda.statusCor}">
+			<h:outputText value="#{agenda.contato.fone}" />
+		</p:column>
+
+		<p:column width="40">
+			<p:commandButton title="Editar" icon="ui-icon-pencil"
+				class="button-grid" update="@form"
+				actionListener="#{agendaBean.setAgenda(agenda)}" process="@this" />
+		</p:column>
+
+	</p:dataTable>
+
+</ui:composition>

@@ -1,0 +1,39 @@
+<ui:composition template="/WEB-INF/template/LayoutPadrao.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui" xmlns:o="http://omnifaces.org/ui">
+
+	<f:metadata>
+		<f:param name="dummy" />
+		<o:viewParam name="agenda" value="#{clinicaAcolhimentoBean.agenda}" />
+		<f:event listener="#{clinicaAcolhimentoBean.inicializar}"
+			type="preRenderView"></f:event>
+	</f:metadata>
+
+	<ui:define name="titulo">Acolhimento</ui:define>
+
+	<ui:define name="corpo">
+
+		<p:focus context="formCadastro" />
+
+		<h:form id="formCadastro">
+
+			<p:growl id="msg" />
+ 
+			<h:panelGroup rendered="#{clinicaAcolhimentoBean.agenda != null}">
+				<ui:include
+					src="/WEB-INF/template/clinica/ClinicaAcolhimentoEdit.xhtml" />
+			</h:panelGroup>
+
+			<h:panelGroup rendered="#{clinicaAcolhimentoBean.agenda == null}">
+				<ui:include
+					src="/WEB-INF/template/clinica/ClinicaAcolhimentoPesquisa.xhtml" />
+			</h:panelGroup>
+
+		</h:form>
+
+	</ui:define>
+
+</ui:composition>

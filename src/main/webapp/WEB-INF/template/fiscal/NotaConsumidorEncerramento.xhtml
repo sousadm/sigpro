@@ -1,0 +1,126 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<style>
+.success {
+	background-color: #4CAF50;
+} /* Green */
+.resumo-texto {
+	font-weight: bold;
+	font-size: 20px;
+}
+
+.resumo-campo {
+	font-weight: bold;
+	background-color: green;
+	color: white;
+	text-align: right;
+	width: 200px;
+	font-size: 32px;
+}
+
+.gridTipo {
+	grid-area: tipo;
+}
+
+.gridNeg {
+	grid-area: nego;
+}
+
+.gridOutro {
+	grid-area: outro;
+}
+
+.gridTela {
+	grid-area: tela;
+}
+
+.gridBotao {
+	grid-area: botao;
+}
+
+.grid-container {
+	display: grid;
+	grid-template-areas: 'tipo nego tela' 'outro outro tela'
+		'outro outro botao';
+	padding: 1px;
+}
+
+.grid-container>div {
+	padding: 5px 0;
+}
+
+.button {
+	background-color: #4CAF50;
+	border: none;
+	color: white;
+	padding: 10px 15px;
+	text-align: center;
+	text-decoration: none;
+	display: inline-block;
+	font-size: 14px;
+	margin: 1px 1px;
+	cursor: pointer;
+}
+</style>
+
+	<p:dialog id="dlgEncerramento" header="Encerrar Venda"
+		widgetVar="dlgEncerramento" closeOnEscape="true" modal="true"
+		maximizable="false" width="900">
+		<h:form id="formEncerramento">
+
+			<p:focus context="txtValorPgto" />
+
+			<div class="grid-container ui-fluid">
+				<div class="gridTipo" style="width: 180px;">
+					<p:selectOneListbox style="width: 100%; height: 100%"
+						value="#{notaConsumidorBean.pagamento.meioPgto}">
+						<f:selectItems value="#{listaTipoBean.NFFormaPagamentoMoeda}"
+							var="pgto" itemValue="#{pgto}" itemLabel="#{pgto}" />
+						<f:ajax immediate="true" render="@form" />
+					</p:selectOneListbox>
+				</div>
+				<div class="gridNeg" style="width: 290px; height: 260px;">
+					<ui:include
+						src="/WEB-INF/template/fiscal/NotaConsumidorNegociacao.xhtml" />
+				</div>
+				<div class="gridOutro" style="height: 200px; width: 500px;">
+					<p:tabView>
+						<p:tab title="pagamentos">
+							<ui:include
+								src="/WEB-INF/template/fiscal/NotaConsumidorPagamento.xhtml" />
+						</p:tab>
+						<p:tab title="complemento">
+							<ui:include
+								src="/WEB-INF/template/fiscal/NotaConsumidorCliente.xhtml" />
+						</p:tab>
+					</p:tabView>
+
+				</div>
+				<div class="gridTela">
+					<ui:include
+						src="/WEB-INF/template/fiscal/NotaConsumidorValores.xhtml" />
+				</div>
+				<div class="gridBotao" align="center">
+
+					<p:commandButton value="adicionar pagamento"
+						actionListener="#{notaConsumidorBean.addPagamento}" update="@form" />
+
+					<p:commandButton value="Confirma" icon="ui-icon-check" disabled="true"
+						process="dlgEncerramento" update="formCadastro"
+						action="#{notaConsumidorBean.encerrar}"
+						oncomplete="if(!args.validationFailed) PF('dlgEncerramento').hide()">
+						<p:confirm icon="ui-icon-alert" header="Encerramento"
+							message="Confirma encerrar venda" />
+					</p:commandButton>
+
+				</div>
+			</div>
+
+		</h:form>
+	</p:dialog>
+
+</ui:composition>

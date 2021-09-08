@@ -1,0 +1,42 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<p:dialog id="dlgSaida" header="Encerramento" widgetVar="dlgSaida"
+		closeOnEscape="true" modal="true" maximizable="false" width="600">
+
+		<h:form id="form">
+
+			<div class="ui-fluid">
+				<div class="ui-g">
+					<div class="ui-g-12">
+						<p:outputLabel value="Observação" />
+						<p:inputTextarea value="#{saidaVeiculoBean.saida.observacao}"
+							rows="4" />
+					</div>
+					<div class="ui-g-6">
+						<p:outputLabel value="Data de retorno" />
+						<p:calendar locale="pt_BR" mask="99/99/9999" pattern="dd/MM/yyyy"
+							navigator="true" showOn="button"
+							value="#{saidaVeiculoBean.saida.dataRetorno}" />
+					</div>
+					<div class="ui-g-6">
+						<p:outputLabel value="Hora" />
+						<p:datePicker value="#{saidaVeiculoBean.horaRetorno}"
+							timeOnly="true" pattern="HH:mm" />
+					</div>
+				</div>
+			</div>
+
+			<div align="right" style="margin-top: 5px">
+				<p:commandButton value="Confirma" icon="ui-icon-check"
+					process="dlgSaida" update="formCadastro"
+					action="#{saidaVeiculoBean.encerrar}"
+					oncomplete="if(!args.validationFailed) PF('dlgSaida').hide()" />
+			</div>
+		</h:form>
+	</p:dialog>
+
+</ui:composition>

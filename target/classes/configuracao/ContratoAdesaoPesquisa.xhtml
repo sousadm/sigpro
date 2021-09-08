@@ -1,0 +1,68 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<p:toolbar style="margin-top: 05px">
+		<p:toolbarGroup>
+			<p:splitButton value="Pesquisar"
+				actionListener="#{contratoAdesaoBean.pesquisar}" update="@form"
+				icon="ui-icon-search"
+				onclick="jQuery(this).addClass('ui-state-disabled')">
+				<p:menuitem value="Imprimir lista" icon="ui-icon-print" ajax="false"
+					action="#{contratoAdesaoBean.imprimir_lista}" update="@form"
+					disabled="#{empty contratoAdesaoBean.lista}" target="_blank" />
+			</p:splitButton>
+		</p:toolbarGroup>
+		<p:toolbarGroup align="right">
+			<p:commandButton value="Novo" icon="ui-icon-document"
+				actionListener="#{contratoAdesaoBean.limpar}" process="@this"
+				update="@form" />
+		</p:toolbarGroup>
+	</p:toolbar>
+
+	<p:messages autoUpdate="true" closable="true" />
+
+	<p:dataTable id="tabela" value="#{contratoAdesaoBean.lista}"
+		var="contrato" style="margin-top: 5px"
+		emptyMessage="Nenhum item encontrado." rows="20" paginator="true"
+		paginatorAlwaysVisible="false" paginatorPosition="bottom">
+
+		<p:column headerText="Número" width="60">
+			<h:outputText value="#{contrato.id}"
+				style="color: #{contrato.statusCor}">
+				<f:convertNumber pattern="00000" />
+			</h:outputText>
+		</p:column>
+		<p:column headerText="Cliente">
+			<h:outputText value="#{contrato.cliente.nome}"
+				style="color: #{contrato.statusCor}" />
+		</p:column>
+		<p:column headerText="Nome do Schema">
+			<h:outputText value="#{contrato.nomeSchema}"
+				style="color: #{contrato.statusCor}" />
+		</p:column>
+		<p:column headerText="Cadastro" width="120">
+			<h:outputText value="#{contrato.dataCadastro}"
+				style="color: #{contrato.statusCor}">
+				<f:convertDateTime pattern="dd/MM/yyyy" />
+			</h:outputText>
+		</p:column>
+		<p:column headerText="Validade" width="120">
+			<h:outputText value="#{contrato.dataValidade}"
+				style="color: #{contrato.statusCor}">
+				<f:convertDateTime pattern="dd/MM/yyyy" />
+			</h:outputText>
+		</p:column>
+
+		<p:column width="40">
+			<p:commandButton title="Editar" icon="ui-icon-pencil"
+				class="button-grid" update="@form"
+				actionListener="#{contratoAdesaoBean.setContrato(contrato)}"
+				process="@this" />
+		</p:column>
+
+	</p:dataTable>
+
+</ui:composition>

@@ -1,0 +1,94 @@
+<ui:composition template="/WEB-INF/template/LayoutPadrao.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<ui:define name="titulo">Pesquisa pessoa</ui:define>
+
+	<ui:define name="corpo">
+
+		<h:form id="frmPesquisa">
+
+			<p:focus />
+
+			<h1 style="margin-top: 65px">Plano de Ação</h1>
+
+			<p:toolbar style="margin-top: 05px">
+				<p:toolbarGroup>
+					<p:commandButton value="Pesquisar"
+						action="#{plannerBean.pesquisar}" update="@form" />
+
+					<p:commandButton value="Enviar"
+						disabled="#{plannerBean.naoPodeEnviar}"
+						action="#{plannerBean.enviar}" update="@form" />
+
+				</p:toolbarGroup>
+				<p:toolbarGroup align="right">
+					<p:button value="Novo" outcome="/planner/CadastroPlanner" />
+				</p:toolbarGroup>
+			</p:toolbar>
+
+			<p:panelGrid columns="2" id="painel"
+				style="width: 100%; margin-top: 20px" columnClasses="rotulo, campo">
+
+				<p:outputLabel value="Data inicial de entrega" />
+				<p:calendar size="10" pattern="dd/MM/yyyy"
+					value="#{plannerBean.filtro.inicio}" />
+
+				<p:outputLabel value="Data final de entrega" />
+				<p:calendar size="10" pattern="dd/MM/yyyy"
+					value="#{plannerBean.filtro.termino}" />
+
+				<p:outputLabel value="Responsável" />
+				<p:autoComplete size="40" dropdown="true"
+					value="#{plannerBean.filtro.pessoa}"
+					completeMethod="#{plannerBean.completarPessoa}" var="pessoa"
+					itemLabel="#{pessoa.nome}" itemValue="#{pessoa}"
+					forceSelection="true" />
+
+			</p:panelGrid>
+
+			<p:dataTable id="tabela" value="#{plannerBean.lista}" var="planner"
+				scrollable="true" style="margin-top: 20px"
+				emptyMessage="Nenhum registro encontrado." rows="10"
+				paginator="true" paginatorAlwaysVisible="false"
+				paginatorPosition="bottom">
+
+				<p:column headerText="O que fazer?">
+					<h:outputText value="#{planner.que}" />
+				</p:column>
+				<p:column headerText="Quem?" width="20%">
+					<h:outputText value="#{planner.quem.nome}" />
+				</p:column>
+				<p:column headerText="Quando?" width="5%">
+					<h:outputText value="#{planner.quando}">
+						<f:convertDateTime pattern="dd/MM/yyyy" />
+					</h:outputText>
+				</p:column>
+
+				<p:column style="width: 100px; text-align: center">
+
+					<p:column style="text-align: center; width: 50px">
+						<p:button icon="ui-icon-pencil" title="Editar"
+							outcome="/planner/CadastroPlanner">
+							<f:param name="planner" value="#{planner.id}" />
+						</p:button>
+					</p:column>
+
+					<p:commandButton icon="ui-icon-trash" process="@this"
+						title="Excluir" update="tabela"
+						action="#{plannerBean.excluir(planner)}">
+						<p:confirm icon="ui-icon-alert" header="Confirmação de exclusão"
+							message="Excluir o registro atual?" />
+					</p:commandButton>
+
+				</p:column>
+
+			</p:dataTable>
+
+		</h:form>
+	</ui:define>
+
+</ui:composition>

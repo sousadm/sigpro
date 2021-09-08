@@ -1,0 +1,128 @@
+<ui:composition template="/WEB-INF/template/LayoutPadrao.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<f:metadata>
+		<f:event listener="#{funcaoBean.inicializar}" type="preRenderView"></f:event>
+	</f:metadata>
+
+	<ui:define name="titulo">Pesquisa de Função</ui:define>
+
+	<ui:define name="corpo">
+
+		<h:form id="frmPesquisa">
+
+			<p:focus />
+
+			<h1 style="margin-top: 65px">Cadastro de Função</h1>
+
+			<p:growl />
+
+			<p:toolbar style="margin-top: 05px">
+				<p:toolbarGroup>
+
+					<p:splitButton id="botaoPesquisa" value="Pesquisar"
+						icon="ui-icon-search" action="#{funcaoBean.pesquisar}"
+						update="@form">
+						<p:menuitem value="Imprimir lista" icon="ui-icon-print"
+							ajax="false" process="@form"
+							action="#{funcaoBean.imprimir_lista}" target="_blank" />
+					</p:splitButton>
+				</p:toolbarGroup>
+
+				<p:toolbarGroup align="right">
+					<p:commandButton value="Novo" icon="ui-icon-document"
+						action="#{funcaoBean.novo}" update="dlgProducao"
+						oncomplete="PF('dlgProducao').show()" />
+				</p:toolbarGroup>
+			</p:toolbar>
+
+			<div class="ui-fluid">
+				<div class="ui-g" style="margin-top: 5px; border: 1px solid silver;">
+					<div class="ui-g-12">
+						<p:outputLabel value="Descrição" />
+						<p:inputText value="#{funcaoBean.descricao}" />
+					</div>
+				</div>
+			</div>
+
+			<p:dataTable id="tabela" scrollable="true" rowIndexVar="indice"
+				value="#{funcaoBean.lista}" var="funcao" style="margin-top: 5px"
+				emptyMessage="Nenhum item encontrado." rows="8" paginator="true"
+				paginatorAlwaysVisible="false" paginatorPosition="bottom">
+
+				<p:column headerText="Descrição">
+					<h:outputText value="#{funcao.descricao}" />
+				</p:column>
+				<p:column headerText="Setor">
+					<h:outputText value="#{funcao.tipo.descricao}" />
+				</p:column>
+				<p:column headerText="Custo Hora"
+					style="text-align: right; width: 120px">
+					<h:outputText value="#{funcao.custoHora}">
+						<f:convertNumber type="currency" />
+					</h:outputText>
+				</p:column>
+
+				<p:column style="width: 80px; text-align: center">
+					<p:commandButton icon="ui-icon-pencil" title="Editar"
+						class="button-grid" action="#{funcaoBean.setFuncao(funcao)}"
+						update="dlgProducao" oncomplete="PF('dlgProducao').show()" />
+					<p:commandButton icon="ui-icon-trash" process="@this"
+						title="Excluir" update="@form" class="button-grid"
+						action="#{funcaoBean.excluir(indice)}">
+						<p:confirm icon="ui-icon-alert" header="Exclusão"
+							message="Excluir o registro atual?" />
+					</p:commandButton>
+				</p:column>
+
+			</p:dataTable>
+
+		</h:form>
+
+		<p:dialog id="dlgProducao" header="Atividade Funcional"
+			widgetVar="dlgProducao" closeOnEscape="true" resizable="false"
+			modal="true" width="500">
+			<h:form id="form-cadastro">
+
+				<div class="ui-fluid">
+					<div class="ui-g"
+						style="margin-top: 5px; border: 1px solid silver;">
+						<div class="ui-g-12">
+							<p:outputLabel value="Descrição" for="descricao" />
+							<p:inputText id="descricao" rendered="true"
+								requiredMessage="informe uma descrição"
+								value="#{funcaoBean.funcao.descricao}" maxlength="100" />
+						</div>
+						<div class="ui-g-8">
+							<h:outputLabel value="Setor" />
+							<p:selectOneMenu value="#{funcaoBean.funcao.tipo}"
+								autoWidth="false" rendered="true"
+								requiredMessage="defina o nível funcional">
+								<f:selectItems value="#{listaTipoBean.funcao}" var="tipo"
+									itemValue="#{tipo}" itemLabel="#{tipo.descricao}" />
+							</p:selectOneMenu>
+						</div>
+						<div class="ui-g-4">
+							<p:outputLabel value="Custo Hora" />
+							<p:inputNumber decimalPlaces="2" minValue="0"
+								value="#{funcaoBean.funcao.custoHora}" />
+						</div>
+					</div>
+				</div>
+
+				<div align="right">
+					<p:commandButton value="Ok" icon="ui-icon-check"
+						process="dlgProducao" update="frmPesquisa"
+						action="#{funcaoBean.salvar}"
+						oncomplete="if(!args.validationFailed) PF('dlgProducao').hide()" />
+				</div>
+
+			</h:form>
+		</p:dialog>
+
+	</ui:define>
+</ui:composition>

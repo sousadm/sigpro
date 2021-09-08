@@ -1,0 +1,60 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<div class="ui-fluid">
+		<div class="ui-g" style="margin-top: 5px; border: 1px solid gray;">
+
+			<div class="ui-g-8">
+				<div class="ui-g-12">
+					<p:outputLabel value="Observação" />
+					<p:editor value="#{remessaBean.remessa.descricao}"
+						disabled="#{not remessaBean.remessa.podeEditar}"
+						controls="#{listaTipoBean.editorControl}"
+						styleClass="naoaceitarenter" />
+				</div>
+				<div class="ui-g-12">
+					<p:outputLabel value="Destino da Remessa" />
+					<p:inputText value="#{remessaBean.remessa.destino.nome}"
+						rendered="#{not remessaBean.remessa.podeEditar}" readonly="true"
+						class="bloqueado" />
+					<p:selectOneMenu value="#{remessaBean.remessa.destino}"
+						rendered="#{remessaBean.remessa.podeEditar}" autoWidth="false">
+						<f:selectItem itemLabel="Selecione" />
+						<f:selectItems value="#{remessaBean.agentes}" var="p"
+							itemLabel="#{p.nome}" itemValue="#{p.agente}" />
+						<p:ajax event="change" process="@this" update="@form"
+							listener="#{remessaBean.defineAgenteConfiguracao}" />
+					</p:selectOneMenu>
+				</div>
+			</div>
+
+			<div class="ui-g-4">
+				<div class="ui-g-12">
+					<p:outputLabel value="Outras despesas" />
+					<p:inputNumber minValue="0" maxValue="100" decimalSeparator=","
+						thousandSeparator="." decimalPlaces="2"
+						value="#{remessaBean.remessa.outrasDespesas}" />
+				</div>
+				<div class="ui-g-12">
+					<p:outputLabel value="Volume" />
+					<p:inputText value="#{remessaBean.remessa.volume}" readonly="true"
+						class="bloqueado">
+						<f:convertNumber />
+					</p:inputText>
+				</div>
+				<div class="ui-g-12">
+					<p:outputLabel value="Valor Total" />
+					<p:inputText value="#{remessaBean.remessa.valorTotal}"
+						readonly="true" class="bloqueado">
+						<f:convertNumber type="currency" />
+					</p:inputText>
+				</div>
+			</div>
+
+		</div>
+	</div>
+
+</ui:composition>

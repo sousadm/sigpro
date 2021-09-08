@@ -1,0 +1,94 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<p:panel header="Ambiente">
+
+		<div class="ui-fluid">
+		
+			<p:panelGrid columns="2" layout="grid"
+				styleClass="panelgrid-noborder">
+
+				<p:outputLabel value="Ambiente" />
+				<p:selectOneMenu value="#{notaFiscalBean.nota.fiscal.ambiente}"
+					autoWidth="false"
+					disabled="#{not notaFiscalBean.nota.podeEditar}"
+					style="width:100%">
+					<f:selectItems value="#{listaTipoBean.NFAmbiente}" var="ambiente"
+						itemValue="#{ambiente}" itemLabel="#{ambiente}" />
+				</p:selectOneMenu>
+
+				<p:outputLabel value="Finalidade" /> 
+				<p:selectOneMenu value="#{notaFiscalBean.nota.fiscal.finalidade}"
+					autoWidth="false"
+					disabled="#{not notaFiscalBean.nota.podeEditar}"
+					style="width:100%">
+					<f:selectItems value="#{listaTipoBean.NFFinalidade}"
+						var="finalidade" itemValue="#{finalidade}"
+						itemLabel="#{finalidade}" />
+				</p:selectOneMenu>
+
+				<p:outputLabel value="Forma de Pagamento" />
+				<p:selectOneMenu
+					value="#{notaFiscalBean.nota.fiscal.formaPagamento}"
+					autoWidth="false"
+					disabled="#{not notaFiscalBean.nota.podeEditar}"
+					style="width:100%">
+					<f:selectItems value="#{listaTipoBean.NFFormaPagamentoPrazo}"
+						var="formaPagamento" itemValue="#{formaPagamento}"
+						itemLabel="#{formaPagamento}" />
+				</p:selectOneMenu>
+
+				<p:outputLabel value="Emissao" />
+				<p:selectOneMenu value="#{notaFiscalBean.nota.fiscal.tipoEmissao}"
+					autoWidth="false"
+					disabled="#{not notaFiscalBean.nota.podeEditar}"
+					style="width:100%">
+					<f:selectItems value="#{listaTipoBean.NFTipoEmissao}"
+						var="tipoEmissao" itemValue="#{tipoEmissao}"
+						itemLabel="#{tipoEmissao}" />
+				</p:selectOneMenu>
+
+				<p:outputLabel value="Destino da Operação" />
+				<p:selectOneMenu
+					value="#{notaFiscalBean.nota.fiscal.localDestinoOperacao}"
+					autoWidth="false"
+					disabled="#{not notaFiscalBean.nota.podeEditar}"
+					style="width:100%">
+					<f:selectItems
+						value="#{listaTipoBean.NFIdentificadorLocalDestinoOperacao}"
+						var="destino" itemValue="#{destino}" itemLabel="#{destino}" />
+				</p:selectOneMenu>
+
+				<p:outputLabel value="Consumidor Final" />
+				<p:selectOneMenu
+					value="#{notaFiscalBean.nota.fiscal.consumidorFinal}"
+					autoWidth="false"
+					disabled="#{not notaFiscalBean.nota.podeEditar}"
+					style="width:100%">
+					<f:selectItems value="#{listaTipoBean.NFOperacaoConsumidorFinal}"
+						var="consumidorFinal" itemValue="#{consumidorFinal}"
+						itemLabel="#{consumidorFinal}" />
+				</p:selectOneMenu>
+
+				<p:outputLabel value="Presença do Comprador" />
+				<p:selectOneMenu
+					value="#{notaFiscalBean.nota.fiscal.presencaComprador}"
+					autoWidth="false"
+					disabled="#{not notaFiscalBean.nota.podeEditar}"
+					style="width:100%">
+					<f:selectItems
+						value="#{listaTipoBean.NFIndicadorPresencaComprador}"
+						var="presencaComprador" itemValue="#{presencaComprador}"
+						itemLabel="#{presencaComprador}" />
+				</p:selectOneMenu>
+
+			</p:panelGrid>
+			
+		</div>
+		
+	</p:panel>
+	
+</ui:composition>

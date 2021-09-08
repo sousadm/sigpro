@@ -1,0 +1,44 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<p:dialog id="dlgProdutoUnidade" header="Unidade de Converão"
+		widgetVar="dlgProdutoUnidade" closeOnEscape="true" modal="true"
+		maximizable="false" width="500">
+		
+		<h:form id="formUnidade">
+
+			<div class="ui-fluid">
+				<p:panelGrid columns="2" layout="grid"
+					styleClass="panelgrid-noborder">
+
+					<p:outputLabel value="Unidade de medida" />
+					<p:selectOneMenu value="#{produtoBean.unidade.unidade}"
+						disabled="#{produtoBean.unidade.produto != null}">
+						<f:selectItems value="#{listaTipoBean.unidade}" var="prodUnidade"
+							itemValue="#{prodUnidade}" itemLabel="#{prodUnidade.descricao}" />
+					</p:selectOneMenu>
+
+					<p:outputLabel value="Fator de Estoque" />
+					<p:inputNumber value="#{produtoBean.unidade.fatorEstoque}" />
+
+					<p:outputLabel value="Fator de Preço" />
+					<p:inputNumber value="#{produtoBean.unidade.fatorPreco}" />
+
+				</p:panelGrid>
+			</div>
+
+			<div align="right" style="margin-top: 10px;">
+				<p:commandButton value="Confirma" icon="ui-icon-check"
+					process="formUnidade" update="formCadastro:tabView:listaUnidade"
+					actionListener="#{produtoBean.gravaUnidadeMedida}"
+					oncomplete="if(!args.validationFailed) PF('dlgProdutoUnidade').hide()" />
+			</div>
+
+		</h:form>
+		
+	</p:dialog>
+
+</ui:composition>

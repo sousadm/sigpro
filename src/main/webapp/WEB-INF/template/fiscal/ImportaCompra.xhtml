@@ -1,0 +1,27 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<p:dialog id="dlgImportaCompra" header="Aquisição de Produtos"
+		widgetVar="dlgImportaCompra" closeOnEscape="true" modal="true"
+		maximizable="false" height="130" width="250" position="center">
+
+		<p:outputLabel value="Número da aquisição" />
+		<br />
+		<br />
+		<p:inputNumber value="#{notaFiscalBean.numeroPedido}"
+			thousandSeparator="" decimalSeparator="" decimalPlaces="0"
+			minValue="1" />
+		<br />
+		<br />
+		<p:commandButton value="Confirmar" icon="ui-icon-check"
+			process="dlgImportaCompra" update="formCadastro"
+			action="#{notaFiscalBean.importarCompra}"
+			oncomplete="if(!args.validationFailed) PF('dlgImportaCompra').hide()"
+			onclick="jQuery(this).addClass('ui-state-disabled')" />
+
+	</p:dialog>
+
+</ui:composition>

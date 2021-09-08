@@ -1,0 +1,54 @@
+<ui:composition template="/WEB-INF/template/LayoutPadrao.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui" xmlns:o="http://omnifaces.org/ui">
+
+	<ui:define name="titulo">Conta</ui:define>
+
+	<ui:define name="corpo">
+
+		<h1 style="margin-top: 65px">Relatório de Análise</h1>
+
+		<h:form id="formCadastro">
+
+			<p:messages autoUpdate="true" closable="true" />
+
+			<p:toolbar style="margin-top: 05px">
+				<p:toolbarGroup>
+					<p:commandButton value="Limpar" icon="ui-icon-document-b"
+						action="#{analiseBean.limpar}" update="@form"
+						onclick="jQuery(this).addClass('ui-state-disabled')" />
+					<p:commandButton value="Imprimir" icon="ui-icon-print" ajax="false"
+						action="#{analiseBean.imprimir}"
+						onclick="this.form.target='_blank'" update="@form" />
+				</p:toolbarGroup>
+			</p:toolbar> 
+
+			<p:panelGrid columns="2" style="width: 100%; margin-top: 5px"
+				layout="grid" columnClasses="ui-grid-col-4, ui-grid-col-8"
+				styleClass="panelgrid-noborder">
+
+				<p:outputLabel value="Tipo de Relatório" />
+				<p:selectOneMenu value="#{analiseBean.filtro.opcao}">
+					<f:selectItem itemLabel="Fluxo de Caixa" itemValue="1" />
+					<f:selectItem itemLabel="Margem de Negociação" itemValue="2" />
+				</p:selectOneMenu>
+
+				<p:outputLabel value="Período" />
+				<h:panelGroup>
+					<p:calendar navigator="true" mask="99/99/9999" pattern="dd/MM/yyyy"
+						size="10" value="#{analiseBean.filtro.inicio}" />
+					<p:outputLabel value=" a " />
+					<p:calendar navigator="true" mask="99/99/9999" pattern="dd/MM/yyyy"
+						size="10" value="#{analiseBean.filtro.termino}" />
+				</h:panelGroup>
+
+			</p:panelGrid>
+
+		</h:form>
+
+	</ui:define>
+
+</ui:composition>

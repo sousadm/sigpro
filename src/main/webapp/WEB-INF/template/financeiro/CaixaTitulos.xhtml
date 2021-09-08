@@ -1,0 +1,74 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<p:commandButton icon="ui-icon-search" value="Conta Receber"
+		disabled="#{not caixaBean.caixa.podeGravar}" process="@this"
+		rendered="#{caixaBean.temCaixaReceber}"
+		actionListener="#{selecionaBean.tituloReceber(true)}">
+		<p:ajax event="dialogReturn"
+			listener="#{caixaBean.onTituloBorderoChosen}"
+			update="formCadastro:tabView:gridTitulos formCadastro:txtValorTotal formCadastro:txtValorFinal formCadastro:txtNominal formCadastro:txtCliente formCadastro:txtCentroCusto formCadastro:txtObs" />
+	</p:commandButton>
+
+	<p:commandButton icon="ui-icon-search" value="Conta Pagar"
+		disabled="#{not caixaBean.caixa.podeGravar}" process="@this"
+		rendered="#{caixaBean.temCaixaPagar}"
+		actionListener="#{selecionaBean.tituloPagar(true)}">
+		<p:ajax event="dialogReturn"
+			listener="#{caixaBean.onTituloBorderoChosen}"
+			update="formCadastro:tabView:gridTitulos  formCadastro:txtValorTotal formCadastro:txtValorFinal formCadastro:txtNominal formCadastro:txtCliente formCadastro:txtCentroCusto formCadastro:txtObs" />
+	</p:commandButton>
+
+	<p:commandButton icon="ui-icon-note" value="Expedição"
+		disabled="#{not caixaBean.caixa.podeGravar}" process="@this"
+		rendered="#{caixaBean.temCaixaReceber}" update="dlgExpedicao"
+		oncomplete="PF('dlgExpedicao').show()" />
+
+	<p:dataTable id="gridTitulos" value="#{caixaBean.caixa.titulos}"
+		style="margin-top: 05px" var="item" rowIndexVar="linha" rows="10"
+		emptyMessage="Nenhum registro encontrado." paginator="true"
+		paginatorAlwaysVisible="false" paginatorPosition="bottom">
+
+		<!-- 		<f:facet name="header">Títulos</f:facet> -->
+
+		<p:column headerText="Vencimento" width="80">
+			<h:outputText value="#{item.titulo.vencimento}">
+				<f:convertDateTime pattern="dd/MM/yyyy" />
+			</h:outputText>
+		</p:column>
+		<p:column headerText="dias" width="20">
+			<h:outputText value="#{item.dia}" />
+		</p:column>
+		<p:column headerText="Histórico">
+			<h:outputText value="#{item.titulo.descricao}" />
+		</p:column>
+		<p:column headerText="Valor" width="90">
+			<h:outputText value="#{item.valor}">
+				<f:convertNumber type="currency" />
+			</h:outputText>
+		</p:column>
+		<p:column headerText="Saldo" width="90">
+			<h:outputText value="#{item.valorPago}">
+				<f:convertNumber type="currency" />
+			</h:outputText>
+		</p:column>
+
+		<p:column style="width: 80px; text-align: center">
+
+			<p:commandButton title="Recalcular" icon="ui-icon-calculator"
+				actionListener="#{caixaBean.setCaixaTitulo(item)}" process="@this"
+				oncomplete="PF('dlgRecalculo').show()" update="dlgRecalculo" />
+
+			<p:commandButton icon="ui-icon-trash" process="@this"
+				disabled="#{not caixaBean.caixa.podeGravar}"
+				update="formCadastro:tabView:gridTitulos formCadastro:txtValorTotal formCadastro:txtValorFinal"
+				action="#{caixaBean.removeComponente(linha)}"
+				actionListener="#{caixaBean.caixa.calcular}" />
+
+		</p:column>
+	</p:dataTable>
+
+</ui:composition>

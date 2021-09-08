@@ -1,0 +1,44 @@
+<ui:composition template="/WEB-INF/template/LayoutPadrao.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui" xmlns:o="http://omnifaces.org/ui">
+
+	<f:metadata>
+		<f:param name="dummy" />
+		<o:viewParam name="categoria" value="#{categoriaBean.categoria}" />
+		<f:event listener="#{categoriaBean.inicializar}" type="preRenderView"></f:event>
+	</f:metadata>
+
+	<ui:define name="titulo">Categoria</ui:define>
+
+	<ui:define name="dialogo">
+
+	</ui:define>
+
+	<ui:define name="corpo">
+
+		<p:focus context="formCadastro" />
+
+		<h:form id="formCadastro">
+
+			<h1 style="margin-top: 65px">Categoria</h1>
+
+			<p:growl />
+
+			<h:panelGroup rendered="#{categoriaBean.categoria == null}">
+				<ui:include src="/cadastros/CategoriaPesquisa.xhtml" />
+			</h:panelGroup>
+
+			<h:panelGroup rendered="#{categoriaBean.categoria != null}">
+				<ui:include src="/cadastros/CategoriaEdit.xhtml" />
+			</h:panelGroup>
+
+		</h:form>
+
+		<ui:include src="/WEB-INF/template/produto/SubCategoria.xhtml" />
+
+	</ui:define>
+
+</ui:composition>

@@ -1,0 +1,185 @@
+<ui:composition template="/WEB-INF/template/LayoutPadrao.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui" xmlns:o="http://omnifaces.org/ui">
+
+	<ui:define name="corpo">
+
+		<f:metadata>
+			<f:viewAction action="#{planoContaBean.consultar}" />
+		</f:metadata>
+
+		<h1 style="margin-top: 65px">Cadastro de Plano de Contas</h1>
+
+		<h:form id="frm">
+
+			<p:messages id="msgs" />
+
+			<!-- ESTRUTURA: BARRA DE FERRAMENTAS -->
+
+			<p:toolbar id="toolbar">
+				<f:facet name="left">
+					<p:commandButton value="Nova" icon="ui-icon-document"
+						action="#{planoContaBean.prepararNovoCadastro}" process="@this"
+						update="conta-dialog" oncomplete="PF('edicaoContaDialog').show()">
+						<p:resetInput target="conta-dialog" />
+					</p:commandButton>
+
+					<span class="ui-separator"> <span
+						class="ui-icon ui-icon-grip-dotted-vertical" />
+					</span>
+
+					<p:commandButton icon="ui-icon-pencil" title="Editar"
+						process="@this" update="conta-dialog"
+						oncomplete="PF('edicaoContaDialog').show()"
+						disabled="#{planoContaBean.contaSelecionada == null}">
+						<p:resetInput target="conta-dialog" />
+
+						<f:setPropertyActionListener
+							value="#{planoContaBean.contaSelecionada}"
+							target="#{planoContaBean.contaEdicao}" />
+					</p:commandButton>
+
+					<p:commandButton icon="ui-icon-trash" title="Excluir"
+						process="@this" update="contas-table msgs toolbar"
+						action="#{planoContaBean.excluir}"
+						disabled="#{planoContaBean.contaSelecionada == null}">
+
+						<p:confirm icon="ui-icon-alert" header="Confirmação de exclusão"
+							message="Tem certeza que deseja excluir a conta ?" />
+					</p:commandButton>
+
+					<p:commandButton icon="ui-icon-arrowthick-1-s"
+						title="Exportar para XLS" ajax="false" immediate="true">
+						<p:dataExporter type="xls" target="contas-table"
+							fileName="PlanoContas" />
+					</p:commandButton>
+
+
+
+				</f:facet>
+			</p:toolbar>
+
+			<!-- ESTRUTURA: CONSULTA NO GRID -->
+
+			<p:dataTable value="#{planoContaBean.todasContas}" var="planoconta"
+				emptyMessage="Nenhuma conta cadastrada." rows="10" paginator="true"
+				paginatorPosition="bottom" style="margin-top: 10px"
+				id="contas-table" selection="#{planoContaBean.contaSelecionada}"
+				selectionMode="single" rowKey="#{planoconta.id}">
+
+				<p:ajax event="rowSelect" update=":frm:toolbar" />
+				<p:ajax event="rowUnselect" update=":frm:toolbar" />
+
+				<p:column headerText="Codigo Reduzido">
+					<h:outputText value="#{planoconta.id}" />
+				</p:column>
+
+				<p:column headerText="Descrição" sortBy="#{planoconta.descricao}">
+					<h:outputText value="#{planoconta.descricao}" />
+				</p:column>
+
+				<p:column headerText="Conta Contábil"
+					sortBy="#{planoconta.contaContabil}">
+					<h:outputText value="#{planoconta.contaContabil}" />
+				</p:column>
+
+				<p:column headerText="Conta Entidade">
+					<h:outputText value="#{planoconta.contaEntidade}" />
+				</p:column>
+
+				<p:column headerText="Conta Estoque">
+					<h:outputText value="#{planoconta.contaEstoque}" />
+				</p:column>
+
+				<p:column headerText="Conta Transferencia">
+					<h:outputText value="#{planoconta.contaTransferencia}" />
+				</p:column>
+
+
+			</p:dataTable>
+
+			<!-- ESTRUTURA: DIALOG -->
+
+			<p:dialog header="Nova Conta" widgetVar="edicaoContaDialog"
+				id="conta-dialog" resizable="false" modal="true"
+				closeOnEscape="true">
+
+				<p:messages id="msgs-dialog" />
+				<p:defaultCommand target="salvar-button" scope="conta-dialog" />
+
+				<!-- MASTER -->
+				<h:panelGrid style="width:100%;" columns="1" id="painel-dialog">
+
+					<p:outputLabel value="Descrição" for="descricao" />
+					<p:inputText id="descricao" size="60" maxlength="120"
+						value="#{planoContaBean.contaEdicao.descricao}"
+						placeholder="descrição da conta" />
+
+					<p:outputLabel value="Conta Contábil" for="contaContabil" />
+					<p:inputMask id="contaContabil" size="30" maxlength="60"
+						value="#{planoContaBean.contaEdicao.contaContabil}"
+						mask="9.9.9.99.99.99999" />
+
+					<p:outputLabel value="Grupo Contábil" for="grupo" />
+					<p:inputMask id="grupo" size="30" maxlength="60"
+						value="#{planoContaBean.contaEdicao.grupo}"
+						mask="9.9.9.99.99.99999" />
+
+					<p:outputLabel value="Conta Final" for="contaFinal" />
+					<p:inputMask id="contaFinal" size="30" maxlength="60"
+						value="#{planoContaBean.contaEdicao.contaFinal}"
+						mask="9.9.9.99.99.99999" />
+
+					<p:outputLabel value="Nível" for="nivel" />
+					<p:inputText id="nivel" size="3" maxlength="5"
+						value="#{planoContaBean.contaEdicao.nivel}" />
+
+					<h:panelGrid style="width:100%;" id="gridSelecao" columns="8">
+						<p:selectBooleanCheckbox
+							value="#{planoContaBean.contaEdicao.contaEntidade}"
+							id="contaEntidade" />
+						<p:outputLabel value="Conta Entidade" for="contaEntidade" />
+
+						<p:selectBooleanCheckbox
+							value="#{planoContaBean.contaEdicao.contaEstoque}"
+							id="contaEstoque" />
+						<p:outputLabel value="Conta Estoque" for="contaEstoque" />
+
+						<p:selectBooleanCheckbox
+							value="#{planoContaBean.contaEdicao.contaTransferencia}"
+							id="contaTransferencia" />
+						<p:outputLabel value="Conta Transferência"
+							for="contaTransferencia" />
+
+						<p:selectBooleanCheckbox
+							value="#{planoContaBean.contaEdicao.contaElemento}"
+							id="contaElemento" />
+						<p:outputLabel value="Conta Elemento" for="contaElemento" />
+
+					</h:panelGrid>
+
+					<p:panel id="panel-button">
+						<p:outputLabel />
+						<p:commandButton value="Salvar" id="salvar-button"
+							action="#{planoContaBean.salvar}" process="conta-dialog"
+							update="msgs-dialog painel-dialog"
+							oncomplete="if (!args.validationFailed) PF('edicaoContaDialog').hide()" />
+
+						<p:commandButton type="reset" value="Limpar" id="limpar-button"
+							immediate="true" />
+					</p:panel>
+
+				</h:panelGrid>
+
+			</p:dialog>
+
+		</h:form>
+
+	</ui:define>
+
+</ui:composition>
+
+

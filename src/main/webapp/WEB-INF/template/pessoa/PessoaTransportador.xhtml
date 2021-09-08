@@ -1,0 +1,32 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<p:panelGrid columns="2" layout="grid"
+		rendered="#{pessoaBean.pessoa.defineTransportador}"
+		style="margin-top: 20px" styleClass="panelgrid-noborder">
+
+		<p:outputLabel value="Data de cadastro" />
+		<h:outputText class="negrito"
+			value="#{pessoaBean.pessoa.transportador.dataCadastro}">
+			<f:convertDateTime pattern="dd/MM/yyyy HH:mm" timeZone="GMT-03:00" />
+		</h:outputText>
+
+
+		<p:outputLabel value="Código RNTRC" />
+		<p:inputText value="#{pessoaBean.pessoa.transportador.codigoRNTRC}"
+			title="Registro Nacional de Transportadores Rodoviários de Cargas" />
+
+		<p:outputLabel value="Tipo propriedade" />
+		<p:selectOneMenu autoWidth="false"
+			value="#{pessoaBean.pessoa.transportador.tipoProprietario}">
+			<f:selectItems value="#{listaTipoBean.tipoProprietario}"
+				var="tipoproprietario" itemValue="#{tipoproprietario}"
+				itemLabel="#{tipoproprietario}" />
+		</p:selectOneMenu>
+
+	</p:panelGrid>
+
+</ui:composition>

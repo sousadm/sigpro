@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence xmlns="http://java.sun.com/xml/ns/persistence"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd"
+	version="2.0">
+
+	<persistence-unit name="SistemaPU">
+
+		<provider>org.hibernate.ejb.HibernatePersistence </provider>
+
+		<class>com.sousa.sigpro.model.Pessoa</class>
+		<class>com.sousa.sigpro.model.Cliente</class>
+		<class>com.sousa.sigpro.model.Endereco</class>
+		<class>com.sousa.sigpro.model.Usuario</class>
+		<class>com.sousa.sigpro.model.Categoria</class>
+		<class>com.sousa.sigpro.model.FormaPgto</class>
+		<class>com.sousa.sigpro.model.Expedicao</class>
+		<class>com.sousa.sigpro.model.ExpedicaoItem</class>
+		<class>com.sousa.sigpro.model.Produto</class>
+		<class>com.sousa.sigpro.model.Pacote</class>
+		<class>com.sousa.sigpro.model.ProdutoProcesso</class>
+		<class>com.sousa.sigpro.model.Processo</class>
+		<class>com.sousa.sigpro.model.Etapa</class>
+		<class>com.sousa.sigpro.model.Titulo</class>
+		<class>com.sousa.sigpro.model.Planner</class>
+		<class>com.sousa.sigpro.model.ValorEstrategico</class>
+		<class>com.sousa.sigpro.model.Swot</class>
+		<class>com.sousa.sigpro.model.Marca</class>
+		<class>com.sousa.sigpro.model.Equipamento</class>
+		<class>com.sousa.sigpro.model.Composto</class>
+		<class>com.sousa.sigpro.model.Genero</class>
+		<class>com.sousa.sigpro.model.clinica.Convenio</class>
+		<class>com.sousa.sigpro.model.CentroDeCusto</class>
+		<class>com.sousa.sigpro.model.Caixa</class>
+		<class>com.sousa.sigpro.model.Profissao</class>
+		<class>com.sousa.sigpro.model.clinica.ClinicaConsulta</class>
+		<class>com.sousa.sigpro.model.Pergunta</class>
+		<class>com.sousa.sigpro.model.clinica.Anamnese</class>
+		<class>com.sousa.sigpro.model.OrdemServico</class>
+		<class>com.sousa.sigpro.model.CaixaDiario</class>
+		<class>com.sousa.sigpro.model.Fornecedor</class>
+		<class>com.sousa.sigpro.model.ContaCorrente</class>
+		<class>com.sousa.sigpro.model.Municipio</class>
+		<class>com.sousa.sigpro.model.Agenda</class>
+		<class>com.sousa.sigpro.model.Parametro</class>
+		<class>com.sousa.sigpro.model.SituacaoFiscal</class>
+		<class>com.sousa.sigpro.model.Funcao</class>
+		<class>com.sousa.sigpro.model.Colaborador</class>
+		<class>com.sousa.sigpro.model.Producao</class>
+		<class>com.sousa.sigpro.model.RegraPgto</class>
+		<class>com.sousa.sigpro.model.Banco</class>
+		<class>com.sousa.sigpro.model.NotaFiscal</class>
+		<class>com.sousa.sigpro.model.NotaFiscalItem</class>
+		<class>com.sousa.sigpro.model.NotaFiscalPgto</class>
+		<class>com.sousa.sigpro.model.OperacaoFiscal</class>
+		<class>com.sousa.sigpro.model.Meta</class>
+		<class>com.sousa.sigpro.model.Projeto</class>
+		<class>com.sousa.sigpro.model.Cartao</class>
+		<class>com.sousa.sigpro.model.Aquisicao</class>
+		<class>com.sousa.sigpro.model.AquisicaoItem</class>
+		<class>com.sousa.sigpro.model.ProdutoFornecedor</class>
+		<class>com.sousa.sigpro.model.Questionario</class>
+		<class>com.sousa.sigpro.model.Resposta</class>
+		<class>com.sousa.sigpro.model.Cfop</class>
+		<class>com.sousa.sigpro.model.PlanoConta</class>
+		<class>com.sousa.sigpro.model.NotaFiscalCorrecao</class>
+		<class>com.sousa.sigpro.model.Balanco</class>
+		<class>com.sousa.sigpro.model.BalancoTitulo</class>
+		<class>com.sousa.sigpro.model.BalancoProduto</class>
+		<class>com.sousa.sigpro.model.CaixaTitulo</class>
+		<class>com.sousa.sigpro.model.CaixaValor</class>
+		<class>com.sousa.sigpro.model.ContratoAdesao</class>
+		<class>com.sousa.sigpro.model.Evento</class>
+		<class>com.sousa.sigpro.model.ProjetoRequisito</class>
+		<class>com.sousa.sigpro.model.ProjetoLicaoAprendida</class>
+		<class>com.sousa.sigpro.model.Importe</class>
+		<class>com.sousa.sigpro.model.Manifesto</class>
+		<class>com.sousa.sigpro.model.Transportador</class>
+		<class>com.sousa.sigpro.model.Abastecimento</class>
+		<class>com.sousa.sigpro.model.VeiculoDespesa</class>
+		<class>com.sousa.sigpro.model.Contato</class>
+		<class>com.sousa.sigpro.model.Procedimento</class>
+		<class>com.sousa.sigpro.model.clinica.ClinicaAgenda</class>
+		<class>com.sousa.sigpro.model.clinica.ClinicaHorario</class>
+		<class>com.sousa.sigpro.model.clinica.Doenca</class>
+		<class>com.sousa.sigpro.model.clinica.Exame</class>
+		<class>com.sousa.sigpro.model.evento.EventoPessoa</class>
+		<class>com.sousa.sigpro.model.evento.EventoExpedicao</class>
+		<class>com.sousa.sigpro.model.Remessa</class>
+		<class>com.sousa.sigpro.model.Participante</class>
+		<class>com.sousa.sigpro.model.Motorista</class>
+		<class>com.sousa.sigpro.model.RemessaItem</class>
+		<class>com.sousa.sigpro.model.Montagem</class>
+		<class>com.sousa.sigpro.model.MontagemItem</class>
+		<class>com.sousa.sigpro.model.ProducaoExpedicao</class>
+		<class>com.sousa.sigpro.model.ProducaoMontagem</class>
+		<class>com.sousa.sigpro.model.ClienteDigital</class>
+		<class>com.sousa.sigpro.model.BoletoDigital</class>
+
+		<properties>
+			<property name="javax.persistence.jdbc.driver " value="org.postgresql.Driver" />
+			<property name="javax.persistence.jdbc.url" value="jdbc:postgresql://localhost:5432/contrate" />
+<!-- 			<property name="javax.persistence.jdbc.url" value="jdbc:postgresql://sigpro-11.cwrowyqbcjv1.us-east-1.rds.amazonaws.com:5432/contrate" /> -->
+			<property name="hibernate.default_schema" value="contrate" />
+			<property name="javax.persistence.jdbc.user " value="postgres" />
+			<property name="javax.persistence.jdbc.password " value="contrate" />
+			<property name="javax.persistence.schema-generation.create-source"
+				value="metadata" />
+			<property name="javax.persistence.sql-load-script-source"
+				value="META-INF/sql/dados-iniciais.sql" />
+			<property name="hibernate.hbm2ddl.auto" value="update" />
+			<property name="hibernate.show_sql" value="true" />
+			<property name="hibernate.format_sql" value="true" />
+			<property name="c3p0.min_size" value="1" />
+			<property name="c3p0.max_size" value="20" />
+			<property name="c3p0.timeout" value="300" />
+			<property name="c3p0.max_statements" value="80" />
+			<property name="c3p0.idle_test_period" value="300" />
+		</properties>
+
+	</persistence-unit>
+
+</persistence>

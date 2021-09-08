@@ -1,0 +1,70 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<p:dialog id="dlgProducao" header="Produção" widgetVar="dlgProducao"
+		closeOnEscape="true" dynamic="true" modal="true" width="500">
+
+		<h:form>
+
+			<div class="ui-fluid">
+				<div class="ui-g">
+
+					<div class="ui-g-7">
+						<p:outputLabel value="Data / Hora" />
+						<p:calendar id="dataStart" pattern="dd/MM/yyyy HH:mm"
+							rendered="#{montagemBean.producao.comando.tipo != 'ENCERRAR'}"
+							mode="inline" value="#{montagemBean.producao.cronologia.inicio}" />
+						<p:calendar id="dataTermino" pattern="dd/MM/yyyy HH:mm"
+							rendered="#{montagemBean.producao.comando.tipo == 'ENCERRAR'}"
+							mode="inline" value="#{montagemBean.producao.cronologia.termino}" />
+					</div>
+					<div class="ui-g-5">
+						<div class="ui-g-12">
+							<p:outputLabel value="Operador" />
+							<p:selectOneMenu value="#{montagemBean.producao.operador}"
+								autoWidth="false">
+								<f:selectItems value="#{montagemBean.listaOperadores}"
+									var="operador" itemValue="#{operador}"
+									itemLabel="#{operador.nome}" />
+							</p:selectOneMenu>
+						</div>
+						<div class="ui-g-12">
+							<p:outputLabel value="Comando" />
+							<p:selectOneMenu id="comandoStart" autoWidth="false"
+								value="#{montagemBean.producao.comando}">
+								<f:selectItems value="#{montagemBean.listaComandos}"
+									var="operador" itemValue="#{operador}"
+									itemLabel="#{operador.descricao}" />
+							</p:selectOneMenu>
+						</div>
+						<h:panelGroup
+							rendered="#{montagemBean.producao.comando.tipo == 'INICIAR'}">
+							<div class="ui-g-12">
+								<p:outputLabel value="Quantidade" />
+								<p:spinner value="#{montagemBean.producao.quantidade}" min="1"
+									stepFactor="1" />
+							</div>
+						</h:panelGroup>
+
+						<div align="right" class="ui-g-12" style="margin-top: 5px">
+							<p:commandButton value="Confirma" icon="ui-icon-check"
+								class="botao-dialogo"
+								update="formCadastro:msg formCadastro:tabelaEvento formCadastro:tabela"
+								process="dlgProducao" action="#{montagemBean.salvarProducao}"
+								oncomplete="if(!args.validationFailed) PF('dlgProducao').hide()" />
+						</div>
+
+					</div>
+				</div>
+			</div>
+
+		</h:form>
+
+	</p:dialog>  
+
+</ui:composition>
+
+<!-- max="#{montagemBean.producao.montagemItem.faltaProduzir}" -->

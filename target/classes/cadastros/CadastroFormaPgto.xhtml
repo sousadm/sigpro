@@ -1,0 +1,225 @@
+<ui:composition template="/WEB-INF/template/LayoutPadrao.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui" xmlns:o="http://omnifaces.org/ui">
+
+	<f:metadata>
+		<o:viewParam name="formaPgto" value="#{formaPgtoBean.formaPgto}" />
+		<f:event listener="#{formaPgtoBean.consultar}" type="preRenderView"></f:event>
+	</f:metadata>
+
+	<ui:define name="titulo">Condições de Pagamento</ui:define>
+
+	<ui:define name="corpo">
+
+		<h1 style="margin-top: 65px">Condição de Pagamento</h1>
+
+		<h:form id="formCadastro">
+
+			<p:toolbar style="margin-top: 05px">
+				<p:toolbarGroup>
+					<p:commandButton value="Salvar" id="botaoSalvar"
+						icon="ui-icon-disk" action="#{formaPgtoBean.salvar}"
+						update="@form"
+						onclick="jQuery(this).addClass('ui-state-disabled')" />
+
+					<p:commandButton id="botaoCondicao" value="Condições"
+						update="form-lista" icon="ui-icon-note"
+						oncomplete="PF('dlgListaRegra').show()" />
+
+				</p:toolbarGroup>
+				<p:toolbarGroup align="right">
+					<p:button value="Novo" id="btnNovo" action="#{formaPgtoBean.novo}"
+						icon="ui-icon-document" update="@form" />
+				</p:toolbarGroup>
+			</p:toolbar>
+
+			<p:messages autoUpdate="true" closable="true" />
+
+			<div class="ui-fluid ui-widget"
+				style="margin-top: 5px; border: 1px solid silver;">
+				<div class="ui-g">
+					<div class="ui-g-12 ui-md-6">
+						<p:outputLabel value="Descrição" for="nome" />
+						<p:inputText id="nome" maxlength="40"
+							value="#{formaPgtoBean.formaPgto.descricao}" />
+					</div>
+					<div class="ui-g-12 ui-md-6">
+						<p:outputLabel value="Tipo de pagamento" for="tipoPgto" />
+						<p:inputText value="#{formaPgtoBean.formaPgto.tipo.descricao}"
+							readonly="true" class="bloqueado"
+							rendered="#{formaPgtoBean.formaPgto.existe}" />
+						<p:selectOneMenu id="tipoPgto" autoWidth="false"
+							rendered="#{not formaPgtoBean.formaPgto.existe}"
+							value="#{formaPgtoBean.formaPgto.tipo}">
+							<f:selectItems value="#{listaTipoBean.tipoPagamento}" var="a"
+								itemValue="#{a}" itemLabel="#{a.descricao}" />
+							<p:ajax process="@this" update="botaoCondicao" />
+						</p:selectOneMenu>
+					</div>
+
+					<div class="ui-g-12 ui-md-4">
+						<p:outputLabel value="Percentual de entrada" for="txtEntrada" />
+						<p:inputNumber id="txtEntrada" minValue="0" maxValue="100"
+							decimalSeparator="," thousandSeparator="." decimalPlaces="2"
+							value="#{formaPgtoBean.formaPgto.entrada}" />
+					</div>
+					<div class="ui-g-12 ui-md-4">
+						<p:outputLabel value="Valor mínimo da parcela" for="txtMinimo" />
+						<p:inputNumber id="txtMinimo" minValue="0" decimalSeparator=","
+							thousandSeparator="." decimalPlaces="2"
+							value="#{formaPgtoBean.formaPgto.minimo}" />
+					</div>
+					<div class="ui-g-12 ui-md-4">
+						<p:outputLabel value="Desconto" for="txtDesconto" />
+						<p:inputText id="txtDesconto"
+							value="#{formaPgtoBean.formaPgto.desconto}">
+							<f:convertNumber pattern="#0.00" />
+						</p:inputText>
+					</div>
+
+					<h:panelGroup
+						rendered="#{formaPgtoBean.formaPgto.compensaEmContaBancaria}">
+						<div class="ui-g-12">
+							<p:outputLabel value="Conta bancária" />
+							<div class="ui-inputgroup">
+								<p:commandButton icon="ui-icon-search" process="@this"
+									styleClass="button-grid"
+									actionListener="#{selecionaBean.conta}">
+									<p:ajax event="dialogReturn"
+										listener="#{formaPgtoBean.onContaChosen}"
+										update="txtContaBancaria" />
+								</p:commandButton>
+								<p:inputText id="txtContaBancaria"
+									value="#{formaPgtoBean.formaPgto.conta.descricao}"
+									readonly="true" styleClass="bloqueado" />
+							</div>
+						</div>
+					</h:panelGroup>
+
+				</div>
+			</div>
+
+			<p:dataTable value="#{formaPgtoBean.lista}" var="formaPgto"
+				border="1" cellpadding="2" cellspacing="0" paginator="true"
+				paginatorPosition="bottom" rows="5" id="tabela"
+				style="margin-top: 5px">
+
+				<p:column headerText="Descrição">
+					<h:outputText value="#{formaPgto.descricao}" />
+				</p:column>
+				<p:column headerText="Tipo de pagamento" width="30px">
+					<h:outputText value="#{formaPgto.tipo.descricao}" />
+				</p:column>
+				<p:column headerText="Entrada %"
+					style="text-align: right; width: 80px">
+					<h:outputText value="#{formaPgto.entrada}">
+						<f:convertNumber pattern="#0.00" />
+					</h:outputText>
+				</p:column>
+				<p:column headerText="Mínimo" style="text-align: right; width: 80px">
+					<h:outputText value="#{formaPgto.minimo}">
+						<f:convertNumber pattern="#0.00" />
+					</h:outputText>
+				</p:column>
+
+				<p:column width="80">
+					<p:commandButton icon="ui-icon-pencil" process="@this"
+						title="Editar" update="@form">
+						<f:setPropertyActionListener value="#{formaPgto}"
+							target="#{formaPgtoBean.formaPgto}" />
+					</p:commandButton>
+					<p:commandButton icon="ui-icon-trash" process="@this"
+						title="Excluir" update="@form"
+						action="#{formaPgtoBean.excluir(formaPgto)}">
+						<p:confirm icon="ui-icon-alert" header="Confirmação de exclusão"
+							message="Excluir o registro atual?" />
+					</p:commandButton>
+				</p:column>
+
+			</p:dataTable>
+		</h:form>
+
+		<p:dialog id="dlgListaRegra" header="Compensação"
+			widgetVar="dlgListaRegra" closeOnEscape="true" modal="true"
+			width="800" height="400">
+			<h:form id="form-lista">
+
+				<p:dataTable value="#{formaPgtoBean.formaPgto.regras}" var="item"
+					rowIndexVar="linhaItem" id="tabelaItens"
+					emptyMessage="Nenhum registro encontrado." rows="6"
+					paginator="true" paginatorAlwaysVisible="false"
+					paginatorPosition="top">
+
+					<p:column headerText="Parcelas" style="width:90px">
+						<p:spinner value="#{item.quantidade}" min="1" max="100" size="5"
+							disabled="#{!formaPgtoBean.formaPgto.tipo.permiteEditaRegra}" />
+					</p:column>
+
+					<p:column headerText="Tempo (dias)" style="width:90px">
+						<p:spinner value="#{item.tempo}" min="0" size="5"
+							disabled="#{!formaPgtoBean.formaPgto.tipo.permiteEditaRegra}" />
+
+					</p:column>
+
+					<p:column headerText="Desconto (%)" style="width:90px">
+						<p:inputText value="#{item.desconto}" style="width:90%"
+							disabled="#{!formaPgtoBean.formaPgto.tipo.permiteEditaRegra}">
+							<f:convertNumber maxFractionDigits="2" minFractionDigits="2"
+								disabled="#{!formaPgtoBean.formaPgto.tipo.permiteEditaRegra}" />
+						</p:inputText>
+					</p:column>
+
+					<!-- 					<p:column headerText="Juro (%)" style="width:90px"> -->
+					<!-- 						<p:inputText value="#{item.juro}" style="width:90%" -->
+					<!-- 							disabled="#{!formaPgtoBean.formaPgto.tipo.permiteEditaRegra}"> -->
+					<!-- 							<f:convertNumber maxFractionDigits="2" minFractionDigits="2" -->
+					<!-- 								disabled="#{!formaPgtoBean.formaPgto.tipo.permiteEditaRegra}" /> -->
+					<!-- 						</p:inputText> -->
+					<!-- 					</p:column> -->
+
+					<p:column headerText="Recebimento">
+						<p:selectOneMenu autoWidth="false"
+							disabled="#{!formaPgtoBean.formaPgto.tipo.permiteEditaRegra}"
+							value="#{item.unifica}" style="width:90%">
+							<f:selectItem itemLabel="Antecipado" itemValue="true" />
+							<f:selectItem itemLabel="No vencimento" itemValue="false" />
+						</p:selectOneMenu>
+					</p:column>
+
+					<p:column width="30">
+						<p:commandButton icon="ui-icon-trash" process="@this"
+							title="Excluir" update="tabelaItens"
+							disabled="#{formaPgtoBean.naoMostrarItem(linhaItem)}"
+							action="#{formaPgtoBean.removerItem(linhaItem)}" />
+					</p:column>
+
+				</p:dataTable>
+
+				<div style="margin-top: 5px" align="right">
+					<p:commandButton value="Add" style="width:100px; height:30px"
+						disabled="#{!formaPgtoBean.formaPgto.tipo.permiteNovaRegra}"
+						action="#{formaPgtoBean.addRegra}" update="form-lista" />
+
+					<p:commandButton value="Confirmar" style="width:100px; height:30px"
+						oncomplete="if(!args.validationFailed) PF('dlgListaRegra').hide()" />
+				</div>
+
+			</h:form>
+
+		</p:dialog>
+
+	</ui:define>
+
+</ui:composition>
+
+
+<!-- 					<div class="ui-g-12 ui-md-3"> -->
+<!-- 						<p:outputLabel value="Prazo médio" for="txtPrazo" /> -->
+<!-- 						<h:outputText id="txtPrazo" -->
+<!-- 							value="#{formaPgtoBean.formaPgto.prazoMedio}" class="negrito"> -->
+<!-- 							<f:convertNumber pattern="#0.00" /> -->
+<!-- 						</h:outputText> -->
+<!-- 					</div> -->

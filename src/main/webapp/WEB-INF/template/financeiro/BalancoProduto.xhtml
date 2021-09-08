@@ -1,0 +1,37 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<p:dataTable id="tabelaProduto" value="#{balancoBean.balanco.produtos}"
+		var="itemProd" rowIndexVar="item" style="margin-top: 5px"
+		emptyMessage="Nenhum registro encontrado." rows="10" paginator="true"
+		paginatorAlwaysVisible="false" paginatorPosition="bottom">
+
+		<p:column headerText="Produto">
+			<h:outputText value="#{itemProd.produto.nome}" />
+		</p:column>
+		<p:column headerText="Categoria" priority="6" style="width: 100px">
+			<h:outputText value="#{itemProd.produto.categoria.categoriaPai.descricao}" />
+		</p:column>
+		<p:column headerText="Quantidade" style="text-align: right; width: 70px">
+			<h:outputText value="#{itemProd.estoqueGerencial}">
+				<f:convertNumber />
+			</h:outputText>
+		</p:column>
+		<p:column headerText="Pr.Custo" style="text-align: right; width: 80px">
+			<h:outputText value="#{itemProd.precoCusto}">
+				<f:convertNumber type="currency" />
+			</h:outputText>
+		</p:column>
+		<p:column headerText="Vr.Patrimônio"
+			style="text-align: right; width: 110px">
+			<h:outputText value="#{itemProd.valorGerencial}">
+				<f:convertNumber type="currency" />
+			</h:outputText>
+		</p:column>
+
+	</p:dataTable>
+
+</ui:composition>

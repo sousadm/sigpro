@@ -1,0 +1,159 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<h1 style="margin-top: 65px">Títulos</h1>
+
+	<p:toolbar style="margin-top: 05px">
+		<p:toolbarGroup>
+
+			<p:splitButton value="Pesquisar" id="botaoPesquisar"
+				icon="ui-icon-search" action="#{tituloBean.pesquisar}"
+				update="@form">
+				<p:menuitem value="Imprimir lista" icon="ui-icon-print" ajax="false"
+					process="@form" action="#{tituloBean.imprimir_lista}"
+					target="_blank" />
+			</p:splitButton>
+		</p:toolbarGroup>
+
+		<p:toolbarGroup align="right">
+			<p:commandButton value="Novo" icon="ui-icon-document"
+				disabled="#{seguranca.bloqueioValidade}" action="#{tituloBean.novo}"
+				update="@form" />
+		</p:toolbarGroup>
+
+	</p:toolbar>
+
+	<div class="ui-fluid">
+		<div class="ui-g" style="margin-top: 5px; border: 1px solid gray;">
+			<div class="ui-g-12 ui-md-6">
+				<div class="ui-g-12">
+					<p:outputLabel value="Responsável nominal" for="nome" />
+					<p:inputText id="nome" value="#{tituloBean.filtro.nome}" />
+				</div>
+				<div class="ui-g-12">
+					<p:outputLabel value="Agente financeiro" for="agente" />
+					<p:selectOneMenu id="agente" value="#{tituloBean.filtro.agente}"
+						autoWidth="false">
+						<f:selectItem itemLabel="Selecione..." />
+						<f:selectItems value="#{tituloBean.agentes}" var="a"
+							itemValue="#{a.agente}" itemLabel="#{a.nome}" />
+					</p:selectOneMenu>
+				</div>
+			</div>
+			<div class="ui-g-12 ui-md-6">
+				<div class="ui-g-6">
+					<p:outputLabel value="Emissão" />
+					<p:calendar navigator="true" showOn="button" mask="99/99/9999"
+						pattern="dd/MM/yyyy" value="#{tituloBean.filtro.emissaoInicial}" />
+				</div>
+				<div class="ui-g-6">
+					<p:outputLabel value="Término" />
+					<p:calendar navigator="true" showOn="button" mask="99/99/9999"
+						pattern="dd/MM/yyyy" value="#{tituloBean.filtro.emissaoFinal}" />
+				</div>
+				<div class="ui-g-6">
+					<p:outputLabel value="Vencimento" />
+					<p:calendar navigator="true" showOn="button" mask="99/99/9999"
+						pattern="dd/MM/yyyy"
+						value="#{tituloBean.filtro.vencimentoInicial}" />
+				</div>
+				<div class="ui-g-6">
+					<p:outputLabel value="Término" />
+					<p:calendar navigator="true" showOn="button" mask="99/99/9999"
+						pattern="dd/MM/yyyy" value="#{tituloBean.filtro.vencimentoFinal}" />
+				</div>
+			</div>
+
+			<div class="ui-g-12 ui-md-3">
+				<p:outputLabel value="Condição" />
+				<p:selectOneMenu value="#{tituloBean.filtro.tituloStatus}"
+					autoWidth="false">
+					<f:selectItems value="#{listaTipoBean.tipoSituacaoFinanceira}"
+						var="status" itemLabel="#{status.descricao}" itemValue="#{status}" />
+				</p:selectOneMenu>
+			</div>
+			<div class="ui-g-12 ui-md-5">
+				<p:outputLabel value="Cartão" />
+				<p:selectOneMenu value="#{tituloBean.filtro.cartao}"
+					autoWidth="false">
+					<f:selectItem itemLabel="Selecione..." />
+					<f:selectItems value="#{tituloBean.listaCartao}" var="cartao"
+						itemLabel="#{cartao.toString()}" itemValue="#{cartao}" />
+				</p:selectOneMenu>
+			</div>
+			<div class="ui-g-12 ui-md-4">
+				<p:outputLabel value="Tipo de Titulo" />
+				<p:selectManyCheckbox value="#{tituloBean.filtro.tipoDC}">
+					<f:selectItems value="#{listaTipoBean.tiposDebitoCredito}"
+						var="tipo" itemValue="#{tipo}" itemLabel="#{tipo.descricao}" />
+				</p:selectManyCheckbox>
+			</div>
+
+		</div>
+	</div>
+
+	<p:dataTable id="tabela" value="#{tituloBean.lista}" var="titulo"
+		rowIndexVar="linha" scrollable="true" style="margin-top: 5px"
+		emptyMessage="Nenhum registro encontrado." rows="10" paginator="true"
+		paginatorAlwaysVisible="false" paginatorPosition="bottom" lazy="true">
+
+		<p:column headerText="Vencto" sortBy="#{titulo.vencimento}"
+			style="width: 80px">
+			<h:outputText value="#{titulo.vencimento}"
+				style="color: #{titulo.statusCor}">
+				<f:convertDateTime pattern="dd/MM/yyyy" />
+			</h:outputText>
+		</p:column>
+		<p:column headerText="Docto" style="width: 55px">
+			<h:outputText value="#{titulo.documento}"
+				style="color: #{titulo.statusCor}" title="#{titulo.documento}" />
+		</p:column>
+		<p:column headerText="Participante"
+			sortBy="#{titulo.responsavel.nome}" style="width: 130px">
+			<h:outputText value="#{titulo.responsavel.nome}"
+				style="color: #{titulo.statusCor}" />
+		</p:column>
+		<p:column headerText="Histórico">
+			<h:outputText value="#{titulo.descricao}"
+				style="color: #{titulo.statusCor}" />
+		</p:column>
+		<p:column headerText="Tipo" style="width: 60px">
+			<h:outputText value="#{titulo.tipoDC}"
+				style="color: #{titulo.statusCor}" />
+		</p:column>
+		<p:column headerText="Valor" style="text-align: right; width: 65px">
+			<h:outputText value="#{titulo.valor}"
+				style="color: #{titulo.statusCor}">
+				<f:convertNumber type="currency" currencySymbol="" />
+			</h:outputText>
+		</p:column>
+		<p:column headerText="Saldo" style="text-align: right; width: 65px">
+			<h:outputText value="#{titulo.saldo}"
+				style="color: #{titulo.statusCor}">
+				<f:convertNumber type="currency" currencySymbol="" />
+			</h:outputText>
+		</p:column>
+
+		<p:column width="120">
+			<p:commandButton title="Editar" icon="ui-icon-pencil"
+				class="button-grid" update="@form"
+				actionListener="#{tituloBean.setTitulo(titulo)}" process="@this" />
+			<p:commandButton icon="ui-icon-check" title="compensação no banco"
+				process="@this" update="dlgCompensa"
+				disabled="#{titulo.contaBancaria == null}"
+				actionListener="#{tituloBean.setTitulo(titulo)}"
+				oncomplete="PF('dlgCompensa').show()" />
+			<p:commandButton icon="ui-icon-note" title="Histórico"
+				process="@this" update="dlgHistorico"
+				actionListener="#{tituloHistoricoBean.listar(titulo)}"
+				oncomplete="PF('dlgHistorico').show()" />
+		</p:column>
+
+	</p:dataTable>
+
+	<p:blockUI block="formCadastro" trigger="botaoPesquisar" />
+
+</ui:composition>

@@ -1,0 +1,135 @@
+<ui:composition template="/WEB-INF/template/LayoutPadrao.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<f:metadata>
+		<f:event listener="#{centroDeCustoBean.inicializar}"
+			type="preRenderView"></f:event>
+	</f:metadata>
+
+	<ui:define name="titulo">#{centroDeCustoBean.modulo}</ui:define>
+
+	<ui:define name="corpo">
+		<h:form id="frmPesquisa">
+
+			<h1 style="margin-top: 65px">#{centroDeCustoBean.titulo}</h1>
+
+			<p:toolbar style="margin-top: 05px">
+				<p:toolbarGroup>
+					<p:splitButton value="Pesquisar" icon="ui-icon-search"
+						action="#{centroDeCustoBean.consultar}" update="@form">
+						<p:separator />
+						<p:menuitem value="Imprimir lista" icon="ui-icon-print"
+							ajax="false" process="@form"
+							action="#{centroDeCustoBean.imprimir}" target="_blank" />
+					</p:splitButton>
+				</p:toolbarGroup>
+
+				<p:toolbarGroup align="right">
+					<p:commandButton value="Novo" icon="ui-icon-document"
+						action="#{centroDeCustoBean.novo}" update="dlgCentroCusto"
+						oncomplete="PF('dlgCentroCusto').show()" />
+				</p:toolbarGroup>
+
+			</p:toolbar>
+
+			<p:growl />
+
+			<div class="ui-fluid">
+				<p:dataTable id="tabela" value="#{centroDeCustoBean.lista}"
+					var="item" rowIndexVar="linha" style="margin-top: 5px"
+					emptyMessage="Nenhum registro encontrado." rows="8"
+					paginator="true" paginatorAlwaysVisible="false"
+					paginatorPosition="bottom" scrollable="true" lazy="true">
+					<p:column headerText="Descrição" sortBy="#{item.descricao}">
+						<h:outputText value="#{item.descricao}" />
+					</p:column>
+					<p:column headerText="Tipo" sortBy="#{item.tipo.descricao}"
+						priority="2">
+						<h:outputText value="#{item.tipo.descricao}" />
+					</p:column>
+					<p:column style="width: 80px; text-align: center">
+						<p:commandButton icon="ui-icon-pencil" title="Editar"
+							class="button-grid" action="#{centroDeCustoBean.editar(linha)}"
+							update="dlgCentroCusto" oncomplete="PF('dlgCentroCusto').show()" />
+
+						<p:commandButton icon="ui-icon-trash" process="@this"
+							class="button-grid" title="Excluir" update="@form"
+							action="#{centroDeCustoBean.excluir(linha)}">
+							<p:confirm icon="ui-icon-alert" header="Confirma"
+								message="Excluir o registro atual?" />
+						</p:commandButton>
+
+					</p:column>
+				</p:dataTable>
+			</div>
+		</h:form>
+
+		<p:dialog id="dlgCentroCusto" header="Centro de Custo" width="500"
+			widgetVar="dlgCentroCusto" closeOnEscape="true" modal="true">
+			<h:form id="form-cadastro">
+				<div class="ui-fluid" style="margin-top: 5px">
+					<div class="ui-g">
+						<div class="ui-g-12">
+							<h:outputLabel value="Tipo" />
+							<p:selectOneMenu value="#{centroDeCustoBean.custo.tipo}"
+								autoWidth="false">
+								<f:selectItems value="#{listaTipoBean.tipoCentroCusto}" var="a"
+									itemValue="#{a}" itemLabel="#{a.descricao}" />
+								<p:ajax event="change" update="@form" />
+							</p:selectOneMenu>
+						</div>
+						<div class="ui-g-12">
+							<p:outputLabel value="Descricao" for="documento" />
+							<p:inputText id="documento" maxlength="100"
+								value="#{centroDeCustoBean.custo.descricao}" />
+						</div>
+						<div class="ui-g-12">
+							<p:selectBooleanCheckbox
+								value="#{centroDeCustoBean.custo.permiteAnaliseDre}"
+								itemLabel="Permitir análise na D.R.E" />
+						</div>
+
+						<h:panelGroup
+							rendered="#{centroDeCustoBean.custo.tipo == 'DESPESA_COM_VEICULOS'}">
+							<div class="ui-g-12">
+								<p:selectBooleanCheckbox
+									value="#{centroDeCustoBean.custo.abastecimento}"
+									itemLabel="Controle de abastecimento" />
+							</div>
+						</h:panelGroup>
+
+						<h:panelGroup
+							rendered="#{centroDeCustoBean.custo.tipo == 'DESPESA_COM_PESSOAL'}">
+							<div class="ui-g-12">
+								<p:selectBooleanCheckbox
+									value="#{centroDeCustoBean.custo.comissao}"
+									itemLabel="Controle de Comissão" />
+							</div>
+						</h:panelGroup>
+
+					</div>
+				</div>
+
+				<div align="right">
+					<p:commandButton value="Ok" icon="ui-icon-check"
+						style="width: 100px;" process="@all"
+						update="form-cadastro frmPesquisa"
+						action="#{centroDeCustoBean.salvar}"
+						oncomplete="if(!args.validationFailed) PF('dlgCentroCusto').hide()" />
+				</div>
+
+			</h:form>
+		</p:dialog>
+
+	</ui:define>
+
+</ui:composition>
+
+<!-- 							<p:outputLabel value="Análise na D.R.E" /> -->
+<!-- 							<p:inputSwitch -->
+<!-- 								value="#{centroDeCustoBean.custo.permiteAnaliseDre}" -->
+<!-- 								offLabel="Bloqueado" onLabel="Liberado" /> -->

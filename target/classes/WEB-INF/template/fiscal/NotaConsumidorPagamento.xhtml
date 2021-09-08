@@ -1,0 +1,32 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<p:dataTable id="pagamentos"
+		style="vertical-align: top; width: 100%; height: 100%"
+		value="#{notaConsumidorBean.nota.pgtos}" var="pgto"
+		rowIndexVar="linhaPgto" emptyMessage="sem pagamentos" rows="10"
+		paginator="true" paginatorAlwaysVisible="false"
+		paginatorPosition="bottom">
+
+		<p:column headerText="Forma de Pgto">
+			<h:outputText value="#{pgto.meioPgto.toString()}" />
+		</p:column>
+		<p:column headerText="Valor" style="text-align: right; width: 65px">
+			<h:outputText value="#{pgto.valor}">
+				<f:convertNumber type="currency" currencySymbol="" />
+			</h:outputText>
+		</p:column>
+		<p:column style="width: 30px; text-align: center">
+			<p:commandButton icon="ui-icon-trash" process="@this"
+				class="button-grid" title="Excluir" update="@form"
+				action="#{notaConsumidorBean.removePagamento(linhaPgto)}">
+				<p:confirm icon="ui-icon-alert" header="Confirma"
+					message="Remover pagamento ?" />
+			</p:commandButton>
+		</p:column>
+	</p:dataTable>
+
+</ui:composition>

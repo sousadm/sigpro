@@ -1,0 +1,39 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<p:toolbar style="margin-top: 05px">
+		<p:toolbarGroup>
+			<p:outputLabel
+				value="#{unidadeProdutivaBean.unidade == null ? '' : 
+									(unidadeProdutivaBean.unidade.unidadeProdutiva.nomeDaLoja == null ? '' : 	
+													unidadeProdutivaBean.unidade.unidadeProdutiva.nomeDaLoja)}" />
+		</p:toolbarGroup>
+
+		<p:toolbarGroup align="right">
+			<p:commandButton value="Lista Unidades" icon="ui-icon-search"
+				update="@form" process="@this"
+				actionListener="#{unidadeProdutivaBean.setUnidade(null)}" />
+		</p:toolbarGroup>
+	</p:toolbar>
+
+	<p:tabView id="tabView" orientation="left" style="margin-top: 5px">
+
+		<p:tab title="Geral">
+			<ui:include src="/configuracao/UnidadeProdutivaGeral.xhtml" />
+		</p:tab>
+		<p:tab title="Usuários">
+			<ui:include src="/configuracao/UnidadeProdutivaUsuario.xhtml" />
+		</p:tab>
+		<!-- 		<p:tab title="Módulo Fiscal"> -->
+		<!-- 			<ui:include src="/configuracao/UnidadeProdutivaModuloFiscal.xhtml" /> -->
+		<!-- 		</p:tab> -->
+		<p:tab title="Módulo de Pagamento">
+			<ui:include src="/configuracao/UnidadeProdutivaModuloPagamento.xhtml" />
+		</p:tab>
+
+	</p:tabView>
+
+</ui:composition>

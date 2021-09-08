@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="curva de demanda" language="groovy" pageWidth="612" pageHeight="792" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="e52e8883-2041-4d3b-99e5-a512d5d4dff4">
+	<property name="ireport.zoom" value="1.4641000000000008"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="parameter1" class="java.lang.String"/>
+	<field name="nome" class="java.lang.String"/>
+	<field name="sku" class="java.lang.String"/>
+	<field name="quantidade" class="java.lang.Double"/>
+	<field name="valor" class="java.lang.Double"/>
+	<field name="tipoProduto" class="java.lang.String"/>
+	<variable name="valor_1" class="java.lang.Double" resetType="Group" resetGroup="tipo" calculation="Sum">
+		<variableExpression><![CDATA[$F{valor}]]></variableExpression>
+	</variable>
+	<variable name="valor_2" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$F{valor}]]></variableExpression>
+	</variable>
+	<group name="tipo">
+		<groupExpression><![CDATA[$F{tipoProduto}]]></groupExpression>
+		<groupHeader>
+			<band height="42">
+				<staticText>
+					<reportElement uuid="9d6cc30c-dbdd-4f42-93eb-a15221d35fb0" x="2" y="23" width="58" height="14"/>
+					<textElement>
+						<font isBold="true"/>
+					</textElement>
+					<text><![CDATA[Código]]></text>
+				</staticText>
+				<staticText>
+					<reportElement uuid="c0771bee-52f9-4b86-a606-fb2f77a63120" x="64" y="23" width="357" height="14"/>
+					<textElement>
+						<font isBold="true"/>
+					</textElement>
+					<text><![CDATA[Descrição]]></text>
+				</staticText>
+				<staticText>
+					<reportElement uuid="96276019-154a-4ec0-b6d8-eb477847262c" x="428" y="23" width="66" height="14"/>
+					<textElement textAlignment="Right">
+						<font isBold="true"/>
+					</textElement>
+					<text><![CDATA[Quantidade]]></text>
+				</staticText>
+				<staticText>
+					<reportElement uuid="20913abe-c5c8-4b17-82ef-7ce3a1f8d9f1" x="499" y="23" width="72" height="14"/>
+					<textElement textAlignment="Right">
+						<font isBold="true"/>
+					</textElement>
+					<text><![CDATA[Valor]]></text>
+				</staticText>
+				<line>
+					<reportElement uuid="b54f360f-6254-4d23-98d2-23a066719157" x="0" y="19" width="572" height="1"/>
+				</line>
+				<line>
+					<reportElement uuid="66d0c087-a9d0-4534-8a84-fd5785deeba1" x="0" y="39" width="572" height="1"/>
+				</line>
+				<textField>
+					<reportElement uuid="b14abcab-1174-4904-9acd-647ea7a98c28" x="2" y="2" width="305" height="14"/>
+					<textElement>
+						<font isItalic="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{tipoProduto}.toString()]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band height="21">
+				<textField pattern="#,##0.00" isBlankWhenNull="true">
+					<reportElement uuid="778b77ac-7af1-4b24-b739-f06a97d0f4c3" x="471" y="4" width="100" height="14"/>
+					<textElement textAlignment="Right">
+						<font isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{valor_1}]]></textFieldExpression>
+				</textField>
+				<line>
+					<reportElement uuid="43e455b9-6361-49e2-9cb3-0d2fa18d4148" x="0" y="1" width="572" height="1"/>
+				</line>
+			</band>
+		</groupFooter>
+	</group>
+	<title>
+		<band height="30" splitType="Stretch">
+			<staticText>
+				<reportElement uuid="4fd3f6ee-4976-428b-8afb-cbd4b900eb34" x="41" y="5" width="312" height="23"/>
+				<textElement textAlignment="Center">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[CURVA DE DEMANDA PRODUTOS / SERVIÇOS]]></text>
+			</staticText>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement uuid="4d684cce-39a4-4d71-a671-d021c85f28ae" x="471" y="0" width="100" height="14"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<textField pattern="HH.mm">
+				<reportElement uuid="f0dcffc7-6237-4b42-a5f1-cb50a74964c0" x="471" y="14" width="100" height="14"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<detail>
+		<band height="17" splitType="Stretch">
+			<textField isBlankWhenNull="true">
+				<reportElement uuid="45700dec-2978-49a2-bbdb-fc702aeb54c6" x="2" y="1" width="58" height="14"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{sku}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement uuid="9f6fb7c9-f50e-4f06-a68a-a5269545a859" x="64" y="1" width="357" height="14"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{nome}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement uuid="eecf8d04-7cf9-446c-ada6-d9aa7fe9342e" x="428" y="1" width="66" height="14"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{quantidade}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement uuid="392a0551-df2d-4cd9-93d1-494572a01e1e" x="499" y="1" width="72" height="14"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{valor}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<summary>
+		<band height="33">
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement uuid="48ded1f6-bd8e-47d2-8a5e-f00d1ccb73cb" x="471" y="3" width="100" height="14"/>
+				<textElement textAlignment="Right">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{valor_2}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="55989c13-ec8c-49f9-9930-5dae2596472f" stretchType="RelativeToTallestObject" x="2" y="3" width="426" height="25" forecolor="#666666"/>
+				<textElement/>
+				<text><![CDATA[Observação: a análise de demanda considera somente os descontos no item de pedido, não sendo indicado para análise de faturamento]]></text>
+			</staticText>
+		</band>
+	</summary>
+</jasperReport>

@@ -1,0 +1,39 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<p:tabView id="tabCadastro" orientation="left">
+		<p:tab title="#{pessoaBean.opcaoCliente}"
+			rendered="#{pessoaBean.pessoa.defineCliente}">
+			<ui:include src="/WEB-INF/template/pessoa/PessoaCliente.xhtml" />
+		</p:tab>
+		<p:tab title="Fornecedor"
+			rendered="#{pessoaBean.pessoa.defineFornecedor}">
+			<ui:include src="/WEB-INF/template/pessoa/PessoaFornecedor.xhtml" />
+		</p:tab>
+		<p:tab title="Agente" rendered="#{pessoaBean.pessoa.defineAgente}">
+			<ui:include src="/WEB-INF/template/pessoa/PessoaAgente.xhtml" />
+		</p:tab>
+		<p:tab title="Usuário" rendered="#{pessoaBean.pessoa.defineUsuario}">
+			<ui:include src="/WEB-INF/template/pessoa/PessoaUsuario.xhtml" />
+		</p:tab>
+		<p:tab title="Vendedor" rendered="#{pessoaBean.pessoa.defineVendedor}">
+			<ui:include src="/WEB-INF/template/pessoa/PessoaVendedor.xhtml" />
+		</p:tab>
+		<p:tab title="Colaborador"
+			rendered="#{pessoaBean.pessoa.defineColaborador}">
+			<ui:include src="/WEB-INF/template/pessoa/PessoaColaborador.xhtml" />
+		</p:tab>
+		<p:tab title="Transportador"
+			rendered="#{pessoaBean.pessoa.defineTransportador}">
+			<ui:include src="/WEB-INF/template/pessoa/PessoaTransportador.xhtml" />
+		</p:tab>
+		<p:tab title="Motorista" 
+			rendered="#{pessoaBean.pessoa.defineMotorista}">
+			<ui:include src="/WEB-INF/template/pessoa/PessoaMotorista.xhtml" />
+		</p:tab>
+	</p:tabView>
+
+</ui:composition>

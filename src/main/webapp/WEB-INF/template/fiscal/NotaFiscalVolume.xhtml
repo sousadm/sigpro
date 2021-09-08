@@ -1,0 +1,56 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<p:dialog id="dlgVolume" header="Volume" widgetVar="dlgVolume"
+		closeOnEscape="true" modal="true" maximizable="false" width="400">
+		<h:form id="formVolume">
+			<div class="ui-fluid">
+				<p:panelGrid columns="2" layout="grid"
+					styleClass="panelgrid-noborder">
+
+					<p:outputLabel value="Quantidade" />
+					<p:inputNumber minValue="0" thousandSeparator="." decimalPlaces="2"
+						disabled="#{not notaFiscalBean.nota.podeEditar}"
+						value="#{notaFiscalBean.notaVolume.quantidade}" />
+
+					<p:outputLabel value="Espécie" />
+					<p:inputText size="40"
+						disabled="#{not notaFiscalBean.nota.podeEditar}"
+						value="#{notaFiscalBean.notaVolume.especie}" />
+
+					<p:outputLabel value="Marca" />
+					<p:inputText size="40"
+						disabled="#{not notaFiscalBean.nota.podeEditar}"
+						value="#{notaFiscalBean.notaVolume.marca}" />
+
+					<p:outputLabel value="Peso Bruto" />
+					<p:inputNumber minValue="0" decimalSeparator=","
+						thousandSeparator="." decimalPlaces="2"
+						disabled="#{not notaFiscalBean.nota.podeEditar}"
+						value="#{notaFiscalBean.notaVolume.pesoBruto}" />
+
+					<p:outputLabel value="Peso Líquido" />
+					<p:inputNumber minValue="0" decimalSeparator=","
+						thousandSeparator="." decimalPlaces="2"
+						disabled="#{not notaFiscalBean.nota.podeEditar}"
+						value="#{notaFiscalBean.notaVolume.pesoLiquido}" />
+
+				</p:panelGrid>
+			</div>
+
+			<div align="right" style="margin-top: 5px">
+				<p:commandButton value="Confirma" icon="ui-icon-check"
+					process="dlgVolume"
+					disabled="#{not notaFiscalBean.nota.podeEditar}"
+					update="formCadastro:tabView:tabVolume"
+					action="#{notaFiscalBean.gravarItemVolume}"
+					oncomplete="if(!args.validationFailed) PF('dlgVolume').hide()" />
+			</div>
+
+		</h:form>
+	</p:dialog>
+
+</ui:composition>

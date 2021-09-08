@@ -1,0 +1,49 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<p:commandButton value="Medida de Contingência"
+		update="dlgContingencia" process="@this"
+		disabled="#{not caixaDiarioBean.diario.podeSalvar}"
+		actionListener="#{caixaDiarioBean.novoPlanner}"
+		oncomplete="PF('dlgContingencia').show()" />
+
+	<p:dataTable id="tabelaContingencia" rowIndexVar="linhaPlanner"
+		value="#{caixaDiarioBean.diario.contingencias}" var="planner"
+		style="margin-top: 5px" emptyMessage="Nenhum registro encontrado."
+		rows="10" paginator="true" paginatorAlwaysVisible="false"
+		paginatorPosition="bottom">
+
+		<p:column headerText="Medida de contingência">
+			<h:outputText value="#{planner.contingencia.descricao}" />
+		</p:column>
+		<p:column headerText="Detalhamento da medida">
+			<h:outputText value="#{planner.como}" />
+		</p:column>
+		<p:column headerText="Valor">
+			<h:outputText value="#{planner.valor}">
+				<f:convertNumber pattern="#0.00" />
+			</h:outputText>
+		</p:column>
+
+		<p:column style="width: 150px; text-align: center">
+
+			<p:commandButton icon="ui-icon-pencil" title="Editar"
+				action="#{caixaDiarioBean.editContingencia(planner)}"
+				update="dlgContingencia" oncomplete="PF('dlgContingencia').show()" />
+
+			<p:commandButton icon="ui-icon-trash" process="@this" title="Excluir"
+				update="formCadastro:tabView:tabelaContingencia"
+				disabled="#{not caixaDiarioBean.diario.podeSalvar}"
+				actionListener="#{caixaDiarioBean.removeContingencia(linhaPlanner)}">
+				<p:confirm icon="ui-icon-alert" header="Confirma"
+					message="Remover o registro atual?" />
+			</p:commandButton>
+
+		</p:column>
+
+	</p:dataTable>
+
+</ui:composition>

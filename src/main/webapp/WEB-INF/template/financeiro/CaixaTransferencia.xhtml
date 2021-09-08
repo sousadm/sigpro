@@ -1,0 +1,106 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<p:dialog id="dlgTransferencia" header="Transferência"
+		widgetVar="dlgTransferencia" closeOnEscape="true" modal="true"
+		maximizable="false" width="600">
+
+		<h:form id="formTransferencia">
+
+			<div class="ui-fluid">
+				<div class="ui-g">
+
+					<div class="ui-g-4">
+						<p:outputLabel value="Valor" for="txtValorTransferencia" />
+						<p:inputNumber id="txtValorTransferencia" minValue="0"
+							decimalSeparator="," emptyValue="true" thousandSeparator="."
+							decimalPlaces="2" required="true"
+							requiredMessage="defina o valor para transferência bancária"
+							disabled="#{not caixaBean.caixa.podeGravar}"
+							value="#{caixaBean.caixaValor.valor}" />
+					</div>
+
+					<div class="ui-g-8">
+						<p:outputLabel value="Conta bancária / Origem"
+							for="txtContaOrigem" />
+						<p:selectOneMenu id="txtContaOrigem" autoWidth="false"
+							required="true" requiredMessage="defina a conta orígem"
+							value="#{caixaBean.caixaValor.titulo.contaBancaria}"
+							disabled="#{not caixaBean.caixa.podeGravar}">
+							<f:selectItem itemLabel="Selecione" />
+							<f:selectItems value="#{caixaBean.listaContaBancaria}"
+								var="dbcontaBancaria" itemValue="#{dbcontaBancaria}"
+								itemLabel="#{dbcontaBancaria.descricao}" />
+						</p:selectOneMenu>
+					</div>
+
+
+					<div class="ui-g-6">
+						<p:outputLabel value="Banco destino" for="txtBancoTransferencia" />
+						<div class="ui-inputgroup">
+							<p:commandButton icon="ui-icon-search" title="pesquisar banco"
+								rendered="#{caixaBean.caixa.podeGravar}" process="@this"
+								update="@none" ignoreAutoUpdate="true" styleClass="button-grid"
+								action="#{selecionaBean.banco}">
+								<p:ajax event="dialogReturn"
+									listener="#{caixaBean.onBancoChosen}"
+									update="txtBancoTransferencia" ignoreAutoUpdate="true" />
+							</p:commandButton>
+							<p:inputText id="txtBancoTransferencia" readonly="true"
+								required="true" disabled="#{not caixaBean.caixa.podeGravar}"
+								requiredMessage="defina o banco destino"
+								value="#{caixaBean.caixaValor.titulo.banco.descricao}"
+								styleClass="bloqueado" />
+						</div>
+					</div>
+					<div class="ui-g-3">
+						<p:outputLabel value="Agência" for="txtAgenciaTransferencia" />
+						<p:inputText id="txtAgenciaTransferencia" maxlength="20"
+							required="true" requiredMessage="defina a agência destino"
+							disabled="#{not caixaBean.caixa.podeGravar}"
+							value="#{caixaBean.caixaValor.titulo.agencia}" />
+					</div>
+					<div class="ui-g-3">
+						<p:outputLabel value="Número" for="txtContaTransferencia" />
+						<p:inputText id="txtContaTransferencia" maxlength="20"
+							required="true"
+							requiredMessage="defina o número da conta destino"
+							disabled="#{not caixaBean.caixa.podeGravar}"
+							value="#{caixaBean.caixaValor.titulo.conta}" />
+					</div>
+
+					<div class="ui-g-8">
+						<p:outputLabel value="Identificação"
+							for="txtDocumentoTranferencia" />
+						<p:inputText id="txtDocumentoTranferencia" maxlength="20"
+							disabled="#{not caixaBean.caixa.podeGravar}"
+							value="#{caixaBean.caixaValor.titulo.documento}" />
+					</div>
+					<div class="ui-g-4">
+						<p:outputLabel value="Data prevista"
+							for="txtVencimentoTransferencia" />
+						<p:calendar id="txtVencimentoTransferencia" locale="br"
+							disabled="#{not caixaBean.caixa.podeGravar}" mask="99/99/9999"
+							pattern="dd/MM/yyyy" navigator="true" showOn="button"
+							value="#{caixaBean.caixaValor.titulo.vencimento}" />
+					</div>
+
+				</div>
+			</div>
+
+			<div align="right" style="margin-top: 5px">
+				<p:commandButton value="Confirma" icon="ui-icon-check"
+					disabled="#{not caixaBean.caixa.podeGravar}"
+					process="dlgTransferencia formCadastro:gridCaixaRecebimento"
+					update="@form formCadastro" action="#{caixaBean.gravarCompensacao}"
+					oncomplete="if(!args.validationFailed) PF('dlgTransferencia').hide()" />
+			</div>
+
+		</h:form>
+
+	</p:dialog>
+
+</ui:composition>

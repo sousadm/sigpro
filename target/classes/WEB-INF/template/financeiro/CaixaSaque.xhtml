@@ -1,0 +1,49 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<p:dialog id="dlgSaque" header="Saque em conta" widgetVar="dlgSaque"
+		closeOnEscape="true" modal="true" maximizable="false">
+
+		<h:form id="formCadastroSaque">
+
+			<div class="ui-fluid">
+				<div class="ui-g">
+					<div class="ui-g-12">
+						<p:outputLabel value="Valor" />
+						<p:inputNumber minValue="0" decimalSeparator=","
+							thousandSeparator="." decimalPlaces="2"
+							class="#{caixaBean.caixa.podeGravar ? '' : 'bloqueado'}"
+							readonly="#{not caixaBean.caixa.podeGravar}" required="true"
+							value="#{caixaBean.caixaValor.valor}" />
+					</div>
+					<div class="ui-g-12">
+						<p:outputLabel value="Conta bancária" />
+						<p:selectOneMenu icon="ui-icon-search" autoWidth="false"
+							value="#{caixaBean.caixaValor.titulo.contaBancaria}" 
+							rendered="#{caixaBean.caixa.temCaixaReceber}"
+							disabled="#{not caixaBean.caixa.podeGravar}">
+							<f:selectItems value="#{caixaBean.listaContaDebito}"
+								var="dbconta" itemValue="#{dbconta}"
+								itemLabel="#{dbconta.descricao}" />
+						</p:selectOneMenu>
+					</div>
+				</div>
+			</div>
+
+			<div align="right" style="margin-top: 5px">
+				<p:commandButton value="Confirma" icon="ui-icon-check"
+					process="dlgSaque formCadastro:gridCaixaRecebimento"
+					update="@form formCadastro" action="#{caixaBean.gravarCompensacao}"
+					oncomplete="if(!args.validationFailed) PF('dlgSaque').hide()" />
+			</div>
+
+		</h:form>
+
+	</p:dialog>
+
+</ui:composition>
+
+<!-- formCadastro:tabView:gridCompensacao  formCadastro:txtValorNegociado formCadastro:txtValorFinal -->

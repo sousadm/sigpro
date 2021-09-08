@@ -1,0 +1,87 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<h1 style="margin-top: 65px">Disponibilidade na Agenda</h1>
+
+	<div class="ui-fluid" style="margin-top: 5px">
+		<div class="ui-g">
+			<div class="ui-g-12 ui-md-6">
+				<p:outputLabel value="Especialidade" />
+				<p:selectOneMenu id="txtProfissao"
+					value="#{clinicaAtendimentoBean.profissao}" required="true">
+					<f:selectItem itemLabel="Selecione ..." />
+					<f:selectItems value="#{clinicaAtendimentoBean.listaProfissao}"
+						var="p" itemValue="#{p}" itemLabel="#{p.descricao}" />
+					<f:ajax render="txtEspecialista" event="change"
+						update="txtEspecialista" />
+				</p:selectOneMenu>
+			</div>
+			<div class="ui-g-12 ui-md-6">
+				<p:outputLabel value="Especialista" />
+				<p:selectOneMenu id="txtEspecialista"
+					value="#{clinicaAtendimentoBean.consultor}" required="true">
+					<f:selectItem itemLabel="todos" />
+					<f:selectItems value="#{clinicaAtendimentoBean.listaConsultor}"
+						var="c" itemValue="#{c}" itemLabel="#{c.nome}" />
+				</p:selectOneMenu>
+			</div>
+
+			<div class="ui-g-12 ui-md-4">
+				<p:outputLabel value="Data" />
+				<p:calendar showOn="button" mask="99/99/9999" pattern="dd/MM/yyyy"
+					value="#{clinicaAtendimentoBean.inicio}" required="true">
+				</p:calendar>
+			</div>
+			<div class="ui-g-12 ui-md-4">
+				<BR />
+				<p:commandButton id="botaoPesquisa" value="Listar"
+					icon="ui-icon-search" process="@form"
+					action="#{clinicaAtendimentoBean.listarHorario}" update="@form" />
+			</div>
+
+		</div>
+	</div>
+
+	<p:dataTable id="pedidosTable" var="agenda"
+		value="#{clinicaAtendimentoBean.listaClinicaAgenda}"
+		style="margin-top: 5px; width: 100%" rows="8" scrollable="true"
+		paginator="true" paginatorAlwaysVisible="false"
+		paginatorPosition="bottom" emptyMessage="Nenhum pedido encontrado."
+		lazy="true">
+
+		<p:column headerText="Data/Hora">
+			<h:outputText value="#{agenda.dataMarcada}">
+				<f:convertDateTime pattern="dd/MM/yyyy HH:mm" />
+			</h:outputText>
+		</p:column>
+		<p:column headerText="Nome do Assegurado">
+			<h:outputText value="#{agenda.paciente.nome}" />
+		</p:column>
+		<p:column headerText="Dt.Confirma">
+			<h:outputText value="#{agenda.dataConfirmada}">
+				<f:convertDateTime pattern="dd/MM/yyyy HH:mm" />
+			</h:outputText>
+		</p:column>
+		<p:column headerText="Convênio">
+			<h:outputText value="#{agenda.convenio.descricao}" />
+		</p:column>
+		<p:column headerText="Dt.Cancelamento">
+			<h:outputText value="#{agenda.dataCancelada}">
+				<f:convertDateTime pattern="dd/MM/yyyy HH:mm" />
+			</h:outputText>
+		</p:column>
+
+		<p:column style="text-align: center;">
+			<p:commandButton icon="ui-icon-pencil" title="Editar" update="@form"
+				class="button-grid"
+				action="#{clinicaAtendimentoBean.setAgenda(agenda)}" />
+			<p:button icon="ui-icon-closethick" title="Cancelar"
+				class="button-grid" />
+		</p:column>
+
+	</p:dataTable>
+
+</ui:composition>

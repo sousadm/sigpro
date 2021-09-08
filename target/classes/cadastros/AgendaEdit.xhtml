@@ -1,0 +1,153 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<p:toolbar style="margin-top: 05px">
+
+		<p:toolbarGroup>
+			<p:splitButton id="botaoGravar" value="Salvar" icon="ui-icon-disk"
+				disabled="#{not agendaBean.agenda.podeGravar}" update="@form"
+				process="@form" actionListener="#{agendaBean.salvar}">
+				<p:menuitem value="Excluir agendamento"
+					action="#{agendaBean.excluir}" icon="ui-icon-trash"
+					disabled="#{not agendaBean.agenda.existe}">
+					<p:confirm icon="ui-icon-alert" header="Confirma"
+						message="Excluir agendamento atual?" />
+				</p:menuitem>
+				<p:menuitem value="Finalizar agendamento" update="@form"
+					action="#{agendaBean.finalizar('ENCERRADO')}" icon="ui-icon-check">
+					<p:confirm icon="ui-icon-alert" header="Confirma"
+						message="Finalizar agendamento atual?" />
+				</p:menuitem>
+				<p:menuitem value="Cancelar agendamento" update="@form"
+					icon="ui-icon-close" action="#{agendaBean.finalizar('CANCELADO')}">
+					<p:confirm icon="ui-icon-alert" header="Confirma"
+						message="Cancelar agendamento atual?" />
+				</p:menuitem>
+
+				<p:submenu label="cadastro">
+
+					<p:menuitem value="Novo cadastro" icon="ui-icon-document"
+						actionListener="#{agendaBean.novo}" process="@this" update="@form" />
+
+					<p:menuitem
+						rendered="#{agendaBean.agenda.existe and agendaBean.agenda.contato.pessoa.existe}"
+						value="Definir a pessoa cadastrada"
+						outcome="/cadastros/CadastroPessoa" process="@form">
+						<f:param name="contato"
+							value="#{agendaBean.agenda.contato.pessoa.id}" />
+					</p:menuitem>
+
+				</p:submenu>
+
+			</p:splitButton>
+
+			<p:commandButton icon="ui-icon-search"
+				rendered="#{agendaBean.agenda.existe and not agendaBean.agenda.contato.pessoa.existe}"
+				value="Associar a pessoa cadastrada" process="@this" update="@none"
+				ignoreAutoUpdate="true" action="#{selecionaBean.pessoa}">
+				<p:ajax event="dialogReturn" update="@form"
+					listener="#{agendaBean.onPessoaChosen}" ignoreAutoUpdate="true" />
+			</p:commandButton>
+
+		</p:toolbarGroup>
+
+		<p:toolbarGroup align="right">
+			<p:commandButton value="Pesquisa" icon="ui-icon-search"
+				actionListener="#{agendaBean.setAgenda(null)}" process="@this"
+				update="@form" />
+		</p:toolbarGroup>
+	</p:toolbar>
+
+	<div class="ui-fluid">
+		<div class="ui-g" style="margin-top: 5px; border: 1px solid silver;">
+
+			<div class="ui-g-12 ui-md-6">
+				<h:outputLabel value="Nome" for="txtNome" />
+				<p:inputText id="txtNome" maxlength="100" required="true"
+					readonly="#{not agendaBean.agenda.podeGravar}"
+					styleClass="#{agendaBean.agenda.podeGravar ? '' : 'bloqueado'}"
+					requiredMessage="defina o nome do contato"
+					value="#{agendaBean.agenda.contato.nome}" />
+			</div>
+			<div class="ui-g-6 ui-md-2">
+				<h:outputLabel value="DDD" for="txtDdd" />
+				<p:inputMask id="txtDdd" value="#{agendaBean.agenda.contato.ddd}"
+					mask="99" maxlength="2" required="true"
+					readonly="#{not agendaBean.agenda.podeGravar}"
+					styleClass="#{agendaBean.agenda.podeGravar ? '' : 'bloqueado'}"
+					requiredMessage="defina o ddd do contato" />
+			</div>
+			<div class="ui-g-6 ui-md-4">
+				<h:outputLabel value="Celular" />
+				<p:inputText maxlength="20"
+					readonly="#{not agendaBean.agenda.podeGravar}"
+					styleClass="#{agendaBean.agenda.podeGravar ? '' : 'bloqueado'}"
+					value="#{agendaBean.agenda.contato.celular}" />
+			</div>
+
+			<div class="ui-g-3">
+				<h:outputLabel value="Cadastro origem" />
+				<p:inputText value="#{agendaBean.agenda.contato.pessoa.nome}"
+					readonly="true" class="bloqueado" />
+			</div>
+			<div class="ui-g-5">
+				<h:outputLabel value="E-mail" />
+				<p:inputText value="#{agendaBean.agenda.contato.email}"
+					readonly="#{not agendaBean.agenda.podeGravar}"
+					styleClass="#{agendaBean.agenda.podeGravar ? '' : 'bloqueado'}"
+					maxlength="100" style="text-transform: lowercase" />
+			</div>
+			<div class="ui-g-4">
+				<h:outputLabel value="Fone" />
+				<p:inputText maxlength="20"
+					readonly="#{not agendaBean.agenda.podeGravar}"
+					styleClass="#{agendaBean.agenda.podeGravar ? '' : 'bloqueado'}"
+					value="#{agendaBean.agenda.contato.fone}" />
+			</div>
+
+			<div class="ui-g-12 ui-md-3">
+				<h:outputLabel value="Cargo/Função" />
+				<p:inputText value="#{agendaBean.agenda.contato.cargo}"
+					readonly="#{not agendaBean.agenda.podeGravar}"
+					styleClass="#{agendaBean.agenda.podeGravar ? '' : 'bloqueado'}"
+					maxlength="100" />
+			</div>
+			<div class="ui-g-12 ui-md-3">
+				<h:outputLabel value="Data conclusão" />
+				<p:inputText value="#{agendaBean.agenda.dataEncerramento}"
+					class="bloqueado" readonly="true">
+					<f:convertDateTime type="both" />
+				</p:inputText>
+			</div>
+			<div class="ui-g-12 ui-md-3">
+				<h:outputLabel value="Data prevista" for="txtDataPrevista" />
+				<p:calendar id="txtDataPrevista" locale="br" navigator="true"
+					readonly="#{not agendaBean.agenda.podeGravar}"
+					styleClass="#{agendaBean.agenda.podeGravar ? '' : 'bloqueado'}"
+					value="#{agendaBean.agenda.dataPrevista}"
+					pattern="dd/MM/yyyy HH:mm" required="true"
+					requiredMessage="data prevista para encerramento inválida" />
+			</div>
+			<div class="ui-g-12 ui-md-3">
+				<p:outputLabel value="Status" />
+				<div
+					class="ui-inputfield ui-inputtext ui-widget ui-state-default ui-corner-all bloqueado ui-state-focus">
+					<h:outputLabel value="#{agendaBean.agenda.status.descricao}" />
+				</div>
+			</div>
+
+			<div class="ui-g-12">
+				<p:editor disabled="#{agendaBean.agenda.encerrado}"
+					value="#{agendaBean.agenda.observacao}"
+					readonly="#{not agendaBean.agenda.podeGravar}"
+					styleClass="naoaceitarenter #{agendaBean.agenda.podeGravar ? '' : 'bloqueado'}"
+					controls="#{listaTipoBean.editorControl}" height="150" />
+			</div>
+
+		</div>
+	</div>
+
+</ui:composition>

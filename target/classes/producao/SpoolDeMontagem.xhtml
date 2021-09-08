@@ -1,0 +1,187 @@
+<ui:composition template="/WEB-INF/template/LayoutPadrao.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui" xmlns:o="http://omnifaces.org/ui">
+
+	<f:metadata>
+		<f:param name="dummy" />
+		<o:viewParam name="montagem" value="#{montagemBean.montagem}" />
+		<f:event listener="#{montagemBean.inicializar}" type="preRenderView"></f:event>
+	</f:metadata>
+
+	<ui:define name="titulo">Montagem</ui:define>
+
+	<ui:define name="corpo">
+
+		<h:form id="formCadastro">
+
+			<p:growl id="msg" />
+
+			<h1 style="margin-top: 65px">SPOOL Montagem de Produtos</h1>
+
+			<p:toolbar style="margin-top: 05px">
+				<p:toolbarGroup>
+					<p:splitButton id="botaoPesquisa"
+						action="#{montagemBean.pesquisaOrdemProducao}" update="@form"
+						value="Pesquisar" icon="ui-icon-search">
+						<p:menuitem icon="ui-icon-print" value="imprimir produção"
+							process="@this" oncomplete="PF('dlgImprimir').show()" />
+					</p:splitButton>
+				</p:toolbarGroup>
+				<p:toolbarGroup align="right">
+					<p:commandButton value="Add Evento"
+						disabled="#{montagemBean.montagemItem == null or montagemBean.montagemItem.produto == null}"
+						action="#{montagemBean.preparaInicioProducaoMontagem}"
+						update="dlgProducao" oncomplete="PF('dlgProducao').show()" />
+				</p:toolbarGroup>
+			</p:toolbar>
+
+			<div class="ui-fluid">
+				<div class="ui-g" style="margin-top: 5px; border: 1px solid silver;">
+
+					<!-- 					<div class="ui-g-12 ui-md-3"> -->
+					<!-- 						<p:outputLabel value="Status da produção" /> -->
+					<!-- 						<p:selectOneMenu autoWidth="false" -->
+					<!-- 							value="#{montagemBean.filtro.statusProducao}"> -->
+					<!-- 							<f:selectItem itemLabel="Selecione status" /> -->
+					<!-- 							<f:selectItems value="#{listaTipoBean.tipoStatusProducao}" -->
+					<!-- 								var="status" itemValue="#{status}" -->
+					<!-- 								itemLabel="#{status.descricao}" /> -->
+					<!-- 						</p:selectOneMenu> -->
+					<!-- 					</div> -->
+					<!-- 					<div class="ui-g-6 ui-md-3"> -->
+					<!-- 						<p:outputLabel value="Período" /> -->
+					<!-- 						<p:calendar navigator="true" showOn="button" mask="99/99/9999" -->
+					<!-- 							pattern="dd/MM/yyyy" value="#{montagemBean.filtro.inicio}" /> -->
+					<!-- 					</div> -->
+					<!-- 					<div class="ui-g-6 ui-md-3"> -->
+					<!-- 						<p:outputLabel value="Término" /> -->
+					<!-- 						<p:calendar navigator="true" showOn="button" mask="99/99/9999" -->
+					<!-- 							pattern="dd/MM/yyyy" value="#{montagemBean.filtro.termino}" /> -->
+					<!-- 					</div> -->
+					<div class="ui-g-12 ui-md-6">
+						<p:outputLabel value="Produto" />
+						<p:inputText value="#{montagemBean.filtro.nome}" />
+					</div>
+
+				</div>
+			</div>
+
+			<div class="ui-fluid">
+				<div class="ui-g" style="margin-top: 5px;">
+					<div class="ui-g-12 ui-md-8">
+						<p:dataTable id="tabela" var="item"
+							value="#{montagemBean.listaItems}" selectionMode="single"
+							selection="#{montagemBean.montagemItem}" rowKey="#{item.id}"
+							scrollable="true" style="margin-top: 5px" lazy="true" rows="8"
+							emptyMessage="Nenhum registro encontrado." paginator="true"
+							paginatorAlwaysVisible="false" paginatorPosition="bottom">
+
+							<p:ajax event="rowSelect" update="@form" />
+							<p:ajax event="rowUnselect" update="@form" />
+
+							<p:column headerText="Código" width="80">
+								<p:link value="#{item.produto.sku}"
+									outcome="/cadastros/CadastroProduto"
+									title="ir para cadastro #{item.produto.nome}">
+									<f:param name="produto" value="#{item.produto.id}" />
+								</p:link>
+							</p:column>
+							<p:column headerText="Descrição">
+								<h:outputText value="#{item.produto.nome}" />
+							</p:column>
+							<p:column headerText="Und" width="30">
+								<h:outputText value="#{item.produto.unidade}" />
+							</p:column>
+							<p:column headerText="Quantidade" width="70">
+								<h:outputText value="#{item.quantidade}">
+									<f:convertNumber />
+								</h:outputText>
+							</p:column>
+							<p:column headerText="Produzido" width="70">
+								<h:outputText value="#{item.produzido}">
+									<f:convertNumber />
+								</h:outputText>
+							</p:column>
+
+						</p:dataTable>
+					</div>
+
+					<div class="ui-g-12 ui-md-4">
+
+						<p:dataTable id="tabelaEvento" scrollable="true"
+							value="#{montagemBean.listaProducao}" rowIndexVar="linha"
+							var="producao" style="margin-top: 5px" lazy="true" rows="8"
+							emptyMessage="nenhum evento encontrado." paginator="true"
+							paginatorAlwaysVisible="false" paginatorPosition="bottom">
+
+							<p:column headerText="Operador">
+								<h:outputText value="#{producao.operador.nome}" />
+							</p:column>
+							<p:column headerText="Volume" width="50">
+								<p:outputLabel value="#{producao.quantidade}">
+									<f:convertNumber type="number" />
+								</p:outputLabel>
+							</p:column>
+							<p:column width="90">
+								<p:commandButton icon="ui-icon-pause" title="Pausar"
+									disabled="#{not producao.podePausar}" class="button-grid"
+									action="#{montagemBean.comandar(producao, 'PAUSAR')}"
+									update="dlgProducao" oncomplete="PF('dlgProducao').show()" />
+								<p:commandButton icon="ui-icon-gear" title="Reiniciar"
+									disabled="#{not producao.podeReiniciar}" class="button-grid"
+									action="#{montagemBean.comandar(producao, 'REINICIAR')}"
+									update="dlgProducao" oncomplete="PF('dlgProducao').show()" />
+								<p:commandButton icon="ui-icon-stop" title="Encerrar"
+									disabled="#{not producao.podeEncerrar}" class="button-grid"
+									action="#{montagemBean.comandar(producao, 'ENCERRAR')}"
+									update="dlgProducao" oncomplete="PF('dlgProducao').show()" />
+							</p:column>
+
+						</p:dataTable>
+					</div>
+				</div>
+			</div>
+
+			<p:dialog id="dlgImprimir" header="Imprimir" widgetVar="dlgImprimir"
+				closeOnEscape="true" dynamic="true" modal="true" width="400">
+				<p:panelGrid columns="2" layout="grid"
+					columnClasses="ui-grid-col-4, ui-grid-col-8"
+					styleClass="panelgrid-noborder">
+
+					<p:outputLabel value="Início" />
+					<p:calendar navigator="true" showOn="button" mask="99/99/9999"
+						pattern="dd/MM/yyyy" value="#{montagemBean.filtro.inicio}" />
+
+					<p:outputLabel value="Término" />
+					<p:calendar navigator="true" showOn="button" mask="99/99/9999"
+						pattern="dd/MM/yyyy" value="#{montagemBean.filtro.termino}" />
+
+					<p:outputLabel />
+					<p:commandButton value="Confirma" icon="ui-icon-check" ajax="false"
+						process="dlgImprimir" update="formCadastro"
+						action="#{montagemBean.imprimir}"
+						onclick="this.form.target='_blank'"
+						oncomplete="PF('dlgImprimir').hide()" />
+
+				</p:panelGrid>
+			</p:dialog>
+
+
+		</h:form>
+
+		<ui:include src="/producao/MontagemComandoProducao.xhtml" />
+
+
+	</ui:define>
+
+</ui:composition>
+
+<!-- 					<p:outputLabel value="detalhes" /> -->
+<!-- 					<p:selectOneMenu value="#{montagemBean.filtro.opcao}" -->
+<!-- 						autoWidth="false"> -->
+<!-- 						<f:selectItem itemLabel="sem detalhes" itemValue="0" /> -->
+<!-- 						<f:selectItem itemLabel="com detalhes" itemValue="1" /> -->
+<!-- 					</p:selectOneMenu> -->

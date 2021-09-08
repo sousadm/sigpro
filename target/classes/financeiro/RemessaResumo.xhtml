@@ -1,0 +1,94 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<p:panelGrid columns="3" layout="grid" styleClass="panelgrid-noborder"
+		columnClasses="ui-grid-col-8, ui-grid-col-4, ui-grid-col-4">
+
+		<p:outputLabel value="Percentual de desconto" />
+		<p:inputNumber minValue="0" maxValue="100" decimalSeparator=","
+			thousandSeparator="." decimalPlaces="2"
+			value="#{remessaBean.remessa.aliquotaDesconto}">
+			<p:ajax event="change" process="@this" update="@form"
+				listener="#{borderoBean.calcularValorDeFace}" />
+		</p:inputNumber>
+		<p:inputText value="#{remessaBean.remessa.valorDesconto}"
+			class="bloqueado" readonly="true">
+			<f:convertNumber type="currency" />
+		</p:inputText>
+
+		<p:outputLabel value="Percentual de Ad.Valorem" />
+		<p:inputNumber minValue="0" maxValue="100" decimalSeparator=","
+			thousandSeparator="." decimalPlaces="2"
+			value="#{remessaBean.remessa.aliquotaAdValorem}">
+			<p:ajax event="change" process="@this" update="@form"
+				listener="#{borderoBean.calcularValorDeFace}" />
+		</p:inputNumber>
+		<p:inputText value="#{remessaBean.remessa.valorAdValorem}"
+			class="bloqueado" readonly="true">
+			<f:convertNumber type="currency" />
+		</p:inputText>
+
+		<p:outputLabel value="Tarifa de abertura de crédito" />
+		<p:inputNumber minValue="0" maxValue="100" decimalSeparator=","
+			thousandSeparator="." decimalPlaces="2"
+			value="#{remessaBean.remessa.taxaTac}">
+			<p:ajax event="change" process="@this" update="@form"
+				listener="#{borderoBean.calcularValorDeFace}" />
+		</p:inputNumber>
+		<p:inputText value="#{remessaBean.remessa.valorTac}" class="bloqueado"
+			readonly="true">
+			<f:convertNumber type="currency" />
+		</p:inputText>
+
+		<p:outputLabel value="Tarifa de cobrança" />
+		<p:inputNumber minValue="0" maxValue="100" decimalSeparator=","
+			thousandSeparator="." decimalPlaces="2"
+			value="#{remessaBean.remessa.taxaCobranca}">
+			<p:ajax event="change" process="@this" update="@form"
+				listener="#{borderoBean.calcularValorDeFace}" />
+		</p:inputNumber>
+		<p:inputText value="#{remessaBean.remessa.valorCobranca}"
+			class="bloqueado" readonly="true">
+			<f:convertNumber type="currency" />
+		</p:inputText>
+
+		<p:outputLabel value="Taxa de postagem por doc" />
+		<p:inputNumber minValue="0" maxValue="100" decimalSeparator=","
+			thousandSeparator="." decimalPlaces="2"
+			value="#{remessaBean.remessa.taxaPostagem}">
+			<p:ajax event="change" process="@this" update="@form"
+				listener="#{borderoBean.calcularValorDeFace}" />
+		</p:inputNumber>
+		<p:inputText value="#{remessaBean.remessa.valorPostagem}"
+			class="bloqueado" readonly="true">
+			<f:convertNumber type="currency" />
+		</p:inputText>
+
+		<p:outputLabel value="Aliquota de ISS" />
+		<p:inputNumber minValue="0" decimalSeparator="," thousandSeparator="."
+			decimalPlaces="2" value="#{remessaBean.remessa.aliquotaIss}">
+			<p:ajax event="change" process="@this" update="@form"
+				listener="#{borderoBean.calcularValorDeFace}" />
+		</p:inputNumber>
+		<p:inputText value="#{remessaBean.remessa.valorIss}" class="bloqueado"
+			readonly="true">
+			<f:convertNumber type="currency" />
+		</p:inputText>
+
+		<p:outputLabel value="Aliquota de IOF" />
+		<p:inputNumber minValue="0" decimalSeparator="," thousandSeparator="."
+			decimalPlaces="2" value="#{remessaBean.remessa.aliquotaIof}">
+			<p:ajax event="change" process="@this" update="@form"
+				listener="#{borderoBean.calcularValorDeFace}" />
+		</p:inputNumber>
+		<p:inputText value="#{remessaBean.remessa.valorIof}" class="bloqueado"
+			readonly="true">
+			<f:convertNumber type="currency" />
+		</p:inputText>
+
+	</p:panelGrid>
+
+</ui:composition>

@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="caixa_movimentacao_lista_resumo" language="groovy" pageWidth="555" pageHeight="802" columnWidth="555" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="568dec25-6721-45f3-abe7-1f065b8bded5">
+	<property name="ireport.zoom" value="2.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<field name="tipo" class="java.lang.Object"/>
+	<field name="valorEntrada" class="java.lang.Double"/>
+	<field name="valorSaida" class="java.lang.Double"/>
+	<columnHeader>
+		<band height="15" splitType="Stretch">
+			<staticText>
+				<reportElement x="2" y="1" width="131" height="14" uuid="fc365a17-e5b0-4374-954b-6b704bd0ddce"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Forma de pagamento]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="136" y="1" width="69" height="14" uuid="8c357c5e-77cc-415d-b2bf-9baf5db2384b"/>
+				<textElement textAlignment="Right">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Entradas]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="207" y="1" width="69" height="14" uuid="86d48294-08d7-4be1-be5a-f3733da2a041"/>
+				<textElement textAlignment="Right">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Saídas]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="16" splitType="Stretch">
+			<textField>
+				<reportElement x="2" y="1" width="131" height="14" uuid="01e81c4c-a5e5-4b83-9173-5d204db974cb"/>
+				<textFieldExpression><![CDATA[$F{tipo}.getDescricao()]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="136" y="1" width="69" height="14" uuid="f4adb3d6-12c9-4eaf-81e0-4ff46e81b1b2"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{valorEntrada}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="207" y="1" width="69" height="14" uuid="4a9b83d8-04cf-45ef-8d73-5eaa0897962e"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{valorSaida}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

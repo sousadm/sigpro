@@ -1,0 +1,95 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:c="http://java.sun.com/jstl/core">
+
+	<p:dialog id="dlgCusto" header="Custo" widgetVar="dlgCusto"
+		closeOnEscape="true" modal="true" maximizable="false">
+		<h:form id="formCusto">
+			<p:tabView id="tabViewCusto" style="margin-top: 5px;"
+				orientation="left">
+				<p:tab title="Aquisição">
+					<p:panelGrid columns="2" id="gridCustoCompra"
+						style="width: 100%; margin-top: 5px">
+
+						<p:outputLabel value="Crédito tributário (%)" />
+						<p:inputNumber decimalPlaces="2" minValue="0"
+							value="#{formacaoDePrecoBean.custo.credito}" />
+
+						<p:outputLabel value="Carga de imposto (%)" />
+						<p:inputNumber decimalPlaces="2" minValue="0"
+							value="#{formacaoDePrecoBean.custo.imposto}" />
+
+						<p:outputLabel value="Despesas de aquisição (%)" />
+						<p:inputNumber decimalPlaces="2" minValue="0"
+							value="#{formacaoDePrecoBean.custo.despesa}" />
+
+						<p:outputLabel value="Despesas de frete (%)" />
+						<p:inputNumber decimalPlaces="2" minValue="0"
+							value="#{formacaoDePrecoBean.custo.frete}" />
+
+					</p:panelGrid>
+				</p:tab>
+
+				<p:tab title="Vendas">
+					<p:panelGrid id="gridCustoVenda" columns="2"
+						style="width: 100%; margin-top: 5px">
+
+						<p:outputLabel value="Margem de contribuição (%)" />
+						<p:inputNumber id="txtMargem" decimalPlaces="2" minValue="0"
+							value="#{formacaoDePrecoBean.custo.margem}">
+							<f:ajax event="change" render="gridCustoVenda" update="markup" />
+						</p:inputNumber>
+
+						<p:outputLabel value="Margem de lucro (%)" />
+						<p:inputNumber decimalPlaces="2" minValue="0"
+							value="#{formacaoDePrecoBean.custo.lucro}">
+							<f:ajax event="change" render="gridCustoVenda" update="markup" />
+						</p:inputNumber>
+
+						<p:outputLabel value="Margem residual (%)" />
+						<p:inputNumber decimalPlaces="2" minValue="0"
+							value="#{formacaoDePrecoBean.custo.residual}">
+							<f:ajax event="change" render="gridCustoVenda" update="markup" />
+						</p:inputNumber>
+
+						<p:outputLabel value="Carga tributária (%)" />
+						<p:inputNumber decimalPlaces="2" minValue="0"
+							value="#{formacaoDePrecoBean.custo.tributo}">
+							<f:ajax event="change" render="gridCustoVenda" update="markup" />
+						</p:inputNumber>
+
+						<p:outputLabel value="Markup multiplicador" />
+						<p:outputLabel id="markup"
+							value="#{formacaoDePrecoBean.custo.markupMultiplicador}"
+							class="negrito">
+							<f:convertNumber pattern="#0.000000" />
+						</p:outputLabel>
+
+					</p:panelGrid>
+				</p:tab>
+			</p:tabView>
+
+			<div align="right">
+				<div style="margin-top: 10px;">
+					<div align="left" style="float: left; width: 50%;">
+						<p:commandButton value="Aplicar" icon="ui-icon-check"
+							process="dlgCusto" update="form:tabela"
+							actionListener="#{formacaoDePrecoBean.aplicar(false)}"
+							oncomplete="if(!args.validationFailed) PF('dlgCusto').hide()" />
+					</div>
+					<div align="right" style="float: left; width: 50%;">
+						<p:commandButton value="Aplicar com preço" icon="ui-icon-check"
+							process="dlgCusto" update="form:tabela"
+							actionListener="#{formacaoDePrecoBean.aplicar(true)}"
+							oncomplete="if(!args.validationFailed) PF('dlgCusto').hide()" />
+					</div>
+				</div>
+			</div>
+
+		</h:form>
+	</p:dialog>
+
+</ui:composition>

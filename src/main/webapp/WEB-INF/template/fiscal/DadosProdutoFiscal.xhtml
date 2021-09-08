@@ -1,0 +1,68 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<div align="right">
+		<p:commandButton id="botaoProduto" value="Add Produto"
+			icon="ui-icon-note"
+			disabled="#{not notaFiscalBean.nota.podeAdicionarProduto or notaFiscalBean.nota.notaDevolucao}"
+			title="Add Produto" process="@this"
+			actionListener="#{selecionaBean.produto}">
+			<p:ajax event="dialogReturn"
+				listener="#{notaFiscalBean.onProdutoChosen}" update="@form" />
+		</p:commandButton>
+		<p:commandButton value="Add Pedido de Venda" title="importar pedido de venda"
+			disabled="#{not notaFiscalBean.nota.podeImportarPedido}" process="@this"
+			actionListener="#{selecionaBean.expedicao(true)}">
+			<p:ajax event="dialogReturn"
+				listener="#{notaFiscalBean.onExpedicaoChosen}" update="@form" />
+		</p:commandButton>
+	</div>
+
+	<p:dataTable id="produtosTable" value="#{notaFiscalBean.nota.items}"
+		var="item" rowIndexVar="linha" style="margin-top: 5px"
+		scrollable="true" emptyMessage="Nenhum produto encontrado." rows="10"
+		paginator="true" paginatorAlwaysVisible="false"
+		paginatorPosition="bottom">
+
+		<p:column headerText="Descrição do produto">
+			<p:link value="#{item.prod.nome}"
+				outcome="/cadastros/CadastroProduto"
+				title="ir para cadastro #{item.prod.nome}">
+				<f:param name="produto" value="#{item.prod.id}" />
+			</p:link>
+		</p:column>
+		<p:column headerText="Und" width="25">
+			<h:outputText value="#{item.unidade}" />
+		</p:column>
+		<p:column headerText="Quant." style="text-align: right; width: 45px">
+			<p:outputLabel value="#{item.quantidade}">
+				<f:convertNumber minFractionDigits="0" />
+			</p:outputLabel>
+		</p:column>
+		<p:column headerText="Unitário" width="100">
+			<p:outputLabel value="#{item.valorUnitario}">
+				<f:convertNumber type="currency" />
+			</p:outputLabel>
+		</p:column>
+
+		<p:column style="width: 80px; text-align: center">
+
+			<p:commandButton icon="ui-icon-pencil" title="Editar"
+				action="#{notaFiscalBean.setNotaItem(item)}"
+				update="dlgProdutoFiscal" oncomplete="PF('dlgProdutoFiscal').show()" />
+
+			<p:commandButton icon="ui-icon-trash" process="@this" title="Remover"
+				update="produtosTable"
+				disabled="#{not notaFiscalBean.nota.podeEditar}"
+				actionListener="#{notaFiscalBean.removerItem(linha)}">
+				<p:confirm icon="ui-icon-alert" header="Confirma exclusão"
+					message="Remover o registro atual?" />
+			</p:commandButton>
+		</p:column>
+
+	</p:dataTable>
+
+</ui:composition>

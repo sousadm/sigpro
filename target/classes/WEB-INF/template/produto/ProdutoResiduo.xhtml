@@ -1,0 +1,62 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:c="http://java.sun.com/jstl/core">
+
+	<p:panelGrid columns="3" id="formSubProduto"
+		style="width: 100%; margin-top: 20px">
+
+		<p:outputLabel value="Produto" for="txtProdutoSubprod" />
+		<p:outputLabel value="Quantidade" for="txtQuantidadeSubprod" />
+		<p:outputLabel />
+
+		<p:autoComplete id="txtProdutoSubprod" size="100" dropdown="true"
+			value="#{cadastroProdutoBean.subproduto.residuo}"
+			completeMethod="#{cadastroProdutoBean.completarProduto}"
+			var="produto" itemLabel="#{produto.nome}" itemValue="#{produto}"
+			forceSelection="true" />
+		<p:inputText id="txtQuantidadeSubprod" size="10" maxlength="10"
+			value="#{cadastroProdutoBean.subproduto.quantidade}" />
+
+		<p:commandButton value="Aplicar" icon="ui-icon-check"
+			action="#{cadastroProdutoBean.adicionaResiduo}" update="@form" />
+
+	</p:panelGrid>
+
+	<p:dataTable id="tabelaSubProduto"
+		value="#{cadastroProdutoBean.produto.listaSubproduto}"
+		var="subproduto" rowIndexVar="linha" style="margin-top: 20px"
+		emptyMessage="Nenhum item encontrado." rows="20" paginator="true"
+		paginatorAlwaysVisible="false" paginatorPosition="bottom">
+
+		<p:column headerText="Descrição do subproduto">
+			<h:outputText value="#{subproduto.produto.nome}" />
+		</p:column>
+
+		<p:column headerText="Quantidade" width="10%">
+			<h:outputText value="#{subproduto.quantidade}" />
+		</p:column>
+
+		<p:column style="width: 100px; text-align: center">
+
+			<p:commandButton icon="ui-icon-pencil" process="@this" title="Editar"
+				update=":formCadProduto:tabView:formSubProduto">
+				<f:setPropertyActionListener value="#{subproduto}"
+					target="#{cadastroProdutoBean.subproduto}" />
+			</p:commandButton>
+
+			<p:commandButton icon="ui-icon-trash" process="@this" title="Excluir"
+				update=":formCadProduto:tabView:tabComposto"
+				action="#{cadastroProdutoBean.removerSubproduto(linha)}">
+				<p:confirm icon="ui-icon-alert" header="Exclusão"
+					message="Excluir o registro atual?" />
+			</p:commandButton>
+
+		</p:column>
+
+	</p:dataTable>
+
+
+</ui:composition>

@@ -1,0 +1,65 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<h1>#{notaConsumidorBean.pagamento.meioPgto.toString()}</h1>
+
+	<p:panelGrid columns="2" layout="grid"
+		columnClasses="ui-grid-col-4, ui-grid-col-8"
+		styleClass="panelgrid-noborder"
+		rendered="#{notaConsumidorBean.pagamento.meioPgto != null}">
+
+		<p:outputLabel value="Valor" />
+		<p:inputNumber id="txtValorPgto" minValue="0" decimalSeparator=","
+			thousandSeparator="." decimalPlaces="2"
+			value="#{notaConsumidorBean.pagamento.valor}" />
+
+		<p:outputLabel value="Vencimento"
+			rendered="#{notaConsumidorBean.pagamento.pedeVencimento}" />
+		<p:calendar locale="pt_BR" mask="99/99/9999" pattern="dd/MM/yyyy"
+			navigator="true" showOn="button"
+			value="#{notaConsumidorBean.pagamento.vencimento}"
+			rendered="#{notaConsumidorBean.pagamento.pedeVencimento}" />
+
+		<p:outputLabel value="Operadora"
+			rendered="#{notaConsumidorBean.pagamento.meioDePagamentoCartao }" />
+		<p:selectOneMenu value="#{notaConsumidorBean.pagamento.operadora}"
+			rendered="#{notaConsumidorBean.pagamento.meioDePagamentoCartao}">
+			<f:selectItems value="#{listaTipoBean.NFOperadoraCartao }"
+				var="operadora" itemValue="#{operadora}" itemLabel="#{operadora}" />
+		</p:selectOneMenu>
+
+		<h:outputLabel value="Parcelamento"
+			rendered="#{notaConsumidorBean.pagamento.pedeParcelamento}" />
+		<p:spinner value="#{notaConsumidorBean.pagamento.parcela}"
+			rendered="#{notaConsumidorBean.pagamento.pedeParcelamento}" />
+
+		<p:outputLabel value="Número"
+			rendered="#{notaConsumidorBean.pagamento.pedeValeCodigo}" />
+		<p:inputText value="#{notaConsumidorBean.pagamento.numero}"
+			maxlength="20"
+			rendered="#{notaConsumidorBean.pagamento.pedeValeCodigo}" />
+
+		<p:outputLabel value="Autorização"
+			rendered="#{notaConsumidorBean.pagamento.meioDePagamentoCartao}" />
+		<p:inputText value="#{notaConsumidorBean.pagamento.autorizacao}"
+			maxlength="20"
+			rendered="#{notaConsumidorBean.pagamento.meioDePagamentoCartao}" />
+
+		<p:outputLabel value="Num.Final"
+			rendered="#{notaConsumidorBean.pagamento.meioDePagamentoCartao}" />
+		<p:inputText value="#{notaConsumidorBean.pagamento.numeroFinal}"
+			maxlength="4"
+			rendered="#{notaConsumidorBean.pagamento.meioDePagamentoCartao}" />
+
+		<p:outputLabel value="Nominal"
+			rendered="#{notaConsumidorBean.pagamento.pedeNominal}" />
+		<p:inputText value="#{notaConsumidorBean.pagamento.nominal}"
+			maxlength="100"
+			rendered="#{notaConsumidorBean.pagamento.pedeNominal}" />
+
+	</p:panelGrid>
+
+</ui:composition>

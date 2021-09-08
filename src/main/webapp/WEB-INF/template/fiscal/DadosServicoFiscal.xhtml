@@ -1,0 +1,52 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<p:panelGrid id="gridDadosServicoFiscal" style="width: 100%">
+
+		<p:row>
+			<p:column colspan="3">
+				<p:panel header="descrição do serviço">
+					<p:inputTextarea
+						value="#{notaServicoBean.nota.issqn.discriminacao}"
+						disabled="#{not notaServicoBean.nota.podeEditar}"
+						style="width: 100%;" rows="8" counter="display" maxlength="2000"
+						counterTemplate="{0} characters remaining." autoResize="false"
+						required="true" requiredMessage="discriminação necessária"
+						placeholder="discriminação dos serviços" />
+					<h:outputText id="display" />
+				</p:panel>
+			</p:column>
+		</p:row>
+		<p:row>
+			<p:column>
+				<p:outputLabel value="Valor do Serviço" />
+				<br />
+				<p:inputNumber minValue="0" decimalSeparator=","
+					thousandSeparator="." decimalPlaces="2" required="true"
+					disabled="#{not notaServicoBean.nota.podeEditar}"
+					value="#{notaServicoBean.nota.issqn.valorServicos}" />
+			</p:column>
+			<p:column>
+				<p:outputLabel value="Alíquota %" />
+				<br />
+				<p:inputNumber minValue="0" decimalSeparator=","
+					disabled="#{not notaServicoBean.nota.podeEditar}"
+					thousandSeparator="." decimalPlaces="2" required="true"
+					value="#{notaServicoBean.nota.issqn.aliquotaISSQN}" />
+			</p:column>
+			<p:column>
+				<p:outputLabel value="Reter ISS" />
+				<br />
+				<p:selectOneMenu value="#{notaServicoBean.nota.issqn.retencaoIss}"
+					disabled="#{not notaServicoBean.nota.podeEditar}" autoWidth="false">
+					<f:selectItems value="#{listaTipoBean.simNao}" var="retencao"
+						itemValue="#{retencao.valor}" itemLabel="#{retencao}" />
+				</p:selectOneMenu>
+			</p:column>
+		</p:row>
+	</p:panelGrid>
+
+</ui:composition>

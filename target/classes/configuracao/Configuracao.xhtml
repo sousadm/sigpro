@@ -1,0 +1,51 @@
+<ui:composition template="/WEB-INF/template/LayoutPadrao.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui" xmlns:o="http://omnifaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions">
+
+	<f:metadata>
+		<f:event listener="#{parametroBean.inicializar}" type="preRenderView"></f:event>
+	</f:metadata>
+
+	<ui:define name="titulo">Configuração</ui:define>
+
+	<ui:define name="corpo">
+
+		<h1 style="margin-top: 65px">Configuração do Sistema</h1>
+
+		<h:form id="formCadastro" enctype="multipart/form-data">
+
+			<p:growl id="msg" />
+
+			<!-- 			<p:inputNumber id="pInputNumber" minValue="0" decimalSeparator="," -->
+			<!-- 				thousandSeparator="." decimalPlaces="2" -->
+			<!-- 				value="#{parametroBean.valor}" /> -->
+			<!-- 			<pe:calculator for="pInputNumber" showOn="both" precision="2"/> -->
+
+			<p:tabView orientation="left">
+				<p:tab title="Geral">
+					<ui:include
+						src="/WEB-INF/template/pessoa/ParametroConfiguracao.xhtml" />
+				</p:tab>
+				<p:tab title="E-mail">
+					<ui:include
+						src="/WEB-INF/template/pessoa/ParametroConfiguracaoMail.xhtml" />
+				</p:tab>
+				<p:tab title="Custos">
+					<ui:include
+						src="/WEB-INF/template/produto/ParametroCustoProduto.xhtml" />
+				</p:tab>
+			</p:tabView>
+
+			<ui:include src="/dialogos/AddLogomarca.xhtml" />
+
+		</h:form>
+
+		<ui:include src="/dialogos/SendMail.xhtml" />
+
+	</ui:define>
+
+</ui:composition>

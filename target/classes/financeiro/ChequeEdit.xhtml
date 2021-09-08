@@ -1,0 +1,147 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<h1 style="margin-top: 65px">Cadastro de Cheque</h1>
+
+	<p:toolbar style="margin-top: 05px">
+		<p:toolbarGroup>
+			<p:splitButton id="botaoGravar" value="Salvar" icon="ui-icon-disk"
+				action="#{chequeBean.salvar}" update="@form">
+				<p:menuitem value="Novo cheque" icon="ui-icon-document"
+					actionListener="#{chequeBean.addNovoCheque}" process="@this"
+					update="@form" />
+
+				<p:menuitem icon="ui-icon-trash" process="@this" update="@form"
+					disabled="#{chequeBean.cheque.pago}" value="Excluir cheque"
+					action="#{chequeBean.excluir}">
+					<p:confirm icon="ui-icon-alert" header="Confirmação de exclusão"
+						message="Excluir o registro atual?" />
+				</p:menuitem>
+
+				<p:menuitem process="@this" update="dlgCompensacao"
+					disabled="#{chequeBean.cheque.pago}" value="Definir compensação"
+					oncomplete="PF('dlgCompensacao').show()" />
+
+			</p:splitButton>
+		</p:toolbarGroup>
+		<p:toolbarGroup align="right">
+			<p:commandButton value="Pesquisa" icon="ui-icon-search"
+				actionListener="#{chequeBean.setCheque(null)}" process="@this"
+				update="@form" />
+		</p:toolbarGroup>
+	</p:toolbar>
+
+	<p:messages autoUpdate="true" closable="true" />
+
+	<div class="ui-fluid">
+
+		<div class="ui-g" style="margin-top: 5px; border: 1px solid silver;">
+
+			<div class="ui-g-6 ui-md-6">
+				<p:outputLabel value="Conta bancária" for="txtContaBancaria" />
+				<p:selectOneMenu id="txtContaBancaria" icon="ui-icon-search"
+					rendered="#{not chequeBean.cheque.existe}" autoWidth="false"
+					required="true" value="#{chequeBean.cheque.contaBancaria}">
+					<f:selectItem itemLabel="Selecione" />
+					<f:selectItems value="#{chequeBean.listaContaCorrente}"
+						var="contacheque" itemValue="#{contacheque}"
+						itemLabel="#{contacheque.descricao}" />
+				</p:selectOneMenu>
+				<h:panelGroup rendered="#{chequeBean.cheque.existe}">
+					<div
+						class="ui-inputfield ui-inputtext ui-widget ui-state-default ui-corner-all bloqueado ui-state-focus">
+						<p:outputLabel
+							value="#{chequeBean.cheque.contaBancaria.descricao}" />
+					</div>
+				</h:panelGroup>
+			</div>
+			<div class="ui-g-6 ui-md-6">
+				<p:outputLabel value="Centro de custo" for="txtCentroCusto" />
+				<p:selectOneMenu id="txtCentroCusto" autoWidth="false"
+					required="true" value="#{chequeBean.cheque.centroDeCusto}">
+					<f:selectItem itemLabel="Selecione..." />
+					<f:selectItems value="#{chequeBean.listaCusto}" var="a"
+						itemValue="#{a}" itemLabel="#{a.descricao}" />
+				</p:selectOneMenu>
+			</div>
+
+			<div class="ui-g-6 ui-md-3">
+				<p:outputLabel value="Número" for="txtChequeNumero" />
+				<p:inputMask id="txtChequeNumero" required="true"
+					value="#{chequeBean.cheque.documento}" mask="?999999"
+					rendered="#{not chequeBean.cheque.existe}" placeholder=""
+					converter="zerosEsquerdaConverter">
+					<p:ajax update="@this" />
+				</p:inputMask>
+				<p:inputText value="#{chequeBean.cheque.documento}"
+					class="bloqueado" rendered="#{chequeBean.cheque.existe}" />
+			</div>
+			<div class="ui-g-6 ui-md-3">
+				<p:outputLabel value="Bom para" for="txtVencimento" />
+				<p:calendar id="txtVencimento" locale="pt_BR" required="true"
+					mask="99/99/9999" pattern="dd/MM/yyyy" navigator="true"
+					rendered="#{not chequeBean.emitidoNoCaixa and not chequeBean.cheque.pago}"
+					showOn="button" value="#{chequeBean.cheque.vencimento}" />
+				<p:inputText value="#{chequeBean.cheque.vencimento}"
+					class="bloqueado"
+					rendered="#{chequeBean.emitidoNoCaixa or chequeBean.cheque.pago}">
+					<f:convertDateTime pattern="dd/MM/yyyy" />
+				</p:inputText>
+			</div>
+			<div class="ui-g-6 ui-md-3">
+				<p:outputLabel value="Pagamento" for="txtPagamento" />
+				<p:inputText id="txtPagamento"
+					value="#{chequeBean.cheque.dataBaixa}" readonly="true"
+					styleClass="bloqueado">
+					<f:convertDateTime pattern="dd/MM/yyyy" />
+				</p:inputText>
+			</div>
+			<div class="ui-g-6 ui-md-3">
+				<p:outputLabel value="Valor" for="txtChequeValor" />
+				<p:inputNumber id="txtChequeValor" minValue="0" decimalSeparator=","
+					rendered="#{not chequeBean.emitidoNoCaixa and not chequeBean.cheque.pago}"
+					thousandSeparator="." decimalPlaces="2" required="true"
+					value="#{chequeBean.cheque.valor}" />
+				<p:inputText value="#{chequeBean.cheque.valor}" class="bloqueado"
+					rendered="#{chequeBean.emitidoNoCaixa or chequeBean.cheque.pago}">
+					<f:convertNumber type="currency" />
+				</p:inputText>
+			</div>
+
+			<div class="ui-g-12 ui-md-6">
+				<p:outputLabel value="Participante" for="txtCliente" />
+				<div class="ui-inputgroup">
+					<p:commandButton icon="ui-icon-search" title="Pesquisar pessoa"
+						process="@this" update="@none" ignoreAutoUpdate="true"
+						rendered="#{not chequeBean.emitidoNoCaixa and not chequeBean.cheque.pago}"
+						styleClass="button-grid" action="#{selecionaBean.pessoa}">
+						<p:ajax event="dialogReturn"
+							listener="#{chequeBean.onPessoaChosen}"
+							update="txtNominal txtCliente" ignoreAutoUpdate="true" />
+					</p:commandButton>
+					<p:inputText id="txtCliente" readonly="true"
+						value="#{chequeBean.cheque.responsavel.nome}"
+						styleClass="bloqueado" />
+				</div>
+			</div>
+			<div class="ui-g-12 ui-md-6">
+				<p:outputLabel value="Nominal" for="txtNominal" />
+				<p:inputText id="txtNominal" maxlength="100" required="true"
+					value="#{chequeBean.cheque.nominal}" />
+			</div>
+
+			<div class="ui-g-12">
+				<p:outputLabel value="Descritivo" for="txtDescricao" />
+				<p:inputText id="txtDescricao" maxlength="100"
+					value="#{chequeBean.cheque.descricao}" />
+			</div>
+
+		</div>
+	</div>
+
+	<p:blockUI block="formCadastro" trigger="botaoGravar" />
+
+</ui:composition>

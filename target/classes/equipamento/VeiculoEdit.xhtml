@@ -1,0 +1,195 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<h1 style="margin-top: 65px">Cadastro de Veículo</h1>
+
+	<p:toolbar style="margin-top: 05px">
+		<p:toolbarGroup>
+			<p:splitButton id="botaoGravar" value="Salvar" icon="ui-icon-disk"
+				action="#{veiculoBean.salvar}" update="@form">
+				<p:menuitem value="Novo veículo" icon="ui-icon-document"
+					actionListener="#{veiculoBean.novo}" process="@this" update="@form" />
+				<p:menuitem icon="ui-icon-trash" process="@this" update="@form"
+					disabled="#{not veiculoBean.veiculo.existe}"
+					value="Excluir veículo" action="#{veiculoBean.excluir}">
+					<p:confirm icon="ui-icon-alert" header="Confirmação de exclusão"
+						message="Excluir o registro atual?" />
+				</p:menuitem>
+				<p:separator />
+				<p:menuitem value="Abastecimento" process="@this"
+					actionListener="#{veiculoBean.abastecimentoAdd}"
+					update="dlgAbastecimento"
+					disabled="#{not veiculoBean.veiculo.existe}"
+					oncomplete="PF('dlgAbastecimento').show()">
+					<p:ajax update="@form" />
+				</p:menuitem>
+				<p:menuitem value="Lista abastecimento"
+					actionListener="#{veiculoBean.setMostraAbastecimento(true)}"
+					process="@this" update="@form" />
+				<p:separator />
+				<p:menuitem value="Despesa" process="@this"
+					actionListener="#{veiculoBean.despesaAdd}" update="dlgDespesa"
+					disabled="#{not veiculoBean.veiculo.existe}"
+					oncomplete="PF('dlgDespesa').show()">
+					<p:ajax update="@form" />
+				</p:menuitem>
+				<p:menuitem value="Lista despesa"
+					actionListener="#{veiculoBean.setMostraDespesa(true)}"
+					process="@this" update="@form" />
+			</p:splitButton>
+		</p:toolbarGroup>
+		<p:toolbarGroup align="right">
+			<p:commandButton value="Pesquisa" icon="ui-icon-search"
+				actionListener="#{veiculoBean.setVeiculo(null)}" process="@this"
+				update="@form" />
+		</p:toolbarGroup>
+	</p:toolbar>
+
+	<div class="ui-fluid">
+		<div class="ui-g" style="margin-top: 5px; border: 1px solid silver;">
+
+			<div class="ui-g-12 ui-md-5">
+				<p:outputLabel value="Proprietário" for="txtCliente" />
+				<div class="ui-inputgroup">
+					<p:commandButton icon="ui-icon-search" title="Pesquisar pessoa"
+						process="@this" update="@none" ignoreAutoUpdate="true"
+						styleClass="button-grid" action="#{selecionaBean.pessoa}">
+						<p:ajax event="dialogReturn" update="txtCliente"
+							listener="#{veiculoBean.onPessoaChosen}" ignoreAutoUpdate="true" />
+					</p:commandButton>
+					<p:inputText id="txtCliente" readonly="true" required="true"
+						requiredMessage="informe o proprietário"
+						value="#{veiculoBean.veiculo.pessoa.nome}" styleClass="bloqueado" />
+				</div>
+			</div>
+			<div class="ui-g-12 ui-md-2">
+				<p:outputLabel value="Placa" for="placa" />
+				<p:inputMask id="placa" mask="aaa-9999"
+					style="text-transform:uppercase"
+					value="#{veiculoBean.veiculo.placa}" required="true"
+					requiredMessage="informe a placa do veículo" />
+			</div>
+			<div class="ui-g-12 ui-md-5">
+				<p:outputLabel value="UF Licença" for="txtUf" />
+				<p:selectOneMenu id="txtUf" required="true"
+					requiredMessage="defina UF de licenciamento"
+					value="#{veiculoBean.veiculo.unidadeFederativaLicenciamento}"
+					autoWidth="false" title="unidade federativa de licenciamento">
+					<f:selectItem itemLabel="Selecione ..." />
+					<f:selectItems value="#{listaTipoBean.unidadeFederativa}"
+						var="uflic" itemValue="#{uflic}" itemLabel="#{uflic.descricao}" />
+				</p:selectOneMenu>
+			</div>
+
+
+			<div class="ui-g-6 ui-md-2">
+				<p:outputLabel value="Ano" for="ano" />
+				<p:inputNumber id="ano" decimalPlaces="0"
+					maxValue="#{veiculoBean.maximoAno}" minValue="0"
+					thousandSeparator="" value="#{veiculoBean.veiculo.ano}" />
+			</div>
+			<div class="ui-g-6 ui-md-5">
+				<p:outputLabel value="Descrição" for="modelo" />
+				<p:inputText id="modelo" maxlength="30"
+					value="#{veiculoBean.veiculo.descricao}" />
+			</div>
+			<div class="ui-g-6 ui-md-2">
+				<p:outputLabel value="Categoria" for="tipo" />
+				<p:selectOneMenu id="tipo" autoWidth="false"
+					value="#{veiculoBean.veiculo.tipoVeiculo}">
+					<f:selectItems value="#{listaTipoBean.tipoVeiculo}" var="tipo"
+						itemLabel="#{tipo.descricao}" itemValue="#{tipo}" />
+				</p:selectOneMenu>
+			</div>
+			<div class="ui-g-6 ui-md-3">
+				<p:outputLabel value="Cor predominante" for="cor" />
+				<p:selectOneMenu id="cor" value="#{veiculoBean.veiculo.cor}"
+					autoWidth="false">
+					<f:selectItem itemLabel="Selecione ..." />
+					<f:selectItems value="#{listaTipoBean.NFNotaInfoVeiculoCor}"
+						var="cor" itemValue="#{cor}" itemLabel="#{cor}" />
+				</p:selectOneMenu>
+			</div>
+
+
+
+			<div class="ui-g-12 ui-md-3">
+				<p:outputLabel value="Tipo de Rodado" />
+				<p:selectOneMenu autoWidth="false"
+					value="#{veiculoBean.veiculo.tipoRodado}">
+					<f:selectItems value="#{listaTipoBean.tipoRodado}" var="rodado"
+						itemLabel="#{rodado}" itemValue="#{rodado}" />
+				</p:selectOneMenu>
+			</div>
+			<div class="ui-g-12 ui-md-3">
+				<p:outputLabel value="Tipo de Carroceria" />
+				<p:selectOneMenu autoWidth="false"
+					value="#{veiculoBean.veiculo.tipoCarroceria}">
+					<f:selectItems value="#{listaTipoBean.tipoCarroceria}"
+						var="carroceria" itemLabel="#{carroceria}"
+						itemValue="#{carroceria}" />
+				</p:selectOneMenu>
+			</div>
+			<div class="ui-g-12 ui-md-3">
+				<p:outputLabel value="Marca" />
+				<div class="ui-inputgroup">
+					<p:commandButton icon="ui-icon-search" title="Pesquisar marca"
+						process="@this" update="@none" ignoreAutoUpdate="true"
+						styleClass="button-grid" action="#{selecionaBean.marca}">
+						<p:ajax event="dialogReturn" update="txtMarca"
+							listener="#{veiculoBean.onMarcaChosen}" ignoreAutoUpdate="true" />
+					</p:commandButton>
+					<p:inputText id="txtMarca" readonly="true"
+						value="#{veiculoBean.veiculo.marca.descricao}"
+						styleClass="bloqueado" />
+				</div>
+			</div>
+			<div class="ui-g-6 ui-md-3">
+				<p:outputLabel value="Valor atual" />
+				<p:inputNumber minValue="0" decimalSeparator=","
+					thousandSeparator="." decimalPlaces="2" required="true"
+					value="#{veiculoBean.veiculo.valor}" />
+			</div>
+
+
+			<div class="ui-g-6 ui-md-3">
+				<p:outputLabel value="Combustível" />
+				<p:selectOneMenu value="#{veiculoBean.veiculo.tipoCombustivel}"
+					autoWidth="false" style="width:100%">
+					<f:selectItems value="#{listaTipoBean.NFNotaInfoCombustivelTipo}"
+						var="combustivel" itemValue="#{combustivel}"
+						itemLabel="#{combustivel}" />
+				</p:selectOneMenu>
+			</div>
+			<div class="ui-g-6 ui-md-3">
+				<p:outputLabel value="Média de km/mês" for="media" />
+				<p:inputNumber id="media" decimalPlaces="0" thousandSeparator=""
+					value="#{veiculoBean.veiculo.mediaKmMes}" />
+			</div>
+			<div class="ui-g-6 ui-md-3">
+				<p:outputLabel value="Consumo Médio" for="consumo" />
+				<p:inputNumber id="consumo" decimalPlaces="2" thousandSeparator=""
+					value="#{veiculoBean.veiculo.consumoMedio}" />
+			</div>
+			<div class="ui-g-6 ui-md-3">
+				<p:outputLabel value="Odômetro" />
+				<p:inputNumber decimalPlaces="0" thousandSeparator="."
+					rendered="#{veiculoBean.veiculo.liberaOdometro}"
+					value="#{veiculoBean.veiculo.odometroInicial}" />
+				<p:inputText value="#{veiculoBean.veiculo.odometroFinal}"
+					rendered="#{not veiculoBean.veiculo.liberaOdometro}"
+					readonly="true" class="bloqueado negrito">
+					<f:convertNumber />
+				</p:inputText>
+			</div>
+
+		</div>
+
+	</div>
+
+	<p:blockUI block="formCadastro" trigger="botaoGravar" />
+
+</ui:composition>

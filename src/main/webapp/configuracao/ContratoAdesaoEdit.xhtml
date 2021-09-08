@@ -1,0 +1,202 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<p:toolbar style="margin-top: 05px">
+		<p:toolbarGroup>
+			<p:commandButton value="Novo" icon="ui-icon-document"
+				actionListener="#{contratoAdesaoBean.limpar}" process="@this"
+				update="@form" />
+
+			<p:splitButton id="botaoGravar" value="Salvar" icon="ui-icon-disk"
+				update="@form" process="@form" title="Baixar"
+				action="#{contratoAdesaoBean.salvar}">
+
+				<p:menuitem value="Adicionar licença" update="dlgLicenca"
+					actionListener="#{contratoAdesaoBean.addLicenca}"
+					rendered="#{contratoAdesaoBean.contrato.existe}"
+					oncomplete="PF('dlgLicenca').show()" />
+
+				<p:separator />
+
+				<p:menuitem value="Remover licença de uso" update="@form"
+					process="@form" action="#{contratoAdesaoBean.removerLicenca}">
+					<p:confirm icon="ui-icon-alert" header="Confirma"
+						message="Remover licença de uso para #{contratoAdesaoBean.contrato.cliente.nome}" />
+				</p:menuitem>
+				<p:menuitem value="Liberar 7 dias de licença" update="@form"
+					action="#{contratoAdesaoBean.liberarTempoLicenca(7)}"
+					process="@form">
+					<p:confirm icon="ui-icon-alert" header="Confirma"
+						message="Deseja liberar 7(sete) dias para #{contratoAdesaoBean.contrato.cliente.nome}" />
+				</p:menuitem>
+				<p:menuitem value="Liberar 15 dias de licença" update="@form"
+					action="#{contratoAdesaoBean.liberarTempoLicenca(15)}"
+					process="@form">
+					<p:confirm icon="ui-icon-alert" header="Confirma"
+						message="Deseja liberar 15(quinze) dias para #{contratoAdesaoBean.contrato.cliente.nome}" />
+				</p:menuitem>
+				<p:menuitem value="Liberar 30 dias de licença" update="@form"
+					action="#{contratoAdesaoBean.liberarTempoLicenca(30)}"
+					process="@form">
+					<p:confirm icon="ui-icon-alert" header="Confirma"
+						message="Deseja liberar 30(trinta) dias para #{contratoAdesaoBean.contrato.cliente.nome}" />
+				</p:menuitem>
+
+				<p:separator />
+
+				<p:menuitem icon="ui-icon-note" value="Eventos" process="@this"
+					update="dlgEventos"
+					disabled="#{not contratoAdesaoBean.contrato.existe}"
+					actionListener="#{listaEventoBean.preparar(contratoAdesaoBean.contrato)}"
+					oncomplete="PF('dlgEventos').show()" />
+
+			</p:splitButton>
+
+			<p:commandButton value="
+						Sincronizar" update="@form"
+				rendered="#{contratoAdesaoBean.contrato.podeSincronizar}"
+				action="#{contratoAdesaoBean.sincronizar}">
+				<p:confirm icon="ui-icon-alert" header="Confirma"
+					message="Deseja sincronizar os dados de #{contratoAdesaoBean.contrato.cliente.nome}" />
+			</p:commandButton>
+
+		</p:toolbarGroup>
+
+		<p:toolbarGroup align="right">
+			<p:commandButton value="Pesquisa" icon="ui-icon-search"
+				actionListener="#{contratoAdesaoBean.setContrato(null)}"
+				process="@this" update="@form" />
+		</p:toolbarGroup>
+	</p:toolbar>
+
+	<p:messages autoUpdate="true" closable="true" />
+
+	<div class="ui-fluid">
+		<div class="ui-g" style="margin-top: 5px; border: 1px solid silver;">
+			<div class="ui-g-4 ui-md-2">
+				<p:outputLabel value="Número" />
+				<p:inputText value="#{contratoAdesaoBean.contrato.id}"
+					class="bloqueado negrito" readonly="true">
+					<f:convertNumber pattern="#####0" minIntegerDigits="6" />
+				</p:inputText>
+			</div>
+			<div class="ui-g-8 ui-md-6">
+				<p:outputLabel value="Nome do Schema" for="nome" />
+				<p:inputText id="nome" maxlength="30" required="true"
+					readonly="#{not contratoAdesaoBean.principal}"
+					style="text-transform: uppercase"
+					class="#{not contratoAdesaoBean.principal ? '' : 'bloqueado'}"
+					value="#{contratoAdesaoBean.contrato.nomeSchema}" />
+			</div>
+			<div class="ui-g-12 ui-md-4">
+				<p:outputLabel value="Token Homologação" />
+				<p:inputText value="#{contratoAdesaoBean.contrato.tokenHomologacao}"
+					maxlength="32" />
+			</div>
+
+			<div class="ui-g-12 ui-md-8">
+				<p:outputLabel value="Nome do Cliente" for="cliente" />
+				<div class="ui-inputgroup">
+					<p:commandButton icon="ui-icon-search" title="Pesquisar cliente"
+						disabled="#{not contratoAdesaoBean.contrato.podeModificar}"
+						process="@this" update="@none" ignoreAutoUpdate="true"
+						styleClass="button-grid" action="#{selecionaBean.cliente}">
+						<p:ajax event="dialogReturn" update="cliente"
+							listener="#{contratoAdesaoBean.onClienteChosen}"
+							ignoreAutoUpdate="true" />
+					</p:commandButton>
+					<p:inputText id="cliente" class="bloqueado"
+						value="#{contratoAdesaoBean.contrato.cliente.nome}" />
+				</div>
+			</div>
+			<div class="ui-g-12 ui-md-4">
+				<p:outputLabel value="Token Produção" />
+				<p:inputText value="#{contratoAdesaoBean.contrato.tokenProducao}"
+					maxlength="32" />
+			</div>
+			<div class="ui-g-12 ui-md-6">
+				<p:outputLabel value="Atividade" />
+				<div
+					class="ui-inputfield ui-inputtext ui-widget ui-state-default ui-corner-all ui-state-focus">
+					<p:outputLabel value="#{contratoAdesaoBean.contratante.atividade}" />
+				</div>
+			</div>
+
+
+			<div class="ui-g-12 ui-md-4">
+				<p:outputLabel value="Data de validade" />
+				<p:inputText value="#{contratoAdesaoBean.contrato.dataValidade}"
+					class="bloqueado" readonly="true">
+					<f:convertDateTime type="date" />
+				</p:inputText>
+			</div>
+
+		</div>
+	</div>
+
+	<p:tabView id="tabView" orientation="left" style="margin-top: 5px"
+		activeIndex="#{pessoaBean.tabIndex}">
+
+		<p:tab title="Módulos">
+			<p:panel header="Módulos de acesso" toggleOrientation="horizontal">
+				<p:selectManyCheckbox id="grid" converter="enumConverter"
+					value="#{contratoAdesaoBean.contrato.modulos}" layout="responsive"
+					columns="3">
+					<f:attribute name="collectionType" value="java.util.ArrayList" />
+					<f:selectItems value="#{listaTipoBean.tipoModulo}" var="modulo"
+						itemLabel="#{modulo.descricao}" itemValue="#{modulo}" />
+				</p:selectManyCheckbox>
+			</p:panel>
+		</p:tab>
+
+		<p:tab title="Licenças">
+
+			<p:dataTable id="tabela" value="#{contratoAdesaoBean.listaLicenca}"
+				var="licenca" rowIndexVar="linha" lazy="true" scrollable="true"
+				rowStyleClass="#{licenca.vencido ? 'vencido' : null}"
+				style="margin-top: 5px" emptyMessage="Nenhum registro encontrado."
+				rows="10" paginator="true" paginatorAlwaysVisible="false"
+				paginatorPosition="bottom">
+				<p:column headerText="Docto" style="width: 55px">
+					<h:outputText value="#{licenca.documento}"
+						title="#{licenca.documento}" />
+				</p:column>
+				<p:column headerText="Vencimento" width="100">
+					<h:outputText value="#{licenca.vencimento}">
+						<f:convertDateTime pattern="dd/MM/yyyy" />
+					</h:outputText>
+				</p:column>
+				<p:column headerText="Pagamento" width="100">
+					<h:outputText value="#{licenca.dataBaixa}">
+						<f:convertDateTime pattern="dd/MM/yyyy" />
+					</h:outputText>
+				</p:column>
+				<p:column headerText="Valor" style="text-align: right" width="80">
+					<h:outputText value="#{licenca.valor}">
+						<f:convertNumber type="currency" currencySymbol="" />
+					</h:outputText>
+				</p:column>
+				<p:column headerText="Franquia" style="text-align: right" width="50">
+					<h:outputText value="#{licenca.franquia}">
+						<f:convertNumber />
+					</h:outputText>
+				</p:column>
+
+				<p:column width="40">
+					<p:commandButton title="Editar" icon="ui-icon-pencil"
+						class="button-grid" update="dlgLicenca" process="@this"
+						actionListener="#{contratoAdesaoBean.setLicenca(licenca)}"
+						oncomplete="PF('dlgLicenca').show()" />
+				</p:column>
+
+			</p:dataTable>
+
+		</p:tab>
+
+
+	</p:tabView>
+
+</ui:composition>

@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="movimento_financeiro" language="groovy" pageWidth="595" pageHeight="842" columnWidth="575" leftMargin="10" rightMargin="10" topMargin="10" bottomMargin="10" uuid="a5db37f6-648c-40e8-8679-c898415fa328">
+	<property name="ireport.zoom" value="1.5"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="empresa" class="java.lang.Object"/>
+	<parameter name="titulo" class="java.lang.String"/>
+	<parameter name="empresa_endereco" class="java.lang.String"/>
+	<field name="id" class="java.lang.Long"/>
+	<field name="descricao" class="java.lang.String"/>
+	<field name="responsavel" class="java.lang.Object"/>
+	<field name="valor" class="java.lang.Double"/>
+	<field name="previsao" class="java.util.Date"/>
+	<field name="vencimento" class="java.util.Date"/>
+	<field name="saldo" class="java.lang.Double"/>
+	<field name="ordemVencimento" class="java.lang.Short"/>
+	<variable name="saldo_1" class="java.lang.Double" resetType="Group" resetGroup="ordem" calculation="Sum">
+		<variableExpression><![CDATA[$F{saldo}]]></variableExpression>
+	</variable>
+	<group name="ordem">
+		<groupExpression><![CDATA[$F{ordemVencimento}]]></groupExpression>
+		<groupHeader>
+			<band height="18">
+				<textField>
+					<reportElement x="3" y="1" width="214" height="15" uuid="0e6282e8-9af6-4ddd-ba63-f10b0d198db7"/>
+					<textElement>
+						<font isBold="true" isItalic="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{ordemVencimento} < 0.0  ? "vencido" : $F{ordemVencimento} > 0.0 ? "a vencer" : "vence hoje"]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band height="18">
+				<textField pattern="R$ #,##0.00">
+					<reportElement x="485" y="1" width="86" height="14" uuid="c660dc82-e755-4f61-b8b8-3cd19bfffef5"/>
+					<textElement textAlignment="Right">
+						<font isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{saldo_1}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupFooter>
+	</group>
+	<pageHeader>
+		<band height="64" splitType="Stretch">
+			<textField>
+				<reportElement x="2" y="24" width="407" height="15" uuid="a6be0a8d-9394-429f-9cf5-2b254f5af43b"/>
+				<textFieldExpression><![CDATA[$P{empresa_endereco}.toString()]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="2" y="3" width="407" height="20" uuid="0ac2ccb7-6c19-40cf-9526-bbded8b001c4"/>
+				<textElement markup="html">
+					<font fontName="Arial" size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{empresa}.getNome()]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="-1" y="61" width="575" height="1" uuid="0cebccd6-11e5-45a1-a85c-0beca0829384"/>
+			</line>
+			<textField pattern="HH.mm.ss">
+				<reportElement x="471" y="18" width="100" height="14" uuid="6b61b8fd-b357-4bff-94e7-b2049874b741"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="471" y="3" width="100" height="14" uuid="f15bdb2a-2ade-4a6a-90fd-899369dfec60"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="471" y="33" width="100" height="14" uuid="6f527238-5bdc-4fa1-8a84-ea4c94b104f2"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA["Página: "+$V{PAGE_NUMBER}+"/ " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="81" y="40" width="390" height="19" uuid="9872eb82-e486-4d7d-9a80-28be0e2a752a"/>
+				<textElement textAlignment="Center">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{titulo}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="19" splitType="Stretch">
+			<line>
+				<reportElement x="3" y="17" width="572" height="1" uuid="9129b4cb-e679-440f-acd7-262bc5a3bc72"/>
+			</line>
+			<staticText>
+				<reportElement x="2" y="1" width="215" height="14" uuid="2180168b-c804-4406-ae81-5fdac469c714"/>
+				<textElement markup="html">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Descrição]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="220" y="1" width="100" height="14" uuid="6a084269-89f9-474e-bb98-4babe65cbe07"/>
+				<textElement markup="html">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Nome]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="445" y="1" width="56" height="14" uuid="79b8e929-1c8a-4aa9-96be-fac2e216245a"/>
+				<textElement textAlignment="Right" markup="html">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Valor]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="327" y="1" width="60" height="14" uuid="fa9d51d8-0d43-45e7-9034-61745777b66d"/>
+				<textElement markup="html">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Vencimento]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="391" y="1" width="60" height="14" uuid="4df55ee7-36eb-47e2-908f-a77d2b597b06"/>
+				<textElement markup="html">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Previsao]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="506" y="1" width="66" height="14" uuid="01cf9d97-2f7d-4fe0-9f67-d22f067467c6"/>
+				<textElement textAlignment="Right" markup="html">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Saldo]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="16" splitType="Stretch">
+			<textField>
+				<reportElement x="2" y="1" width="215" height="14" uuid="2756162e-eb81-4851-be48-98b3c854e2c5"/>
+				<textFieldExpression><![CDATA[$F{descricao}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="220" y="1" width="100" height="14" uuid="e8e28ae8-2910-407b-9de9-902d3f333926"/>
+				<textFieldExpression><![CDATA[$F{responsavel}.getNome()]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="445" y="1" width="56" height="14" uuid="1b4f9437-07d5-42a7-aa70-b4f24b2ab78a"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{valor}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="506" y="1" width="66" height="14" uuid="927afb05-0e7c-45b3-9caa-2944c091eda7"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{saldo}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
+				<reportElement x="326" y="1" width="61" height="14" uuid="6206ede9-d646-4630-bd22-d1ed620bcc2e"/>
+				<textFieldExpression><![CDATA[$F{vencimento}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
+				<reportElement x="391" y="1" width="54" height="14" uuid="49d8d873-d8c1-4ef8-8dc1-0654bb38b87e"/>
+				<textFieldExpression><![CDATA[$F{previsao}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

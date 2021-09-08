@@ -1,0 +1,53 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<div class="ui-fluid" style="margin-top: 5px">
+		<div class="ui-g">
+
+			<div class="ui-g-11 ui-md-7">
+				<p:outputLabel value="Nome" />
+				<p:inputText readonly="true" styleClass="desabilitado"
+					value="#{clinicaAtendimentoBean.paciente.nome}" />
+			</div>
+			<div class="ui-g-1 ui-md-1">
+				<p:outputLabel value="Idade" />
+				<p:inputNumber readonly="true" decimalSeparator=","
+					thousandSeparator="." decimalPlaces="0"
+					value="#{clinicaAtendimentoBean.agenda.idade}" />
+			</div>
+			<div class="ui-g-12 ui-md-2">
+				<p:outputLabel value="Convênio" />
+				<p:inputText styleClass="desabilitado" readonly="true"
+					value="#{clinicaAtendimentoBean.agenda.convenio.descricao}" />
+			</div>
+			<div class="ui-g-12 ui-md-2">
+				<p:outputLabel value="Padrão" />
+				<p:inputText styleClass="desabilitado" readonly="true"
+					value="#{clinicaAtendimentoBean.agenda.acolhimento.padrao}" />
+			</div>
+
+		</div>
+	</div>
+
+</ui:composition>
+
+<!-- 			<div class="ui-g-12 ui-md-2"> -->
+<!-- 				<p:outputLabel value="Nascimento" /> -->
+<!-- 				<p:inputText styleClass="desabilitado" readonly="true" -->
+<!-- 					value="#{clinicaAtendimentoBean.paciente.PF.nascimento}"> -->
+<!-- 					<f:convertDateTime pattern="dd/MM/yyyy" /> -->
+<!-- 				</p:inputText> -->
+<!-- 			</div> -->
+<!-- 			<div class="ui-g-12 ui-md-5"> -->
+<!-- 				<p:outputLabel value="Nome do pai" /> -->
+<!-- 				<p:inputText styleClass="desabilitado" readonly="true" -->
+<!-- 					value="#{clinicaAtendimentoBean.paciente.PF.pai}" /> -->
+<!-- 			</div> -->
+<!-- 			<div class="ui-g-12 ui-md-5"> -->
+<!-- 				<p:outputLabel value="Nome da Mãe" /> -->
+<!-- 				<p:inputText styleClass="desabilitado" readonly="true" -->
+<!-- 					value="#{clinicaAtendimentoBean.paciente.PF.mae}" /> -->
+<!-- 			</div> -->

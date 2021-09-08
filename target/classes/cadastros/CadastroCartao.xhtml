@@ -1,0 +1,121 @@
+<ui:composition template="/WEB-INF/template/LayoutPadrao.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui" xmlns:o="http://omnifaces.org/ui">
+
+	<f:metadata>
+		<o:viewParam name="cartao" value="#{cartaoBean.cartao}" />
+		<f:event listener="#{cartaoBean.inicializar}" type="preRenderView"></f:event>
+	</f:metadata>
+
+	<ui:define name="titulo">Cartão de Crédito</ui:define>
+
+	<ui:define name="corpo">
+
+		<h1 style="margin-top: 65px">Cartão de Crédito</h1>
+
+		<h:form id="formCadastro">
+
+			<p:growl id="msg" />
+
+			<p:toolbar style="margin-top: 05px">
+				<p:toolbarGroup>
+					<p:splitButton id="botaoPesquisa" value="Pesquisar"
+						icon="ui-icon-search" action="#{cartaoBean.pesquisar}"
+						process="@this" update="@form">
+						<p:menuitem value="Imprimir lista" icon="ui-icon-print"
+							ajax="false" process="@form" action="#{cartaoBean.imprimir}"
+							target="_blank" />
+					</p:splitButton>
+					<p:commandButton value="Confirma" icon="ui-icon-disk"
+						update="@form" action="#{cartaoBean.salvar}" />
+				</p:toolbarGroup>
+				<p:toolbarGroup align="right">
+					<p:commandButton value="Novo" icon="ui-icon-document"
+						process="@this" update="formCadastro:dados"
+						actionListener="#{cartaoBean.novo}" />
+				</p:toolbarGroup>
+			</p:toolbar>
+
+			<h:panelGroup id="dados">
+				<div class="ui-fluid ui-widget"
+					style="margin-top: 5px; border: 1px solid silver;">
+					<div class="ui-g">
+						<div class="ui-g-3">
+							<p:outputLabel value="Número" for="numero" />
+							<p:inputText id="numero" value="#{cartaoBean.cartao.numero}"
+								required="true" />
+						</div>
+						<div class="ui-g-9">
+							<p:outputLabel value="Nome" for="nome" />
+							<p:inputText id="nome" maxlength="100"
+								value="#{cartaoBean.cartao.nome}" required="true" />
+						</div>
+						<div class="ui-g-6">
+							<p:outputLabel value="Centro de custo" for="ccusto" />
+							<p:selectOneMenu id="ccusto" autoWidth="false"
+								value="#{cartaoBean.cartao.centroDeCusto}">
+								<f:selectItem itemLabel="Selecione..." />
+								<f:selectItems value="#{cartaoBean.listaCusto}" var="a"
+									itemValue="#{a}" itemLabel="#{a.descricao}" />
+							</p:selectOneMenu>
+						</div>
+						<div class="ui-g-3">
+							<p:outputLabel value="Dia do vencimento" for="diaVencimento" />
+							<p:selectOneMenu id="diaVencimento" autoWidth="false"
+								value="#{cartaoBean.cartao.diaVencimento}" required="true">
+								<f:selectItems value="#{cartaoBean.listaDias}" var="d"
+									itemValue="#{d}" itemLabel="#{d}" />
+							</p:selectOneMenu>
+						</div>
+						<div class="ui-g-3">
+							<p:outputLabel value="Dia do fechamento" for="diaFechamento" />
+							<p:selectOneMenu id="diaFechamento" autoWidth="false"
+								value="#{cartaoBean.cartao.diaFechamento}" required="true">
+								<f:selectItems value="#{cartaoBean.listaDias}" var="f"
+									itemValue="#{f}" itemLabel="#{f}" />
+							</p:selectOneMenu>
+						</div>
+					</div>
+				</div>
+			</h:panelGroup>
+
+			<p:dataTable value="#{cartaoBean.lista}" var="cartao" border="1"
+				cellpadding="2" cellspacing="0" paginator="true"
+				paginatorPosition="bottom" rows="10" id="tabela"
+				selectionMode="single" selection="#{cartaoBean.cartao}"
+				rowKey="#{cartao.id}" style="margin-top: 5px">
+
+				<p:ajax event="rowSelect" update="formCadastro:dados" />
+
+				<p:column headerText="Número" width="120">
+					<h:outputText value="#{cartao.numero}" />
+				</p:column>
+				<p:column headerText="Nome do titular">
+					<h:outputText value="#{cartao.nome}" />
+				</p:column>
+				<p:column headerText="Vencimento" width="90">
+					<h:outputText value="#{cartao.diaVencimento}" />
+				</p:column>
+				<p:column headerText="Fechamento" width="90">
+					<h:outputText value="#{cartao.diaFechamento}" />
+				</p:column>
+
+				<p:column width="40">
+					<p:commandButton icon="ui-icon-trash" process="@this"
+						title="Excluir" update="@form"
+						action="#{cartaoBean.excluir(cartao)}">
+						<p:confirm icon="ui-icon-alert" header="Confirma"
+							message="Excluir o registro atual?" />
+					</p:commandButton>
+				</p:column>
+
+			</p:dataTable>
+
+		</h:form>
+
+	</ui:define>
+
+</ui:composition>

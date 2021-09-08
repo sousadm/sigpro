@@ -1,0 +1,33 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<p:dialog id="dlgModificaData" header="Dinheiro"
+		widgetVar="dlgModificaData" closeOnEscape="true" modal="true"
+		maximizable="false" height="120" width="280">
+		<h:form id="formModificaData">
+
+			<p:outputLabel value="Nova Previsão de Encerramento"
+				for="txtNovaData" rendered="#{projetoBean.projeto.existe}" />
+			<br />
+			<p:calendar id="txtNovaData" showOn="button" mask="99/99/9999"
+				pattern="dd/MM/yyyy" required="true"
+				requiredMessage="data prevista para encerramento inválida"
+				value="#{projetoBean.dataPrevistaEncerramento}" />
+
+			<br />
+			<br />
+			<p:commandButton value="Confirma" icon="ui-icon-check"
+				process="dlgModificaData" update="formCadastro"
+				action="#{projetoBean.modificarData}"
+				oncomplete="if(!args.validationFailed) PF('dlgModificaData').hide()">
+				<p:confirm icon="ui-icon-alert" header="Projeto"
+					message="Confirma modificar a previsão de encerramento?" />
+			</p:commandButton>
+
+		</h:form>
+	</p:dialog>
+
+</ui:composition>

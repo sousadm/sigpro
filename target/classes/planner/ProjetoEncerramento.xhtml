@@ -1,0 +1,34 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<div align="right">
+		<p:commandButton value="Encerrar" process="@form" update="@form"
+			actionListener="#{projetoBean.encerrar}"
+			rendered="#{not projetoBean.projeto.encerrado}">
+			<p:confirm icon="ui-icon-alert" header="Confirma"
+				message="Deseja encerrar este projeto?" />
+		</p:commandButton>
+		<p:commandButton value="Reabrir" process="@this" update="@form"
+			actionListener="#{projetoBean.reabrir}"
+			rendered="#{projetoBean.projeto.encerrado}">
+			<p:confirm icon="ui-icon-alert" header="Confirma"
+				message="Deseja reabrir este projeto?" />
+		</p:commandButton>
+	</div>
+
+	<div class="ui-fluid">
+		<div class="ui-g" style="margin-top: 5px; border: 1px solid silver;">
+			<div class="ui-g-12">
+				<p:editor disabled="#{projetoBean.projeto.encerrado}"
+					value="#{projetoBean.projeto.encerramento.comentarioDeEncerramento}"
+					controls="#{listaTipoBean.editorControl}" height="120"
+					styleClass="naoaceitarenter" />
+
+			</div>
+		</div>
+	</div>
+
+</ui:composition>

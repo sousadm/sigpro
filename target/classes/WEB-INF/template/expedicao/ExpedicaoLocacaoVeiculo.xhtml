@@ -1,0 +1,115 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<p:dialog id="dlgLocacaoVeiculo" header="Locação de Veículo"
+		widgetVar="dlgLocacaoVeiculo" closeOnEscape="true" modal="true"
+		maximizable="false">
+
+		<h:form id="formCadastroLocacaoVeiculo">
+
+			<!-- 			<p:focus for="txtLocacaoObs" /> -->
+
+			<div class="ui-fluid">
+
+				<p:tabView id="tabViewCusto" style="margin-top: 5px">
+					<p:tab title="Dados">
+						<p:panelGrid columns="2" layout="grid"
+							styleClass="panelgrid-noborder"
+							columnClasses="ui-grid-col-4, ui-grid-col-8">
+
+							<p:commandButton value="Veículo" icon="ui-icon-search"
+								disabled="#{expedicaoBean.expedicao.naoAlteravel or expedicaoBean.expedicaoItem.servico.encerrado}"
+								process="@this" actionListener="#{selecionaBean.veiculo}">
+								<p:ajax event="dialogReturn"
+									listener="#{expedicaoBean.onVeiculoChosen}" update="txtVeiculo" />
+							</p:commandButton>
+							<p:outputLabel id="txtVeiculo"
+								disabled="#{expedicaoBean.expedicao.naoAlteravel or expedicaoBean.expedicaoItem.servico.encerrado}"
+								value="#{expedicaoBean.expedicaoItem.servico.veiculo.descritivo}" />
+
+							<p:commandButton icon="ui-icon-search" value="Condutor"
+								style="width: 100px"
+								disabled="#{expedicaoBean.expedicao.naoAlteravel or expedicaoBean.expedicaoItem.servico.encerrado}"
+								process="@this" update="@none" ignoreAutoUpdate="true"
+								action="#{selecionaBean.pessoa}">
+								<p:ajax event="dialogReturn" update="txtNomeCondutor"
+									listener="#{expedicaoBean.onCondutorChosen}"
+									ignoreAutoUpdate="true" />
+							</p:commandButton>
+							<p:outputLabel id="txtNomeCondutor"
+								value="#{expedicaoBean.expedicaoItem.servico.responsavel.descritivo}" />
+
+							<p:outputLabel value="Data de emissão" />
+							<p:calendar size="10" showOn="button" mask="99/99/9999"
+								pattern="dd/MM/yyyy"
+								disabled="#{expedicaoBean.expedicao.naoAlteravel or expedicaoBean.expedicaoItem.servico.encerrado}"
+								value="#{expedicaoBean.expedicaoItem.servico.dataEmissao}" />
+
+							<p:outputLabel value="Data para entrega" />
+							<p:calendar size="10" showOn="button" mask="99/99/9999"
+								pattern="dd/MM/yyyy"
+								disabled="#{expedicaoBean.expedicao.naoAlteravel or expedicaoBean.expedicaoItem.servico.encerrado}"
+								value="#{expedicaoBean.expedicaoItem.servico.dataPrevisao}" />
+
+							<p:outputLabel value="Combustível" />
+							<p:spinner id="txtCombustivel" max="100" min="0" suffix="%"
+								disabled="#{expedicaoBean.expedicao.naoAlteravel or expedicaoBean.expedicaoItem.servico.encerrado}"
+								value="#{expedicaoBean.expedicaoItem.servico.locacao.locacaoNivelSaida}" />
+
+							<p:outputLabel value="Odômetro" />
+							<p:spinner id="txtOdometro" min="0" suffix="km"
+								disabled="#{expedicaoBean.expedicao.naoAlteravel or expedicaoBean.expedicaoItem.servico.encerrado}"
+								value="#{expedicaoBean.expedicaoItem.servico.odometro}" />
+
+							<p:outputLabel value="Franquia Sinistro" />
+							<p:inputNumber minValue="0" decimalSeparator=","
+								thousandSeparator="." decimalPlaces="2"
+								disabled="#{expedicaoBean.expedicao.naoAlteravel or expedicaoBean.expedicaoItem.servico.encerrado}"
+								value="#{expedicaoBean.expedicaoItem.servico.locacao.locacaoFranquiaSinistro}" />
+
+							<p:outputLabel value="Observação" />
+							<p:inputTextarea id="txtLocacaoObs" rows="4" style="width: 98%"
+								disabled="#{expedicaoBean.expedicao.naoAlteravel or expedicaoBean.expedicaoItem.servico.encerrado}"
+								value="#{expedicaoBean.expedicao.observacao}" />
+
+						</p:panelGrid>
+					</p:tab>
+					<p:tab title="Check-list">
+						<p:selectManyCheckbox id="grid" converter="enumConverter"
+							disabled="#{expedicaoBean.expedicao.naoAlteravel or expedicaoBean.expedicaoItem.servico.encerrado}"
+							value="#{expedicaoBean.expedicaoItem.servico.locacao.locacaoCheckList}"
+							layout="responsive" columns="1">
+							<f:attribute name="collectionType" value="java.util.ArrayList" />
+							<f:selectItems value="#{listaTipoBean.tipoCheckListLocVeiculo}"
+								var="checkList" itemLabel="#{checkList.descricao}"
+								itemValue="#{checkList}" />
+						</p:selectManyCheckbox>
+					</p:tab>
+				</p:tabView>
+
+			</div>
+
+			<div class="ui-g">
+				<div class="ui-g-6">
+					<p:commandButton value="Imprimir" icon="ui-icon-print" ajax="false"
+						onclick="this.form.target='_blank'"
+						actionListener="#{expedicaoBean.imprimirLocacao}"
+						disabled="#{not (expedicaoBean.expedicao.naoAlteravel or expedicaoBean.expedicaoItem.servico.encerrado)}" />
+				</div>
+				<div class="ui-g-6" align="right">
+					<p:commandButton id="btnConfirma" value="Confirma"
+						icon="ui-icon-check" process="@form"
+						action="#{expedicaoBean.calcularLocacaoVeiculo}"
+						disabled="#{expedicaoBean.expedicao.naoAlteravel or expedicaoBean.expedicaoItem.servico.encerrado}"
+						update="formCadastro:view:tabelaItens :formCadastro:totalPedido :formCadastro:subtotal"
+						oncomplete="if(!args.validationFailed) PF('dlgLocacaoVeiculo').hide()" />
+				</div>
+			</div>
+
+		</h:form>
+	</p:dialog>
+
+</ui:composition>

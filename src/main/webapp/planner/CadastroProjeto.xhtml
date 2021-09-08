@@ -1,0 +1,43 @@
+<ui:composition template="/WEB-INF/template/LayoutPadrao.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui" xmlns:o="http://omnifaces.org/ui">
+
+	<f:metadata>
+		<o:viewParam name="projeto" value="#{projetoBean.projeto}" />
+		<f:event listener="#{projetoBean.inicializar}" type="preRenderView"></f:event>
+	</f:metadata>
+
+	<ui:define name="titulo">Projeto</ui:define>
+
+	<ui:define name="dialogo">
+		<ui:include src="/dialogos/ListaEventos.xhtml" />
+	</ui:define>
+
+	<ui:define name="corpo">
+
+		<h1 style="margin-top: 65px">Cadastro de Projeto</h1>
+
+		<h:form id="formCadastro">
+
+			<h:panelGroup rendered="#{projetoBean.projeto != null}">
+				<ui:include src="/planner/ProjetoEdit.xhtml" />
+			</h:panelGroup>
+
+			<h:panelGroup rendered="#{projetoBean.projeto == null}">
+				<ui:include src="/planner/ProjetoPesquisa.xhtml" />
+			</h:panelGroup>
+
+		</h:form>
+
+		<ui:include src="/planner/ProjetoModificaData.xhtml" />
+		<ui:include src="/planner/ProjetoModificaValor.xhtml" />
+		<ui:include src="/planner/ProjetoEditaEntrega.xhtml" />
+		<ui:include src="/planner/ProjetoEditaPacote.xhtml" />
+		<ui:include src="/planner/ProjetoDefinicao.xhtml" />
+
+	</ui:define>
+
+</ui:composition>

@@ -1,0 +1,88 @@
+<ui:composition template="/WEB-INF/template/LayoutPadrao.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui" xmlns:o="http://omnifaces.org/ui">
+
+	<f:metadata>
+		<f:param name="dummy" />
+		<o:viewParam name="conta" value="#{contaBean.conta}" />
+		<f:event listener="#{contaBean.inicializar}"
+			type="preRenderView"></f:event>
+	</f:metadata>
+
+	<ui:define name="titulo">Conta Bancária</ui:define>
+
+	<ui:define name="dialogo">
+
+	</ui:define>
+
+	<ui:define name="corpo">
+
+		<p:focus context="formCadastro" />
+
+		<h:form id="formCadastro">
+
+			<h:panelGroup
+				rendered="#{contaBean.titulo == null and contaBean.conciliacao}">
+				<ui:include src="/financeiro/ConciliacaoBancaria.xhtml" />
+			</h:panelGroup>
+
+			<h:panelGroup
+				rendered="#{contaBean.titulo != null and contaBean.conciliacao}">
+				<ui:include src="/financeiro/ConciliacaoEdit.xhtml" />
+			</h:panelGroup>
+
+			<h:panelGroup
+				rendered="#{contaBean.conta == null and not contaBean.conciliacao}">
+				<ui:include src="/financeiro/ContaPesquisa.xhtml" />
+			</h:panelGroup>
+
+			<h:panelGroup
+				rendered="#{contaBean.conta != null and not contaBean.conciliacao}">
+				<ui:include src="/financeiro/ContaEdit.xhtml" />
+			</h:panelGroup>
+
+		</h:form>
+
+		<p:dialog id="dlgAjuste" header="Ajuste de Saldo"
+			widgetVar="dlgAjuste" closeOnEscape="true" modal="true"
+			maximizable="false" width="400">
+			<h:form id="formAjusteSaldo">
+
+				<div class="ui-fluid">
+					<div class="ui-g">
+						<div class="ui-g-12">
+							<p:outputLabel value="Histórico do ajuste" />
+							<p:inputText maxlength="100"
+								value="#{contaBean.titulo.descricao}" />
+						</div>
+						<div class="ui-g-6">
+							<p:outputLabel value="Data do ajuste" />
+							<p:calendar locale="pt_BR" mask="99/99/9999" pattern="dd/MM/yyyy"
+								navigator="true" showOn="button"
+								value="#{contaBean.titulo.dataBaixa}" />
+						</div>
+						<div class="ui-g-6">
+							<p:outputLabel value="Valor" />
+							<p:inputNumber minValue="0" decimalSeparator=","
+								thousandSeparator="." decimalPlaces="2"
+								value="#{contaBean.titulo.valor}" />
+						</div>
+					</div>
+				</div>
+
+				<div align="right" style="margin-top: 5px">
+					<p:commandButton value="Confirma" icon="ui-icon-check"
+						process="dlgAjuste" update="formCadastro"
+						action="#{contaBean.ajustarSaldoConta}"
+						oncomplete="if(!args.validationFailed) PF('dlgAjuste').hide()" />
+				</div>
+
+			</h:form>
+		</p:dialog>
+
+	</ui:define>
+
+</ui:composition>

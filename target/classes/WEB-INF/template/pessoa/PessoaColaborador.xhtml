@@ -1,0 +1,43 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<p:panelGrid columns="2" layout="grid"
+		rendered="#{pessoaBean.pessoa.defineColaborador}"
+		style="margin-top: 20px" styleClass="panelgrid-noborder">
+
+		<p:outputLabel value="Definido como colaborador" style="color:blue;" />
+		<p:inputSwitch value="#{pessoaBean.pessoa.defineColaborador}"
+			offLabel="não" onLabel="sim" styleClass="botao-grid">
+			<f:ajax render="@form" listener="#{pessoaBean.setTabDerivado}"
+				update="formCadastro:tabGrupo" />
+		</p:inputSwitch>
+
+		<p:outputLabel value="Data de cadastro" />
+		<h:outputText class="negrito"
+			value="#{pessoaBean.pessoa.colaborador.dataCadastro}">
+			<f:convertDateTime pattern="dd/MM/yyyy HH:mm" timeZone="GMT-03:00" />
+		</h:outputText>
+
+		<p:outputLabel value="Funções que exerce" for="funcaoCheck"
+			rendered="#{not empty pessoaBean.listaFuncao}" />
+		<p:selectManyCheckbox id="funcaoCheck"
+			value="#{pessoaBean.pessoa.colaborador.funcoes}"
+			converter="funcaoConverter"
+			rendered="#{not empty pessoaBean.listaFuncao}">
+			<f:attribute name="collectionType" value="java.util.ArrayList" />
+			<f:selectItems value="#{pessoaBean.listaFuncao}" var="funcao"
+				itemLabel="#{funcao.descricao}" itemValue="#{funcao}" />
+		</p:selectManyCheckbox>
+
+		<h:outputText value="Tempo de atendimento"
+			rendered="#{pessoaBean.clinica}" />
+		<p:calendar value="#{pessoaBean.pessoa.colaborador.tempo}"
+			locale="pt_BR" pattern="HH:mm:ss" timeOnly="true"
+			rendered="#{pessoaBean.clinica}" />
+
+	</p:panelGrid>
+
+</ui:composition>

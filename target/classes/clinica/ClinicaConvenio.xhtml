@@ -1,0 +1,89 @@
+<ui:composition template="/WEB-INF/template/LayoutPadrao.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui" xmlns:o="http://omnifaces.org/ui">
+
+	<f:metadata>
+		<o:viewParam name="convenio" value="#{clinicaConvenioBean.convenio}" />
+		<f:event listener="#{clinicaConvenioBean.inicializar}"
+			type="preRenderView"></f:event>
+	</f:metadata>
+
+	<ui:define name="titulo">Horário</ui:define>
+
+	<ui:define name="corpo">
+
+		<h1 style="margin-top: 65px">Cadastro de Convênio</h1>
+
+		<h:form id="formCadastro">
+
+			<p:toolbar style="margin-top: 05px">
+
+				<p:toolbarGroup>
+					<p:commandButton icon="ui-icon-document" value="Novo"
+						process="@this" actionListener="#{clinicaConvenioBean.novo}"
+						update="@form" />
+				</p:toolbarGroup>
+
+				<p:toolbarGroup align="right">
+					<p:commandButton icon="ui-icon-search" value="Pesquisa"
+						process="@this" actionListener="#{clinicaConvenioBean.pesquisar}"
+						update="@form" />
+				</p:toolbarGroup>
+
+			</p:toolbar>
+
+			<p:messages autoUpdate="true" closable="true" />
+
+			<p:panel id="painelEdit"
+				rendered="#{not clinicaConvenioBean.listando}"
+				header="#{clinicaConvenioBean.tituloCadastro}"
+				style="margin-top:05px">
+
+				<p:outputLabel value="Descrição" />
+				<br />
+				<p:inputText id="descricao" required="true"
+					requiredMessage="informe a descrição" size="60" maxlength="100"
+					value="#{clinicaConvenioBean.convenio.descricao}" />
+				<p:commandButton icon="ui-icon-check" process="painelEdit"
+					title="Aplicar" update="@form"
+					actionListener="#{clinicaConvenioBean.salvar}" />
+				<p:commandButton icon="ui-icon-close" title="Cancela"
+					process="@this" update="@form"
+					actionListener="#{clinicaConvenioBean.cancela}" />
+			</p:panel>
+
+			<p:dataTable id="tabela" value="#{clinicaConvenioBean.lista}"
+				var="convenio" rowIndexVar="item" style="margin-top: 5px"
+				emptyMessage="Nenhum registro encontrado." rows="10"
+				paginator="true" paginatorAlwaysVisible="false"
+				paginatorPosition="bottom">
+
+				<p:column headerText="Descrição do convênio">
+					<h:outputText value="#{convenio.descricao}" />
+				</p:column>
+
+				<p:column style="width:70px;">
+					<p:commandButton icon="ui-icon-pencil" process="@this"
+						class="button-grid" title="Editar" update="@form"
+						actionListener="#{clinicaConvenioBean.setConvenio(convenio)}" />
+					<p:commandButton icon="ui-icon-trash" process="@this"
+						class="button-grid" title="Excluir" update="tabela"
+						action="#{clinicaConvenioBean.excluir(convenio)}">
+						<p:confirm icon="ui-icon-alert" header="Confirma"
+							message="Excluir #{produto.nome}  ?" />
+					</p:commandButton>
+				</p:column>
+
+			</p:dataTable>
+
+		</h:form>
+
+	</ui:define>
+
+</ui:composition>
+
+
+<!-- <p:blockUI block="formCadastro" trigger="botaoSalvar" /> -->

@@ -1,0 +1,147 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<p:commandButton value="Dinheiro" title="compensação em dinheiro"
+		disabled="#{not caixaBean.caixa.temCaixaIniciado or not caixaBean.caixa.podeGravar}"
+		process="@this" update="dlgDinheiro"
+		actionListener="#{caixaBean.iniciarCaixaItem('DINHEIRO')}"
+		oncomplete="PF('dlgDinheiro').show()" />
+
+	<p:commandButton value="Saque" title="saque bancário"
+		rendered="#{caixaBean.caixa.temCaixaReceber}"
+		disabled="#{not caixaBean.caixa.temCaixaIniciado or not caixaBean.caixa.podeGravar}"
+		process="@this" update="dlgSaque"
+		actionListener="#{caixaBean.iniciarCaixaItem('SAQUE')}"
+		oncomplete="PF('dlgSaque').show()" />
+
+	<p:commandButton value="Débito"
+		rendered="#{caixaBean.caixa.temCaixaPagar}"
+		disabled="#{not caixaBean.caixa.temCaixaIniciado or not caixaBean.caixa.podeGravar}"
+		process="@this" update="dlgDebito"
+		actionListener="#{caixaBean.iniciarCaixaItem('DEBITO')}"
+		oncomplete="PF('dlgDebito').show()" />
+
+	<p:commandButton value="Tranferência"
+		rendered="#{caixaBean.caixa.temCaixaPagar}"
+		disabled="#{not caixaBean.caixa.temCaixaIniciado or not caixaBean.caixa.podeGravar}"
+		title="depósito bancário em conta corporativa" process="@this"
+		update="dlgTransferencia"
+		actionListener="#{caixaBean.iniciarCaixaItem('TRANSFERENCIA')}"
+		oncomplete="PF('dlgTransferencia').show()" />
+
+	<p:commandButton value="Cheque" title="emissão de cheque"
+		disabled="#{not caixaBean.caixa.temCaixaIniciado or not caixaBean.existeFormaCheque or not caixaBean.caixa.podeGravar}"
+		process="@this" update="dlgCheque"
+		actionListener="#{caixaBean.iniciarCaixaItem('CHEQUE')}"
+		oncomplete="PF('dlgCheque').show()" />
+
+	<p:commandButton value="Crédito"
+		rendered="#{caixaBean.caixa.temCaixaReceber and caixaBean.existeFormaCartao}"
+		disabled="#{not caixaBean.caixa.podeGravar}" process="@this"
+		update="dlgCartao"
+		actionListener="#{caixaBean.iniciarCaixaItem('CREDITO')}"
+		oncomplete="PF('dlgCartao').show()" />
+
+	<p:commandButton value="Crédito"
+		rendered="#{caixaBean.caixa.temCaixaPagar}"
+		disabled="#{not caixaBean.caixa.temCaixaIniciado or not caixaBean.caixa.podeGravar}"
+		process="@this" update="dlgCredito"
+		actionListener="#{caixaBean.iniciarCaixaItem('CREDITO')}"
+		oncomplete="PF('dlgCredito').show()" />
+
+
+
+	<p:commandButton id="btnSaldoCaixa" value="Saldo em Caixa"
+		rendered="#{caixaBean.caixa.temCaixaReceber}"
+		disabled="#{not caixaBean.caixa.temCaixaIniciado or not caixaBean.existeSaldoEmCaixa or not caixaBean.caixa.podeGravar}"
+		process="@this" update="dlgSaldo"
+		actionListener="#{caixaBean.iniciarCaixaItem('SALDO')}"
+		oncomplete="PF('dlgSaldo').show()" />
+
+
+
+	<p:dataTable id="gridCompensacao" style="margin-top: 05px"
+		value="#{caixaBean.caixa.valores}" var="itemCompensa"
+		rowIndexVar="linhaPgto" rows="10" emptyMessage="" paginator="true"
+		paginatorAlwaysVisible="false" paginatorPosition="bottom">
+
+		<!-- 		<f:facet name="header">Compensação</f:facet> -->
+
+		<p:column headerText="Forma de compensação">
+			<h:outputText value="#{itemCompensa.tipoPagamento.descricao}" />
+		</p:column>
+
+		<p:column headerText="Valor">
+			<h:outputText value="#{itemCompensa.valor}">
+				<f:convertNumber type="currency" />
+			</h:outputText>
+		</p:column>
+
+		<p:column style="width: 120px; text-align: center">
+
+			<p:commandButton icon="ui-icon-pencil" title="Editar dinheiro"
+				action="#{caixaBean.setCaixaValor(itemCompensa)}"
+				update="dlgDinheiro" process="gridCompensacao"
+				rendered="#{itemCompensa.tipoDinheiro}"
+				oncomplete="PF('dlgDinheiro').show()" />
+
+			<p:commandButton icon="ui-icon-pencil" title="Editar cheque"
+				action="#{caixaBean.setCaixaValor(itemCompensa)}" update="dlgCheque"
+				process="gridCompensacao" rendered="#{itemCompensa.tipoCheque}"
+				oncomplete="PF('dlgCheque').show()" />
+
+			<p:commandButton icon="ui-icon-pencil" title="Editar cartão"
+				action="#{caixaBean.setCaixaValor(itemCompensa)}" update="dlgCartao"
+				process="gridCompensacao"
+				rendered="#{itemCompensa.tipoCartao and caixaBean.caixa.temCaixaReceber}"
+				oncomplete="PF('dlgCartao').show()" />
+
+			<p:commandButton icon="ui-icon-pencil" title="Editar crédito"
+				action="#{caixaBean.setCaixaValor(itemCompensa)}"
+				update="dlgCredito" process="gridCompensacao"
+				rendered="#{itemCompensa.tipoCartao and caixaBean.caixa.temCaixaPagar}"
+				oncomplete="PF('dlgCredito').show()" />
+
+			<p:commandButton icon="ui-icon-pencil" title="Editar débito"
+				action="#{caixaBean.setCaixaValor(itemCompensa)}" update="dlgDebito"
+				process="gridCompensacao" rendered="#{itemCompensa.tipoDebito}"
+				oncomplete="PF('dlgDebito').show()" />
+
+
+
+			<p:commandButton icon="ui-icon-pencil" title="Editar Saldo de Caixa"
+				action="#{caixaBean.setCaixaValor(itemCompensa)}" update="dlgSaldo"
+				process="gridCompensacao" rendered="#{itemCompensa.tipoSaldoCaixa}"
+				oncomplete="PF('dlgSaldo').show()" />
+
+			<p:commandButton icon="ui-icon-pencil" title="Editar depósito"
+				action="#{caixaBean.setCaixaValor(itemCompensa)}"
+				update="dlgTransferencia" process="gridCompensacao"
+				rendered="#{itemCompensa.tipoDeposito}"
+				oncomplete="PF('dlgTransferencia').show()" />
+
+
+
+
+			<p:commandButton icon="ui-icon-pencil" title="editar saque na conta"
+				action="#{caixaBean.setCaixaValor(itemCompensa)}" update="dlgSaque"
+				process="gridCompensacao" rendered="#{itemCompensa.tipoSaque}"
+				oncomplete="PF('dlgSaque').show()" />
+
+
+
+
+
+			<p:commandButton icon="ui-icon-trash" process="@this"
+				disabled="#{not caixaBean.caixa.podeGravar}"
+				update="formCadastro:tabView:gridCompensacao formCadastro:txtValorNegociado formCadastro:txtValorFinal formCadastro:tabView:btnSaldoCaixa"
+				action="#{caixaBean.removeCompensacao(linhaPgto)}" />
+
+		</p:column>
+
+	</p:dataTable>
+
+</ui:composition>

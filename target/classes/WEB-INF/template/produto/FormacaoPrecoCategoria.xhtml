@@ -1,0 +1,49 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:c="http://java.sun.com/jstl/core">
+
+	<p:dialog id="dlgCategoria" header="Categoria" widgetVar="dlgCategoria"
+		closeOnEscape="true" modal="true" maximizable="false">
+		<h:form id="formCategoria">
+
+			<p:panelGrid id="grid" columns="2" layout="grid"
+				columnClasses="ui-grid-col-4, ui-grid-col-8"
+				styleClass="panelgrid-noborder">
+
+				<p:outputLabel value="Categoria" />
+				<p:selectOneMenu id="categoria" autoWidth="false"
+					value="#{formacaoDePrecoBean.categoriaPai}">
+					<f:selectItem itemLabel="Selecione a categoria" />
+					<f:selectItems value="#{formacaoDePrecoBean.categoriasRaizes}"
+						var="categoria" itemValue="#{categoria}"
+						itemLabel="#{categoria.descricao}" />
+					<f:ajax render="grid"
+						listener="#{formacaoDePrecoBean.carregarSubcategorias}"
+						update="subcategoria" />
+				</p:selectOneMenu>
+
+				<p:outputLabel value="Subcategoria" />
+				<p:selectManyCheckbox id="subcategoria"
+					value="#{formacaoDePrecoBean.filtro.subcategorias}" layout="grid"
+					columns="1">
+					<f:selectItems value="#{formacaoDePrecoBean.subcategorias}"
+						var="subcategoria" itemValue="#{subcategoria}"
+						itemLabel="#{subcategoria.descricao}" />
+				</p:selectManyCheckbox>
+
+			</p:panelGrid>
+
+			<div align="right">
+				<p:commandButton value="Aplicar" icon="ui-icon-check"
+					process="dlgCategoria" update="form:tabela form:barra"
+					actionListener="#{formacaoDePrecoBean.listaPorCategoria}"
+					oncomplete="if(!args.validationFailed) PF('dlgCategoria').hide()" />
+			</div>
+
+		</h:form>
+	</p:dialog>
+
+</ui:composition>

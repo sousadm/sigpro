@@ -1,0 +1,317 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<p:dialog id="dlgCfop" header="Operação Fiscal" widgetVar="dlgCfop"
+		closeOnEscape="true" modal="true" maximizable="false" height="450"
+		width="800">
+
+		<h:form id="frmOperacaoFiscal">
+
+			<p:panelGrid id="gridOperacaoFiscal" styleClass="ui-panelgrid-blank"
+				style="width: 100%">
+				<p:row>
+					<p:column>
+						<p:outputLabel value="Código" />
+					</p:column>
+					<p:column>
+						<h:panelGroup>
+							<p:outputLabel value="#{operacaoFiscalBean.operacao.cfop}"
+								rendered="#{operacaoFiscalBean.operacao.existe}" />
+							<p:selectOneMenu id="txtCodigo"
+								rendered="#{not operacaoFiscalBean.operacao.existe}"
+								autoWidth="false" value="#{operacaoFiscalBean.operacao.cfop}">
+								<f:selectItems value="#{operacaoFiscalBean.listaBaseCfop}"
+									var="cfop" itemValue="#{cfop}" itemLabel="#{cfop.id}" />
+								<f:ajax render="@form" listener="#{operacaoFiscalBean.atualiza}"
+									update="txtDescricao txtInformativo" />
+							</p:selectOneMenu>
+
+							<p:selectOneMenu rendered="false" autoWidth="false"
+								value="#{operacaoFiscalBean.operacao.tipo}">
+								<f:selectItems value="#{listaTipoBean.movimentacaoFiscal}"
+									var="movFisc" itemValue="#{movFisc}" itemLabel="#{movFisc}" />
+							</p:selectOneMenu>
+
+						</h:panelGroup>
+
+					</p:column>
+					<p:column style="width: 10%">
+						<p:outputLabel id="txtAtivo"
+							value="#{operacaoFiscalBean.operacao.ativo == true ? 'Ativo' : 'REGISTRO INATIVO' }" />
+					</p:column>
+					<p:column style="width: 10%">
+						<p:inputSwitch value="#{operacaoFiscalBean.operacao.ativo}">
+							<p:ajax update="txtAtivo" />
+						</p:inputSwitch>
+					</p:column>
+				</p:row>
+				<p:row>
+					<p:column>
+						<p:outputLabel value="Descrição" />
+					</p:column>
+					<p:column colspan="3">
+						<p:inputText id="txtDescricao" maxlength="60" size="60"
+							style="width: 95%"
+							value="#{operacaoFiscalBean.operacao.descricao}" />
+					</p:column>
+				</p:row>
+			</p:panelGrid>
+
+			<p:tabView id="tabView" orientation="left" style="margin-top: 5px">
+				<p:tab title="Aplicacao" id="tabUso">
+					<p:selectBooleanCheckbox
+						value="#{operacaoFiscalBean.operacao.usaNFe}" />
+					<p:outputLabel value="Nota Fiscal Eletrônica" />
+					<br />
+					<p:selectBooleanCheckbox
+						value="#{operacaoFiscalBean.operacao.usaNFSe}">
+						<p:ajax event="change" process="@this"
+							update="gridAmbiente tabView" />
+					</p:selectBooleanCheckbox>
+					<p:outputLabel value="Nota Fiscal de Serviço Eletrônica" />
+					<br />
+					<p:selectBooleanCheckbox
+						value="#{operacaoFiscalBean.operacao.usaCFe}" />
+					<p:outputLabel value="Cupom Fiscal Eletrônico" />
+					<br />
+					<p:selectBooleanCheckbox
+						value="#{operacaoFiscalBean.operacao.usaCTe}" disabled="true" />
+					<p:outputLabel value="Conhecimento de Transporte Eletrônico"
+						disabled="true" />
+				</p:tab>
+				<p:tab title="Operação Especial" id="tabEspecial">
+					<p:selectBooleanCheckbox
+						value="#{operacaoFiscalBean.operacao.consignacao}" />
+					<p:outputLabel value="Consignação" />
+					<br />
+					<p:selectBooleanCheckbox
+						value="#{operacaoFiscalBean.operacao.devolucao}" />
+					<p:outputLabel value="Devolução" />
+					<br />
+					<p:selectBooleanCheckbox
+						value="#{operacaoFiscalBean.operacao.remessa}" />
+					<p:outputLabel value="Remessa" />
+					<br />
+					<p:selectBooleanCheckbox
+						value="#{operacaoFiscalBean.operacao.transferencia}" />
+					<p:outputLabel value="Transferência" />
+				</p:tab>
+				<p:tab title="ICMS" id="tabIcms">
+					<p:panelGrid columns="2" style="width: 100%"
+						styleClass="ui-panelgrid-blank">
+
+						<p:outputLabel value="CST" />
+						<h:panelGroup>
+							<p:selectOneMenu autoWidth="false"
+								value="#{operacaoFiscalBean.operacao.fiscal.cst}"
+								rendered="#{operacaoFiscalBean.empresaNormal}">
+								<f:selectItems value="#{listaTipoBean.cstIcms}" var="icmsCst"
+									itemValue="#{icmsCst}" itemLabel="#{icmsCst}" />
+							</p:selectOneMenu>
+
+							<p:selectOneMenu
+								value="#{operacaoFiscalBean.operacao.fiscal.cstSN}"
+								rendered="#{not operacaoFiscalBean.empresaNormal}">
+								<f:selectItems value="#{listaTipoBean.cstIcmsSN}" var="icmsSN"
+									itemValue="#{icmsSN}" itemLabel="#{icmsSN}" />
+							</p:selectOneMenu>
+
+						</h:panelGroup>
+
+						<p:outputLabel value="Alíquota (%)" />
+						<p:inputNumber minValue="0" decimalSeparator=","
+							thousandSeparator="." decimalPlaces="2"
+							value="#{operacaoFiscalBean.operacao.fiscal.icms}" />
+
+					</p:panelGrid>
+				</p:tab>
+
+				<p:tab title="ISS" id="tabISS"
+					rendered="#{operacaoFiscalBean.operacao.usaNFSe}">
+					<p:panelGrid columns="2" style="width: 100%"
+						styleClass="ui-panelgrid-blank">
+
+						<p:outputLabel value="Alíquota (%)" />
+						<p:inputNumber minValue="0" decimalSeparator=","
+							thousandSeparator="." decimalPlaces="2"
+							value="#{operacaoFiscalBean.operacao.fiscal.iss}" />
+
+						<p:outputLabel value="Item Serviço" />
+						<p:inputText maxlength="20" onKeyPress="validateInput('[0-9]*')"
+							value="#{operacaoFiscalBean.operacao.itemListaServicos}" />
+
+						<p:outputLabel value="Código de Tributação"
+							rendered="#{not operacaoFiscalBean.somenteSaoPaulo}" />
+						<p:inputText maxlength="20" onKeyPress="validateInput('[0-9]*')"
+							value="#{operacaoFiscalBean.operacao.codigoTributarioMunicipio}"
+							rendered="#{not operacaoFiscalBean.somenteSaoPaulo}" />
+
+						<p:outputLabel value="Código CNAE"
+							rendered="#{not operacaoFiscalBean.somenteSaoPaulo}" />
+						<p:inputText maxlength="20" onKeyPress="validateInput('[0-9]*')"
+							value="#{operacaoFiscalBean.operacao.codigoCnae}"
+							rendered="#{not operacaoFiscalBean.somenteSaoPaulo}" />
+
+
+					</p:panelGrid>
+				</p:tab>
+
+				<p:tab title="PIS" id="tabPis">
+					<p:panelGrid columns="2" style="width: 100%"
+						styleClass="ui-panelgrid-blank">
+						<p:outputLabel value="CST" />
+						<h:panelGroup>
+							<p:selectOneMenu autoWidth="false"
+								value="#{operacaoFiscalBean.operacao.fiscal.cstPIS}">
+								<f:selectItems value="#{listaTipoBean.cstPIS}" var="cstpis"
+									itemValue="#{cstpis}" itemLabel="#{cstpis}" />
+							</p:selectOneMenu>
+						</h:panelGroup>
+
+						<p:outputLabel value="Alíquota (%)" />
+						<p:inputNumber minValue="0" decimalSeparator=","
+							thousandSeparator="." decimalPlaces="2"
+							value="#{operacaoFiscalBean.operacao.fiscal.pis}" />
+
+					</p:panelGrid>
+				</p:tab>
+				<p:tab title="Cofins" id="tabCofins">
+					<p:panelGrid columns="2" style="width: 100%"
+						styleClass="ui-panelgrid-blank">
+
+						<p:outputLabel value="CST" />
+						<h:panelGroup>
+							<p:selectOneMenu autoWidth="false"
+								value="#{operacaoFiscalBean.operacao.fiscal.cstCofins}">
+								<f:selectItems value="#{listaTipoBean.cstCofins}"
+									var="cstCofins" itemValue="#{cstCofins}"
+									itemLabel="#{cstCofins}" />
+							</p:selectOneMenu>
+						</h:panelGroup>
+
+						<p:outputLabel value="Alíquota (%)" />
+						<p:inputNumber minValue="0" decimalSeparator=","
+							thousandSeparator="." decimalPlaces="2"
+							value="#{operacaoFiscalBean.operacao.fiscal.cofins}" />
+
+					</p:panelGrid>
+				</p:tab>
+				<p:tab title="IPI" id="tabIpi">
+					<p:panelGrid columns="2" style="width: 100%"
+						styleClass="ui-panelgrid-blank">
+						<p:outputLabel value="CST" />
+						<h:panelGroup>
+							<p:selectOneMenu
+								value="#{operacaoFiscalBean.operacao.fiscal.cstIPI}">
+								<f:selectItem itemLabel="Selecione" value="#{null}" />
+								<f:selectItems value="#{listaTipoBean.cstIPI}" var="cstIpi"
+									itemValue="#{cstIpi}" itemLabel="#{cstIpi}" />
+							</p:selectOneMenu>
+						</h:panelGroup>
+
+						<p:outputLabel value="Alíquota (%)" />
+						<p:inputNumber minValue="0" decimalSeparator=","
+							thousandSeparator="." decimalPlaces="2"
+							value="#{operacaoFiscalBean.operacao.fiscal.ipi}" />
+
+					</p:panelGrid>
+				</p:tab>
+				<p:tab title="Ambiente" id="tabAmbiente">
+					<p:panelGrid id="gridAmbiente" columns="2"
+						styleClass="ui-panelgrid-blank">
+
+						<p:outputLabel value="Ambiente" />
+						<p:selectOneMenu value="#{operacaoFiscalBean.operacao.ambiente}">
+							<f:selectItems value="#{listaTipoBean.NFAmbiente}" var="ambiente"
+								itemValue="#{ambiente}" itemLabel="#{ambiente}" />
+						</p:selectOneMenu>
+
+						<p:outputLabel value="Regime Especial"
+							rendered="#{operacaoFiscalBean.operacao.usaNFSe and not operacaoFiscalBean.somenteSaoPaulo}" />
+						<p:selectOneMenu autoWidth="false"
+							value="#{operacaoFiscalBean.operacao.regimeEspecial}"
+							rendered="#{operacaoFiscalBean.operacao.usaNFSe and not operacaoFiscalBean.somenteSaoPaulo}">
+							<f:selectItems value="#{listaTipoBean.tipoRegimeEspecial}"
+								var="regimeEspecial" itemValue="#{regimeEspecial}"
+								itemLabel="#{regimeEspecial.descricao}" />
+						</p:selectOneMenu>
+
+						<p:outputLabel value="Tributação da RPS"
+							rendered="#{operacaoFiscalBean.operacao.usaNFSe and operacaoFiscalBean.somenteSaoPaulo}" />
+						<p:selectOneMenu autoWidth="false"
+							value="#{operacaoFiscalBean.operacao.tributacaoRps}"
+							rendered="#{operacaoFiscalBean.operacao.usaNFSe and operacaoFiscalBean.somenteSaoPaulo}">
+							<f:selectItems value="#{listaTipoBean.tipoTributacaoRps}"
+								var="tributacaoRps" itemValue="#{tributacaoRps}"
+								itemLabel="#{tributacaoRps.descricao}" />
+						</p:selectOneMenu>
+
+						<p:outputLabel value="Natureza da Operação"
+							rendered="#{operacaoFiscalBean.operacao.usaNFSe and not operacaoFiscalBean.somenteSaoPaulo}" />
+						<p:selectOneMenu autoWidth="false"
+							value="#{operacaoFiscalBean.operacao.naturezaOperacaoNFSe}"
+							rendered="#{operacaoFiscalBean.operacao.usaNFSe and not operacaoFiscalBean.somenteSaoPaulo}">
+							<f:selectItems value="#{listaTipoBean.tipoNaturezaOperacaoNFSe}"
+								var="naturezaNFSe" itemValue="#{naturezaNFSe}"
+								itemLabel="#{naturezaNFSe.descricao}" />
+						</p:selectOneMenu>
+
+						<p:outputLabel value="Finalidade"
+							rendered="#{operacaoFiscalBean.operacao.usaNFe}" />
+						<p:selectOneMenu autoWidth="false"
+							value="#{operacaoFiscalBean.operacao.finalidade}"
+							rendered="#{operacaoFiscalBean.operacao.usaNFe}">
+							<f:selectItems value="#{listaTipoBean.NFFinalidade}"
+								var="finalidade" itemValue="#{finalidade}"
+								itemLabel="#{finalidade}" />
+						</p:selectOneMenu>
+
+						<p:outputLabel value="Forma de Pagamento"
+							rendered="#{operacaoFiscalBean.operacao.usaNFe}" />
+						<p:selectOneMenu autoWidth="false"
+							value="#{operacaoFiscalBean.operacao.formaPagamento}"
+							rendered="#{operacaoFiscalBean.operacao.usaNFe}">
+							<f:selectItems value="#{listaTipoBean.NFFormaPagamentoPrazo}"
+								var="formaPagamento" itemValue="#{formaPagamento}"
+								itemLabel="#{formaPagamento}" />
+						</p:selectOneMenu>
+
+						<p:outputLabel value="Presença do Comprador"
+							rendered="#{operacaoFiscalBean.operacao.usaNFe}" />
+						<p:selectOneMenu autoWidth="false"
+							value="#{operacaoFiscalBean.operacao.presencaComprador}"
+							rendered="#{operacaoFiscalBean.operacao.usaNFe}">
+							<f:selectItems
+								value="#{listaTipoBean.NFIndicadorPresencaComprador}"
+								var="presenca" itemValue="#{presenca}" itemLabel="#{presenca}" />
+						</p:selectOneMenu>
+
+						<p:outputLabel value="Emissao"
+							rendered="#{operacaoFiscalBean.operacao.usaNFe}" />
+						<p:selectOneMenu autoWidth="false"
+							value="#{operacaoFiscalBean.operacao.tipoEmissao}"
+							rendered="#{operacaoFiscalBean.operacao.usaNFe}">
+							<f:selectItems value="#{listaTipoBean.NFTipoEmissao}"
+								var="tipoEmissao" itemValue="#{tipoEmissao}"
+								itemLabel="#{tipoEmissao}" />
+						</p:selectOneMenu>
+
+					</p:panelGrid>
+				</p:tab>
+			</p:tabView>
+
+			<div style="text-align: center; margin-top: 10px">
+				<p:commandButton value="Confirmar" style="width:100px; height:40px"
+					process="frmOperacaoFiscal" update="frmPesquisa:tabela"
+					actionListener="#{operacaoFiscalBean.salvar}"
+					oncomplete="if(!args.validationFailed) PF('dlgCfop').hide()" />
+			</div>
+
+		</h:form>
+
+	</p:dialog>
+
+</ui:composition>

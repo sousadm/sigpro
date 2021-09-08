@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+<h:head>
+	<title>Câmera</title>
+	<h:outputStylesheet library="sigpro" name="styles/custom.css" />
+	<style>
+body {
+	margin: 10px
+}
+</style>
+</h:head>
+<h:body>
+
+	<h:form id="form">
+		<p:fileUpload value="Importar" label="Selecione"
+			fileUploadListener="#{graphicImageBean.uploadImagem}" auto="true"
+			allowTypes="/(\.|\/)(gif|jpe?g|png|jpg)$/" sizeLimit="1000000" />
+	</h:form>
+
+</h:body>
+
+</html>

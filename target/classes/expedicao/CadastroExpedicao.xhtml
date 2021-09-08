@@ -1,0 +1,97 @@
+<ui:composition template="/WEB-INF/template/LayoutPadrao.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui" xmlns:o="http://omnifaces.org/ui">
+
+	<f:metadata>
+		<o:viewParam name="expedicao" value="#{expedicaoBean.expedicao}" />
+		<f:event listener="#{expedicaoBean.inicializar}" type="preRenderView"></f:event>
+	</f:metadata>
+
+	<ui:define name="titulo">Pesquisa de pedidos</ui:define>
+
+	<ui:define name="dialogo">
+		<ui:include src="/dialogos/ListaEventos.xhtml" />
+		<ui:include src="/dialogos/SendSMS.xhtml" />
+		<ui:include src="/dialogos/SendMail.xhtml" />
+		<ui:include src="/WEB-INF/template/produto/GraphicImagem.xhtml" />
+		<ui:include src="/expedicao/ExpedicaoPorCodigo.xhtml" />
+
+		<p:dialog id="dlgOrdemServico" header="Ordem de serviços"
+			widgetVar="dlgOrdemServico" closeOnEscape="true" modal="true"
+			maximizable="false" height="400" width="800">
+			<h:form id="formOrdemServico">
+
+				<p:dataTable value="#{ordemServicoBean.listaPorExpedicao}"
+					var="ordem" rowIndexVar="item" style="margin-top: 5px" lazy="true"
+					emptyMessage="Nenhum registro encontrado." rows="10"
+					paginator="true" paginatorAlwaysVisible="false"
+					paginatorPosition="bottom" scrollable="true">
+
+					<p:column headerText="Número" width="50">
+						<h:outputText value="#{ordem.id}">
+							<f:convertNumber pattern="00000" />
+						</h:outputText>
+					</p:column>
+					<p:column headerText="Placa" width="100">
+						<h:outputText value="#{ordem.veiculo.placa}" />
+					</p:column>
+					<p:column headerText="Emissão" width="120">
+						<h:outputText value="#{ordem.dataEmissao}">
+							<f:convertDateTime pattern="dd/MM/yyyy HH:mm" />
+						</h:outputText>
+					</p:column>
+					<p:column headerText="Previsão" width="120">
+						<h:outputText value="#{ordem.dataPrevisao}">
+							<f:convertDateTime pattern="dd/MM/yyyy HH:mm" />
+						</h:outputText>
+					</p:column>
+
+					<p:column style="text-align: center; width: 50px">
+						<p:button icon="ui-icon-pencil" title="Editar"
+							outcome="/expedicao/CadastroOrdemServico">
+							<f:param name="ordem" value="#{ordem.id}" />
+						</p:button>
+					</p:column>
+
+				</p:dataTable>
+
+			</h:form>
+
+		</p:dialog>
+
+
+	</ui:define>
+
+	<ui:define name="corpo">
+
+		<p:focus context="formCadastro" />
+
+		<h:form id="formCadastro">
+
+			<p:growl id="msg" />
+
+			<h:panelGroup rendered="#{expedicaoBean.expedicao == null}">
+				<ui:include
+					src="/WEB-INF/template/expedicao/ExpedicaoPesquisa.xhtml" />
+			</h:panelGroup>
+
+			<h:panelGroup rendered="#{expedicaoBean.expedicao != null}">
+				<ui:include src="/WEB-INF/template/expedicao/ExpedicaoEdit.xhtml" />
+			</h:panelGroup>
+
+		</h:form>
+
+		<ui:include src="/WEB-INF/template/expedicao/ItemPedidoEdit.xhtml" />
+		<ui:include
+			src="/WEB-INF/template/expedicao/ExpedicaoEncerramento.xhtml" />
+		<h:panelGroup rendered="#{expedicaoBean.empresaLocadora}">
+			<ui:include
+				src="/WEB-INF/template/expedicao/ExpedicaoLocacaoVeiculo.xhtml" />
+		</h:panelGroup>
+
+	</ui:define>
+
+</ui:composition>

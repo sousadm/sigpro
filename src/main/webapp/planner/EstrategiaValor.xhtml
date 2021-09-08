@@ -1,0 +1,23 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<p:dialog id="dlgValorEstrategico" header="Valor Estratégico"
+		widgetVar="dlgValorEstrategico" closeOnEscape="true" modal="true"
+		maximizable="false" height="90" width="450">
+		<h:form id="formCadastroValorEstrategico">
+			<p:panelGrid columns="1" styleClass="ui-noborder" style="width: 100%">
+				<p:inputText value="#{estrategiaBean.valorEstrategico.descricao}"
+					style="width: 100%" />
+				<p:commandButton value="Confirma" icon="ui-icon-check"
+					process="dlgValorEstrategico"
+					update="formCadastro:tabView:tableValores"
+					action="#{estrategiaBean.addItem}"
+					oncomplete="if(!args.validationFailed) PF('dlgValorEstrategico').hide()" />
+			</p:panelGrid>
+		</h:form>
+	</p:dialog>
+
+</ui:composition>

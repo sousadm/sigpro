@@ -1,0 +1,38 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<p:dataTable id="items" value="#{notaConsumidorBean.nota.items}"
+		var="item" style="margin-top: 5px">
+
+		<p:column headerText="Quant." style=" width: 40px;">
+			<h:outputText value="#{item.quantidade}">
+				<f:convertNumber />
+			</h:outputText>
+		</p:column>
+		<p:column headerText="Código" style=" width: 70px;">
+			<h:outputText value="#{item.prod.sku}" />
+		</p:column>
+		<p:column headerText="Descrição">
+			<h:outputText value="#{item.prod.nome}" />
+		</p:column>
+		<p:column headerText="Unitário" style=" width: 100px;">
+			<div align="right">
+				<h:outputText value="#{item.valorUnitario}">
+					<f:convertNumber minFractionDigits="2" />
+				</h:outputText>
+			</div>
+		</p:column>
+		<p:column headerText="Vl.Item (R$)" style=" width: 130px;">
+			<div align="right">
+				<h:outputText value="#{item.valorItem}">
+					<f:convertNumber minFractionDigits="2" />
+				</h:outputText>
+			</div>
+		</p:column>
+
+	</p:dataTable>
+
+</ui:composition>

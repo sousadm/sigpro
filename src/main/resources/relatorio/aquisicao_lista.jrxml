@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="aquisicao_lista" language="groovy" pageWidth="595" pageHeight="842" columnWidth="565" leftMargin="20" rightMargin="10" topMargin="20" bottomMargin="10" uuid="1c016bf3-f303-4e27-9e17-3d97d0ccb737">
+	<property name="ireport.zoom" value="2.0"/>
+	<property name="ireport.x" value="298"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="empresa" class="java.lang.Object"/>
+	<field name="id" class="java.lang.Long"/>
+	<field name="fornecedor" class="java.lang.Object"/>
+	<field name="valorTotal" class="java.lang.Double"/>
+	<field name="valorFrete" class="java.lang.Double"/>
+	<field name="dataCadastro" class="java.sql.Timestamp"/>
+	<field name="nota" class="java.lang.Object"/>
+	<variable name="valorFrete_1" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$F{valorFrete}]]></variableExpression>
+	</variable>
+	<variable name="valorTotal_1" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$F{valorTotal}]]></variableExpression>
+	</variable>
+	<variable name="id_1" class="java.lang.Integer" calculation="Count">
+		<variableExpression><![CDATA[$F{id}]]></variableExpression>
+	</variable>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<pageHeader>
+		<band height="52" splitType="Stretch">
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="464" y="4" width="100" height="14" uuid="fb99856e-6d73-4b7d-a5bc-bd18dadee079"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="464" y="33" width="100" height="14" uuid="0a4a2349-c1c6-4734-9e2f-7c841400a289"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA["Pág. "+$V{PAGE_NUMBER}+" de  " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="1" y="4" width="441" height="20" uuid="283015b6-e3a4-4d68-a9a3-6ff678cc2150"/>
+				<textElement>
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Lista de Aquisição]]></text>
+			</staticText>
+			<textField pattern="HH.mm.ss">
+				<reportElement x="464" y="19" width="100" height="14" uuid="c147259f-f078-4f8b-ad2f-af0a75bb8f31"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="1" y="28" width="446" height="14" uuid="ce33e95a-379b-4d75-ba6d-718788b9b9f8"/>
+				<textFieldExpression><![CDATA[$P{empresa}.getUnidadeProdutiva().getNomeDaLoja()]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="19" splitType="Stretch">
+			<staticText>
+				<reportElement x="59" y="1" width="55" height="15" uuid="94221eb0-eaaf-4704-b739-95b3d74e18c0"/>
+				<text><![CDATA[Data NFe]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="117" y="1" width="196" height="15" uuid="00b45358-4909-46e3-8357-9bf1a545554e"/>
+				<text><![CDATA[Fornecedor]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="1" y="1" width="55" height="15" uuid="50917773-afbb-42a0-9207-f26d7a2a9dba"/>
+				<text><![CDATA[Cadastro]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="429" y="1" width="65" height="15" uuid="4439f504-ebbc-48f6-8b93-144cddf6dbbe"/>
+				<textElement textAlignment="Right"/>
+				<text><![CDATA[Vr.Frete]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="498" y="1" width="65" height="15" uuid="bc368517-da90-4807-8e58-e7dfc45f7789"/>
+				<textElement textAlignment="Right"/>
+				<text><![CDATA[Vr.Nota]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="375" y="1" width="50" height="15" uuid="ea09fac6-f72b-4e5e-b460-4f87c053b24d"/>
+				<text><![CDATA[Número]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="337" y="1" width="35" height="15" uuid="02712194-9489-40bf-b731-a70833d21aec"/>
+				<text><![CDATA[Modelo]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="316" y="1" width="18" height="15" uuid="cee41e7d-f5a0-4972-a5ce-f3e4d4215aed"/>
+				<text><![CDATA[UF]]></text>
+			</staticText>
+			<line>
+				<reportElement x="0" y="0" width="565" height="1" uuid="5fa77e33-9802-4eba-ac89-e1fe6f0a4a94"/>
+			</line>
+			<line>
+				<reportElement x="0" y="17" width="565" height="1" uuid="19ab9cad-6aee-487e-9214-0e1e8a531044"/>
+			</line>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="17" splitType="Stretch">
+			<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
+				<reportElement x="59" y="1" width="55" height="15" uuid="3323747c-7e4e-476f-9f21-ee0f54513abe"/>
+				<textFieldExpression><![CDATA[$F{nota}.getDataHoraSaidaOuEntrada()]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="117" y="1" width="196" height="15" uuid="2e99cb63-1691-43ed-92e9-580657d51c73"/>
+				<textFieldExpression><![CDATA[""+$F{fornecedor}.getNome()]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
+				<reportElement x="1" y="1" width="55" height="15" uuid="fbf292e5-fd33-444b-a8cb-5b7586414750"/>
+				<textFieldExpression><![CDATA[$F{dataCadastro}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement x="429" y="1" width="65" height="15" uuid="2f21d54b-ea03-44a2-907f-151733a1fd30"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{valorFrete}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement x="498" y="1" width="65" height="15" uuid="a8298a79-0859-449a-94f8-29f8b04fb74d"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{valorTotal}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="375" y="1" width="50" height="15" uuid="0e3451ed-6c11-470f-b4f6-e16449a56e25">
+					<printWhenExpression><![CDATA[$F{nota}.getNumeroNota() > 0]]></printWhenExpression>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{nota}.getNumeroNota()]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="337" y="1" width="35" height="15" uuid="360503f3-73d1-4e30-b20e-2a144908c790"/>
+				<textFieldExpression><![CDATA[$F{nota}.getModelo().getCodigo()]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="316" y="1" width="18" height="15" uuid="e9979c67-0406-4af7-b000-d51d6ff569c5"/>
+				<textFieldExpression><![CDATA[$F{nota}.getUf().getCodigo()]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<summary>
+		<band height="23">
+			<line>
+				<reportElement x="0" y="0" width="565" height="1" uuid="041d3fa9-baab-4340-95c7-41a550ce7464"/>
+			</line>
+			<textField pattern="#,##0.00">
+				<reportElement x="430" y="3" width="65" height="15" uuid="e23ba7c2-46d5-4b06-8691-13e4b9e5a0c0"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$V{valorFrete_1}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="498" y="3" width="65" height="15" uuid="4ae270d1-5e6b-4be3-a1d6-aa4da0210c25"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$V{valorTotal_1}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0">
+				<reportElement x="3" y="3" width="100" height="15" uuid="785f46a3-5743-46b6-ab00-7d7b877ae801"/>
+				<textFieldExpression><![CDATA["Registros: " + $V{id_1}]]></textFieldExpression>
+			</textField>
+		</band>
+	</summary>
+</jasperReport>

@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="produto_ficha_composto" language="groovy" pageWidth="555" pageHeight="802" columnWidth="555" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="22635d55-7d67-4dce-9f77-3bcd293ba107">
+	<property name="ireport.zoom" value="1.6105100000000008"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="COD_PRODUTO" class="java.lang.Long">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT
+     composto."id" AS composto_id,
+     composto."quantidade" AS composto_quantidade,
+     composto."componente_id" AS composto_componente_id,
+     composto."produto_id" AS composto_produto_id,
+     produto."nome" AS produto_nome,
+     produto."preco_custo" AS produto_preco_custo
+FROM
+     "public"."produto" produto INNER JOIN "public"."composto" composto ON produto."id" = composto."componente_id"
+WHERE
+     composto."produto_id" = $P{COD_PRODUTO}]]>
+	</queryString>
+	<field name="composto_id" class="java.lang.Long"/>
+	<field name="composto_quantidade" class="java.math.BigDecimal"/>
+	<field name="composto_componente_id" class="java.lang.Long"/>
+	<field name="composto_produto_id" class="java.lang.Long"/>
+	<field name="produto_nome" class="java.lang.String"/>
+	<field name="produto_preco_custo" class="java.lang.Double"/>
+	<variable name="total" class="java.lang.String">
+		<variableExpression><![CDATA[(new DecimalFormat("#,###,##0.00")).format($F{composto_quantidade}*$F{produto_preco_custo})]]></variableExpression>
+		<initialValueExpression><![CDATA[0]]></initialValueExpression>
+	</variable>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="21">
+			<staticText>
+				<reportElement uuid="e4843a7b-907b-4c3b-bed6-11eca74b9dc6" x="2" y="0" width="321" height="14"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[COMPOSIÇÃO DO PRODUTO]]></text>
+			</staticText>
+		</band>
+	</title>
+	<columnHeader>
+		<band height="19" splitType="Stretch">
+			<staticText>
+				<reportElement uuid="31cae311-7e14-4299-9458-3231552c4b71" x="2" y="0" width="321" height="14"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Descrição do Composto]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="c49c1c3f-c8b4-4ac9-af76-8699a5165f65" x="380" y="0" width="72" height="14"/>
+				<textElement textAlignment="Right">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Quantidade]]></text>
+			</staticText>
+			<line>
+				<reportElement uuid="c7d7e055-244b-4e67-bb2d-46f0ba940903" x="2" y="16" width="553" height="1"/>
+			</line>
+			<staticText>
+				<reportElement uuid="deaa2666-777d-4293-997d-8594e3386e69" x="323" y="0" width="57" height="14"/>
+				<textElement textAlignment="Right">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Custo]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="a217b44a-146c-475f-b800-f833b943e109" x="452" y="0" width="80" height="14"/>
+				<textElement textAlignment="Right">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Total do Item]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="14" splitType="Stretch">
+			<textField>
+				<reportElement uuid="30e20032-cd56-4000-a369-17b46898ba32" x="2" y="0" width="321" height="13"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{produto_nome}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement uuid="b3c8efc3-688b-4c64-856d-9d0a2a290033" x="380" y="0" width="72" height="13"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{composto_quantidade}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0.0000">
+				<reportElement uuid="f6c9b6e0-04cb-4aa6-972a-6c6963e79257" x="323" y="0" width="57" height="13"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{produto_preco_custo}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement uuid="1cb00517-d105-403b-aa5f-95176ce17539" x="455" y="0" width="77" height="13"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$V{total}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

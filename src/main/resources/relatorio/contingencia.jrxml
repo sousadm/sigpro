@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="contingencia" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="7ef49264-c75e-4f45-9071-39384f86b76c">
+	<property name="ireport.zoom" value="1.3310000000000006"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<field name="contingencia" class="java.lang.Object"/>
+	<field name="como" class="java.lang.String"/>
+	<field name="valor" class="java.lang.Double"/>
+	<title>
+		<band height="25">
+			<staticText>
+				<reportElement uuid="f556c555-4ee9-483f-b19e-cec8281527cb" mode="Opaque" x="0" y="2" width="552" height="18" forecolor="#000000" backcolor="#CCCCCC"/>
+				<textElement textAlignment="Center">
+					<font fontName="Arial" isBold="true"/>
+				</textElement>
+				<text><![CDATA[MEDIDAS CONTINGENCIAIS]]></text>
+			</staticText>
+			<line>
+				<reportElement uuid="80c61598-0806-4fe6-9ef5-f780fe37eb29" x="1" y="22" width="554" height="1"/>
+			</line>
+		</band>
+	</title>
+	<columnHeader>
+		<band height="21" splitType="Stretch">
+			<staticText>
+				<reportElement uuid="f375ba26-553f-4c83-8c38-4ab93a7808d1" x="6" y="3" width="150" height="15"/>
+				<textElement>
+					<font fontName="Arial" isBold="true"/>
+				</textElement>
+				<text><![CDATA[contingencia]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="90f00a6c-7cd1-4cd8-9b7a-1152c8c45d66" x="163" y="3" width="303" height="15"/>
+				<textElement>
+					<font fontName="Arial" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Como será realizado]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="612fa82b-78af-489e-93c9-490fd1e01b54" x="472" y="3" width="80" height="15"/>
+				<textElement textAlignment="Right">
+					<font fontName="Arial" isBold="true"/>
+				</textElement>
+				<text><![CDATA[valor]]></text>
+			</staticText>
+			<line>
+				<reportElement uuid="aa9386b2-5f91-4cd4-b5c3-8831c309ef02" x="1" y="19" width="554" height="1"/>
+			</line>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="21" splitType="Stretch">
+			<textField>
+				<reportElement uuid="4a974ac1-214b-4adb-9789-1f08df6cc907" x="6" y="3" width="150" height="15"/>
+				<textElement>
+					<font fontName="Arial"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{contingencia}.getDescricao()]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="4a9f3057-c17d-4e91-895f-ca8720aada53" x="163" y="3" width="303" height="15"/>
+				<textElement>
+					<font fontName="Arial"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{como}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="9424cc21-d70e-48d5-9c61-8e06a538d59b" x="472" y="4" width="80" height="15"/>
+				<textElement textAlignment="Right">
+					<font fontName="Arial"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{valor}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

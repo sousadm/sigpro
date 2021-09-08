@@ -1,0 +1,51 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<p:dialog id="dlgSendMail" header="Envio de e-mail"
+		widgetVar="dlgSendMail" closeOnEscape="true" modal="true"
+		maximizable="false" height="400" width="700">
+		<h:form id="formSendMail">
+			<p:panelGrid style="width: 100%" styleClass="ui-noborder">
+				<p:row>
+					<p:column>
+						<p:outputLabel value="E-mail Destinatário" for="txtDestMail" />
+						<br />
+						<p:inputText id="txtDestMail"
+							value="#{sendMailBean.email.destinatarioMail}" required="true"
+							style="text-transform: lowercase; width: 100%" />
+					</p:column>
+					<p:column>
+						<p:outputLabel value="Assunto" for="txtAssunto" />
+						<br />
+						<p:inputText id="txtAssunto" value="#{sendMailBean.email.assunto}"
+							required="true" style="width: 100%" />
+					</p:column>
+				</p:row>
+				<p:row>
+					<p:column colspan="2">
+						<p:outputLabel value="Mensagem" />
+						<br />
+						<p:editor value="#{sendMailBean.email.conteudo}" height="230"
+							styleClass="naoaceitarenter" style="width: 100%"
+							controls="#{seguranca.editorConfig}" />
+					</p:column>
+				</p:row>
+			</p:panelGrid>
+
+			<!-- 			<p:outputLabel value="Anexo: #{sendMailBean.email.anexo}" /> -->
+
+			<div style="text-align: right;">
+				<p:commandButton id="botaoEnviar" value="Enviar"
+					process="formSendMail" action="#{sendMailBean.enviar}"
+					oncomplete="PF('dlgSendMail').hide()" />
+			</div>
+
+			<p:blockUI block="formSendMail" trigger="botaoEnviar" />
+
+		</h:form>
+	</p:dialog>
+
+</ui:composition>

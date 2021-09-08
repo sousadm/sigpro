@@ -1,0 +1,205 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<h:panelGroup rendered="#{projetoBean.titulo == null}">
+
+		<p:blockUI block="@form" trigger="botaoAtualizaFinanceiro" />
+
+		<div align="right">
+			<p:commandButton id="botaoAtualizaFinanceiro" value="Atualizar"
+				update="@form" disabled="#{projetoBean.projeto.encerrado}"
+				actionListener="#{projetoBean.atualizarListaTitulo}" />
+			<p:commandButton value="Add Despesa" process="@this" update="@form"
+				disabled="#{projetoBean.projeto.encerrado}"
+				actionListener="#{projetoBean.addTitulo}" />
+		</div>
+
+		<p:dataTable id="tabelaTitulo" scrollable="true"
+			value="#{projetoBean.listaTitulo}" var="titulo" rowIndexVar="linha"
+			style="margin-top: 5px" emptyMessage="Nenhum registro encontrado."
+			rows="10" paginator="true" paginatorAlwaysVisible="false"
+			paginatorPosition="bottom">
+
+			<p:column headerText="Descritivo de despesa">
+				<h:outputText value="#{titulo.descricao}" />
+			</p:column>
+			<p:column headerText="Vencimento" style="width: 100px">
+				<h:outputText value="#{titulo.vencimento}">
+					<f:convertDateTime pattern="dd/MM/yyyy" />
+				</h:outputText>
+			</p:column>
+			<p:column headerText="Pagamento" style="width: 100px">
+				<h:outputText value="#{titulo.dataBaixa}">
+					<f:convertDateTime pattern="dd/MM/yyyy" />
+				</h:outputText>
+			</p:column>
+			<p:column headerText="Valor" style="text-align: right; width: 100px">
+				<h:outputText value="#{titulo.valor}">
+					<f:convertNumber type="currency" currencySymbol="" />
+				</h:outputText>
+			</p:column>
+
+			<p:column style="width: 80px; text-align: center">
+				<p:commandButton icon="ui-icon-pencil" title="Editar"
+					process="@this" update="@form"
+					actionListener="#{projetoBean.setTitulo(titulo)}" />
+				<p:commandButton icon="ui-icon-trash" process="@this"
+					disabled="#{projetoBean.projeto.encerrado}" title="Excluir"
+					update="@form" actionListener="#{projetoBean.excluirTitulo(linha)}">
+					<p:confirm icon="ui-icon-alert" header="Confirma exclusão"
+						message="Excluir o registro atual?" />
+				</p:commandButton>
+			</p:column>
+
+		</p:dataTable>
+
+	</h:panelGroup>
+
+	<h:panelGroup id="panelTituloDados"
+		rendered="#{projetoBean.titulo != null}">
+
+		<div align="right">
+			<p:commandButton value="Voltar" process="@this"
+				actionListener="#{projetoBean.setTitulo(null)}" update="@form" />
+			<p:splitButton value="Aplicar" process="@form" update="@form"
+				disabled="#{projetoBean.titulo.naoPodeAlterar or projetoBean.projeto.encerrado}"
+				actionListener="#{projetoBean.aplicar_titulo}">
+				<p:menuitem value="Add Despesa" process="@this" update="@form"
+					actionListener="#{projetoBean.addTitulo}" />
+				<p:menuitem value="Liberar para financeiro" update="@form"
+					disabled="#{projetoBean.projeto.encerrado}"
+					actionListener="#{projetoBean.liberarTitulo}" />
+			</p:splitButton>
+		</div>
+
+		<div class="ui-fluid">
+			<div class="ui-g" style="margin-top: 5px; border: 1px solid silver;">
+
+				<div class="ui-g-12 ui-md-3">
+					<p:outputLabel value="Fornecedor" />
+					<div class="ui-inputgroup">
+						<p:commandButton icon="ui-icon-search"
+							title="Pesquisar fornecedor"
+							disabled="#{projetoBean.titulo.naoPodeAlterar or projetoBean.projeto.encerrado}"
+							process="@this" update="@none" ignoreAutoUpdate="true"
+							styleClass="button-grid" action="#{selecionaBean.fornecedor}">
+							<p:ajax event="dialogReturn"
+								listener="#{projetoBean.onFornecedorChosen}"
+								update="txtCliente txtNominal ccusto" ignoreAutoUpdate="true" />
+						</p:commandButton>
+						<p:inputText id="txtCliente" readonly="true"
+							value="#{projetoBean.titulo.responsavel.nome}"
+							styleClass="bloqueado" />
+					</div>
+				</div>
+				<div class="ui-g-12 ui-md-4">
+					<p:outputLabel value="Nome" for="txtNominal" />
+					<p:inputText id="txtNominal" maxlength="100"
+						readonly="#{projetoBean.titulo.naoPodeAlterar or projetoBean.projeto.encerrado}"
+						value="#{projetoBean.titulo.nominal}" />
+				</div>
+				<div class="ui-g-6 ui-md-3">
+					<p:outputLabel value="Vencimento" for="vencimento" />
+					<p:calendar id="vencimento" locale="pt_BR" mask="99/99/9999"
+						pattern="dd/MM/yyyy" navigator="true" showOn="button"
+						value="#{projetoBean.titulo.vencimento}"
+						rendered="#{projetoBean.titulo.podeEditar and not projetoBean.projeto.encerrado}" />
+					<p:inputText value="#{projetoBean.titulo.vencimento}"
+						readonly="true"
+						rendered="#{projetoBean.titulo.naoPodeAlterar or projetoBean.projeto.encerrado}">
+						<f:convertDateTime pattern="dd/MM/yyyy" />
+					</p:inputText>
+				</div>
+				<div class="ui-g-6 ui-md-2">
+					<p:outputLabel value="Valor" for="valor" />
+					<p:inputNumber id="valor" value="#{projetoBean.titulo.valor}"
+						minValue="0" decimalSeparator="," thousandSeparator="."
+						decimalPlaces="2" required="true"
+						rendered="#{projetoBean.titulo.podeEditar and not projetoBean.projeto.encerrado}" />
+					<p:inputText value="#{projetoBean.titulo.valor}"
+						rendered="#{projetoBean.titulo.naoPodeAlterar or projetoBean.projeto.encerrado}"
+						readonly="true">
+						<f:convertNumber type="currency" />
+					</p:inputText>
+				</div>
+
+
+				<div class="ui-g-12 ui-md-6">
+					<p:outputLabel value="Objetivo estratégico" />
+					<p:selectOneMenu autoWidth="false"
+						rendered="#{projetoBean.titulo.podeEditar and not projetoBean.projeto.encerrado}"
+						value="#{projetoBean.titulo.planner}">
+						<f:selectItem itemLabel="Selecione..." />
+						<f:selectItems value="#{projetoBean.listaPacoteMenu}" var="a"
+							itemValue="#{a}" itemLabel="#{a.que}" />
+					</p:selectOneMenu>
+					<p:inputText value="#{projetoBean.titulo.planner.que}"
+						rendered="#{projetoBean.titulo.naoPodeAlterar or projetoBean.projeto.encerrado}"
+						readonly="true" class="bloqueado" />
+				</div>
+				<div class="ui-g-6 ui-md-4">
+					<p:outputLabel value="Centro de custo" for="ccusto" />
+					<p:selectOneMenu id="ccusto" autoWidth="false"
+						rendered="#{projetoBean.titulo.podeEditar and not projetoBean.projeto.encerrado}"
+						value="#{projetoBean.titulo.centroDeCusto}">
+						<f:selectItem itemLabel="Selecione..." />
+						<f:selectItems value="#{projetoBean.listaCusto}" var="a"
+							itemValue="#{a}" itemLabel="#{a.descricao}" />
+					</p:selectOneMenu>
+					<p:inputText value="#{projetoBean.titulo.centroDeCusto.descricao}"
+						rendered="#{projetoBean.titulo.naoPodeAlterar or projetoBean.projeto.encerrado}"
+						readonly="true" />
+				</div>
+				<div class="ui-g-6 ui-md-2">
+					<p:outputLabel value="Tipo de documento" />
+					<p:selectOneMenu id="tipoDocumento" autoWidth="false"
+						rendered="#{projetoBean.titulo.podeEditar and not projetoBean.projeto.encerrado}"
+						value="#{projetoBean.titulo.tipoDocto}">
+						<f:selectItems value="#{listaTipoBean.tipoTituloDoc}" var="a"
+							itemValue="#{a}" itemLabel="#{a.sigla}" />
+					</p:selectOneMenu>
+					<p:inputText value="#{projetoBean.titulo.tipoDocto.sigla}"
+						rendered="#{projetoBean.titulo.naoPodeAlterar or projetoBean.projeto.encerrado}"
+						readonly="true" class="bloqueado" />
+				</div>
+
+
+				<div class="ui-g-12 ui-md-6">
+					<p:outputLabel value="Descritivo" for="descricao" />
+					<p:inputText id="descricao" maxlength="100"
+						readonly="#{projetoBean.titulo.naoPodeAlterar or projetoBean.projeto.encerrado}"
+						value="#{projetoBean.titulo.descricao}" />
+				</div>
+				<div class="ui-g-4 ui-md-2">
+					<p:outputLabel value="Documento" for="documento" />
+					<p:inputText id="documento" maxlength="20"
+						value="#{projetoBean.titulo.documento}"
+						readonly="#{projetoBean.titulo.naoPodeAlterar or projetoBean.projeto.encerrado}" />
+				</div>
+				<div class="ui-g-6 ui-md-2">
+					<p:outputLabel value="Saldo" for="saldo" />
+					<div
+						class="ui-inputfield ui-inputtext ui-widget ui-state-default ui-corner-all bloqueado ui-state-focus">
+						<p:outputLabel id="saldo" value="#{projetoBean.titulo.saldo}"
+							style="font-weight: bold; font-size: 1.1em">
+							<f:convertNumber type="currency" />
+						</p:outputLabel>
+					</div>
+				</div>
+				<div class="ui-g-6 ui-md-2">
+					<p:outputLabel value="Pagamento" />
+					<p:inputText value="#{projetoBean.titulo.dataBaixa}"
+						readonly="true" styleClass="bloqueado">
+						<f:convertDateTime pattern="dd/MM/yyyy hh:mm" />
+					</p:inputText>
+				</div>
+
+			</div>
+		</div>
+
+	</h:panelGroup>
+
+</ui:composition>

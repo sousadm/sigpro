@@ -1,0 +1,57 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<p:commandButton value="atualizar" process="@form"
+		icon="ui-icon-arrowrefresh-1-w"
+		actionListener="#{unidadeProdutivaBean.mostraUsuarios}"
+		update="listaUsuario" />
+
+	<p:dataTable id="listaUsuario"
+		value="#{unidadeProdutivaBean.listaUsuario}" var="pessoa"
+		style="margin-top: 5px" emptyMessage="Nenhum item encontrado."
+		rows="20" paginator="true" paginatorAlwaysVisible="false"
+		paginatorPosition="bottom">
+
+		<p:column headerText="Nome">
+			<h:outputText value="#{pessoa.nome}" />
+		</p:column>
+
+		<p:column style="text-align: center">
+
+			<p:commandButton icon="ui-icon-locked" class="button-grid"
+				process="@this" update="dlgParametro" title="parâmetros"
+				action="#{unidadeProdutivaBean.defineParametroUsuario(pessoa.id)}"
+				oncomplete="PF('dlgParametro').show()" />
+
+			<p:commandButton icon="ui-icon-shuffle" class="button-grid"
+				process="@this" update="dlgTransfere"
+				title="movimenta usuário para outra unidade"
+				action="#{unidadeProdutivaBean.preparaTransferencia(pessoa)}"
+				oncomplete="PF('dlgTransfere').show()" />
+
+			<p:button icon="ui-icon-pencil" class="button-grid"
+				title="definição de acessos"
+				outcome="/configuracao/DefinicaoDeAcessos">
+				<f:param name="pessoa" value="#{pessoa.id}" />
+			</p:button>
+
+			<p:commandButton icon="ui-icon-note" title="eventos" process="@this"
+				update="dlgEventos" oncomplete="PF('dlgEventos').show()"
+				actionListener="#{listaEventoBean.usuario(pessoa.usuario)}" />
+
+		</p:column>
+
+	</p:dataTable>
+
+</ui:composition>
+
+<!-- 			<p:commandButton icon="ui-icon-pencil" class="button-grid" -->
+<!-- 				process="@this" update="dlgAcesso" title="definição de acessos" -->
+<!-- 				action="#{unidadeProdutivaBean.atualiza(pessoa.id)}" -->
+<!-- 				oncomplete="PF('dlgAcesso').show()" /> -->
+
+
+

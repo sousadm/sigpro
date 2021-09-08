@@ -1,0 +1,22 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+</head>
+<body>
+<p>Ol&aacute; <strong>$representante</strong>,</p>
+<p>&nbsp;</p>
+<p>Conforme solicitado, segue senha de acesso ao sistema.</p>
+<p>&nbsp;</p>
+<p>Link: <a href="contrateconsultoria.com.br/sigpro">contrateconsultoria.com.br</a></p>
+<p>Empresa: <span style="font-weight: bold;">$contratada</span></p>
+<p>Usu&aacute;rio: <strong>$usuario</strong></p>
+<p>Senha: <strong>$senha</strong></p>
+<p>&nbsp;</p>
+<p>Atenciosamente</p>
+<p>&nbsp;</p>
+<p>$empresa</p>
+<p>$endereco</p>
+<p>$contato</p>
+<p>&nbsp;</p>
+</body>
+</html>

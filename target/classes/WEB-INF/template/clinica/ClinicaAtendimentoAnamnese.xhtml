@@ -1,0 +1,77 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<div class="ui-fluid" style="margin-top: 5px">
+		<div class="ui-g">
+
+			<div class="ui-g-12">
+				<p:outputLabel value="Patologia / CID" />
+				<p:inputText readonly="true"
+					value="#{clinicaAtendimentoBean.agenda.atendimento.patologia.toString()}" />
+			</div>
+
+			<div class="ui-g-12 ui-md-4 ui-lg-2">
+				<p:outputLabel value="Batimento" />
+				<p:inputNumber id="txtBatimento" minValue="0" maxValue="200"
+					disabled="#{not clinicaAtendimentoBean.agenda.podeSalvarAtendimento}"
+					decimalSeparator="," thousandSeparator="." decimalPlaces="0"
+					required="true"
+					value="#{clinicaAtendimentoBean.agenda.acolhimento.batimento}" />
+			</div>
+			<div class="ui-g-12 ui-md-4 ui-lg-2">
+				<p:outputLabel value="Pressão" />
+				<p:inputNumber id="txtPressaoSistolica" minValue="0" maxValue="20"
+					disabled="#{not clinicaAtendimentoBean.agenda.podeSalvarAtendimento}"
+					decimalSeparator="," thousandSeparator="." decimalPlaces="0"
+					required="true"
+					value="#{clinicaAtendimentoBean.agenda.acolhimento.pressaoSistolica}" />
+			</div>
+			<div class="ui-g-12 ui-md-4 ui-lg-2">
+				<p:outputLabel value="Por" />
+				<p:inputNumber id="txtPressaoDiastolica" minValue="0" maxValue="20"
+					disabled="#{not clinicaAtendimentoBean.agenda.podeSalvarAtendimento}"
+					decimalSeparator="," thousandSeparator="." decimalPlaces="0"
+					required="true"
+					value="#{clinicaAtendimentoBean.agenda.acolhimento.pressaoDiastolica}" />
+			</div>
+			<div class="ui-g-12 ui-md-4 ui-lg-2">
+				<p:outputLabel value="Temperatura" />
+				<p:inputNumber id="txtTemperatura" minValue="0" maxValue="50"
+					disabled="#{not clinicaAtendimentoBean.agenda.podeSalvarAtendimento}"
+					decimalSeparator="," thousandSeparator="." decimalPlaces="1"
+					required="true"
+					value="#{clinicaAtendimentoBean.agenda.acolhimento.temperatura}" />
+			</div>
+			<div class="ui-g-12 ui-md-4 ui-lg-2">
+				<p:outputLabel value="Altura" />
+				<p:inputText styleClass="desabilitado" readonly="true"
+					value="#{clinicaAtendimentoBean.agenda.acolhimento.altura}" />
+			</div>
+			<div class="ui-g-12 ui-md-4 ui-lg-2">
+				<p:outputLabel value="Peso" />
+				<p:inputText styleClass="desabilitado" readonly="true"
+					value="#{clinicaAtendimentoBean.agenda.acolhimento.peso}" />
+			</div>
+
+			<div class="ui-g-12">
+				<p:tabView style="margin-top: 5px" id="tabView">
+					<p:tab title="Sintomas">
+						<p:editor styleClass="naoaceitarenter" style="width: 100%"
+							value="#{clinicaAtendimentoBean.agenda.acolhimento.sintoma}"
+							controls="#{seguranca.editorConfig}" />
+					</p:tab>
+					<p:tab title="Orientações">
+						<p:editor styleClass="naoaceitarenter" style="width: 100%"
+							value="#{clinicaAtendimentoBean.agenda.atendimento.orientacao}"
+							controls="#{seguranca.editorConfig}" />
+					</p:tab>
+				</p:tabView>
+			</div>
+
+		</div>
+	</div>
+
+</ui:composition>

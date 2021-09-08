@@ -1,0 +1,165 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:c="http://java.sun.com/jstl/core">
+
+	<div class="ui-fluid" style="margin-top: 5px">
+		<div class="ui-g">
+			<div class="ui-g-12 ui-md-5">
+				<p:outputLabel value="Categoria" for="categoria" />
+				<p:selectOneMenu id="categoria" autoWidth="false"
+					value="#{produtoBean.categoriaPai}">
+					<f:selectItem itemLabel="Selecione a categoria" />
+					<f:selectItems value="#{produtoBean.categoriasRaizes}"
+						var="categoria" itemValue="#{categoria}"
+						itemLabel="#{categoria.descricao}" />
+					<f:ajax render="@form" event="change"
+						listener="#{produtoBean.carregarSubcategorias}"
+						update="subcategoria formCadProduto:tabView" />
+					<f:ajax render="@form" listener="#{produtoBean.atualizaGeneros}"
+						update="gridClassificacao" />
+				</p:selectOneMenu>
+			</div>
+			<div class="ui-g-12 ui-md-5">
+				<p:outputLabel value="Subcategoria" for="subcategoria" />
+				<p:selectOneMenu id="subcategoria" autoWidth="false"
+					value="#{produtoBean.produto.categoria}">
+					<f:selectItems value="#{produtoBean.subcategorias}"
+						var="subcategoria" itemValue="#{subcategoria}"
+						itemLabel="#{subcategoria.descricao}" />
+				</p:selectOneMenu>
+			</div>
+			<div class="ui-g-12 ui-md-2">
+				<p:outputLabel value="Situação" />
+				<p:selectOneMenu value="#{produtoBean.produto.ativo}"
+					autoWidth="false">
+					<f:selectItem itemLabel="Ativo" itemValue="#{true}" />
+					<f:selectItem itemLabel="Inativo" itemValue="#{false}" />
+				</p:selectOneMenu>
+			</div>
+
+			<div class="ui-g-12 ui-md-3">
+				<p:outputLabel value="Código" for="sku" />
+				<p:inputText id="sku" maxlength="20" placeholder="código"
+					style="text-transform: uppercase"
+					value="#{produtoBean.produto.sku}" />
+			</div>
+			<div class="ui-g-12 ui-md-6">
+				<p:outputLabel value="Descrição" for="nome" />
+				<p:inputText id="nome" maxlength="80"
+					value="#{produtoBean.produto.nome}" />
+			</div>
+			<div class="ui-g-12 ui-md-3">
+				<p:outputLabel value="Preço de Venda" id="labelPrecoVenda"
+					for="precoVenda"
+					style="color: #{produtoBean.produto.precoVendaCorreto ? 'black' : 'red'}" />
+				<p:inputNumber decimalPlaces="2" id="precoVenda"
+					value="#{produtoBean.produto.valorUnitario}">
+					<p:ajax event="change" process="@this" update="labelPrecoVenda" />
+				</p:inputNumber>
+			</div>
+
+			<h:panelGroup id="grupoTxtEstoque"
+				rendered="#{produtoBean.produto.tipoProduto}">
+				<div class="ui-g-8 ui-md-3">
+					<p:outputLabel value="Unidade de reposição" />
+					<p:selectOneMenu value="#{produtoBean.produto.tipoReposicao}"
+						autoWidth="false">
+						<f:selectItems value="#{listaTipoBean.reposicao}" var="repo"
+							itemValue="#{repo}" itemLabel="#{repo.descricao}" />
+						<p:ajax process="@this" update="@form" />
+					</p:selectOneMenu>
+				</div>
+				<div class="ui-g-4 ui-md-3">
+					<BR />
+					<p:inputText id="txtFator"
+						disabled="#{not produtoBean.produto.temFatorReposicao}"
+						value="#{produtoBean.produto.fatorReposicao}">
+						<f:convertNumber integerOnly="true" />
+					</p:inputText>
+				</div>
+				<div class="ui-g-12 ui-md-2">
+					<p:outputLabel value="Preço de Compra" for="precoCompra" />
+					<p:inputNumber decimalPlaces="3" id="precoCompra"
+						value="#{produtoBean.produto.precoCompra}" />
+				</div>
+				<div class="ui-g-12 ui-md-2">
+					<p:outputLabel
+						value="#{produtoBean.produto.existe ? 'Estoque atual' : 'Estoque inicial'}" />
+					<p:inputNumber id="txtEstoqueInicial"
+						decimalPlaces="#{produtoBean.produto.unidade.precisao}"
+						value="#{produtoBean.produto.estoqueInicial}"
+						rendered="#{not produtoBean.produto.existe}" />
+					<p:inputText id="txtEstoqueAtual" class="negrito" readonly="true"
+						value="#{produtoBean.produto.quantidadeEstoque}"
+						rendered="#{produtoBean.produto.existe}">
+						<f:convertNumber pattern="#.###"
+							minFractionDigits="#{produtoBean.produto.unidade.precisao}" />
+					</p:inputText>
+				</div>
+				<div class="ui-g-12 ui-md-2">
+					<p:outputLabel value="Unidade" />
+					<p:selectOneMenu value="#{produtoBean.produto.unidade}"
+						autoWidth="false">
+						<f:selectItems value="#{listaTipoBean.unidade}" var="unidade"
+							itemValue="#{unidade}" itemLabel="#{unidade.descricao}" />
+						<p:ajax event="change" process="@this" update="grupoTxtEstoque" />
+					</p:selectOneMenu>
+				</div>
+
+			</h:panelGroup>
+
+			<h:panelGroup rendered="#{produtoBean.produto.tipoServico}">
+
+				<div class="ui-g-12">
+					<p:outputLabel value="Funções disponíveis" for="funcaoCheck" />
+					<p:selectManyCheckbox id="funcaoCheck" converter="funcaoConverter"
+						value="#{produtoBean.produto.funcoes}" columns="4">
+						<f:attribute name="collectionType" value="java.util.ArrayList" />
+						<f:selectItems value="#{produtoBean.listaFuncao}" var="funcao"
+							itemLabel="#{funcao.descricao}" itemValue="#{funcao}" />
+					</p:selectManyCheckbox>
+				</div>
+
+				<div class="ui-g-12 ui-md-3">
+					<p:outputLabel value="CSON" for="cson"
+						rendered="#{produtoBean.produto.tipoServico}" />
+					<p:inputText id="cson" maxlength="20"
+						value="#{produtoBean.produto.codigoCSON}"
+						rendered="#{produtoBean.produto.tipoServico}" />
+				</div>
+				<div class="ui-g-12 ui-md-3">
+					<p:outputLabel value="Tempo de execução"
+						rendered="#{produtoBean.produto.tipoServico}" />
+					<p:calendar value="#{produtoBean.produto.tempoExecucao}"
+						rendered="#{produtoBean.produto.tipoServico}" locale="pt_BR"
+						pattern="HH:mm:ss" timeOnly="true" />
+				</div>
+				<div class="ui-g-6 ui-md-4">
+					<p:outputLabel value="Método de Comissão" for="txtMetodo" />
+					<p:selectOneMenu id="txtMetodo" autoWidth="false"
+						value="#{produtoBean.produto.custo.metodo}">
+						<f:selectItems value="#{listaTipoBean.metodoCalculo}" var="metodo"
+							itemValue="#{metodo}" itemLabel="#{metodo.descricao}" />
+						<p:ajax process="@this" update="fatorComissao" />
+					</p:selectOneMenu>
+				</div>
+				<div class="ui-g-6 ui-md-2">
+					<p:outputLabel value="Comissão fator" for="txtMetodo" />
+					<p:inputNumber id="fatorComissao" minValue="0" decimalSeparator=","
+						thousandSeparator="." decimalPlaces="2"
+						disabled="#{not produtoBean.produto.temCalculoServico}"
+						value="#{produtoBean.produto.custo.fatorCalculo}" />
+				</div>
+			</h:panelGroup>
+
+			<h:panelGroup rendered="#{produtoBean.produto.tipoProduto}">
+				<ui:include src="/WEB-INF/template/produto/ProdutoCusto.xhtml" />
+			</h:panelGroup>
+
+		</div>
+	</div>
+
+</ui:composition>

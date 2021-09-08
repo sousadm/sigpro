@@ -1,0 +1,289 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions">
+
+	<h1 style="margin-top: 65px">Titulo Financeiro</h1>
+
+	<p:toolbar style="margin-top: 05px">
+		<p:toolbarGroup id="menu">
+
+			<p:splitButton value="Salvar" process="@form" icon="ui-icon-disk"
+				id="botaoSalvar" action="#{tituloBean.salvar}" update="@form"
+				onclick="jQuery(this).addClass('ui-state-disabled')">
+
+				<p:menuitem icon="ui-icon-document" process="@this" value="Novo"
+					disabled="#{seguranca.bloqueioValidade}" update="@form"
+					actionListener="#{tituloBean.novo}" />
+
+				<p:menuitem icon="ui-icon-trash" process="@this" value="Excluir"
+					update="@form" actionListener="#{tituloBean.excluir}">
+					<p:confirm icon="ui-icon-alert" header="Confirme exclusão"
+						message="Excluir o registro atual?" />
+				</p:menuitem>
+
+				<p:menuitem value="Duplicar" rendered="#{tituloBean.titulo.existe}"
+					icon="ui-icon-plusthick" action="#{tituloBean.duplicar}"
+					update="@form">
+					<p:confirm icon="ui-icon-alert" header="Confirma"
+						message="Duplicar o registro atual?" />
+				</p:menuitem>
+
+				<p:menuitem value="Inativar" icon="ui-icon-locked"
+					rendered="#{tituloBean.titulo.existe}"
+					action="#{tituloBean.inativar}" update="@form">
+					<p:confirm icon="ui-icon-alert" header="Confirma"
+						message="Inativar o registro atual?" />
+				</p:menuitem>
+
+				<p:menuitem value="Manutenção de fatura"
+					rendered="#{tituloBean.titulo.existe and tituloBean.titulo.cartao != null}"
+					process="@this" update="dlgTituloOrigem"
+					actionListener="#{tituloBean.pesquisarTituloAssociado}"
+					oncomplete="PF('dlgTituloOrigem').show()" />
+
+				<p:menuitem value="Imprimir fatura" ajax="false"
+					rendered="#{tituloBean.titulo.existe and tituloBean.titulo.cartao != null}"
+					target="_blank" actionListener="#{tituloBean.imprimir_fatura}"
+					update="@form" icon="ui-icon-print" />
+
+				<p:menuitem value="Atualizar valor da fatura" ajax="false"
+					rendered="#{tituloBean.titulo.existe and tituloBean.titulo.cartao != null}"
+					actionListener="#{tituloBean.corrigirValorFatura}" update="@form"
+					icon="ui-icon-print">
+					<p:confirm icon="ui-icon-alert" header="Confirma"
+						message="Corrigir valor da fatura atual?" />
+				</p:menuitem>
+
+				<p:menuitem icon="ui-icon-note" value="Histórico"
+					rendered="#{tituloBean.titulo.existe}" process="@this"
+					update="dlgHistorico"
+					actionListener="#{tituloBean.preparaHistorico(tituloBean.titulo)}"
+					oncomplete="PF('dlgHistorico').show()" />
+
+				<p:menuitem icon="ui-icon-transferthick-e-w" value="Gerar boleto"
+					rendered="#{tituloBean.titulo.podeEditar}" process="@this"
+					action="#{selecionaBean.boletoDigital(tituloBean.titulo)}" />
+
+			</p:splitButton>
+
+		</p:toolbarGroup>
+
+		<p:toolbarGroup align="right">
+			<p:commandButton value="Pesquisa" icon="ui-icon-search"
+				update="@form" actionListener="#{tituloBean.setTitulo(null)}"
+				process="@this" />
+		</p:toolbarGroup>
+
+	</p:toolbar>
+
+	<div class="ui-fluid">
+		<div class="ui-g" style="margin-top: 5px; border: 1px solid gray;">
+
+			<div class="ui-g-4 ui-md-2">
+				<p:outputLabel value="Sequência" />
+				<p:inputText value="#{tituloBean.titulo.id}" readonly="true"
+					class="bloqueado">
+					<f:convertNumber pattern="000000" />
+				</p:inputText>
+			</div>
+			<div class="ui-g-8 ui-md-5">
+				<p:outputLabel value="Tipo" for="tipo" />
+				<p:selectOneMenu id="tipo" value="#{tituloBean.titulo.tipoDC}"
+					rendered="#{not tituloBean.titulo.existe}" autoWidth="false">
+					<f:selectItem itemLabel="Selecione..." />
+					<f:selectItems value="#{listaTipoBean.tiposDebitoCredito}" var="a"
+						itemValue="#{a}" itemLabel="#{a.descricao}" />
+					<f:ajax render="@form" listener="#{tituloBean.defineCentroDeCusto}"
+						update="ccusto" />
+				</p:selectOneMenu>
+				<p:inputText value="#{tituloBean.titulo.tipoDC.descricao}"
+					readonly="true" rendered="#{tituloBean.titulo.existe}"
+					class="bloqueado" />
+			</div>
+			<div class="ui-g-6 ui-md-3">
+				<p:outputLabel value="Ciclo de Repetição" for="ciclo" />
+				<p:selectOneMenu id="ciclo" autoWidth="false"
+					rendered="#{not tituloBean.titulo.existe}"
+					value="#{tituloBean.titulo.repete}">
+					<f:selectItems value="#{listaTipoBean.tipoRepeticao}" var="repete"
+						itemValue="#{repete}" itemLabel="#{repete.descricao}" />
+				</p:selectOneMenu>
+				<p:inputText value="#{tituloBean.titulo.repete.descricao}"
+					readonly="true" rendered="#{tituloBean.titulo.existe}"
+					class="bloqueado" />
+			</div>
+			<div class="ui-g-6 ui-md-2">
+				<p:outputLabel value="Emissão" for="emissao" />
+				<p:calendar id="emissao" locale="pt_BR" mask="99/99/9999"
+					pattern="dd/MM/yyyy" navigator="true" showOn="button"
+					value="#{tituloBean.titulo.emissao}"
+					rendered="#{not tituloBean.titulo.naoPodeAlterar}" />
+				<p:inputText value="#{tituloBean.titulo.emissao}" readonly="true"
+					rendered="#{tituloBean.titulo.naoPodeAlterar}"
+					styleClass="bloqueado">
+					<f:convertDateTime pattern="dd/MM/yyyy" />
+				</p:inputText>
+			</div>
+
+			<div class="ui-g-12 ui-md-3">
+				<p:outputLabel value="Participante" />
+				<div class="ui-inputgroup">
+					<p:commandButton icon="ui-icon-search" title="Pesquisar pessoa"
+						disabled="#{tituloBean.titulo.naoPodeAlterar}" process="@this"
+						update="@none" ignoreAutoUpdate="true" styleClass="button-grid"
+						action="#{selecionaBean.pessoa}">
+						<p:ajax event="dialogReturn"
+							listener="#{tituloBean.onPessoaChosen}"
+							update="txtCliente txtNominal ccusto" ignoreAutoUpdate="true" />
+					</p:commandButton>
+					<p:inputText id="txtCliente" readonly="true"
+						value="#{tituloBean.titulo.responsavel.nome}"
+						styleClass="bloqueado" />
+				</div>
+			</div>
+			<div class="ui-g-12 ui-md-4">
+				<p:outputLabel value="Nome" for="txtNominal" />
+				<p:inputText id="txtNominal" maxlength="100"
+					value="#{tituloBean.titulo.nominal}" />
+			</div>
+			<div class="ui-g-6 ui-md-3">
+				<p:outputLabel value="Vencimento" for="vencimento"
+					disabled="#{tituloBean.titulo.naoPodeAlterar}" />
+				<p:calendar id="vencimento" locale="pt_BR" mask="99/99/9999"
+					pattern="dd/MM/yyyy" navigator="true" showOn="button"
+					value="#{tituloBean.titulo.vencimento}"
+					rendered="#{tituloBean.titulo.podeEditar and tituloBean.titulo.cartao == null}">
+					<f:ajax render="@form" event="dateSelect"
+						listener="#{tituloBean.ajustaPrevisao}"
+						update="formCadastro:previsao" />
+				</p:calendar>
+				<p:inputText value="#{tituloBean.titulo.vencimento}"
+					rendered="#{not (tituloBean.titulo.podeEditar and tituloBean.titulo.cartao == null)}"
+					class="bloqueado" readonly="true">
+					<f:convertDateTime />
+				</p:inputText>
+			</div>
+			<div class="ui-g-6 ui-md-2">
+				<p:outputLabel value="Valor" for="valor"
+					disabled="#{tituloBean.titulo.naoPodeAlterar}" />
+				<h:panelGroup>
+					<p:inputNumber id="valor" minValue="0" decimalSeparator=","
+						thousandSeparator="." decimalPlaces="2" symbol="R$"
+						readonly="#{tituloBean.titulo.naoPodeAlterar}" required="true"
+						value="#{tituloBean.titulo.valor}" />
+				</h:panelGroup>
+			</div>
+
+			<div class="ui-g-4 ui-md-2">
+				<p:outputLabel value="Documento" for="documento" />
+				<p:inputText id="documento" value="#{tituloBean.titulo.documento}"
+					maxlength="20"
+					readonly="#{tituloBean.titulo.contaBancaria != null}" />
+			</div>
+			<div class="ui-g-8 ui-md-2">
+				<p:outputLabel value="Tipo de documento" />
+				<p:selectOneMenu id="tipoDocumento" autoWidth="false"
+					rendered="#{not tituloBean.titulo.existe}"
+					value="#{tituloBean.titulo.tipoDocto}">
+					<f:selectItems value="#{listaTipoBean.tipoTituloDoc}" var="a"
+						itemValue="#{a}" itemLabel="#{a.sigla}" />
+				</p:selectOneMenu>
+				<p:inputText value="#{tituloBean.titulo.tipoDocto.sigla}"
+					readonly="true" rendered="#{tituloBean.titulo.existe}" />
+			</div>
+			<div class="ui-g-6 ui-md-4">
+				<p:outputLabel value="Centro de custo" for="ccusto" />
+				<p:selectOneMenu id="ccusto" autoWidth="false"
+					value="#{tituloBean.titulo.centroDeCusto}">
+					<f:selectItems value="#{tituloBean.listaCusto}" var="ccusto"
+						itemValue="#{ccusto}" itemLabel="#{ccusto.descricao}" />
+				</p:selectOneMenu>
+			</div>
+			<div class="ui-g-6 ui-md-2">
+				<p:outputLabel value="Desconto" for="txtDesconto" />
+				<div
+					class="ui-inputfield ui-inputtext ui-widget ui-state-default ui-corner-all bloqueado ui-state-focus">
+					<p:outputLabel id="txtDesconto"
+						value="#{tituloBean.titulo.desconto}"
+						style="font-weight: bold; font-size: 1.1em">
+						<f:convertNumber type="currency" />
+					</p:outputLabel>
+				</div>
+			</div>
+			<div class="ui-g-6 ui-md-2">
+				<p:outputLabel value="Saldo" for="saldo" />
+				<div
+					class="ui-inputfield ui-inputtext ui-widget ui-state-default ui-corner-all bloqueado ui-state-focus">
+					<p:outputLabel id="saldo" value="#{tituloBean.titulo.saldo}"
+						style="font-weight: bold; font-size: 1.1em">
+						<f:convertNumber type="currency" />
+					</p:outputLabel>
+				</div>
+			</div>
+
+			<h:panelGroup rendered="#{tituloBean.titulo.cartao != null}">
+				<div class="ui-g-6 ui-md-2">
+					<p:outputLabel value="Cartão de crédito" />
+					<p:inputText value="#{tituloBean.titulo.cartao.numero}"
+						class="bloqueado" readonly="true" />
+				</div>
+				<div class="ui-g-6 ui-md-4">
+					<p:outputLabel value="Identificação do cartão" />
+					<p:inputText value="#{tituloBean.titulo.cartao.nome}"
+						class="bloqueado" readonly="true" />
+				</div>
+				<div class="ui-g-6 ui-md-3">
+					<p:outputLabel value="Dia do vencimento" />
+					<p:inputText value="#{tituloBean.titulo.cartao.diaVencimento}"
+						class="bloqueado" readonly="true" />
+				</div>
+				<div class="ui-g-6 ui-md-3">
+					<p:outputLabel value="Dia do fechamento" />
+					<p:inputText value="#{tituloBean.titulo.cartao.diaFechamento}"
+						class="bloqueado" readonly="true" />
+				</div>
+			</h:panelGroup>
+
+
+			<div class="ui-g-6 ui-md-6">
+				<p:outputLabel value="Descritivo" for="descricao" />
+				<p:inputText id="descricao" maxlength="100"
+					value="#{tituloBean.titulo.descricao}" />
+			</div>
+			<div class="ui-g-6 ui-md-2">
+				<p:outputLabel value="Abatimento" for="txtAbatimento"
+					disabled="#{tituloBean.titulo.naoPodeAlterar}" />
+				<h:panelGroup>
+					<p:inputNumber id="txtAbatimento" minValue="0" decimalSeparator=","
+						title="Valor fixo de desconto a ser aplicado sobre o valor da cobrança"
+						thousandSeparator="." decimalPlaces="2" symbol="R$"
+						readonly="#{tituloBean.titulo.naoPodeAlterar}" required="true"
+						value="#{tituloBean.titulo.abatimento}" />
+				</h:panelGroup>
+			</div>
+			<div class="ui-g-6 ui-md-2">
+				<p:outputLabel value="Previsão" for="previsao" />
+				<p:calendar id="previsao"
+					readonly="#{tituloBean.titulo.naoPodeAlterar}" locale="pt_BR"
+					mask="99/99/9999" pattern="dd/MM/yyyy" navigator="true"
+					showOn="button" mindate="#{tituloBean.titulo.previsao}"
+					value="#{tituloBean.titulo.previsao}" />
+			</div>
+			<div class="ui-g-6 ui-md-2">
+				<p:outputLabel value="Pagamento" />
+				<p:inputText value="#{tituloBean.titulo.dataBaixa}" readonly="true"
+					styleClass="bloqueado">
+					<f:convertDateTime pattern="dd/MM/yyyy HH:mm" />
+				</p:inputText>
+			</div>
+
+		</div>
+
+	</div>
+
+	<p:blockUI block="formCadastro" trigger="botaoSalvar" />
+
+</ui:composition>

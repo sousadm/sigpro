@@ -1,0 +1,26 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<p:panelGrid id="gridCliente" columns="2" layout="grid"
+		columnClasses="ui-grid-col-4, ui-grid-col-8">
+		<p:commandButton icon="ui-icon-search" value="Cliente"
+			class="button-grid" process="@this" update="@none"
+			ignoreAutoUpdate="true" action="#{selecionaBean.cliente}">
+			<p:ajax event="dialogReturn"
+				listener="#{notaConsumidorBean.clienteSelecionado}"
+				update="gridCliente" ignoreAutoUpdate="true" />
+		</p:commandButton>
+		<p:outputLabel value="#{notaConsumidorBean.clienteNovo.nome}" />
+
+		<p:outputLabel value="E-mail" />
+		<p:inputText value="#{notaConsumidorBean.clienteNovo.email}" />
+
+		<p:outputLabel value="Celular" />
+		<p:inputText value="#{notaConsumidorBean.clienteNovo.celular}" />
+
+	</p:panelGrid>
+
+</ui:composition>

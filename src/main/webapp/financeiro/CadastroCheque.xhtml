@@ -1,0 +1,66 @@
+<ui:composition template="/WEB-INF/template/LayoutPadrao.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui" xmlns:o="http://omnifaces.org/ui">
+
+	<f:metadata>
+		<f:param name="dummy" />
+		<o:viewParam name="cheque" value="#{chequeBean.cheque}" />
+		<f:event listener="#{chequeBean.inicializar}" type="preRenderView"></f:event>
+	</f:metadata>
+
+	<ui:define name="titulo">Controle de Cheque</ui:define>
+
+	<ui:define name="dialogo">
+
+	</ui:define>
+
+	<ui:define name="corpo">
+
+		<p:focus context="formCadastro" />
+
+		<h:form id="formCadastro">
+
+			<h:panelGroup rendered="#{chequeBean.cheque == null}">
+				<ui:include src="/financeiro/ChequePesquisa.xhtml" />
+			</h:panelGroup>
+
+			<h:panelGroup rendered="#{chequeBean.cheque != null}">
+				<ui:include src="/financeiro/ChequeEdit.xhtml" />
+			</h:panelGroup>
+
+		</h:form>
+
+		<p:dialog id="dlgCompensacao" header="Compensação"
+			widgetVar="dlgCompensacao" closeOnEscape="true" modal="true"
+			maximizable="false" height="120" width="300">
+			<h:form id="form">
+
+				<div class="ui-fluid">
+					<div class="ui-g">
+						<div class="ui-g-12">
+							<p:outputLabel value="Data" for="txtDataCompensacao" />
+							<p:calendar id="txtDataCompensacao" showOn="button"
+								mask="99/99/9999" pattern="dd/MM/yyyy" required="true"
+								mindate="#{chequeBean.cheque.emissao}"
+								value="#{chequeBean.dataCompensacao}" />
+						</div>
+					</div>
+				</div>
+
+				<div align="right">
+					<p:commandButton value="Confirmar" icon="ui-icon-check"
+						update="@form formCadastro" process="@form"
+						action="#{chequeBean.compensar}"
+						onclick="jQuery(this).addClass('ui-state-disabled')"
+						oncomplete="if(!args.validationFailed) PF('dlgCompensacao').hide()" />
+				</div>
+
+			</h:form>
+		</p:dialog>
+
+	</ui:define>
+
+</ui:composition>

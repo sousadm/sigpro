@@ -1,0 +1,106 @@
+<ui:composition template="/WEB-INF/template/LayoutPadrao.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui" xmlns:o="http://omnifaces.org/ui">
+
+	<f:metadata>
+		<!-- 		<o:viewParam name="titulo" value="#{tituloBean.titulo}" /> -->
+		<f:event listener="#{fluxoFinanceiroBean.inicializar}"
+			type="preRenderView"></f:event>
+	</f:metadata>
+
+	<ui:define name="titulo">Fluxo Financeiro</ui:define>
+
+	<ui:define name="corpo">
+
+		<p:focus context="formCadastro" />
+
+		<h1 style="margin-top: 65px">Fluxo Financeiro</h1>
+
+		<h:form id="formCadastro">
+
+			<p:toolbar style="margin-top: 05px">
+				<p:toolbarGroup align="right">
+					<p:commandButton value="Analisar"
+						action="#{fluxoFinanceiroBean.analisar}" update="@form"
+						onclick="jQuery(this).addClass('ui-state-disabled')" />
+					<p:button value="Imprimir" />
+				</p:toolbarGroup>
+			</p:toolbar>
+
+			<p:messages autoUpdate="true" closable="true" />
+
+			<p:panelGrid columns="4" style="width: 100%; margin-top: 05px"
+				columnClasses="rotulo, campo, rotulo, campo">
+
+				<p:outputLabel value="Visão de Análise" />
+				<p:selectOneMenu value="#{fluxoFinanceiroBean.tipo}"
+					autoWidth="false" style="width: 85%">
+					<f:selectItems value="#{listaTipoBean.tipoFluxoFinanceiro}"
+						var="tipo" itemValue="#{tipo}" itemLabel="#{tipo}" />
+					<p:ajax event="change" process="@this" update="@form"
+						listener="#{fluxoFinanceiroBean.limpar}" />
+				</p:selectOneMenu>
+				<p:outputLabel value="Exercício" />
+				<p:spinner id="txtFator" value="#{fluxoFinanceiroBean.ano}"
+					min="#{fluxoFinanceiroBean.anoMinimo}"
+					max="#{fluxoFinanceiroBean.anoMaximo}">
+					<p:ajax event="change" process="@this" update="@form"
+						listener="#{fluxoFinanceiroBean.limpar}" />
+				</p:spinner>
+
+				<p:outputLabel value="Início de análise" />
+				<p:selectOneMenu value="#{fluxoFinanceiroBean.mesInicial}"
+					autoWidth="false" style="width: 85%">
+					<f:selectItems value="#{listaTipoBean.tipoMes}" var="mes"
+						itemValue="#{mes}" itemLabel="#{mes}" />
+					<p:ajax event="change" process="@this" update="@form"
+						listener="#{fluxoFinanceiroBean.limpar}" />
+				</p:selectOneMenu>
+				<p:outputLabel value="Ciclo de análise (meses)" />
+				<p:spinner id="txtCiclo" value="#{fluxoFinanceiroBean.ciclo}"
+					min="1" max="#{fluxoFinanceiroBean.cicloMaximo}">
+					<p:ajax event="change" process="@this" update="@form"
+						listener="#{fluxoFinanceiroBean.limpar}" />
+				</p:spinner>
+
+			</p:panelGrid>
+
+			<p:dataTable id="dataFluxo" var="fluxo" scrollable="true"
+				resizableColumns="true" value="#{fluxoFinanceiroBean.lista}"
+				widgetVar="carsTable">
+				<p:column headerText="descrição" style="width: 200px">
+					<h:outputText value="#{fluxo.descricao}" />
+				</p:column>
+
+				<p:columns value="#{fluxoFinanceiroBean.colunas}" var="column"
+					columnIndexVar="colIndex">
+					<f:facet name="header">
+						<h:outputText value="#{column.descricao}" />
+						<br />
+						<h:outputText value="#{column.ano}"
+							rendered="#{column.temComplemento}" />
+					</f:facet>
+					<h:outputText value="#{fluxo.valores[colIndex]}">
+						<f:convertNumber pattern="#,##0.00" />
+					</h:outputText>
+				</p:columns>
+
+
+			</p:dataTable>
+		</h:form>
+
+	</ui:define>
+
+</ui:composition>
+
+
+
+<!-- 				<p:column headerText="Total"> -->
+<!-- 					<h:outputText value="#{fluxo.total}" /> -->
+<!-- 				</p:column> -->
+<!-- 				<p:column headerText="Média"> -->
+<!-- 					<h:outputText value="#{fluxo.media}" /> -->
+<!-- 				</p:column> -->

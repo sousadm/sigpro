@@ -1,0 +1,31 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+Att: CONTRATE<br>
+<br>
+<table style="text-align: left; width: 100px;" border="0"
+ cellpadding="2" cellspacing="2">
+  <tbody>
+    <tr>
+      <td>Data</td>
+      <td>$data</td>
+    </tr>
+    <tr>
+      <td>Nome</td>
+      <td>$nome</td>
+    </tr>
+    <tr>
+      <td>Telefone</td>
+      <td>$telefone</td>
+    </tr>
+    <tr>
+      <td>E-mail</td>
+      <td>$email</td>
+    </tr>
+    <tr>
+      <td>Demanda</td>
+      <td>$demanda</td>
+    </tr>
+  </tbody>
+</table>
+<br>
+</html>

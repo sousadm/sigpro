@@ -1,0 +1,111 @@
+<ui:composition template="/WEB-INF/template/LayoutPadrao.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui" xmlns:o="http://omnifaces.org/ui">
+
+	<ui:define name="titulo">Conta</ui:define>
+
+	<ui:define name="corpo">
+
+		<h1 style="margin-top: 65px">Relatório Financeiro</h1>
+
+		<h:form id="formCadastro">
+
+			<p:messages autoUpdate="true" closable="true" />
+
+			<p:toolbar style="margin-top: 05px">
+				<p:toolbarGroup>
+					<p:commandButton value="Limpar" icon="ui-icon-document-b"
+						action="#{relatorioFinanceiroBean.limpar}" update="@form"
+						onclick="jQuery(this).addClass('ui-state-disabled')" />
+					<p:commandButton value="Imprimir" icon="ui-icon-print" ajax="false"
+						action="#{relatorioFinanceiroBean.imprimir}"
+						onclick="this.form.target='_blank'" update="@form" />
+				</p:toolbarGroup>
+			</p:toolbar>
+
+			<p:panelGrid columns="2" style="width: 100%; margin-top: 5px"
+				layout="grid" columnClasses="ui-grid-col-4, ui-grid-col-8"
+				styleClass="panelgrid-noborder">
+
+				<p:outputLabel value="Tipo de Relatório" />
+				<p:selectOneMenu value="#{relatorioFinanceiroBean.filtro.opcao}">
+					<f:selectItems value="#{relatorioFinanceiroBean.relatorios}" />
+					<p:ajax event="change" update="@form" />
+				</p:selectOneMenu>
+
+				<p:outputLabel value="Período de Emissão"
+					rendered="#{relatorioFinanceiroBean.mostraEmissao}" />
+				<h:panelGroup rendered="#{relatorioFinanceiroBean.mostraEmissao}">
+					<p:calendar navigator="true" mask="99/99/9999" pattern="dd/MM/yyyy"
+						size="10"
+						value="#{relatorioFinanceiroBean.filtro.emissaoInicial }" />
+					<p:outputLabel value=" a " />
+					<p:calendar navigator="true" mask="99/99/9999" pattern="dd/MM/yyyy"
+						size="10" value="#{relatorioFinanceiroBean.filtro.emissaoFinal}" />
+				</h:panelGroup>
+
+				<p:outputLabel value="Período de Pagamento"
+					rendered="#{relatorioFinanceiroBean.mostraPagamento}" />
+				<h:panelGroup rendered="#{relatorioFinanceiroBean.mostraPagamento}">
+					<p:calendar navigator="true" mask="99/99/9999" pattern="dd/MM/yyyy"
+						size="10"
+						value="#{relatorioFinanceiroBean.filtro.pagamentoInicial}" />
+					<p:outputLabel value=" a " />
+					<p:calendar navigator="true" mask="99/99/9999" pattern="dd/MM/yyyy"
+						size="10" value="#{relatorioFinanceiroBean.filtro.pagamentoFinal}" />
+				</h:panelGroup>
+
+				<p:outputLabel value="Período de Vencimento"
+					rendered="#{relatorioFinanceiroBean.mostraVencimento}" />
+				<h:panelGroup rendered="#{relatorioFinanceiroBean.mostraVencimento}">
+					<p:calendar navigator="true" mask="99/99/9999" pattern="dd/MM/yyyy"
+						size="10"
+						value="#{relatorioFinanceiroBean.filtro.vencimentoInicial}" />
+					<p:outputLabel value=" a " />
+					<p:calendar navigator="true" mask="99/99/9999" pattern="dd/MM/yyyy"
+						size="10"
+						value="#{relatorioFinanceiroBean.filtro.vencimentoFinal}" />
+				</h:panelGroup>
+
+				<p:outputLabel value="Período de Previsão"
+					rendered="#{relatorioFinanceiroBean.mostraPrevisao}" />
+				<h:panelGroup rendered="#{relatorioFinanceiroBean.mostraPrevisao}">
+					<p:calendar navigator="true" mask="99/99/9999" pattern="dd/MM/yyyy"
+						size="10"
+						value="#{relatorioFinanceiroBean.filtro.previsaoInicial}" />
+					<p:outputLabel value=" a " />
+					<p:calendar navigator="true" mask="99/99/9999" pattern="dd/MM/yyyy"
+						size="10" value="#{relatorioFinanceiroBean.filtro.previsaoFinal}" />
+				</h:panelGroup>
+
+				<p:outputLabel value="Condição"
+					rendered="#{relatorioFinanceiroBean.mostraEmissao}" />
+				<p:selectOneMenu autoWidth="false"
+					value="#{relatorioFinanceiroBean.filtro.tituloStatus}"
+					rendered="#{relatorioFinanceiroBean.mostraEmissao}">
+					<f:selectItems value="#{listaTipoBean.tipoSituacaoFinanceira}"
+						var="status" itemLabel="#{status.descricao}" itemValue="#{status}" />
+				</p:selectOneMenu>
+
+			</p:panelGrid>
+
+		</h:form>
+
+	</ui:define>
+
+</ui:composition>
+
+
+<!-- 				<p:outputLabel value="Período de Movimentação" -->
+<!-- 					rendered="#{relatorioFinanceiroBean.filtro.opcao == 1}" /> -->
+<!-- 				<h:panelGroup -->
+<!-- 					rendered="#{relatorioFinanceiroBean.filtro.opcao == 1}"> -->
+<!-- 					<p:calendar navigator="true" mask="99/99/9999" pattern="dd/MM/yyyy" -->
+<!-- 						size="10" value="#{relatorioFinanceiroBean.filtro.inicio}" /> -->
+<!-- 					<p:outputLabel value=" a " /> -->
+<!-- 					<p:calendar navigator="true" mask="99/99/9999" pattern="dd/MM/yyyy" -->
+<!-- 						size="10" value="#{relatorioFinanceiroBean.filtro.termino}" /> -->
+<!-- 				</h:panelGroup> -->

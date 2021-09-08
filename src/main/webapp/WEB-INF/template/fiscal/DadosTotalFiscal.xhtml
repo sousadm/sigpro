@@ -1,0 +1,80 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<p:panel header="Totalização">
+
+		<p:panelGrid id="gridTotais" columns="2" layout="grid"
+			style="margin-top: 10px" styleClass="panelgrid-noborder"
+			columnClasses="ui-grid-col-4, ui-grid-col-8">
+
+			<p:outputLabel value="Valor Desconto" />
+			<h:panelGroup>
+				<p:inputNumber value="#{notaFiscalBean.nota.valorDesconto}"
+					rendered="#{notaFiscalBean.nota.podeEditar}" decimalPlaces="2">
+					<p:ajax event="change" process="@this"
+						listener="#{notaFiscalBean.calcular}" update="txtValorTotal" />
+				</p:inputNumber>
+				<h:outputText rendered="#{not notaFiscalBean.nota.podeEditar}"
+					value="#{notaFiscalBean.nota.valorDesconto}">
+					<f:convertNumber type="currency" />
+				</h:outputText>
+			</h:panelGroup>
+
+			<p:outputLabel value="Valor Frete" />
+			<h:panelGroup>
+				<p:inputNumber value="#{notaFiscalBean.nota.valorFrete}"
+					rendered="#{notaFiscalBean.nota.podeEditar}" decimalPlaces="2">
+					<p:ajax event="change" process="@this"
+						listener="#{notaFiscalBean.calcular}" update="txtValorTotal" />
+				</p:inputNumber>
+				<h:outputText rendered="#{not notaFiscalBean.nota.podeEditar}"
+					value="#{notaFiscalBean.nota.valorFrete}">
+					<f:convertNumber type="currency" />
+				</h:outputText>
+			</h:panelGroup>
+
+			<p:outputLabel value="Valor Seguro" />
+			<h:panelGroup>
+				<p:inputNumber value="#{notaFiscalBean.nota.valorSeguro}"
+					rendered="#{notaFiscalBean.nota.podeEditar}" decimalPlaces="2">
+					<p:ajax event="change" process="@this"
+						listener="#{notaFiscalBean.calcular}" update="txtValorTotal" />
+				</p:inputNumber>
+				<h:outputText rendered="#{not notaFiscalBean.nota.podeEditar}"
+					value="#{notaFiscalBean.nota.valorSeguro}">
+					<f:convertNumber type="currency" />
+				</h:outputText>
+			</h:panelGroup>
+
+			<p:outputLabel value="Outros Valores" />
+			<h:panelGroup>
+				<p:inputNumber value="#{notaFiscalBean.nota.valorOutros}"
+					rendered="#{notaFiscalBean.nota.podeEditar}" decimalPlaces="2">
+					<p:ajax event="change" process="@this"
+						listener="#{notaFiscalBean.calcular}" update="txtValorTotal" />
+				</p:inputNumber>
+				<h:outputText rendered="#{not notaFiscalBean.nota.podeEditar}"
+					value="#{notaFiscalBean.nota.valorOutros}">
+					<f:convertNumber type="currency" />
+				</h:outputText>
+			</h:panelGroup>
+
+			<h:outputText value="Valor Produto" />
+			<h:outputText value="#{notaFiscalBean.nota.valorProduto}">
+				<f:convertNumber type="currency" />
+			</h:outputText>
+
+			<h:outputText value="Valor Total" />
+			<h:outputText id="txtValorTotal" style="font-weight:bold"
+				value="#{notaFiscalBean.nota.valorTotal}">
+				<f:convertNumber type="currency" />
+			</h:outputText>
+
+		</p:panelGrid>
+
+	</p:panel>
+
+</ui:composition>

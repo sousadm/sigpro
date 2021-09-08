@@ -1,0 +1,88 @@
+<ui:composition template="/WEB-INF/template/LayoutPadrao.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<ui:define name="titulo">horário</ui:define>
+
+	<ui:define name="corpo">
+
+		<h:form id="frmPesquisa">
+
+			<p:focus />
+
+			<h1 style="margin-top: 65px">Cadastro de Horário</h1>
+
+			<p:toolbar style="margin-top: 05px">
+				<p:toolbarGroup>
+					<p:commandButton id="botaoPesquisa" value="Pesquisar"
+						icon="ui-icon-search" action="#{clinicaHorarioBean.pesquisar}"
+						update="@form" />
+				</p:toolbarGroup>
+				<p:toolbarGroup align="right">
+					<p:button value="Novo" icon="ui-icon-document"
+						outcome="/clinica/CadastroHorario" />
+				</p:toolbarGroup>
+			</p:toolbar>
+
+			<p:messages autoUpdate="true" closable="true" />
+
+			<p:dataTable id="tabela" value="#{clinicaHorarioBean.lista}"
+				var="horario" style="margin-top: 5px" scrollable="true"
+				emptyMessage="Nenhum pedido encontrado." rows="8" paginator="true"
+				paginatorAlwaysVisible="false" paginatorPosition="bottom">
+
+				<p:column headerText="Nome">
+					<h:outputText value="#{horario.consultor.nome}" />
+				</p:column>
+				<p:column headerText="Tempo">
+					<h:outputText value="#{horario.consultor.tempo}">
+						<f:convertDateTime pattern="HH:mm" />
+					</h:outputText>
+				</p:column>
+				<p:column headerText="Início">
+					<h:outputText value="#{horario.inicio}">
+						<f:convertDateTime pattern="HH:mm" />
+					</h:outputText>
+				</p:column>
+				<p:column headerText="Encerramento">
+					<h:outputText value="#{horario.encerramento}">
+						<f:convertDateTime pattern="HH:mm" />
+					</h:outputText>
+				</p:column>
+
+				<p:column headerText="Dias">
+					<p:selectManyCheckbox converter="enumConverter"
+						value="#{horario.dias}" disabled="true">
+						<f:attribute name="collectionType" value="java.util.ArrayList" />
+						<f:selectItems value="#{horario.dias}" var="dia"
+							itemLabel="#{dia.reduzido}" itemValue="#{dia}" />
+					</p:selectManyCheckbox>
+				</p:column>
+
+				<p:column style="text-align: center">
+					<p:column style="text-align: center; width: 50px">
+						<p:button icon="ui-icon-pencil" title="Editar" class="button-grid"
+							outcome="/clinica/CadastroHorario">
+							<f:param name="horario" value="#{horario.id}" />
+						</p:button>
+					</p:column>
+					<p:commandButton icon="ui-icon-trash" process="@this"
+						title="Excluir" update="tabela" class="button-grid"
+						action="#{clinicaHorarioBean.excluir(horario)}">
+						<p:confirm icon="ui-icon-alert" header="Confirmação de exclusão"
+							message="Excluir o registro atual?" />
+					</p:commandButton>
+				</p:column>
+
+			</p:dataTable>
+
+			<p:blockUI block="frmPesquisa" trigger="botaoPesquisa" />
+
+		</h:form>
+
+	</ui:define>
+
+</ui:composition>

@@ -1,0 +1,45 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<p:dataTable id="tabelaTitulo" value="#{balancoBean.balanco.titulos}"
+		var="itemTitulo" rowIndexVar="item" style="margin-top: 5px"
+		emptyMessage="Nenhum registro encontrado." rows="10" paginator="true"
+		paginatorAlwaysVisible="false" paginatorPosition="bottom">
+
+		<p:column headerText="Vencto" style="width: 80px">
+			<h:outputText value="#{itemTitulo.titulo.vencimento}">
+				<f:convertDateTime pattern="dd/MM/yyyy" />
+			</h:outputText>
+		</p:column>
+		<p:column headerText="Docto" style="width: 55px">
+			<h:outputText value="#{itemTitulo.titulo.documento}"
+				title="#{titulo.documento}" />
+		</p:column>
+		<p:column headerText="Participante" style="width: 100px">
+			<h:outputText value="#{itemTitulo.titulo.responsavel.nome}" />
+		</p:column>
+		<p:column headerText="Tipo" style="width: 60px">
+			<h:outputText value="#{itemTitulo.titulo.tipoDC}" />
+		</p:column>
+		<p:column headerText="Saldo" style="text-align: right; width: 65px">
+			<h:outputText value="#{itemTitulo.saldo}">
+				<f:convertNumber type="currency" currencySymbol="" />
+			</h:outputText>
+		</p:column>
+
+	</p:dataTable>
+
+</ui:composition>
+
+<!-- 		<p:column headerText="Histórico"> -->
+<!-- 			<h:outputText value="#{itemTitulo.titulo.descricao}" /> -->
+<!-- 		</p:column> -->
+
+<!-- 				<p:column headerText="Valor" style="text-align: right; width: 65px"> -->
+<!-- 			<h:outputText value="#{itemTitulo.titulo.valor}"> -->
+<!-- 				<f:convertNumber type="currency" currencySymbol="" /> -->
+<!-- 			</h:outputText> -->
+<!-- 		</p:column> -->

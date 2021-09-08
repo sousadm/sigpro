@@ -1,0 +1,83 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets" 
+	xmlns:p="http://primefaces.org/ui">
+
+	<p:panelGrid id="gridEncerramento" columns="2" styleClass="ui-noborder">
+
+		<p:outputLabel value="(+) Saldo final em dinheiro" />
+		<h:inputText class="bloqueado" readonly="true"
+			value="#{caixaDiarioBean.diario.finalDinheiro}">
+			<p:ajax event="change"
+				update="formCadastro:tabView:gridEncerramento tabViewEncerramento"
+				listener="#{caixaDiarioBean.calcularCaixaDiario}" />
+			<f:convertNumber minFractionDigits="2" />
+		</h:inputText>
+
+		<p:outputLabel value="(+) Saldo final em cheque" />
+		<h:inputText class="bloqueado" readonly="true"
+			value="#{caixaDiarioBean.diario.finalCheque}">
+			<p:ajax event="change"
+				update="formCadastro:tabView:gridEncerramento tabViewEncerramento"
+				listener="#{caixaDiarioBean.calcularCaixaDiario}" />
+			<f:convertNumber minFractionDigits="2" />
+		</h:inputText>
+
+		<p:outputLabel value="(+) Saldo final em banco" />
+		<h:inputText class="bloqueado" readonly="true"
+			value="#{caixaDiarioBean.diario.finalBanco}">
+			<p:ajax event="change"
+				update="formCadastro:tabView:gridEncerramento tabViewEncerramento"
+				listener="#{caixaDiarioBean.calcularCaixaDiario}" />
+			<f:convertNumber minFractionDigits="2" />
+		</h:inputText>
+
+		<p:outputLabel value="Diferença Inicial do caixa" />
+		<h:outputText value="#{caixaDiarioBean.diario.diferencaSaldoInicial}"
+			class="negrito">
+			<f:convertNumber type="currency" />
+		</h:outputText>
+
+		<p:outputLabel value="Diferença Final do caixa" />
+		<h:outputText value="#{caixaDiarioBean.diario.diferencaSaldoFinal}"
+			class="negrito">
+			<f:convertNumber type="currency" />
+		</h:outputText>
+
+	</p:panelGrid>
+
+	<p:tabView id="tabViewEncerramento" orientation="top"
+		style="margin-top: 05px">
+		<p:tab title="Just.Inicial"
+			rendered="#{not (caixaDiarioBean.diario.diferencaSaldoInicial == 0)}">
+			<h:panelGroup layout="block" style="padding-right: 10px">
+				<p:inputTextarea rows="4" style="width: 100%"
+					value="#{caixaDiarioBean.diario.diferencaInicialMotivo}"
+					required="true"
+					requiredMessage="justifique o motivo da diferença de abertura"
+					disabled="#{not caixaDiarioBean.diario.podeSalvar}" />
+			</h:panelGroup>
+		</p:tab>
+		<p:tab title="Just.Final"
+			rendered="#{not (caixaDiarioBean.diario.diferencaSaldoFinal == 0)}">
+			<h:panelGroup layout="block" style="padding-right: 10px">
+				<p:inputTextarea rows="4" style="width: 100%"
+					value="#{caixaDiarioBean.diario.diferencaFinalMotivo}"
+					required="true"
+					requiredMessage="justifique o motivo da diferença de fechamento"
+					disabled="#{not caixaDiarioBean.diario.podeSalvar}" />
+			</h:panelGroup>
+		</p:tab>
+		<p:tab title="Observação">
+			<h:panelGroup layout="block" style="padding-right: 10px">
+				<p:inputTextarea rows="4" style="width: 100%"
+					value="#{caixaDiarioBean.diario.observacao}"
+					disabled="#{not caixaDiarioBean.diario.podeSalvar}" />
+			</h:panelGroup>
+		</p:tab>
+	</p:tabView>
+
+	<p:blockUI block="formCadastro" trigger="botaoEncerrar botaoCalcular" />
+
+</ui:composition>

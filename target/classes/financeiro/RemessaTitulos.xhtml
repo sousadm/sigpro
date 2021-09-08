@@ -1,0 +1,53 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<div align="right">
+		<p:commandButton icon="ui-icon-search" value="Conta Receber"
+			process="@this" actionListener="#{selecionaBean.tituloReceber(true)}">
+			<p:ajax event="dialogReturn" listener="#{remessaBean.onTituloChosen}"
+				update="@form" />
+		</p:commandButton>
+	</div>
+
+	<p:dataTable id="tabelaTitulo" scrollable="true"
+		value="#{remessaBean.remessa.items}" var="item" rowIndexVar="linha"
+		style="margin-top: 5px" emptyMessage="Nenhum registro encontrado."
+		rows="10" paginator="true" paginatorAlwaysVisible="false"
+		paginatorPosition="bottom">
+
+		<p:column headerText="Descritivo de despesa">
+			<h:outputText value="#{item.titulo.descricao}" />
+		</p:column>
+		<p:column headerText="Vencimento" style="width: 100px">
+			<h:outputText value="#{item.titulo.vencimento}">
+				<f:convertDateTime pattern="dd/MM/yyyy" />
+			</h:outputText>
+		</p:column>
+		<p:column headerText="Pagamento" style="width: 100px">
+			<h:outputText value="#{item.titulo.dataBaixa}">
+				<f:convertDateTime pattern="dd/MM/yyyy" />
+			</h:outputText>
+		</p:column>
+		<p:column headerText="Dias" style="text-align: right; width: 100px">
+			<h:outputText value="#{item.dias}">
+				<f:convertNumber />
+			</h:outputText>
+		</p:column>
+		<p:column headerText="Valor" style="text-align: right; width: 100px">
+			<h:outputText value="#{item.valor}">
+				<f:convertNumber type="currency" currencySymbol="" />
+			</h:outputText>
+		</p:column>
+
+		<p:column style="width: 40px; text-align: center">
+			<p:commandButton icon="ui-icon-closethick" process="@this"
+				disabled="#{not remessaBean.remessa.podeEditar}" title="Remover"
+				update="@form" actionListener="#{remessaBean.removerTitulo(linha)}" />
+		</p:column>
+
+	</p:dataTable>
+
+</ui:composition>

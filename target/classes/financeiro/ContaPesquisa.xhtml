@@ -1,0 +1,69 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<h1 style="margin-top: 65px">Conta Bancária</h1>
+
+	<p:messages autoUpdate="true" closable="true" />
+
+	<p:toolbar style="margin-top: 05px">
+		<p:toolbarGroup>
+			<p:splitButton id="botaoPesquisa" value="Pesquisar"
+				icon="ui-icon-search" action="#{contaBean.pesquisar}" update="@form">
+				<p:menuitem value="Imprimir lista" icon="ui-icon-print" ajax="false"
+					process="@form" action="#{contaBean.imprimir}" target="_blank" />
+			</p:splitButton>
+		</p:toolbarGroup>
+		<p:toolbarGroup align="right">
+			<p:commandButton value="Novo" icon="ui-icon-document"
+				actionListener="#{contaBean.novo}" process="@this" update="@form" />
+		</p:toolbarGroup>
+	</p:toolbar>
+
+	<p:dataTable id="tabela" value="#{contaBean.lista}" var="conta"
+		rowIndexVar="item" style="margin-top: 5px" scrollable="true"
+		emptyMessage="Nenhum registro encontrado." rows="10" paginator="true"
+		paginatorAlwaysVisible="false" paginatorPosition="bottom">
+
+		<p:column headerText="Número" style="width: 100px">
+			<h:outputText value="#{conta.numero}"
+				styleClass="${conta.cancelado == true ? 'color-cancelado' : 'color-normal'}" />
+		</p:column>
+		<p:column headerText="Agência" style="width: 60px">
+			<h:outputText value="#{conta.agencia}"
+				styleClass="${conta.cancelado == true ? 'color-cancelado' : 'color-normal'}" />
+		</p:column>
+		<p:column headerText="Banco">
+			<h:outputText value="#{conta.banco.descricao}"
+				styleClass="${conta.cancelado  == true?  'color-cancelado' : 'color-normal'}" />
+		</p:column>
+		<p:column headerText="Saldo Atual"
+			style="text-align: right; width: 100px">
+			<h:outputText value="#{conta.saldo}"
+				styleClass="${conta.cancelado  == true ? 'color-cancelado' : 'color-normal'}">
+				<f:convertNumber type="currency" currencySymbol="" />
+			</h:outputText>
+		</p:column>
+
+		<p:column style="text-align: center" width="80">
+
+			<p:commandButton title="Editar" icon="ui-icon-pencil"
+				class="button-grid" update="@form"
+				actionListener="#{contaBean.setConta(conta)}" process="@this" />
+
+			<p:commandButton icon="ui-icon-trash" process="@this"
+				class="button-grid" title="Excluir" update="@form"
+				action="#{contaBean.excluir(item)}">
+				<p:confirm icon="ui-icon-alert" header="Exclusão"
+					message="Confirma exclusão do registro?" />
+			</p:commandButton>
+
+		</p:column>
+
+	</p:dataTable>
+
+	<p:blockUI block="formCadastro" trigger="botaoPesquisa" />
+
+</ui:composition>

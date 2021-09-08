@@ -1,0 +1,42 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<p:toolbar style="margin-top: 5px">
+
+		<p:toolbarGroup>
+			<p:commandButton value="Iniciar" icon="ui-icon-flag"
+				rendered="#{clinicaAtendimentoBean.agenda.podeIniciar}"
+				actionListener="#{clinicaAtendimentoBean.iniciar}" update="@form">
+				<p:confirm icon="ui-icon-alert" header="Clínica"
+					message="Iniciar atendimento?" />
+			</p:commandButton>
+			<p:commandButton value="Salvar" icon="ui-icon-disk"
+				disabled="#{not clinicaAtendimentoBean.agenda.podeSalvarAtendimento}"
+				actionListener="#{clinicaAtendimentoBean.salvar}" update="@form" />
+
+			<p:commandButton value="Patologia" title="definição de patologia"
+				process="@this" actionListener="#{selecionaBean.doenca}">
+				<p:ajax event="dialogReturn" update="@form"
+					listener="#{clinicaAtendimentoBean.onPatologiaChosen}" />
+			</p:commandButton>
+
+			<p:commandButton value="Imprimir Receita Simples" ajax="false"
+				actionListener="#{clinicaAtendimentoBean.imprimirReceitaSimples}"
+				disabled="#{not clinicaAtendimentoBean.agenda.podeImprimirReceita}"
+				update="@form" icon="ui-icon-print"
+				onclick="this.form.target='_blank'" />
+
+		</p:toolbarGroup>
+
+		<p:toolbarGroup align="right">
+			<p:commandButton value="Pesquisa" icon="ui-icon-search"
+				actionListener="#{clinicaAtendimentoBean.setAgenda(null)}"
+				process="@this" update="@form" />
+		</p:toolbarGroup>
+
+	</p:toolbar>
+
+</ui:composition>

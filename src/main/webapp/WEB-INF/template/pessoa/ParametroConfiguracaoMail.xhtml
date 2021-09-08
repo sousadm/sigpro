@@ -1,0 +1,67 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:c="http://java.sun.com/jstl/core">
+
+	<div class="ui-fluid">
+		<p:panelGrid id="painelEmail" columns="2" style="margin-top: 5px"
+			layout="grid" columnClasses="ui-grid-col-4, ui-grid-col-8"
+			styleClass="panelgrid-noborder">
+
+			<p:outputLabel value="Conta de email" />
+			<h:panelGroup>
+				<p:inputText value="#{parametroBean.mail.userMail}"
+					style="width: 90%" />
+				<p:commandButton icon="ui-icon-check" class="button-grid"
+					title="inicia configuração de acesso"
+					actionListener="#{parametroBean.preConfiguraEmail}"
+					update="painelEmail" />
+			</h:panelGroup>
+
+			<p:outputLabel value="Servidor de email" />
+			<p:inputText value="#{parametroBean.mail.smtpHostMail}" />
+
+			<p:outputLabel value="Senha de Acesso" />
+			<p:password value="#{parametroBean.mail.pasword}"
+				title="digite a senha para modificar" />
+
+			<p:outputLabel value="Porta de acesso" />
+			<p:inputText value="#{parametroBean.mail.smtpPortMail}" />
+
+			<p:outputLabel value="Assinatura email" />
+			<p:editor value="#{parametroBean.mail.assinatura}" height="150"
+				styleClass="naoaceitarenter" style="width: 100%"
+				controls="bold italic underline | font size style color highlight | 
+		bullets numbering | alignleft center alignright justify | 
+		undo redo | copy cut paste pastetext | outdent indent | removeformat" />
+
+			<p:outputLabel value="Segurança" />
+			<h:panelGroup>
+				<p:selectBooleanCheckbox itemLabel="TLS"
+					value="#{parametroBean.mail.smtpStarttls}" />
+
+				<p:selectBooleanCheckbox itemLabel="SSL"
+					value="#{parametroBean.mail.smtpStartSsl}" />
+
+				<p:selectBooleanCheckbox itemLabel="Autenticação"
+					value="#{parametroBean.mail.smtpAuth}" />
+			</h:panelGroup>
+
+		</p:panelGrid>
+	</div>
+
+	<div style="margin-top: 05px;">
+		<div align="left" style="float: left; width: 50%;">
+			<p:commandButton value="Enviar e-mail"
+				actionListener="#{sendMailBean.prepara}" process="@this"
+				update="dlgSendMail" oncomplete="PF('dlgSendMail').show()" />
+		</div>
+		<div align="right" style="float: left; width: 50%;">
+			<p:commandButton value="Aplicar" icon="ui-icon-check" process="@form"
+				update="@form" actionListener="#{parametroBean.gravarMail}" />
+		</div>
+	</div>
+
+</ui:composition>

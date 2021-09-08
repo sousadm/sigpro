@@ -1,0 +1,81 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<p:toolbar style="margin-top: 05px">
+
+		<p:toolbarGroup>
+			<p:commandButton id="botaoPesquisa" value="Pesquisar"
+				icon="ui-icon-search" action="#{caixaDiarioBean.pesquisar}"
+				update="@form" />
+		</p:toolbarGroup>
+
+		<p:toolbarGroup align="right">
+			<p:commandButton value="Novo" icon="ui-icon-document"
+				actionListener="#{caixaDiarioBean.novo}" update="@form" />
+		</p:toolbarGroup>
+
+	</p:toolbar>
+
+	<div class="ui-fluid">
+		<div class="ui-g" style="margin-top: 5px; border: 1px solid silver;">
+			<div class="ui-g-12 ui-md-6">
+				<p:outputLabel value="Período de cadastro" />
+				<br />
+				<div class="ui-g-6">
+					<p:calendar navigator="true" showOn="button" mask="99/99/9999"
+						pattern="dd/MM/yyyy" value="#{caixaDiarioBean.filtro.inicio}" />
+				</div>
+				<div class="ui-g-6">
+					<p:calendar navigator="true" showOn="button" mask="99/99/9999"
+						pattern="dd/MM/yyyy" value="#{caixaDiarioBean.filtro.termino}" />
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<p:dataTable id="tabela" value="#{caixaDiarioBean.lista}" var="diario"
+		rows="8" paginator="true" paginatorAlwaysVisible="false"
+		paginatorPosition="bottom" emptyMessage="Nenhum registro encontrado."
+		lazy="true">
+
+		<p:column headerText="Data Movimentação" sortBy="#{diario.dataMov}"
+			style="width: 120px">
+			<h:outputText value="#{diario.dataMov}">
+				<f:convertDateTime pattern="dd/MM/yyyy" />
+			</h:outputText>
+		</p:column>
+
+		<p:column headerText="Data Fechamento" sortBy="#{diario.fechamento}"
+			style="width: 120px">
+			<h:outputText value="#{diario.fechamento}">
+				<f:convertDateTime pattern="dd/MM/yyyy HH:mm" timeZone="GMT-03:00" />
+			</h:outputText>
+		</p:column>
+
+		<p:column headerText="Saldo Inicial"
+			style="text-align: right; width: 100px">
+			<h:outputText value="#{diario.saldoInicial}">
+				<f:convertNumber type="currency" />
+			</h:outputText>
+		</p:column>
+
+		<p:column headerText="Saldo Final"
+			style="text-align: right; width: 100px">
+			<h:outputText value="#{diario.saldoFinal}">
+				<f:convertNumber type="currency" />
+			</h:outputText>
+		</p:column>
+
+		<p:column style="text-align: center; width: 50px">
+			<p:commandButton title="Editar" icon="ui-icon-pencil"
+				class="button-grid" update="@form"
+				actionListener="#{caixaDiarioBean.setDiario(diario)}"
+				process="@this" />
+		</p:column>
+
+	</p:dataTable>
+
+</ui:composition>

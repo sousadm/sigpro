@@ -1,0 +1,172 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:c="http://java.sun.com/jstl/core">
+
+	<div class="ui-fluid">
+		<p:tabView id="tabViewCusto" style="margin-top: 5px;">
+			<p:tab title="Aquisição">
+				<p:panelGrid columns="2" id="gridCustoCompra"
+					style="width: 100%; margin-top: 5px" layout="grid"
+					columnClasses="ui-grid-col-6, ui-grid-col-6">
+
+					<p:outputLabel value="Crédito tributário (%)" />
+					<p:inputNumber decimalPlaces="2" minValue="0"
+						value="#{parametroBean.custoFinanceiro.custo.credito}" />
+
+					<p:outputLabel value="Carga de imposto (%)" />
+					<p:inputNumber decimalPlaces="2" minValue="0"
+						value="#{parametroBean.custoFinanceiro.custo.imposto}" />
+
+					<p:outputLabel value="Despesas de aquisição (%)" />
+					<p:inputNumber decimalPlaces="2" minValue="0"
+						value="#{parametroBean.custoFinanceiro.custo.despesa}" />
+
+					<p:outputLabel value="Despesas de frete (%)" />
+					<p:inputNumber decimalPlaces="2" minValue="0"
+						value="#{parametroBean.custoFinanceiro.custo.frete}" />
+
+				</p:panelGrid>
+			</p:tab>
+
+			<p:tab title="Vendas">
+				<p:panelGrid id="gridCustoVenda" columns="2"
+					style="width: 100%; margin-top: 5px" layout="grid"
+					columnClasses="ui-grid-col-6, ui-grid-col-6">
+
+					<p:outputLabel value="Margem de contribuição (%)" />
+					<p:inputNumber id="txtMargem" decimalPlaces="2" minValue="0"
+						value="#{parametroBean.custoFinanceiro.custo.margem}">
+						<f:ajax event="change" render="gridCustoVenda	" update="markup" />
+					</p:inputNumber>
+
+					<p:outputLabel value="Margem de lucro (%)" />
+					<p:inputNumber decimalPlaces="2" minValue="0"
+						value="#{parametroBean.custoFinanceiro.custo.lucro}">
+						<f:ajax event="change" render="gridCustoVenda" update="markup" />
+					</p:inputNumber>
+
+					<p:outputLabel value="Margem residual (%)" />
+					<p:inputNumber decimalPlaces="2" minValue="0"
+						value="#{parametroBean.custoFinanceiro.custo.residual}">
+						<f:ajax event="change" render="gridCustoVenda" update="markup" />
+					</p:inputNumber>
+
+					<p:outputLabel value="Carga tributária (%)" />
+					<p:inputNumber decimalPlaces="2" minValue="0"
+						value="#{parametroBean.custoFinanceiro.custo.tributo}">
+						<f:ajax event="change" render="gridCustoVenda" update="markup" />
+					</p:inputNumber>
+
+				</p:panelGrid>
+			</p:tab>
+			<p:tab title="Fiscal">
+				<p:scrollPanel mode="native" style="width:100%;height:300px">
+
+					<p:panelGrid id="gridProdutoFiscal" columns="2" layout="grid"
+						columnClasses="ui-grid-col-6, ui-grid-col-6"
+						styleClass="panelgrid-noborder" style="margin-top: 20px">
+
+						<p:outputLabel value="Alíquota de ISS (%)" />
+						<p:inputNumber value="#{parametroBean.custoFinanceiro.fiscal.iss}"
+							decimalPlaces="2" minValue="0" />
+
+						<p:outputLabel value="Alíquota interna de icms (%)" />
+						<p:inputNumber
+							value="#{parametroBean.custoFinanceiro.fiscal.icms}"
+							decimalPlaces="2" minValue="0" />
+
+						<p:outputLabel value="Alíquota pra fora de icms (%)" />
+						<p:inputNumber
+							value="#{parametroBean.custoFinanceiro.fiscal.icmsFora}"
+							decimalPlaces="2" minValue="0" />
+
+						<p:outputLabel value="Alíquota PIS (%)" />
+						<p:inputNumber value="#{parametroBean.custoFinanceiro.fiscal.pis}"
+							decimalPlaces="2" minValue="0" />
+
+						<p:outputLabel value="Alíquota COFINS (%)" />
+						<p:inputNumber
+							value="#{parametroBean.custoFinanceiro.fiscal.cofins}"
+							decimalPlaces="2" minValue="0" />
+
+						<p:outputLabel value="Modalidade" />
+						<p:selectOneMenu
+							value="#{parametroBean.custoFinanceiro.fiscal.modalidade}"
+							autoWidth="false">
+							<f:selectItem itemLabel="selecione" />
+							<f:selectItems value="#{listaTipoBean.modalidadeCalculoIcms}"
+								var="modalidade" itemValue="#{modalidade}"
+								itemLabel="#{modalidade}" />
+						</p:selectOneMenu>
+
+						<p:outputLabel value="Origem" />
+						<p:selectOneMenu
+							value="#{parametroBean.custoFinanceiro.fiscal.origem}"
+							autoWidth="false">
+							<f:selectItem itemLabel="selecione" />
+							<f:selectItems value="#{listaTipoBean.origem}" var="origem"
+								itemValue="#{origem}" itemLabel="#{origem}" />
+						</p:selectOneMenu>
+
+						<p:outputLabel value="CST do icms" />
+						<h:panelGroup>
+							<p:selectOneMenu
+								value="#{parametroBean.custoFinanceiro.fiscal.cst}"
+								rendered="#{parametroBean.empresaNormal}" autoWidth="false">
+								<f:selectItem itemLabel="selecione" />
+								<f:selectItems value="#{listaTipoBean.cstIcms}" var="icms"
+									itemValue="#{icms}" itemLabel="#{icms}" />
+							</p:selectOneMenu>
+							<p:selectOneMenu
+								value="#{parametroBean.custoFinanceiro.fiscal.cstSN}"
+								rendered="#{not parametroBean.empresaNormal}" autoWidth="false">
+								<f:selectItem itemLabel="selecione" />
+								<f:selectItems value="#{listaTipoBean.cstIcmsSN}" var="icms"
+									itemValue="#{icms}" itemLabel="#{icms}" />
+							</p:selectOneMenu>
+						</h:panelGroup>
+
+						<p:outputLabel value="CST do pis" />
+						<p:selectOneMenu
+							value="#{parametroBean.custoFinanceiro.fiscal.cstPIS}"
+							autoWidth="false">
+							<f:selectItem itemLabel="selecione" />
+							<f:selectItems value="#{listaTipoBean.cstPIS}" var="cstPis"
+								itemValue="#{cstPis}" itemLabel="#{cstPis}" />
+						</p:selectOneMenu>
+
+						<p:outputLabel value="CST do cofins" />
+						<p:selectOneMenu
+							value="#{parametroBean.custoFinanceiro.fiscal.cstCofins}"
+							autoWidth="false">
+							<f:selectItem itemLabel="selecione" />
+							<f:selectItems value="#{listaTipoBean.cstCofins}" var="cstCofins"
+								itemValue="#{cstCofins}" itemLabel="#{cstCofins}" />
+						</p:selectOneMenu>
+
+						<p:outputLabel value="CST do IPI" />
+						<p:selectOneMenu
+							value="#{parametroBean.custoFinanceiro.fiscal.cstIPI}"
+							autoWidth="false">
+							<f:selectItem itemLabel="selecione" />
+							<f:selectItems value="#{listaTipoBean.cstIPI}" var="cstIpi"
+								itemValue="#{cstIpi}" itemLabel="#{cstIpi}" />
+						</p:selectOneMenu>
+
+					</p:panelGrid>
+
+				</p:scrollPanel>
+			</p:tab>
+		</p:tabView>
+
+	</div>
+
+	<div align="right" style="margin-top: 5px">
+		<p:commandButton value="Aplicar" icon="ui-icon-check" process="@form"
+			update="@form" actionListener="#{parametroBean.gravarCusto}" />
+	</div>
+
+</ui:composition>

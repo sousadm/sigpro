@@ -1,0 +1,25 @@
+<html>
+    <body>
+    	<h1>PLANO DE AÇÃO</h1>
+    	</br>
+    	Att: $nome </br>
+    	$mensagem </br></br>
+    	
+        <table border="1" cellspacing="0" cellpadding="3">
+            <tr>
+                <th>O que fazer?</th>
+                <th>Quando?</th>
+                <th>Justificativa</th>
+                <th>Procedimento</th>
+            </tr>
+            #foreach ($item in $lista)
+	            <tr>
+	                <td>$item.que</td>
+	                <td>$dateTool.format('default_date', $item.quando)</td>
+	                <td>$item.porque</td>
+	                <td>$item.como</td>
+	            </tr>
+            #end
+        </table>
+    </body>
+</html>

@@ -1,0 +1,34 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<p:panelGrid columns="2" layout="grid"
+		rendered="#{pessoaBean.pessoa.defineVendedor}"
+		style="margin-top: 20px" styleClass="panelgrid-noborder">
+
+		<p:outputLabel value="Definido como vendedor" style="color:blue;" />
+		<p:inputSwitch value="#{pessoaBean.pessoa.defineVendedor}"
+			offLabel="não" onLabel="sim" styleClass="botao-grid">
+			<f:ajax render="@form" listener="#{pessoaBean.setTabDerivado}"
+				update="formCadastro:tabGrupo" />
+		</p:inputSwitch>
+
+		<p:outputLabel value="Data de cadastro" />
+		<h:outputText class="negrito"
+			value="#{pessoaBean.pessoa.vendedor.dataCadastro}">
+			<f:convertDateTime pattern="dd/MM/yyyy HH:mm" timeZone="GMT-03:00" />
+		</h:outputText>
+
+		<p:outputLabel value="Percentual de Comissão" for="txtComissao" />
+		<p:inputNumber id="txtComissao" minValue="0" decimalSeparator=","
+			thousandSeparator="." decimalPlaces="2" emptyValue="zero"
+			value="#{pessoaBean.pessoa.vendedor.comissao}" />
+
+		<p:outputLabel />
+		<p:outputLabel />
+
+	</p:panelGrid>
+
+</ui:composition>

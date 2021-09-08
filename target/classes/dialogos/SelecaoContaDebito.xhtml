@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+<h:head>
+	<title>Conta Bancária</title>
+	<h:outputStylesheet library="sigpro" name="styles/custom.css" />
+	<style>
+body {
+	margin: 10px
+}
+</style>
+</h:head>
+<h:body>
+
+	<h:form>
+
+		<p:focus />
+
+		<div>
+			<p:commandButton value="Pesquisar"
+				action="#{selecaoContaBean.pesquisarContaDebito}" update="@form" />
+		</div>
+
+		<p:dataTable value="#{selecaoContaBean.lista}" var="item"
+			scrollable="true" style="margin-top: 1px"
+			emptyMessage="Nenhum item encontrado." rows="10" paginator="true"
+			paginatorAlwaysVisible="false" paginatorPosition="bottom">
+			<p:column headerText="Banco">
+				<h:outputText value="#{item.banco.codigo}" />
+			</p:column>
+			<p:column headerText="Nome do Banco">
+				<h:outputText value="#{item.banco.descricao}" />
+			</p:column>
+			<p:column headerText="Número">
+				<h:outputText value="#{item.numero}" />
+			</p:column>
+			<p:column headerText="Agência">
+				<h:outputText value="#{item.agencia}" />
+			</p:column>
+
+			<p:column style="width: 30px; text-align: center">
+				<p:commandButton icon="ui-icon-check" title="Selecionar"
+					process="@this" action="#{selecaoContaBean.selecionar(item)}" />
+			</p:column>
+
+		</p:dataTable>
+
+	</h:form>
+
+</h:body>
+
+</html>

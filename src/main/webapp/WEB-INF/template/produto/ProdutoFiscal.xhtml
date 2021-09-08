@@ -1,0 +1,101 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:c="http://java.sun.com/jstl/core">
+
+	<p:outputLabel class="negrito" value="#{produtoBean.produto.nome}"
+		style="margin-left: 10px" />
+
+	<p:panelGrid id="gridProdutoFiscal" columns="4" layout="grid"
+		columnClasses="ui-grid-col-2, ui-grid-col-4, ui-grid-col-2, ui-grid-col-4"
+		styleClass="panelgrid-noborder" style="margin-top: 20px">
+
+		<p:outputLabel value="Alíquota de ISS (%)"
+			rendered="#{produtoBean.produto.tipoServico}" />
+		<p:inputNumber value="#{produtoBean.produto.fiscal.iss}"
+			rendered="#{produtoBean.produto.tipoServico}" decimalPlaces="2"
+			minValue="0" />
+
+		<p:outputLabel value="Alíquota interna de icms (%)"
+			rendered="#{not produtoBean.produto.tipoServico}" />
+		<p:inputNumber value="#{produtoBean.produto.fiscal.icms}"
+			rendered="#{not produtoBean.produto.tipoServico}" decimalPlaces="2"
+			minValue="0" />
+
+		<p:outputLabel value="Alíquota pra fora de icms (%)"
+			rendered="#{not produtoBean.produto.tipoServico}" />
+		<p:inputNumber value="#{produtoBean.produto.fiscal.icmsFora}"
+			rendered="#{not produtoBean.produto.tipoServico}" decimalPlaces="2"
+			minValue="0" />
+
+		<p:outputLabel value="Alíquota PIS (%)" />
+		<p:inputNumber value="#{produtoBean.produto.fiscal.pis}"
+			decimalPlaces="2" minValue="0" />
+
+		<p:outputLabel value="Alíquota COFINS (%)" />
+		<p:inputNumber value="#{produtoBean.produto.fiscal.cofins}"
+			decimalPlaces="2" minValue="0" />
+
+		<p:outputLabel value="Modalidade"
+			rendered="#{not produtoBean.produto.tipoServico}" />
+		<p:selectOneMenu rendered="#{not produtoBean.produto.tipoServico}"
+			value="#{produtoBean.produto.fiscal.modalidade}" autoWidth="false">
+			<f:selectItem itemLabel="selecione" />
+			<f:selectItems value="#{listaTipoBean.modalidadeCalculoIcms}"
+				var="modalidade" itemValue="#{modalidade}" itemLabel="#{modalidade}" />
+		</p:selectOneMenu>
+
+		<p:outputLabel value="Origem"
+			rendered="#{not produtoBean.produto.tipoServico}" />
+		<p:selectOneMenu value="#{produtoBean.produto.fiscal.origem}"
+			rendered="#{not produtoBean.produto.tipoServico}" autoWidth="false">
+			<f:selectItem itemLabel="selecione" />
+			<f:selectItems value="#{listaTipoBean.origem}" var="origem"
+				itemValue="#{origem}" itemLabel="#{origem}" />
+		</p:selectOneMenu>
+
+		<p:outputLabel value="CST do icms" />
+		<h:panelGroup>
+			<p:selectOneMenu value="#{produtoBean.produto.fiscal.cst}"
+				rendered="#{produtoBean.empresaNormal}" autoWidth="false">
+				<f:selectItem itemLabel="selecione" />
+				<f:selectItems value="#{listaTipoBean.cstIcms}" var="icms"
+					itemValue="#{icms}" itemLabel="#{icms}" />
+			</p:selectOneMenu>
+			<p:selectOneMenu value="#{produtoBean.produto.fiscal.cstSN}"
+				rendered="#{not produtoBean.empresaNormal}" autoWidth="false">
+				<f:selectItem itemLabel="selecione" />
+				<f:selectItems value="#{listaTipoBean.cstIcmsSN}" var="icms"
+					itemValue="#{icms}" itemLabel="#{icms}" />
+			</p:selectOneMenu>
+		</h:panelGroup>
+
+		<p:outputLabel value="CST do pis" />
+		<p:selectOneMenu value="#{produtoBean.produto.fiscal.cstPIS}"
+			autoWidth="false">
+			<f:selectItem itemLabel="selecione" />
+			<f:selectItems value="#{listaTipoBean.cstPIS}" var="cstPis"
+				itemValue="#{cstPis}" itemLabel="#{cstPis}" />
+		</p:selectOneMenu>
+
+		<p:outputLabel value="CST do cofins" />
+		<p:selectOneMenu value="#{produtoBean.produto.fiscal.cstCofins}"
+			autoWidth="false">
+			<f:selectItem itemLabel="selecione" />
+			<f:selectItems value="#{listaTipoBean.cstCofins}" var="cstCofins"
+				itemValue="#{cstCofins}" itemLabel="#{cstCofins}" />
+		</p:selectOneMenu>
+
+		<p:outputLabel value="CST do IPI" />
+		<p:selectOneMenu value="#{produtoBean.produto.fiscal.cstIPI}"
+			autoWidth="false">
+			<f:selectItem itemLabel="selecione" />
+			<f:selectItems value="#{listaTipoBean.cstIPI}" var="cstIpi"
+				itemValue="#{cstIpi}" itemLabel="#{cstIpi}" />
+		</p:selectOneMenu>
+
+	</p:panelGrid>
+
+</ui:composition>

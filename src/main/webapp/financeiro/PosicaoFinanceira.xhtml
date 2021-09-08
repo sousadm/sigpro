@@ -1,0 +1,160 @@
+<ui:composition template="/WEB-INF/template/LayoutPadrao.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui" xmlns:o="http://omnifaces.org/ui">
+
+	<ui:define name="titulo">Posição Financeira</ui:define>
+
+	<f:metadata>
+		<f:param name="dummy" />
+		<f:event listener="#{posicaoFinanceiraBean.inicializar}"
+			type="preRenderView"></f:event>
+	</f:metadata>
+
+	<ui:define name="corpo">
+
+		<h1 style="margin-top: 65px">Posição Financeira</h1>
+
+		<h:form id="formCadastro">
+
+			<p:toolbar style="margin-top: 05px">
+				<p:toolbarGroup>
+					<p:commandButton value="Pesquisar"
+						action="#{posicaoFinanceiraBean.pesquisar}" update="@form"
+						onclick="jQuery(this).addClass('ui-state-disabled')" />
+
+					<p:commandButton value="Gerar crédito" process="@this"
+						disabled="#{not posicaoFinanceiraBean.posicao.temCredito}"
+						update="dlgCredito" oncomplete="PF('dlgCredito').show()" />
+
+				</p:toolbarGroup>
+				<p:toolbarGroup align="right">
+					<p:commandButton value="Imprimir" icon="ui-icon-print"
+						id="botaoFicha" ajax="false"
+						action="#{posicaoFinanceiraBean.imprimir}"
+						onclick="this.form.target='_blank'" />
+				</p:toolbarGroup>
+			</p:toolbar>
+
+			<p:messages autoUpdate="true" closable="true" />
+
+			<div class="ui-fluid">
+
+				<div class="ui-g" style="margin-top: 5px; border: 1px solid silver;">
+					<div class="ui-g-12 ui-md-6">
+						<p:outputLabel value="Pessoa" for="cliente" />
+						<div class="ui-inputgroup">
+							<p:commandButton icon="ui-icon-search" title="Pesquisar pessoa"
+								process="@this" update="@none" ignoreAutoUpdate="true"
+								styleClass="button-grid" action="#{selecionaBean.pessoa}">
+								<p:ajax event="dialogReturn" update="cliente"
+									listener="#{posicaoFinanceiraBean.onPessoaChosen}"
+									ignoreAutoUpdate="true" />
+							</p:commandButton>
+							<p:inputText id="cliente"
+								value="#{posicaoFinanceiraBean.posicao.pessoa.nome}"
+								required="true" requiredMessage="informe a pessoa para análise"
+								readonly="true" />
+						</div>
+					</div>
+					<div class="ui-g-6 ui-md-3">
+						<p:outputLabel value="Período inicial" for="inicio" />
+						<p:calendar id="inicio" locale="pt_BR" mask="99/99/9999"
+							pattern="dd/MM/yyyy" navigator="true" showOn="button"
+							required="true" requiredMessage="informe data inicial"
+							value="#{posicaoFinanceiraBean.posicao.inicio}" />
+					</div>
+					<div class="ui-g-6 ui-md-3">
+						<p:outputLabel value="Período final" for="termino" />
+						<p:calendar id="termino" locale="pt_BR" mask="99/99/9999"
+							pattern="dd/MM/yyyy" navigator="true" showOn="button"
+							required="true" requiredMessage="informe data final"
+							value="#{posicaoFinanceiraBean.posicao.termino}" />
+					</div>
+
+
+					<div class="ui-g-12 ui-md-3">
+						<p:outputLabel value="Saldo Inicial" />
+						<p:inputText value="#{posicaoFinanceiraBean.posicao.saldoInicial}"
+							readonly="true" class="bloqueado">
+							<f:convertNumber type="currency" />
+						</p:inputText>
+					</div>
+					<div class="ui-g-12 ui-md-3">
+						<p:outputLabel value="Valor Entradas" />
+						<p:inputText value="#{posicaoFinanceiraBean.posicao.entrada}"
+							readonly="true" class="bloqueado">
+							<f:convertNumber type="currency" />
+						</p:inputText>
+					</div>
+					<div class="ui-g-12 ui-md-3">
+						<p:outputLabel value="Valor Saídas" />
+						<p:inputText value="#{posicaoFinanceiraBean.posicao.saida}"
+							readonly="true" class="bloqueado">
+							<f:convertNumber type="currency" />
+						</p:inputText>
+					</div>
+					<div class="ui-g-12 ui-md-3">
+						<p:outputLabel value="Saldo" />
+						<p:inputText value="#{posicaoFinanceiraBean.posicao.saldoAtual}"
+							readonly="true" class="bloqueado negrito">
+							<f:convertNumber type="currency" />
+						</p:inputText>
+					</div>
+				</div>
+				
+			</div>
+
+			<p:dataTable var="item" style="text-align: top; margin-top: 5px;"
+				value="#{posicaoFinanceiraBean.posicao.detalhes}" rows="10"
+				paginator="true" paginatorAlwaysVisible="false"
+				paginatorPosition="bottom">
+
+				<p:column headerText="Data" width="120">
+					<h:outputText value="#{item.data}">
+						<f:convertDateTime pattern="dd/MM/yyyy"
+							timeZone="#{initParam.timezone}" />
+					</h:outputText>
+				</p:column>
+				<p:column headerText="Memorando">
+					<h:outputText value="#{item.memorando}" />
+				</p:column>
+				<p:column headerText="Valor" style="text-align: right;" width="130">
+					<h:outputText value="#{item.valor}">
+						<f:convertNumber type="currency" />
+					</h:outputText>
+				</p:column>
+
+			</p:dataTable>
+			
+		</h:form>
+
+		<p:dialog id="dlgCredito" header="Dinheiro" widgetVar="dlgCredito"
+			closeOnEscape="true" modal="true" maximizable="false" height="120"
+			width="280">
+			<h:form id="formCredito">
+
+				<p:outputLabel value="Valor" for="dinheiro" />
+				<br />
+				<p:inputNumber id="dinheiro" minValue="0" decimalSeparator=","
+					thousandSeparator="." decimalPlaces="2" required="true"
+					maxValue="#{posicaoFinanceiraBean.posicao.valorCredito}"
+					value="#{posicaoFinanceiraBean.valorCredito}" />
+				<br />
+				<br />
+				<p:commandButton value="Confirma" icon="ui-icon-check"
+					process="dlgCredito" update="formCadastro"
+					action="#{posicaoFinanceiraBean.gravarCredito}"
+					oncomplete="if(!args.validationFailed) PF('dlgCredito').hide()" />
+
+			</h:form>
+		</p:dialog>
+
+
+	</ui:define>
+
+</ui:composition>
+
+<!-- rendered="#{not empty posicaoFinanceiraBean.posicao.detalhes}" -->

@@ -1,0 +1,70 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<h1 style="margin-top: 65px">Pesquisa de Veículo</h1>
+
+	<p:toolbar style="margin-top: 05px">
+		<p:toolbarGroup>
+			<p:splitButton id="botaoPesquisa" value="Pesquisar"
+				icon="ui-icon-search" action="#{veiculoBean.pesquisar}"
+				update="@form">
+				<p:separator />
+				<p:menuitem value="Imprimir lista" icon="ui-icon-print" ajax="false"
+					process="@form" action="#{veiculoBean.imprimir}" target="_blank" />
+			</p:splitButton>
+		</p:toolbarGroup>
+
+		<p:toolbarGroup align="right">
+			<p:commandButton value="Novo" icon="ui-icon-document"
+				actionListener="#{veiculoBean.novo}" process="@this" update="@form" />
+		</p:toolbarGroup>
+	</p:toolbar>
+
+	<div class="ui-fluid">
+		<div class="ui-g" style="margin-top: 5px; border: 1px solid silver;">
+			<div class="ui-g-12 ui-md-4">
+				<p:outputLabel value="Placa" />
+				<p:inputText value="#{veiculoBean.filtro.codigo}" />
+			</div>
+			<div class="ui-g-12 ui-md-8">
+				<p:outputLabel value="Nome do Proprietário" />
+				<p:inputText value="#{veiculoBean.filtro.nome}" />
+			</div>
+		</div>
+	</div>
+
+	<p:dataTable id="tabela" value="#{veiculoBean.listaVeiculo}"
+		var="veiculo" reflow="true" style="margin-top: 05px" scrollable="true"
+		emptyMessage="Nenhum registro encontrado." rows="8" paginator="true"
+		paginatorAlwaysVisible="false" lazy="true" paginatorPosition="bottom">
+		<p:column headerText="Placa" width="80" sortBy="#{veiculo.placa}">
+			<h:outputText value="#{veiculo.placa}" />
+		</p:column>
+		<p:column headerText="Proprietário" sortBy="#{veiculo.pessoa.nome}">
+			<h:outputText value="#{veiculo.pessoa.nome}" />
+		</p:column>
+		<p:column headerText="Descrição">
+			<h:outputText value="#{veiculo.descricao}" />
+		</p:column>
+		<p:column headerText="Marca">
+			<h:outputText value="#{veiculo.marca.descricao}" />
+		</p:column>
+		<p:column headerText="Combustível">
+			<h:outputText value="#{veiculo.tipoCombustivel.toString()}" />
+		</p:column>
+		<p:column headerText="Cor" width="100">
+			<h:outputText value="#{veiculo.cor.toString()}" />
+		</p:column>
+		<p:column style="text-align: center; width: 35px">
+			<p:commandButton title="Editar" icon="ui-icon-pencil"
+				class="button-grid" update="@form"
+				actionListener="#{veiculoBean.setVeiculo(veiculo)}" process="@this" />
+		</p:column>
+
+	</p:dataTable>
+
+	<p:blockUI block="formCadastro" trigger="botaoPesquisa" />
+</ui:composition>

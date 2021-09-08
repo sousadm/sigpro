@@ -1,0 +1,38 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+
+	<div align="right">
+		<p:commandButton value="Exame" title="adiciona exames"
+			disabled="#{not clinicaAtendimentoBean.agenda.podeSalvarAtendimento}"
+			process="@this" actionListener="#{selecionaBean.exame}">
+			<p:ajax event="dialogReturn" update="tabelaExames"
+				listener="#{clinicaAtendimentoBean.onExameChosen}" />
+		</p:commandButton>
+	</div>
+
+	<p:dataTable id="tabelaExames" var="item"
+		value="#{clinicaAtendimentoBean.agenda.exames}"
+		style="margin-top: 5px; width: 100%" rows="8" scrollable="true"
+		paginator="true" paginatorAlwaysVisible="false"
+		paginatorPosition="bottom" emptyMessage="nenhum item encontrado"
+		lazy="true">
+
+		<p:column headerText="Código" width="90" resizable="true">
+			<h:outputText value="#{item.exame.codigo}" />
+		</p:column>
+		<p:column headerText="Descrição">
+			<h:outputText value="#{item.exame.descricao}" />
+		</p:column>
+		<p:column width="30">
+			<p:commandButton icon="ui-icon-trash" process="@this" title="Remover"
+				class="button-grid" update="tabelaExames"
+				actionListener="#{clinicaAtendimentoBean.removerDoenca(linha)}" />
+		</p:column>
+
+	</p:dataTable>
+
+</ui:composition>

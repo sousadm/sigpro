@@ -1,0 +1,31 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<p:dialog id="dlgEncerramento" header="Encerramento"
+		widgetVar="dlgEncerramento" closeOnEscape="true" modal="true"
+		maximizable="false">
+		<h:form id="formCadastroEncerramento">
+
+			<p:panelGrid columns="1" styleClass="ui-noborder">
+
+				<h:panelGroup>
+					<p:outputLabel value="Data" />
+					<br />
+					<p:calendar size="8" showOn="button" mask="99/99/9999"
+						pattern="dd/MM/yyyy"
+						value="#{expedicaoBean.expedicao.dataEmissao}" />
+				</h:panelGroup>
+				<p:commandButton value="Confirmar" icon="ui-icon-check"
+					update="@all" process="@form" title="conclui operação"
+					action="#{expedicaoBean.emitirPedido}"
+					onclick="jQuery(this).addClass('ui-state-disabled')"
+					oncomplete="if(!args.validationFailed) PF('dlgEncerramento').hide()" />
+
+			</p:panelGrid>
+		</h:form>
+	</p:dialog>
+
+</ui:composition>

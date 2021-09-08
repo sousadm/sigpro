@@ -1,0 +1,55 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<p:blockUI block="@form" trigger="botaoPesquisa" />
+
+	<p:toolbar style="margin-top: 05px">
+		<p:toolbarGroup>
+			<p:commandButton id="botaoPesquisa" value="Pesquisar"
+				icon="ui-icon-search" update="@form"
+				action="#{projetoBean.consultar}" />
+		</p:toolbarGroup>
+
+		<p:toolbarGroup align="right">
+			<p:commandButton value="Novo" icon="ui-icon-document"
+				action="#{projetoBean.novo}" update="@form" />
+		</p:toolbarGroup>
+
+	</p:toolbar>
+
+	<p:dataTable id="tabela" value="#{projetoBean.lista}" var="projeto"
+		scrollable="true" style="margin-top: 5px"
+		emptyMessage="Nenhum registro encontrado." rows="10" paginator="true"
+		paginatorAlwaysVisible="false" paginatorPosition="bottom">
+
+		<p:column headerText="Abertura" style="width: 100px">
+			<h:outputText value="#{projeto.abertura.dataAbertura}">
+				<f:convertDateTime pattern="dd/MM/yyyy" />
+			</h:outputText>
+		</p:column>
+		<p:column headerText="Titulo do Projeto" style="width: 100%">
+			<h:outputText value="#{projeto.titulo}" />
+		</p:column>
+		<p:column headerText="Previsão" style="width: 90px">
+			<h:outputText value="#{projeto.abertura.dataPrevistaTermino}">
+				<f:convertDateTime pattern="dd/MM/yyyy" />
+			</h:outputText>
+		</p:column>
+		<p:column headerText="Valor" style="text-align: right; width: 65px">
+			<h:outputText value="#{projeto.abertura.valorPrevisto}">
+				<f:convertNumber type="currency" currencySymbol="" />
+			</h:outputText>
+		</p:column>
+
+		<p:column style="width: 40px; text-align: center">
+			<p:commandButton title="Editar" icon="ui-icon-pencil"
+				class="button-grid" update="@form"
+				actionListener="#{projetoBean.setProjeto(projeto)}" process="@this" />
+		</p:column>
+
+	</p:dataTable>
+
+</ui:composition>

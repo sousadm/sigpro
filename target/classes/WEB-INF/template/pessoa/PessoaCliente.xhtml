@@ -1,0 +1,125 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<div class="ui-fluid">
+		<h:panelGroup id="painelCliente2"
+			rendered="#{pessoaBean.pessoa.defineCliente}">
+			<div class="ui-g">
+
+				<div class="ui-g-12 ui-md-4">
+					<p:outputLabel value="Limite de crédito" for="limiteCredito" />
+					<p:inputNumber id="limiteCredito" minValue="0" decimalSeparator=","
+						thousandSeparator="." decimalPlaces="2"
+						value="#{pessoaBean.pessoa.cliente.limiteCredito}" />
+				</div>
+				<div class="ui-g-12 ui-md-4">
+					<p:outputLabel value="Prazo de pagamento (dias)" for="prazoCredito" />
+					<p:inputNumber id="prazoCredito" minValue="0" decimalSeparator=","
+						thousandSeparator="." decimalPlaces="2"
+						value="#{pessoaBean.pessoa.cliente.limitePrazo}" />
+				</div>
+				<div class="ui-g-12 ui-md-4">
+					<p:outputLabel value="Limite de parcela" for="limiteParcela" />
+					<p:spinner id="limiteParcela"
+						value="#{pessoaBean.pessoa.cliente.limiteParcela}" min="0"
+						max="10" />
+				</div>
+
+				<div class="ui-g-12 ui-md-6">
+					<p:outputLabel value="Tag XML NFe produto" />
+					<p:inputText maxlength="100"
+						value="#{pessoaBean.pessoa.cliente.tagFiscalProduto}" />
+				</div>
+				<div class="ui-g-12 ui-md-6">
+					<h:outputLabel value="Situação do crédito" />
+					<p:selectOneMenu value="#{pessoaBean.pessoa.cliente.situacao}"
+						autoWidth="false">
+						<f:selectItems value="#{listaTipoBean.tipoSituacaoCredito}"
+							var="sitCredito" itemValue="#{sitCredito}"
+							itemLabel="#{sitCredito.descricao}" />
+						<f:ajax immediate="true" render="@form" />
+					</p:selectOneMenu>
+				</div>
+				<div class="ui-g-12 ui-md-6">
+					<p:outputLabel value="E-mail (extra fiscal)" for="emailExtraUm" />
+					<p:inputText id="emailExtraUm" maxlength="150"
+						style="text-transform: lowercase"
+						value="#{pessoaBean.pessoa.cliente.emailExtraPrimeiro}" />
+				</div>
+				<div class="ui-g-12 ui-md-6">
+					<p:outputLabel value="E-mail (extra fiscal)" for="emailExtraDois" />
+					<p:inputText id="emailExtraDois" maxlength="150"
+						style="text-transform: lowercase"
+						value="#{pessoaBean.pessoa.cliente.emailExtraSegundo}" />
+				</div>
+
+				<div class="ui-g-12 ui-md-6">
+					<p:outputLabel value="Centro de custo" for="ccusto_cliente" />
+					<p:selectOneMenu id="ccusto_cliente" autoWidth="false"
+						value="#{pessoaBean.pessoa.cliente.centroDeCustoCliente}">
+						<f:selectItem itemLabel="Selecione..." />
+						<f:selectItems value="#{pessoaBean.listaCusto}" var="a"
+							itemValue="#{a}" itemLabel="#{a.descricao}" />
+					</p:selectOneMenu>
+				</div>
+
+				<h:panelGroup
+					rendered="#{pessoaBean.pessoa.principal or pessoaBean.contrate}">
+					<div class="ui-g-12 ui-md-6">
+						<h:outputLabel value="Atividade Principal" />
+						<p:selectOneMenu value="#{pessoaBean.pessoa.atividade}"
+							disabled="#{not pessoaBean.contrate}" autoWidth="false">
+							<f:selectItem itemLabel="selecione" />
+							<f:selectItems value="#{listaTipoBean.tipoAtividadePrincipal}"
+								var="atividade" itemValue="#{atividade}"
+								itemLabel="#{atividade.descricao}" />
+							<f:ajax immediate="true" render="@form" />
+						</p:selectOneMenu>
+					</div>
+				</h:panelGroup>
+
+			</div>
+
+		</h:panelGroup>
+	</div>
+
+</ui:composition>
+
+
+<!-- 				<div class="ui-g-12 ui-md-6"> -->
+<!-- 					<h:outputText value="Visita na segunda-feira" /> -->
+<!-- 					<p:inputSwitch value="#{pessoaBean.pessoa.cliente.visitaSegunda}" /> -->
+<!-- 				</div> -->
+<!-- 				<div class="ui-g-12 ui-md-6"> -->
+<!-- 					<h:outputText value="Visita na terça-feira" /> -->
+<!-- 					<p:inputSwitch value="#{pessoaBean.pessoa.cliente.visitaTerca}" /> -->
+<!-- 				</div> -->
+<!-- 				<div class="ui-g-12 ui-md-6"> -->
+<!-- 					<h:outputText value="Visita na quarta-feira" /> -->
+<!-- 					<p:inputSwitch value="#{pessoaBean.pessoa.cliente.visitaQuarta}" /> -->
+<!-- 				</div> -->
+<!-- 				<div class="ui-g-12 ui-md-6"> -->
+<!-- 					<h:outputText value="Visita na quinta-feira" /> -->
+<!-- 					<p:inputSwitch value="#{pessoaBean.pessoa.cliente.visitaQuinta}" /> -->
+<!-- 				</div> -->
+<!-- 				<div class="ui-g-12 ui-md-6"> -->
+<!-- 					<h:outputText value="Visita na sexta-feira" /> -->
+<!-- 					<p:inputSwitch value="#{pessoaBean.pessoa.cliente.visitaSexta}" /> -->
+<!-- 				</div> -->
+<!-- 				<div class="ui-g-12 ui-md-6"> -->
+<!-- 					<h:outputText value="Visita no sábado" /> -->
+<!-- 					<p:inputSwitch value="#{pessoaBean.pessoa.cliente.visitaSabado}" /> -->
+<!-- 				</div> -->
+<!-- 				<div class="ui-g-12 ui-md-6"> -->
+<!-- 					<h:outputText value="Visita no domingo" /> -->
+<!-- 					<p:inputSwitch value="#{pessoaBean.pessoa.cliente.visitaDomingo}" /> -->
+<!-- 				</div> -->
+<!-- 				<div class="ui-g-12 ui-md-6"> -->
+<!-- 					<p:outputLabel value="Repique de visita (dias)" for="repique" /> -->
+<!-- 					<p:spinner id="repique" -->
+<!-- 						value="#{pessoaBean.pessoa.cliente.visitaRepique}" min="0" -->
+<!-- 						max="90" /> -->
+<!-- 				</div> -->

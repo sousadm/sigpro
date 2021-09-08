@@ -1,0 +1,14 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<p:toolbar style="margin-top: 05px">
+		<p:toolbarGroup>
+			<p:commandButton value="Salvar" id="botaoSalvar"
+				action="#{pessoaBean.salvar}" update="@form" />
+		</p:toolbarGroup>
+	</p:toolbar>
+
+</ui:composition>

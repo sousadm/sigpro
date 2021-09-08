@@ -1,0 +1,68 @@
+<ui:composition template="/WEB-INF/template/LayoutPadrao.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<ui:define name="titulo">Agenda de Contato</ui:define>
+
+	<ui:define name="corpo">
+
+		<h:form id="frmPesquisa">
+
+			<p:focus />
+
+			<h1 style="margin-top: 65px">Agenda de Contato</h1>
+
+			<p:messages autoUpdate="true" closable="true" />
+
+			<p:toolbar style="margin-top: 05px">
+				<p:toolbarGroup>
+					<p:commandButton value="Pesquisar" update="@form"
+						action="#{agendaBean.pesquisar}" />
+					<span class="ui-separator"> <span
+						class="ui-icon ui-icon-grip-dotted-vertical" />
+					</span>
+					<p:commandButton value="Imprimir" ajax="false"
+						disabled="#{empty agendaBean.lista}"
+						action="#{agendaBean.imprimir}" update="@form" />
+				</p:toolbarGroup>
+
+			</p:toolbar>
+
+			<p:dataTable id="tabela" value="#{agendaBean.lista}" var="item"
+				rowIndexVar="linha" style="margin-top: 5px" scrollable="true"
+				emptyMessage="Nenhum registro encontrado." rows="10"
+				paginator="true" paginatorAlwaysVisible="false"
+				paginatorPosition="bottom">
+
+				<p:column headerText="Previsão"
+					style="text-align: center; width: 120px">
+					<h:outputText value="#{item.dataPrevista}">
+						<f:convertDateTime pattern="dd/MM/yyyy HH:mm" />
+					</h:outputText>
+				</p:column>
+				<p:column headerText="Emissão"
+					style="text-align: center; width: 90px">
+					<h:outputText value="#{item.dataEmissao}">
+						<f:convertDateTime pattern="dd/MM/yyyy" />
+					</h:outputText>
+				</p:column>
+				<p:column headerText="Nome do contato" style="width: 250px">
+					<h:outputText value="#{item.contato.nome}" />
+				</p:column>
+				<p:column headerText="Fone" style="width: 80px">
+					<h:outputText value="#{item.contato.fone}" />
+				</p:column>
+				<p:column headerText="Observação">
+					<h:outputText value="#{item.observacao}" />
+				</p:column>
+
+			</p:dataTable>
+
+		</h:form>
+
+	</ui:define>
+
+</ui:composition>

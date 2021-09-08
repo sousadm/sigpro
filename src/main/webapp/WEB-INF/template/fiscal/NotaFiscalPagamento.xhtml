@@ -1,0 +1,59 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<p:dialog id="dlgPagamento" header="Pagamento" widgetVar="dlgPagamento"
+		closeOnEscape="true" modal="true" maximizable="false" width="500" >
+		<h:form id="formPagamento">
+			<div class="ui-fluid">
+				<p:panelGrid columns="2" layout="grid"
+					styleClass="panelgrid-noborder">
+
+					<p:outputLabel value="Valor" />
+					<p:inputNumber minValue="0" decimalSeparator=","
+						thousandSeparator="." decimalPlaces="2"
+						disabled="#{not notaFiscalBean.nota.podeEditar}"
+						value="#{notaFiscalBean.pagamento.valor}" />
+
+					<p:outputLabel value="Vencimento" />
+					<p:calendar locale="pt_BR" mask="99/99/9999" pattern="dd/MM/yyyy"
+						disabled="#{not notaFiscalBean.nota.podeEditar}" navigator="true"
+						value="#{notaFiscalBean.pagamento.vencimento}" />
+
+					<h:outputLabel value="Meio de Pagamento" />
+					<p:selectOneMenu value="#{notaFiscalBean.pagamento.meioPgto}"
+						disabled="#{not notaFiscalBean.nota.podeEditar}" autoWidth="false">
+						<f:selectItems value="#{listaTipoBean.NFFormaPagamentoMoeda}"
+							var="p" itemValue="#{p}" itemLabel="#{p}" />
+						<p:ajax process="@form" update="formPagamento:txtOperadora" />
+					</p:selectOneMenu>
+ 
+					<h:outputLabel value="Operadora de Cartão" />
+					<p:selectOneMenu id="txtOperadora"
+						value="#{notaFiscalBean.pagamento.operadora}"
+						disabled="#{(not notaFiscalBean.nota.podeEditar) or (not notaFiscalBean.pagamento.meioDePagamentoCartao)}"
+						autoWidth="false">
+						<f:selectItem itemLabel="Selecione" />
+						<f:selectItems value="#{listaTipoBean.NFOperadoraCartao}" var="o"
+							itemValue="#{o}" itemLabel="#{o}" />
+					</p:selectOneMenu>
+
+				</p:panelGrid>
+			</div>
+
+			<div align="right" style="margin-top: 5px">
+				<p:commandButton value="Confirma" icon="ui-icon-check"
+					process="dlgPagamento"
+					disabled="#{not notaFiscalBean.nota.podeEditar}"
+					update="formCadastro:tabView:tabPagamento"
+					action="#{notaFiscalBean.gravarItemPagamento}"
+					oncomplete="if(!args.validationFailed) PF('dlgPagamento').hide()" />
+			</div>
+			
+		</h:form>
+
+	</p:dialog>
+
+</ui:composition>

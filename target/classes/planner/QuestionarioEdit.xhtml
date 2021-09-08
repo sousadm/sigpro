@@ -1,0 +1,82 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<h1 style="margin-top: 65px">Questionário</h1>
+
+	<p:toolbar style="margin-top: 05px">
+		<p:toolbarGroup>
+			<p:splitButton id="botaoSalvar" value="Salvar" icon="ui-icon-disk"
+				update="@form" process="@form" action="#{questionarioBean.salvar}">
+				<p:menuitem value="Novo questionário" icon="ui-icon-document"
+					update="@form" action="#{questionarioBean.novo}" />
+				<p:menuitem value="Nova pergunta" icon="ui-icon-document" process="@this"
+					update="dlgPergunta"
+					actionListener="#{questionarioBean.addPergunta}"
+					oncomplete="PF('dlgPergunta').show()" />
+				<p:menuitem value="Imprimir" ajax="false" target="_blank"
+					rendered="#{questionarioBean.questionario.existe}"
+					actionListener="#{questionarioBean.imprimirQuestionario}"
+					update="@form" icon="ui-icon-print" />
+			</p:splitButton>
+		</p:toolbarGroup>
+		<p:toolbarGroup align="right">
+			<p:commandButton value="Pesquisa" icon="ui-icon-search"
+				process="@this" update="@form"
+				actionListener="#{questionarioBean.setQuestionario(null)}" />
+		</p:toolbarGroup>
+	</p:toolbar>
+
+	<p:messages autoUpdate="true" closable="true" />
+
+	<div class="ui-fluid">
+		<div class="ui-g" style="margin-top: 5px; border: 1px solid silver;">
+			<div class="ui-g-10">
+				<p:outputLabel value="Descrição" for="txtDescricaoQuestorio" />
+				<p:inputText id="txtDescricaoQuestorio" required="true"
+					value="#{questionarioBean.questionario.descricao}" />
+			</div>
+			<div class="ui-g-2">
+				<p:outputLabel value="Situação" />
+				<p:selectOneMenu value="#{questionarioBean.questionario.ativo}"
+					autoWidth="false">
+					<f:selectItem itemLabel="Ativo" itemValue="true" />
+					<f:selectItem itemLabel="Inativo" itemValue="false" />
+				</p:selectOneMenu>
+			</div>
+		</div>
+	</div>
+
+	<p:dataTable id="tabelaPergunta"
+		value="#{questionarioBean.questionario.perguntas}" var="pergunta"
+		rowIndexVar="linha" style="margin-top: 5px"
+		emptyMessage="Nenhum registro encontrado." rows="10" paginator="true"
+		paginatorAlwaysVisible="false" paginatorPosition="bottom">
+
+		<p:column headerText="Descrição da Pergunta">
+			<h:outputText value="#{pergunta.descricao}" />
+		</p:column>
+		<p:column headerText="Aplicação" style="width: 120px;">
+			<h:outputText value="#{pergunta.area.descricao}" />
+		</p:column>
+		<p:column headerText="Formato" style="width: 120px;">
+			<h:outputText value="#{pergunta.tipo.descricao}" />
+		</p:column>
+		<p:column style="width: 80px; text-align: center">
+			<p:commandButton icon="ui-icon-pencil" title="Editar" process="@this"
+				update="dlgPergunta"
+				actionListener="#{questionarioBean.setPergunta(pergunta)}"
+				oncomplete="PF('dlgPergunta').show()" />
+			<p:commandButton icon="ui-icon-trash" process="@this" title="Excluir"
+				update="tabelaPergunta"
+				action="#{questionarioBean.excluirPergunta(linha)}">
+				<p:confirm icon="ui-icon-alert" header="Confirma exclusão"
+					message="Excluir o registro atual?" />
+			</p:commandButton>
+		</p:column>
+
+	</p:dataTable>
+
+</ui:composition>

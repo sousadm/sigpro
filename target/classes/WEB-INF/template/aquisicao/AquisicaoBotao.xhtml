@@ -1,0 +1,56 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<p:toolbar style="margin-top: 05px">
+		<p:toolbarGroup>
+
+			<p:splitButton value="Gravar" ajax="false" icon="ui-icon-disk"
+				process="@this" action="#{aquisicaoBean.gravar}" update="@form">
+
+				<p:menuitem value="Novo" ajax="false" icon="ui-icon-document"
+					disabled="#{seguranca.bloqueioValidade}"
+					action="#{aquisicaoBean.novo}" update="@form" />
+					
+				<p:menuitem value="Importar XML" icon="ui-icon-search"
+					update="formCadastro" oncomplete="PF('dlgImportaXML').show()" />
+
+				<p:separator />
+
+				<p:menuitem value="Confirmar" icon="ui-icon-check" update="@form"
+					disabled="#{not aquisicaoBean.aquisicao.podeEncerrar}"
+					action="#{aquisicaoBean.encerrar}">
+					<p:confirm icon="ui-icon-alert" header="Aquisição"
+						message="Confirmar processo aquisição?" />
+				</p:menuitem>
+				<p:menuitem value="Cancelar" icon="ui-icon-close" update="@form"
+					disabled="#{not aquisicaoBean.aquisicao.podeCancelar}"
+					action="#{aquisicaoBean.cancelar}">
+					<p:confirm icon="ui-icon-alert" header="Aquisição"
+						message="Cancelar aquisição?" />
+				</p:menuitem>
+
+				<p:menuitem icon="ui-icon-note" value="Eventos" process="@this"
+					update="dlgEventos" rendered="#{aquisicaoBean.aquisicao.existe}"
+					actionListener="#{listaEventoBean.aquisicao(aquisicaoBean.aquisicao)}"
+					oncomplete="PF('dlgEventos').show()" />
+
+				<p:menuitem value="Imprimir" ajax="false" icon="ui-icon-print"
+					disabled="#{not aquisicaoBean.aquisicao.existe}"
+					actionListener="#{aquisicaoBean.imprimir}" />
+
+			</p:splitButton>
+
+		</p:toolbarGroup>
+
+		<p:toolbarGroup align="right">
+			<p:commandButton value="Pesquisa" icon="ui-icon-search"
+				actionListener="#{aquisicaoBean.setAquisicao(null)}" process="@this"
+				update="@form" />
+		</p:toolbarGroup>
+
+	</p:toolbar>
+
+</ui:composition>

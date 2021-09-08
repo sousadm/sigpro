@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="orcamento_parcelas" language="groovy" columnCount="3" pageWidth="555" pageHeight="802" columnWidth="185" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="04b9f931-c162-40f8-8889-30e41fc392c3">
+	<property name="ireport.zoom" value="1.5"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<field name="vencimento" class="java.util.Date"/>
+	<field name="valor" class="java.lang.Double"/>
+	<title>
+		<band height="19">
+			<staticText>
+				<reportElement mode="Opaque" x="0" y="2" width="555" height="14" backcolor="#CCCCCC" uuid="a13fe413-6047-4e03-ab2a-5665473810d9"/>
+				<textElement textAlignment="Center" markup="html">
+					<font isBold="true" isItalic="false"/>
+				</textElement>
+				<text><![CDATA[PARCELAS]]></text>
+			</staticText>
+		</band>
+	</title>
+	<detail>
+		<band height="17" splitType="Stretch">
+			<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
+				<reportElement x="4" y="1" width="88" height="14" uuid="847ae7a9-b024-4f6b-a3af-0c1ca5b0d727"/>
+				<textElement markup="html"/>
+				<textFieldExpression><![CDATA[$F{vencimento}]]></textFieldExpression>
+			</textField>
+			<textField pattern="R$ #,##0.00" isBlankWhenNull="true">
+				<reportElement x="102" y="1" width="80" height="14" uuid="ea6d01d4-c2c8-4050-b7b4-0b5a8b45d720"/>
+				<textElement textAlignment="Right" markup="html"/>
+				<textFieldExpression><![CDATA[$F{valor}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

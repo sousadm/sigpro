@@ -1,0 +1,106 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<p:dialog id="dlgRecalculo" header="Recálculo" widgetVar="dlgRecalculo"
+		closeOnEscape="true" modal="true" maximizable="false" height="280"
+		width="450">
+		<h:form id="formRecalculo">
+			<p:panelGrid columns="2" styleClass="ui-noborder">
+
+				<p:outputLabel value="Dias de atraso" />
+				<p:outputLabel value="#{caixaBean.caixaTitulo.dia}"
+					style="font-weight:bold" />
+
+				<p:outputLabel value="Valor do Item" />
+				<h:outputText value="#{caixaBean.caixaTitulo.valor}"
+					style="font-weight:bold">
+					<f:convertNumber type="currency" />
+				</h:outputText>
+
+				<p:outputLabel value="Multa" />
+				<h:panelGroup>
+					<p:inputNumber style="margin-left: 5pt"
+						value="#{caixaBean.caixaTitulo.valorMulta}" size="10"
+						decimalPlaces="2" minValue="0"
+						disabled="#{not caixaBean.caixa.podeGravar}">
+						<p:ajax event="change" process="@this"
+							listener="#{caixaBean.caixaTitulo.calcularMulta}" update="@form" />
+					</p:inputNumber>
+					<p:inputNumber value="#{caixaBean.caixaTitulo.multa}" size="8"
+						decimalPlaces="2" minValue="0" maxValue="100" symbol="%"
+						symbolPosition="s" disabled="#{not caixaBean.caixa.podeGravar}">  
+						<p:ajax event="change" process="@this"
+							listener="#{caixaBean.caixaTitulo.calcularValorMulta}"
+							update="@form" />
+					</p:inputNumber>
+				</h:panelGroup>
+
+				<p:outputLabel value="Juros" />
+				<h:panelGroup>
+					<p:inputNumber style="margin-left: 5pt"
+						value="#{caixaBean.caixaTitulo.valorJuro}" size="10"
+						decimalPlaces="2" minValue="0"
+						disabled="#{not caixaBean.caixa.podeGravar}">
+						<p:ajax event="change" process="@this"
+							listener="#{caixaBean.caixaTitulo.calcularJuro}" update="@form" />
+					</p:inputNumber>
+					<p:inputNumber value="#{caixaBean.caixaTitulo.juro}" size="8"
+						decimalPlaces="2" minValue="0" maxValue="100" symbol="%"
+						symbolPosition="s" disabled="#{not caixaBean.caixa.podeGravar}">  
+						<p:ajax event="change" process="@this"
+							listener="#{caixaBean.caixaTitulo.calcularValorJuro}"
+							update="@form" />
+					</p:inputNumber>
+				</h:panelGroup>
+
+				<p:outputLabel value="Desconto" />
+				<h:panelGroup>
+					<p:inputNumber style="margin-left: 5pt"
+						value="#{caixaBean.caixaTitulo.valorDesconto}" size="10"
+						decimalPlaces="2" minValue="0"
+						disabled="#{not caixaBean.caixa.podeGravar}">
+						<p:ajax event="change" process="@this"
+							listener="#{caixaBean.caixaTitulo.calcularDesconto}"
+							update="@form" />
+					</p:inputNumber>
+					<p:inputNumber value="#{caixaBean.caixaTitulo.desconto}" size="8"
+						decimalPlaces="2" minValue="0" maxValue="100" symbol="%"
+						symbolPosition="s" disabled="#{not caixaBean.caixa.podeGravar}">  
+						<p:ajax event="change" process="@this"
+							listener="#{caixaBean.caixaTitulo.calcularValorDesconto}"
+							update="@form" />
+					</p:inputNumber>
+				</h:panelGroup>
+
+				<p:outputLabel value="Baixa Parcial" />
+				<p:inputNumber style="margin-left: 5pt"
+					value="#{caixaBean.caixaTitulo.valorParcial}" size="10"
+					decimalPlaces="2" minValue="0"
+					disabled="#{not caixaBean.caixa.podeGravar}">
+					<p:ajax event="change" process="@this"
+						listener="#{caixaBean.caixaTitulo.calcularValorParcial}"
+						update="@form" />
+				</p:inputNumber>
+
+				<p:outputLabel value="Valor Total do Item" />
+				<h:outputText value="#{caixaBean.caixaTitulo.valorPago}"
+					style="font-weight:bold">
+					<f:convertNumber type="currency" />
+				</h:outputText>
+
+				<p:outputLabel />
+				<p:commandButton value="Confirma" icon="ui-icon-check"
+					process="dlgRecalculo" disabled="#{not caixaBean.caixa.podeGravar}"
+					update="formCadastro:tabView:gridTitulos  formCadastro:txtValorTotal formCadastro:txtValorFinal"
+					action="#{caixaBean.gravarComponente}"
+					oncomplete="if(!args.validationFailed) PF('dlgRecalculo').hide()" />
+
+
+			</p:panelGrid>
+		</h:form>
+	</p:dialog>
+
+</ui:composition>

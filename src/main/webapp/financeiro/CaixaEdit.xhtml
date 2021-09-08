@@ -1,0 +1,31 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<h1 style="margin-top: 65px">#{caixaBean.tituloCaixa}</h1>
+
+	<ui:include src="/WEB-INF/template/financeiro/CaixaBotao.xhtml" />
+	<ui:include src="/WEB-INF/template/financeiro/CaixaDados.xhtml" />
+
+	<p:tabView id="tabView" activeIndex="#{caixaBean.activeIndex}"
+		orientation="left" style="margin-top: 5px">
+
+		<p:ajax event="tabChange" listener="#{caixaBean.onTabChange}"
+			update="tabView" />
+
+		<p:tab title="Compensação" id="tabCompensa">
+			<ui:include src="/WEB-INF/template/financeiro/CaixaCompensacao.xhtml" />
+		</p:tab>
+
+		<p:tab title="Títulos">
+			<ui:include src="/WEB-INF/template/financeiro/CaixaTitulos.xhtml" />
+		</p:tab>
+
+	</p:tabView>
+
+	<p:blockUI block="formCadastro"
+		trigger="botaoGravar botaoEncerrar botaoEncerrarNaData" />
+
+</ui:composition>

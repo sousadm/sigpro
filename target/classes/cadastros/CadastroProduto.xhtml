@@ -1,0 +1,44 @@
+<ui:composition template="/WEB-INF/template/LayoutPadrao.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui" xmlns:o="http://omnifaces.org/ui">
+
+	<f:metadata>
+		<f:param name="dummy" />
+		<o:viewParam name="produto" value="#{produtoBean.produto}" />
+		<f:event listener="#{produtoBean.inicializar}" type="preRenderView"></f:event>
+	</f:metadata>
+
+	<ui:define name="titulo">Produto</ui:define>
+
+	<ui:define name="dialogo">
+		<ui:include src="/dialogos/AddProdutoImagem.xhtml" />
+		<ui:include src="/WEB-INF/template/produto/GraphicImagem.xhtml" />
+		<ui:include src="/dialogos/ListaEventos.xhtml" />
+	</ui:define>
+
+	<ui:define name="corpo">
+
+		<p:focus context="formCadastro" />
+
+		<h:form id="formCadastro">
+
+			<p:growl />
+
+			<h:panelGroup rendered="#{produtoBean.produto == null}">
+				<ui:include src="/WEB-INF/template/produto/ProdutoPesquisa.xhtml" />
+			</h:panelGroup>
+
+			<h:panelGroup rendered="#{produtoBean.produto != null}">
+				<ui:include src="/WEB-INF/template/produto/ProdutoEdit.xhtml" />
+			</h:panelGroup>
+
+		</h:form>
+
+		<ui:include src="/WEB-INF/template/produto/ProdutoUnidade.xhtml" />
+
+	</ui:define>
+
+</ui:composition>

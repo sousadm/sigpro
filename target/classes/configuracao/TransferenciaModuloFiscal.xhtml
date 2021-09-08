@@ -1,0 +1,41 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<p:dialog id="dlgTransfereModuloFiscal"
+		header="Transferência de Unidade" widgetVar="dlgTransfereModuloFiscal"
+		closeOnEscape="true" modal="true" maximizable="false" width="400">
+
+		<h:form id="formTransfereModuloFiscal">
+			<div class="ui-fluid">
+				<p:panelGrid columns="2" layout="grid"
+					columnClasses="ui-grid-col-4, ui-grid-col-8"
+					styleClass="panelgrid-noborder">
+
+					<p:outputLabel value="Série do Módulo" />
+					<p:outputLabel
+						value="#{unidadeProdutivaBean.moduloFiscal.numeroSerie}"
+						class="negrito" />
+
+					<p:outputLabel value="Destino" />
+					<p:selectOneMenu autoWidth="false"
+						value="#{unidadeProdutivaBean.destino}">
+						<f:selectItems value="#{unidadeProdutivaBean.listaUnidades}"
+							var="destino" itemValue="#{destino}" itemLabel="#{destino.nome}" />
+					</p:selectOneMenu>
+
+				</p:panelGrid>
+			</div>
+			<div align="right">
+				<p:commandButton value="Confirma" icon="ui-icon-check"
+					update="@form" process="@form"
+					action="#{unidadeProdutivaBean.transferirModuloFiscal}"
+					oncomplete="if(!args.validationFailed) PF('dlgTransfereModuloFiscal').hide()" />
+			</div>
+		</h:form>
+
+	</p:dialog>
+
+</ui:composition>

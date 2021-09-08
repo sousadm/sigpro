@@ -1,0 +1,31 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<p:dialog id="definicaoDialog" header="#{projetoBean.definicaoTitulo}"
+		width="700" widgetVar="definicaoDialog" closeOnEscape="true"
+		modal="true" maximizable="false">
+
+		<h:form id="formDefinicao">
+			<div class="ui-fluid">
+				<div class="ui-g" style="margin-top: 5px; border: 1px solid silver;">
+					<div class="ui-g-12">
+						<p:editor value="#{projetoBean.definicao}"
+							disabled="#{projetoBean.projeto.encerrado}"
+							controls="#{listaTipoBean.editorControl}" height="150"
+							styleClass="naoaceitarenter" />
+					</div>
+				</div>
+			</div>
+			<div align="right" style="margin-top: 5px;">
+				<p:commandButton process="@form" value="Aplicar"
+					actionListener="#{projetoBean.aplicar_definicao()}"
+					oncomplete="PF('definicaoDialog').hide();" />
+			</div>
+		</h:form>
+
+	</p:dialog>
+
+</ui:composition>

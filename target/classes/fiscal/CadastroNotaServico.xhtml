@@ -1,0 +1,40 @@
+<ui:composition template="/WEB-INF/template/LayoutPadrao.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui" xmlns:o="http://omnifaces.org/ui">
+
+	<ui:define name="titulo">Nota de Serviço</ui:define>
+
+	<f:metadata>
+		<f:param name="dummy" />
+		<o:viewParam name="nota" value="#{notaServicoBean.nota}" />
+		<f:event listener="#{notaServicoBean.inicializar}"
+			type="preRenderView"></f:event>
+	</f:metadata>
+
+	<ui:define name="corpo">
+
+		<p:focus context="formCadastro" />
+
+		<h:form id="formCadastro">
+
+			<p:growl id="msg" />
+
+			<h1 style="margin-top: 65px">NFSe - Nota Fiscal de Serviço
+				Eletrônica</h1>
+
+			<h:panelGroup rendered="#{notaServicoBean.nota == null}">
+				<ui:include src="/fiscal/NotaServicoPesquisa.xhtml" />
+			</h:panelGroup>
+
+			<h:panelGroup rendered="#{notaServicoBean.nota != null}">
+				<ui:include src="/fiscal/NotaServicoEdit.xhtml" />
+			</h:panelGroup>
+
+		</h:form>
+
+	</ui:define>
+
+</ui:composition>

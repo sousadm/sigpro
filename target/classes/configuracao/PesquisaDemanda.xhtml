@@ -1,0 +1,73 @@
+<ui:composition template="/WEB-INF/template/LayoutPadrao.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<f:metadata>
+		<f:event listener="#{demandaBean.pesquisar}" type="preRenderView"></f:event>
+	</f:metadata>
+
+	<ui:define name="titulo">Pesquisa de demanda</ui:define>
+
+	<ui:define name="corpo">
+
+		<h:form id="frmPesquisa">
+
+			<p:focus />
+
+			<h1 style="margin-top: 65px">Pesquisa de Demanda</h1>
+
+			<p:messages autoUpdate="true" closable="true" />
+
+			<p:toolbar style="margin-top: 05px">
+				<p:toolbarGroup>
+					<p:commandButton value="Pesquisar" icon="ui-icon-search"
+						action="#{demandaBean.pesquisar}" update="@form"
+						onclick="jQuery(this).addClass('ui-state-disabled')" />
+				</p:toolbarGroup>
+				<p:toolbarGroup align="right">
+					<p:button value="Novo" icon="ui-icon-document"
+						outcome="/configuracao/CadastroDemanda" />
+				</p:toolbarGroup>
+			</p:toolbar>
+
+			<p:dataTable id="tabela" value="#{demandaBean.lista}" var="demanda"
+				style="margin-top: 5px" emptyMessage="Nenhum item encontrado."
+				rows="20" paginator="true" paginatorAlwaysVisible="false"
+				paginatorPosition="bottom">
+
+				<p:column headerText="Número" width="8%">
+					<h:outputText value="#{demanda.id}">
+						<f:convertNumber pattern="00000" />
+					</h:outputText>
+				</p:column>
+				<p:column headerText="Data" style="width: 140px">
+					<h:outputText value="#{demanda.data}">
+						<f:convertDateTime pattern="dd/MM/yyyy HH:mm" />
+					</h:outputText>
+				</p:column>
+
+				<p:column headerText="Solicitação demandada">
+					<h:outputText value="#{demanda.descritivo}" />
+				</p:column>
+
+				<p:column headerText="Nome">
+					<h:outputText value="#{demanda.nome}" />
+				</p:column>
+
+				<p:column style="width: 100px; text-align: center">
+
+					<p:button icon="ui-icon-pencil" title="Editar"
+						outcome="/configuracao/CadastroDemanda">
+						<f:param name="demanda" value="#{demanda.id}" />
+					</p:button>
+
+				</p:column>
+
+			</p:dataTable>
+
+		</h:form>
+	</ui:define>
+</ui:composition>

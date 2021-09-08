@@ -1,0 +1,68 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<p:outputLabel value="Origem do produto" for="txtOrigem" />
+	<p:selectOneMenu id="txtOrigem" style="width:240px;" autoWidth="false"
+		value="#{notaCFeBean.item.origem}">
+		<f:selectItem itemLabel="Selecione" />
+		<f:selectItems value="#{listaTipoBean.origem}" var="origem"
+			itemValue="#{origem}" itemLabel="#{origem}" />
+	</p:selectOneMenu>
+
+	<p:outputLabel value="CST" for="txtCstIcms" />
+	<p:selectOneMenu id="txtCstIcms" style="width:240px;" autoWidth="false"
+		value="#{notaCFeBean.item.icms.cst}">
+		<f:selectItem itemLabel="Selecione" />
+		<f:selectItems value="#{listaTipoBean.cstIcms}" var="cst"
+			itemValue="#{cst}" itemLabel="#{cst}" />
+		<f:ajax render="@form" update="gridICMS" />
+	</p:selectOneMenu>
+
+	<p:outputLabel value="Alíquota de icms (%)"
+		rendered="#{not notaCFeBean.item.icms.produtoIsentoNaoTributado}" />
+	<p:inputText styleClass="moeda"
+		value="#{notaCFeBean.item.icms.aliquotaICMS}"
+		rendered="#{not notaCFeBean.item.icms.produtoIsentoNaoTributado}">
+		<f:convertNumber pattern="#0.00" />
+	</p:inputText>
+
+	<p:outputLabel value="Redução de icms (%)"
+		rendered="#{notaCFeBean.item.icms.produtoReducaoBaseCalculo}" />
+	<p:inputText styleClass="moeda"
+		title="alíquota a ser cobrada na redução"
+		value="#{notaCFeBean.item.icms.aliquotaReducao}"
+		rendered="#{notaCFeBean.item.icms.produtoReducaoBaseCalculo}">
+		<f:convertNumber pattern="#0.00" />
+	</p:inputText>
+
+	<p:outputLabel value="Modalidade" for="txtModalidade"
+		rendered="#{notaCFeBean.item.icms.produtoSubstituicaoTributaria}" />
+	<p:selectOneMenu id="txtModalidade" style="width:240px;"
+		value="#{notaCFeBean.item.icms.modalidade}" autoWidth="false"
+		rendered="#{notaCFeBean.item.icms.produtoSubstituicaoTributaria}">
+		<f:selectItem itemLabel="Selecione" />
+		<f:selectItems value="#{listaTipoBean.modalidadeCalculoIcms}"
+			var="origem" itemValue="#{origem}" itemLabel="#{origem}" />
+	</p:selectOneMenu>
+
+	<p:outputLabel value="Aliquota Intra (%)"
+		rendered="#{notaCFeBean.item.icms.produtoSubstituicaoTributaria}" />
+	<p:inputText styleClass="moeda"
+		value="#{notaCFeBean.item.icms.aliquotaICMSIntra}"
+		rendered="#{notaCFeBean.item.icms.produtoSubstituicaoTributaria}">
+		<f:convertNumber pattern="#0.00" />
+	</p:inputText>
+
+</ui:composition>
+
+<!-- 	<p:outputLabel value="MVA (%)" -->
+<!-- 		rendered="#{notaCFeBean.item.icms.produtoSubstituicaoTributaria}" /> -->
+<!-- 	<p:inputText id="txtMargem" styleClass="moeda" -->
+<!-- 		title="Margem do valor agregado" -->
+<!-- 		value="#{notaCFeBean.item.icms.aliquotaMVA}" -->
+<!-- 		rendered="#{notaCFeBean.item.icms.produtoSubstituicaoTributaria}"> -->
+<!-- 		<f:convertNumber pattern="#0.00" /> -->
+<!-- 	</p:inputText> -->

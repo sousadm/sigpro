@@ -1,0 +1,41 @@
+<ui:composition template="/WEB-INF/template/LayoutPadrao.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui" xmlns:o="http://omnifaces.org/ui">
+
+	<f:metadata>
+		<o:viewParam name="expedicao" value="#{ordemServicoBean.expedicao}" />
+		<o:viewParam name="ordem" value="#{ordemServicoBean.ordem}" />
+		<f:event listener="#{ordemServicoBean.inicializarOrdemServico}"
+			type="preRenderView"></f:event>
+	</f:metadata>
+
+	<ui:define name="titulo">Ordem de Serviços</ui:define>
+
+	<ui:define name="dialogo">
+
+	</ui:define>
+
+	<ui:define name="corpo">
+
+		<h1 style="margin-top: 65px">Ordem de Serviço</h1>
+
+		<h:form id="formCadastro">
+
+			<p:growl />
+
+			<h:panelGroup rendered="#{ordemServicoBean.ordem != null}">
+				<ui:include src="/expedicao/OrdemServicoEdit.xhtml" />
+			</h:panelGroup>
+
+			<h:panelGroup rendered="#{ordemServicoBean.ordem == null}">
+				<ui:include src="/expedicao/OrdemServicoPesquisa.xhtml" />
+			</h:panelGroup>
+
+		</h:form>
+
+	</ui:define>
+
+</ui:composition>

@@ -1,0 +1,47 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<p:dialog id="dlgContingencia" header="Medida Contingencial"
+		widgetVar="dlgContingencia" closeOnEscape="true" modal="true"
+		maximizable="false" height="220" width="600">
+
+		<h:form id="formCadastroContingencia">
+			<p:panelGrid columns="2" styleClass="ui-noborder">
+
+				<p:outputLabel value="Valor" />
+				<p:inputNumber id="dinheiro" minValue="0" decimalSeparator=","
+					thousandSeparator="." decimalPlaces="2"
+					disabled="#{not caixaDiarioBean.diario.podeSalvar}" required="true"
+					value="#{caixaDiarioBean.planner.valor}" />
+
+				<p:outputLabel value="Medida contingencial" />
+				<p:selectOneMenu value="#{caixaDiarioBean.planner.contingencia}"
+					autoWidth="false"
+					disabled="#{not caixaDiarioBean.diario.podeSalvar}">
+					<f:selectItems value="#{caixaDiarioBean.listaContingencia}"
+						var="medida" itemValue="#{medida}" itemLabel="#{medida.descricao}" />
+				</p:selectOneMenu>
+
+				<p:outputLabel value="Detalhamento da medida adotada" />
+				<p:inputTextarea rows="3" cols="50" required="true"
+					requiredMessage="defina o detalhamento da medida"
+					disabled="#{not caixaDiarioBean.diario.podeSalvar}"
+					value="#{caixaDiarioBean.planner.como}" />
+
+				<p:outputLabel />
+				<p:commandButton value="Confirma" icon="ui-icon-check"
+					disabled="#{not caixaDiarioBean.diario.podeSalvar}"
+					process="formCadastroContingencia"
+					update="formCadastro:tabView:tabelaContingencia"
+					action="#{caixaDiarioBean.addContingnencia}"
+					oncomplete="if(!args.validationFailed) PF('dlgContingencia').hide()" />
+
+			</p:panelGrid>
+		</h:form>
+
+	</p:dialog>
+
+</ui:composition>

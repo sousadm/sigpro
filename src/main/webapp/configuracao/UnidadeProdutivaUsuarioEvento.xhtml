@@ -1,0 +1,52 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<p:dialog id="dlgEvento" header="Lista de eventos"
+		widgetVar="dlgEvento" closeOnEscape="true" modal="true" width="800">
+
+		<p:dataTable value="#{unidadeProdutivaBean.listaEventos}" var="evento"
+			style="margin-top: 5px" scrollable="true" scrollHeight="350"
+			emptyMessage="Nenhum item encontrado.">
+
+			<p:column headerText="Cadastro" sortBy="#{pedido.dataCadastro}"
+				width="140">
+				<h:outputText value="#{evento.data}">
+					<f:convertDateTime pattern="dd/MM/yyyy hh:mm" />
+				</h:outputText>
+			</p:column>
+			<p:column headerText="Documento" width="80">
+				<h:outputText value="#{evento.documento}" />
+			</p:column>
+			<p:column headerText="Descritivo">
+				<h:outputText value="#{evento.descritivo}" />
+			</p:column>
+
+		</p:dataTable>
+
+		<div class="ui-fluid" style="margin-top: 5px">
+			<div class="ui-g">
+				<div class="ui-g-4">
+					<p:outputLabel value="período inícial" />
+					<p:calendar navigator="true" showOn="button" mask="99/99/9999"
+						pattern="dd/MM/yyyy" value="#{unidadeProdutivaBean.filtro.inicio}" />
+				</div>
+				<div class="ui-g-4">
+					<p:outputLabel value="período final" />
+					<p:calendar navigator="true" showOn="button" mask="99/99/9999"
+						pattern="dd/MM/yyyy"
+						value="#{unidadeProdutivaBean.filtro.termino}" />
+				</div>
+				<div class="ui-g-4">
+					<p:commandButton value="mostrar" update="@form"
+						style="height: 100%"
+						actionListener="#{unidadeProdutivaBean.mostraEventos}" />
+				</div>
+			</div>
+		</div>
+
+	</p:dialog>
+
+</ui:composition>

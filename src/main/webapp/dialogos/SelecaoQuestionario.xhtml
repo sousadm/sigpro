@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+<h:head>
+	<title>Questionário</title>
+	<h:outputStylesheet library="sigpro" name="styles/custom.css" />
+	<style>
+body {
+	margin: 10px
+}
+</style>
+
+</h:head>
+<h:body>
+
+	<h:form id="frmSelecao">
+
+		<p:focus for="descricao" />
+
+		<div class="ui-fluid">
+			<div class="ui-g" style="margin-top: 5px; border: 1px solid silver;">
+				<div class="ui-g-8">
+					<p:inputText id="descricao"
+						value="#{selecaoQuestionarioBean.descricao}"
+						placeholder="descrição" />
+				</div>
+				<div class="ui-g-4">
+					<p:commandButton id="botaoPesquisa" value="Pesquisar"
+						update="@form" action="#{selecaoQuestionarioBean.pesquisar}"
+						style="width: 100px;" />
+				</div>
+			</div>
+		</div>
+
+		<p:dataTable value="#{selecaoQuestionarioBean.lista}" var="item"
+			style="margin-top: 2px" lazy="true" scrollable="true"
+			emptyMessage="Nenhum registro encontrado." rows="50" paginator="true"
+			paginatorAlwaysVisible="false" paginatorPosition="top">
+			<p:column headerText="Descrição do questionário">
+				<h:outputText value="#{item.descricao}" />
+			</p:column>
+
+			<p:column style="width: 30px; text-align: center">
+				<p:commandButton icon="ui-icon-check" title="Selecionar"
+					process="@this"
+					action="#{selecaoQuestionarioBean.selecionar(item)}" />
+			</p:column>
+		</p:dataTable>
+
+		<p:blockUI block="frmSelecao" trigger="botaoPesquisa" />
+	</h:form>
+
+</h:body>
+
+</html>

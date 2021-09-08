@@ -1,0 +1,54 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<p:dialog id="dlgLucratividade" header="Lucratividade (caixa)"
+		widgetVar="dlgLucratividade" closeOnEscape="true" modal="true"
+		maximizable="false">
+		<div class="ui-fluid">
+			<p:panelGrid columns="2" styleClass="ui-noborder" layout="grid"
+				columnClasses="ui-grid-col-4, ui-grid-col-8">
+
+				<p:outputLabel value="Ano/Mês" />
+				<p:outputLabel value="#{graficoBean.ano} #{graficoBean.mes} " />
+
+				<p:outputLabel value="(+) Receitas" />
+				<p:outputLabel value="#{graficoBean.analise.receita}">
+					<f:convertNumber type="currency" />
+				</p:outputLabel>
+
+				<p:outputLabel value="(-) Despesas" />
+				<p:outputLabel value="#{graficoBean.analise.despesa}">
+					<f:convertNumber type="currency" />
+				</p:outputLabel>
+
+				<p:outputLabel value="(=) Lucro no período" />
+				<p:outputLabel value="#{graficoBean.analise.lucro}"
+					style="font-weight:bold">
+					<f:convertNumber type="currency" />
+				</p:outputLabel>
+
+				<p:outputLabel value="Lucratividade" />
+				<p:outputLabel value="#{graficoBean.analise.lucratividade}"
+					style="font-weight:bold">
+					<f:convertNumber type="percent" minFractionDigits="2" />
+				</p:outputLabel>
+
+				<p:outputLabel value="Valor do Ativo Patrimonial" />
+				<p:outputLabel value="#{graficoBean.analise.ativoPatrimonial}">
+					<f:convertNumber type="currency" />
+				</p:outputLabel>
+
+				<p:outputLabel value="Rentabilidade" />
+				<p:outputLabel value="#{graficoBean.analise.rentabilidade}"
+					style="font-weight:bold">
+					<f:convertNumber type="percent" minFractionDigits="2" />
+				</p:outputLabel>
+
+			</p:panelGrid>
+		</div>
+	</p:dialog>
+
+</ui:composition>

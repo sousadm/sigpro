@@ -1,0 +1,49 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<p:dialog id="dlgPergunta" header="Pergunta" widgetVar="dlgPergunta"
+		closeOnEscape="true" modal="true" maximizable="false" width="500">
+		<h:form id="formCadastroPergunta">
+
+			<div class="ui-fluid">
+				<div class="ui-g" style="margin-top: 5px; border: 1px solid silver;">
+					<div class="ui-g-12">
+						<p:outputLabel value="Descrição da Pergunta" for="txtPergunta" />
+						<p:inputTextarea id="txtPergunta" required="true" rows="3"
+							value="#{questionarioBean.pergunta.descricao}" />
+					</div>
+					<div class="ui-g-6">
+						<p:outputLabel value="Tipo de Resposta" />
+						<p:selectOneMenu value="#{questionarioBean.pergunta.tipo}"
+							autoWidth="false">
+							<f:selectItems value="#{listaTipoBean.tipoPergunta}"
+								var="pergunta" itemLabel="#{pergunta.descricao}"
+								itemValue="#{pergunta}" />
+						</p:selectOneMenu>
+					</div>
+					<div class="ui-g-6">
+						<p:outputLabel value="Área de Aplicação" />
+						<p:selectOneMenu value="#{questionarioBean.pergunta.area}"
+							autoWidth="false">
+							<f:selectItems value="#{listaTipoBean.tipoAreaQuestionario}"
+								var="area" itemLabel="#{area.descricao}" itemValue="#{area}" />
+						</p:selectOneMenu>
+					</div>
+				</div>
+			</div>
+
+			<div align="right" style="margin-top: 5px;">
+				<p:commandButton value="Confirma" icon="ui-icon-check"
+					process="dlgPergunta" update=":formCadastro:tabelaPergunta"
+					actionListener="#{questionarioBean.gravaPergunta}"
+					oncomplete="if(!args.validationFailed) PF('dlgPergunta').hide()" />
+			</div>
+
+		</h:form>
+
+	</p:dialog>
+
+</ui:composition>

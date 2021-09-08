@@ -1,0 +1,193 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<p:toolbar style="margin-top: 05px">
+		<p:toolbarGroup>
+			<p:splitButton id="botaoSalvar" value="Gravar" icon="ui-icon-disk"
+				update="@form" process="@form" action="#{montagemBean.salvar}">
+
+				<p:menuitem value="Nova montagem" icon="ui-icon-document"
+					action="#{montagemBean.novo}" update="@form" />
+
+				<p:separator />
+
+				<p:menuitem value="Encerrar montagem" icon="ui-icon-close"
+					disabled="#{not montagemBean.montagem.podeEncerrar}" update="@form"
+					action="#{montagemBean.encerrar}">
+					<p:confirm icon="ui-icon-alert" header="Confirma"
+						message="Encerrar a montagem atual?" />
+				</p:menuitem>
+
+				<p:menuitem value="Cancelar montagem" icon="ui-icon-close"
+					disabled="#{not montagemBean.montagem.podeCancelar}" update="@form"
+					action="#{montagemBean.cancelar}">
+					<p:confirm icon="ui-icon-alert" header="Confirma"
+						message="Cancelar a montagem atual?" />
+				</p:menuitem>
+
+			</p:splitButton>
+		</p:toolbarGroup>
+		<p:toolbarGroup align="right">
+			<p:commandButton value="Pesquisa" icon="ui-icon-search"
+				actionListener="#{montagemBean.setMontagem(null)}" process="@this"
+				update="@form" />
+		</p:toolbarGroup>
+	</p:toolbar>
+
+	<div class="ui-fluid">
+		<div class="ui-g" style="margin-top: 5px; border: 1px solid silver;">
+
+			<div class="ui-g-12 ui-md-3">
+				<p:outputLabel value="Ordem" />
+				<p:inputText value="#{montagemBean.montagem.id}"
+					styleClass="bloqueado" readonly="true">
+					<f:convertNumber pattern="#####0" minIntegerDigits="6" />
+				</p:inputText>
+			</div>
+			<div class="ui-g-12 ui-md-3">
+				<p:outputLabel value="Data de cadastro" />
+				<p:inputText value="#{montagemBean.montagem.dataCadastro}"
+					class="negrito">
+					<f:convertDateTime pattern="dd/MM/yyyy" />
+				</p:inputText>
+			</div>
+			<div class="ui-g-12 ui-md-3">
+				<p:outputLabel value="Início" />
+				<p:inputText value="#{montagemBean.montagem.inicio}" class="negrito">
+					<f:convertDateTime pattern="dd/MM/yyyy HH:mm" />
+				</p:inputText>
+			</div>
+			<div class="ui-g-12 ui-md-3">
+				<p:outputLabel value="Término" />
+				<p:inputText value="#{montagemBean.montagem.termino}"
+					class="negrito">
+					<f:convertDateTime pattern="dd/MM/yyyy HH:mm" />
+				</p:inputText>
+			</div>
+
+			<div class="ui-g-12 ui-md-6">
+				<p:outputLabel value="Solicitante" />
+				<div class="ui-inputgroup">
+					<p:commandButton icon="ui-icon-search"
+						disabled="#{not montagemBean.montagem.podeEditar}" process="@this"
+						update="@none" ignoreAutoUpdate="true" styleClass="button-grid"
+						action="#{selecionaBean.pessoa}">
+						<p:ajax event="dialogReturn" update="txtSolicitante"
+							listener="#{montagemBean.onSolicitanteChosen}"
+							ignoreAutoUpdate="true" />
+					</p:commandButton>
+					<p:inputText id="txtSolicitante"
+						value="#{montagemBean.montagem.solicitante.nome}" readonly="true" />
+				</div>
+			</div>
+			<div class="ui-g-12 ui-md-6">
+				<p:outputLabel value="Observação" />
+				<p:inputText value="#{montagemBean.montagem.observacao}"
+					disabled="#{not montagemBean.montagem.podeEditar}" />
+			</div>
+
+		</div>
+	</div>
+
+	<h:panelGroup id="painelEditItem">
+		<div class="ui-fluid">
+			<div class="ui-g">
+				<div class="ui-g-12 ui-md-8">
+					<p:outputLabel value="Produto" />
+					<div class="ui-inputgroup">
+						<p:commandButton icon="ui-icon-search" value="pesquisar"
+							disabled="#{not montagemBean.montagem.podeEditar}"
+							process="@this" update="@none" ignoreAutoUpdate="true"
+							styleClass="botao-dialogo"
+							action="#{selecionaBean.produtoMontagem}">
+							<p:ajax event="dialogReturn" update="txtProduto botaoAddProduto"
+								listener="#{montagemBean.onProdutoChosen}"
+								ignoreAutoUpdate="true" />
+						</p:commandButton>
+						<p:inputText id="txtProduto"
+							value="#{montagemBean.montagemItem.produto.nome}" readonly="true" />
+					</div>
+				</div>
+				<div class="ui-g-3 ui-md-2">
+					<p:outputLabel value="Quantidade"
+						disabled="#{not montagemBean.montagem.podeEditar}" />
+					<p:spinner value="#{montagemBean.montagemItem.quantidade}" min="1"
+						stepFactor="1" disabled="#{not montagemBean.montagem.podeEditar}" />
+				</div>
+				<div class="ui-g-12 ui-md-2">
+					<p:commandButton action="#{montagemBean.addMontagemItem}"
+						id="botaoAddProduto"
+						disabled="#{not montagemBean.montagem.podeEditar or not montagemBean.montagemItem.podeAdicionar}"
+						value="Add Produto" update="@form" />
+					<p:commandButton value="Limpar" update="@form"
+						disabled="#{not montagemBean.montagem.podeEditar}"
+						actionListener="#{montagemBean.novoItem}" />
+				</div>
+			</div>
+		</div>
+	</h:panelGroup>
+
+	<p:dataTable id="tabela" value="#{montagemBean.montagem.items}"
+		var="item" rowIndexVar="linha" scrollable="true"
+		emptyMessage="nenhum item encontrado.">
+
+		<p:column headerText="Código" width="80">
+			<p:link value="#{item.produto.sku}"
+				outcome="/cadastros/CadastroProduto"
+				title="ir para cadastro #{item.produto.nome}">
+				<f:param name="produto" value="#{item.produto.id}" />
+			</p:link>
+		</p:column>
+		<p:column headerText="Descrição">
+			<p:link value="#{item.produto.nome}"
+				outcome="/cadastros/CadastroProduto"
+				title="ir para cadastro #{item.produto.nome}">
+				<f:param name="produto" value="#{item.produto.id}" />
+			</p:link>
+		</p:column>
+		<p:column headerText="Und" width="30">
+			<h:outputText value="#{item.produto.unidade}" />
+		</p:column>
+		<p:column headerText="Quantidade" width="80">
+			<h:outputText value="#{item.quantidade}">
+				<f:convertNumber />
+			</h:outputText>
+		</p:column>
+		<p:column headerText="Produzido" width="80">
+			<h:outputText value="#{item.produzido}">
+				<f:convertNumber />
+			</h:outputText>
+		</p:column>
+
+		<p:column width="100">
+
+			<p:commandButton title="Editar" icon="ui-icon-pencil"
+				class="button-grid" update="@form"
+				disabled="#{not montagemBean.montagem.podeEditar}"
+				actionListener="#{montagemBean.setMontagemItem(item)}"
+				process="@this" />
+
+			<p:commandButton icon="ui-icon-closethick" process="@this"
+				title="Remover" class="button-grid" update="@form"
+				disabled="#{not montagemBean.montagem.podeEditar}"
+				actionListener="#{montagemBean.removerItem(linha)}">
+				<p:confirm icon="ui-icon-alert" header="Remover"
+					message="Remover o registro atual?" />
+			</p:commandButton>
+
+			<p:commandButton title="Produzir" icon="ui-icon-gear"
+				update="dlgProducao" process="@this"
+				disabled="#{!item.existe or not montagemBean.montagem.podeEditar}"
+				actionListener="#{montagemBean.preparaProducaoMontagem(item)}"
+				oncomplete="PF('dlgProducao').show()" />
+
+		</p:column>
+
+	</p:dataTable>
+
+	<p:blockUI block="formCadastro" trigger="botaoSalvar" />
+
+</ui:composition>

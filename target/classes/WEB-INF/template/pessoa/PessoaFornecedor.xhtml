@@ -1,0 +1,30 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<p:panelGrid columns="2" layout="grid"
+		rendered="#{pessoaBean.pessoa.defineFornecedor}"
+		style="margin-top: 20px" styleClass="panelgrid-noborder">
+
+		<p:outputLabel value="Data de cadastro" for="txtDataCadFornecedor" />
+		<h:outputText id="txtDataCadFornecedor" class="negrito"
+			value="#{pessoaBean.pessoa.fornecedor.dataCadastro}">
+			<f:convertDateTime pattern="dd/MM/yyyy HH:mm" timeZone="GMT-03:00" />
+		</h:outputText>
+
+		<p:outputLabel value="Centro de custo" for="ccusto" />
+		<p:selectOneMenu id="ccusto" autoWidth="false"
+			value="#{pessoaBean.pessoa.fornecedor.centroDeCusto}">
+			<f:selectItem itemLabel="Selecione..." />
+			<f:selectItems value="#{pessoaBean.listaCusto}" var="a"
+				itemValue="#{a}" itemLabel="#{a.descricao}" />
+		</p:selectOneMenu>
+
+		<p:outputLabel />
+		<p:outputLabel />
+
+	</p:panelGrid>
+
+</ui:composition>

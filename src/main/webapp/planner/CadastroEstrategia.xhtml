@@ -1,0 +1,81 @@
+<ui:composition template="/WEB-INF/template/LayoutPadrao.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui" xmlns:o="http://omnifaces.org/ui">
+
+	<ui:define name="titulo">Definição Estratégica</ui:define>
+
+	<f:metadata>
+		<f:event listener="#{estrategiaBean.inicializar}" type="preRenderView"></f:event>
+	</f:metadata>
+
+	<ui:define name="corpo">
+
+		<h1 style="margin-top: 65px">Definição Estratégica</h1>
+
+		<h:form id="formCadastro">
+
+			<p:toolbar style="margin-top: 05px">
+				<p:toolbarGroup align="right">
+					<p:commandButton value="Salvar" action="#{estrategiaBean.salvar}"
+						update="@form" />
+				</p:toolbarGroup>
+			</p:toolbar>
+
+			<p:messages autoUpdate="true" closable="true" />
+
+			<p:tabView id="tabView" orientation="left"
+				style="width: 100%; margin-top: 5px">
+
+				<p:tab title="Missão">
+					<p:inputTextarea rows="10" style="width: 95%"
+						value="#{estrategiaBean.pessoa.PJ.missao}" />
+				</p:tab>
+				<p:tab title="Visão">
+					<p:inputTextarea rows="10" style="width: 95%"
+						value="#{estrategiaBean.pessoa.PJ.visao}" />
+				</p:tab>
+				<p:tab title="Histórico">
+					<p:inputTextarea rows="10" style="width: 95%"
+						value="#{estrategiaBean.pessoa.PJ.sobre}" />
+				</p:tab>
+				<p:tab title="Valores">
+
+					<p:commandButton value="Add Valor" process="@this"
+						update="dlgValorEstrategico"
+						actionListener="#{estrategiaBean.newItem}"
+						oncomplete="PF('dlgValorEstrategico').show()" />
+
+					<p:dataTable id="tableValores"
+						value="#{estrategiaBean.pessoa.valores}" var="item"
+						rowIndexVar="linha" border="1" cellpadding="2" cellspacing="0"
+						paginator="true" paginatorPosition="bottom" rows="10"
+						style="margin-top: 5px">
+
+						<p:column headerText="Descrição do Valor Estratégico">
+							<h:outputText value="#{item.descricao}" />
+						</p:column>
+
+						<p:column width="80">
+							<p:commandButton icon="ui-icon-pencil" process="@this"
+								title="Editar" update="dlgValorEstrategico"
+								actionListener="#{estrategiaBean.setValorEstrategico(item)}"
+								oncomplete="PF('dlgValorEstrategico').show()" />
+
+							<p:commandButton icon="ui-icon-trash" process="@this"
+								title="Excluir" update="formCadastro:tabView:tableValores"
+								action="#{estrategiaBean.excluirItem(linha)}" />
+
+						</p:column>
+					</p:dataTable>
+				</p:tab>
+			</p:tabView>
+
+		</h:form>
+
+		<ui:include src="/planner/EstrategiaValor.xhtml" />
+
+	</ui:define>
+</ui:composition>

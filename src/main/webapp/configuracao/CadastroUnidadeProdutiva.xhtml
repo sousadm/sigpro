@@ -1,0 +1,48 @@
+<ui:composition template="/WEB-INF/template/LayoutPadrao.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui" xmlns:o="http://omnifaces.org/ui">
+
+	<ui:define name="dialogo">
+		<ui:include src="/configuracao/UnidadeProdutivaParametro.xhtml" />
+		<ui:include src="/configuracao/TransferenciaModuloFiscal.xhtml" />
+		<ui:include src="/configuracao/CadastroModuloFiscal.xhtml" />
+		<ui:include src="/configuracao/CadastroModuloPagamento.xhtml" />
+		<ui:include src="/configuracao/TransferenciaModuloPagamento.xhtml" />
+		<ui:include src="/configuracao/TransferenciaUsuario.xhtml" />
+		<ui:include src="/dialogos/ListaEventos.xhtml" />
+	</ui:define>
+
+	<f:metadata>
+		<f:event listener="#{unidadeProdutivaBean.inicializar}"
+			type="preRenderView"></f:event>
+	</f:metadata>
+
+	<ui:define name="titulo">Unidades</ui:define>
+
+	<ui:define name="corpo">
+
+		<h1 style="margin-top: 65px">Unidade Produtiva</h1>
+
+		<h:form id="formCadastro">
+
+			<p:messages id="msg" autoUpdate="true" closable="true" />
+
+			<h:panelGroup rendered="#{unidadeProdutivaBean.unidade == null}">
+				<ui:include src="/configuracao/UnidadeProdutivaPesquisa.xhtml" />
+			</h:panelGroup>
+
+			<h:panelGroup rendered="#{unidadeProdutivaBean.unidade != null}">
+				<ui:include src="/configuracao/UnidadeProdutivaEdit.xhtml" />
+			</h:panelGroup>
+
+		</h:form>
+
+	</ui:define>
+
+</ui:composition>
+
+
+<!-- 		<ui:include src="/configuracao/UnidadeProdutivaUsuarioEvento.xhtml" /> -->

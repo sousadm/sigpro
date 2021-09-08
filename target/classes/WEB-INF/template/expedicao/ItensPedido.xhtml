@@ -1,0 +1,110 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<p:dataTable value="#{expedicaoBean.expedicao.items}" var="item"
+		rowIndexVar="linha" id="tabelaItens" scrollable="true"
+		emptyMessage="nenhum item encontrado.">
+
+		<p:column headerText="Código" width="80">
+			<p:link value="#{item.produto.sku}"
+				outcome="/cadastros/CadastroProduto"
+				title="ir para cadastro #{item.produto.nome}">
+				<f:param name="produto" value="#{item.produto.id}" />
+			</p:link>
+		</p:column>
+		<p:column headerText="Descrição">
+			<p:link value="#{item.produto.nome}"
+				outcome="/cadastros/CadastroProduto"
+				title="ir para cadastro #{item.produto.nome}">
+				<f:param name="produto" value="#{item.produto.id}" />
+			</p:link>
+		</p:column>
+		<p:column headerText="Und" width="30">
+			<h:outputText value="#{item.unidade}" />
+		</p:column>
+		<p:column headerText="Vr.Unitário" width="80">
+			<div align="right">
+				<p:inputText value="#{item.unitario}"
+					rendered="#{expedicaoBean.podeModificarPreco}">
+					<f:convertNumber maxFractionDigits="2" minFractionDigits="2" />
+					<p:ajax event="change" process="@this"
+						update="tabelaItens :formCadastro:totalPedido :formCadastro:subtotal"
+						listener="#{expedicaoBean.atualizarQuantidade(item, linha)}" />
+				</p:inputText>
+				<p:outputLabel value="#{item.unitario}"
+					rendered="#{not expedicaoBean.podeModificarPreco}">
+					<f:convertNumber maxFractionDigits="2" minFractionDigits="2" />
+				</p:outputLabel>
+			</div>
+		</p:column>
+		<p:column headerText="Desconto" width="80">
+			<div align="right">
+				<p:inputNumber value="#{item.desconto}" decimalPlaces="2"
+					minValue="0" size="5"
+					disabled="#{expedicaoBean.expedicao.naoAlteravel}">
+					<p:ajax event="change" process="@this"
+						update="tabelaItens :formCadastro:totalPedido :formCadastro:subtotal"
+						listener="#{expedicaoBean.atualizarQuantidade(item, linha)}" />
+				</p:inputNumber>
+			</div>
+		</p:column>
+		<p:column headerText="Quantidade" width="80">
+			<div align="right">
+				<p:inputNumber value="#{item.quantidade}" padControl="false"
+					size="5" decimalPlaces="#{item.produto.unidade.precisao}"
+					minValue="0" disabled="#{expedicaoBean.expedicao.naoAlteravel}">
+					<p:ajax event="change" process="@this"
+						update="tabelaItens :formCadastro:totalPedido :formCadastro:subtotal"
+						listener="#{expedicaoBean.atualizarQuantidade(item, linha)}" />
+				</p:inputNumber>
+			</div>
+		</p:column>
+
+		<p:column headerText="Valor total" width="100">
+			<div align="right">
+				<h:outputText value="#{item.valorTotal}"
+					rendered="#{item.produtoAssociado}">
+					<f:convertNumber type="currency" />
+				</h:outputText>
+			</div>
+		</p:column>
+
+		<p:column width="100">
+			<div align="right">
+				<p:commandButton icon="ui-icon-pencil" class="button-grid"
+					disabled="#{not item.podeExcluir or expedicaoBean.expedicao.naoAlteravel or expedicaoBean.somenteLeitura}"
+					rendered="#{item.produtoAssociado}" process="@this"
+					update="dlgItemPedidoEdit" title="editar item"
+					actionListener="#{expedicaoBean.preparaItemPedido(item)}"
+					oncomplete="PF('dlgItemPedidoEdit').show()" />
+
+				<p:commandButton icon="ui-icon-image" class="button-grid"
+					title="imagem do item" process="@this"
+					disabled="#{not item.produto.existeImagem}"
+					action="#{expedicaoBean.defineImagem(item.produto)}"
+					oncomplete="PF('dlgGraphicImagem').show()"
+					update="dlgGraphicImagem" />
+
+				<p:commandButton icon="ui-icon-calculator" class="button-grid"
+					title="contrato de locação de veículo" update="dlgLocacaoVeiculo"
+					value="#{expedicaoBean.preparaOrdemLocacao(item)}"
+					rendered="#{item.produto.categoria.especialiadeAluguelVeiculo}"
+					oncomplete="PF('dlgLocacaoVeiculo').show()" />
+
+				<p:commandButton icon="ui-icon-trash" process="@this"
+					title="Remover" class="button-grid" update="@form"
+					disabled="#{expedicaoBean.expedicao.emitido}"
+					actionListener="#{expedicaoBean.excluirItem(linha)}">
+					<p:confirm icon="ui-icon-alert" header="Confirma exclusão"
+						message="Remover o registro atual?" />
+				</p:commandButton>
+
+			</div>
+		</p:column>
+
+	</p:dataTable>
+
+</ui:composition>

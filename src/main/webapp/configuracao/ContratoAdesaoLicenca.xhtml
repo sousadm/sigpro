@@ -1,0 +1,119 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<p:dialog id="dlgLicenca" header="Licenca de uso"
+		widgetVar="dlgLicenca" closeOnEscape="true" modal="true"
+		maximizable="false" width="700">
+		<h:form id="formLicenca">
+			<div class="ui-fluid">
+				<div class="ui-g" style="margin-top: 5px; border: 1px solid silver;">
+
+					<div class="ui-g-12 ui-md-4">
+						<p:outputLabel value="Documento" for="documento" />
+						<p:inputText id="documento" required="true"
+							requiredMessage="informe o documento"
+							readonly="#{contratoAdesaoBean.licenca.naoPodeAlterar}"
+							class="#{contratoAdesaoBean.licenca.podeEditar ? '' : 'bloqueado' }"
+							value="#{contratoAdesaoBean.licenca.documento}" maxlength="20" />
+					</div>
+					<div class="ui-g-12 ui-md-4">
+						<p:outputLabel value="Vencimento" for="vencimento"
+							disabled="#{contratoAdesaoBean.licenca.naoPodeAlterar}" />
+						<p:calendar id="vencimento" locale="pt_BR" mask="99/99/9999"
+							pattern="dd/MM/yyyy" navigator="true" showOn="button"
+							mindate="#{contratoAdesaoBean.dataMinima}"
+							maxdate="#{contratoAdesaoBean.dataMaxima}"
+							value="#{contratoAdesaoBean.licenca.vencimento}" required="true"
+							requiredMessage="informe o vencimento"
+							rendered="#{contratoAdesaoBean.licenca.podeEditar}">
+						</p:calendar>
+						<p:inputText value="#{contratoAdesaoBean.licenca.vencimento}"
+							rendered="#{contratoAdesaoBean.licenca.naoPodeAlterar}"
+							class="bloqueado" readonly="true">
+							<f:convertDateTime />
+						</p:inputText>
+					</div>
+					<div class="ui-g-12 ui-md-4">
+						<p:outputLabel value="Valor" for="valor"
+							disabled="#{contratoAdesaoBean.licenca.naoPodeAlterar}" />
+						<p:inputNumber id="valor" minValue="0" decimalSeparator=","
+							thousandSeparator="." decimalPlaces="2" required="true"
+							readonly="#{contratoAdesaoBean.licenca.naoPodeAlterar}"
+							requiredMessage="informe o valor"
+							value="#{contratoAdesaoBean.licenca.valor}" />
+					</div>
+
+					<div class="ui-g-12 ui-md-5">
+						<p:outputLabel value="Centro de custo" for="ccusto" />
+						<p:selectOneMenu id="ccusto" autoWidth="false" required="true"
+							requiredMessage="informe o centro de custo"
+							rendered="#{contratoAdesaoBean.licenca.podeEditar}"
+							value="#{contratoAdesaoBean.licenca.centroDeCusto}">
+							<f:selectItem itemLabel="Selecione..." />
+							<f:selectItems value="#{contratoAdesaoBean.listaCusto}" var="a"
+								itemValue="#{a}" itemLabel="#{a.descricao}" />
+						</p:selectOneMenu>
+						<p:inputText
+							value="#{contratoAdesaoBean.licenca.centroDeCusto.descricao}"
+							readonly="true"
+							rendered="#{contratoAdesaoBean.licenca.naoPodeAlterar}"
+							class="bloqueado" />
+					</div>
+					<div class="ui-g-12 ui-md-4">
+						<p:outputLabel value="Ciclo" for="ciclo" />
+						<p:selectOneMenu id="ciclo" autoWidth="false"
+							rendered="#{contratoAdesaoBean.licenca.podeEditar}"
+							required="true" requiredMessage="informe o ciclo"
+							value="#{contratoAdesaoBean.licenca.repete}">
+							<f:selectItems value="#{listaTipoBean.tipoRepeticao}"
+								var="repete" itemValue="#{repete}"
+								itemLabel="#{repete.descricao}" />
+						</p:selectOneMenu>
+						<p:inputText
+							value="#{contratoAdesaoBean.licenca.repete.descricao}"
+							readonly="true"
+							rendered="#{contratoAdesaoBean.licenca.naoPodeAlterar}"
+							class="bloqueado" />
+					</div>
+					<div class="ui-g-12 ui-md-3">
+						<h:outputLabel value="Franquia (dias)" />
+						<p:spinner value="#{contratoAdesaoBean.licenca.franquia}"
+							stepFactor="30" required="true"
+							requiredMessage="informe a franquia de uso"
+							rendered="#{contratoAdesaoBean.licenca.podeEditar}"
+							title="tempo para uso do sistema" min="30" max="1800" />
+						<p:inputText
+							value="#{contratoAdesaoBean.licenca.repete.descricao}"
+							rendered="#{contratoAdesaoBean.licenca.naoPodeAlterar}"
+							readonly="true" class="bloqueado">
+							<f:convertNumber />
+						</p:inputText>
+					</div>
+
+					<div class="ui-g-12">
+						<p:outputLabel value="Descritivo" for="descricao" />
+						<p:inputText id="descricao" maxlength="100" required="true"
+							requiredMessage="informe o descritivo"
+							class="#{contratoAdesaoBean.licenca.podeEditar ? '' : 'bloqueado' }"
+							readonly="#{contratoAdesaoBean.licenca.naoPodeAlterar}"
+							value="#{contratoAdesaoBean.licenca.descricao}" />
+					</div>
+
+				</div>
+			</div>
+
+			<div align="right" style="margin-top: 5px">
+				<p:commandButton value="Confirma" icon="ui-icon-check"
+					process="dlgLicenca" update="formCadastro"
+					disabled="#{contratoAdesaoBean.licenca.naoPodeAlterar}"
+					action="#{contratoAdesaoBean.gravarLicenca}"
+					oncomplete="if(!args.validationFailed) PF('dlgLicenca').hide()" />
+			</div>
+
+		</h:form>
+	</p:dialog>
+
+</ui:composition>

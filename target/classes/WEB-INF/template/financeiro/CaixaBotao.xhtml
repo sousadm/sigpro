@@ -1,0 +1,96 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<p:toolbar style="margin-top: 5px">
+		<p:toolbarGroup>
+
+			<p:splitButton id="botaoGravar" value="Gravar" icon="ui-icon-disk"
+				update="@form" process="@form" title="Baixar"
+				action="#{caixaBean.gravarCaixa}">
+
+				<p:menuitem value="Pagamento" icon="ui-icon-scissors" update="@form"
+					actionListener="#{caixaBean.iniciaCaixaPagamento}" />
+
+				<p:menuitem value="Recebimento" icon="ui-icon-suitcase"
+					update="@form" actionListener="#{caixaBean.iniciaCaixaRecebimento}" />
+
+				<p:submenu label="Comprovante"
+					rendered="#{caixaBean.caixa.podeImprimir}">
+					<p:menuitem value="Imprimir recibo" ajax="false"
+						rendered="#{caixaBean.caixa.podeImprimir}" target="_blank"
+						actionListener="#{caixaBean.imprimirRecibo}" icon="ui-icon-print" />
+					<p:menuitem value="Recibo detalhado" icon="ui-icon-print"
+						rendered="#{caixaBean.caixa.podeImprimir}" target="_blank"
+						ajax="false" action="#{caixaBean.imprimirDetalhado}" />
+					<p:menuitem value="Enviar por e-mail" icon="ui-icon-mail-closed"
+						process="@this" update="dlgSendMail"
+						actionListener="#{caixaBean.GerarArquivoPdf}"
+						action="#{sendMailBean.setEmail(caixaBean.email)}"
+						oncomplete="PF('dlgSendMail').show()" />
+				</p:submenu>
+
+				<p:submenu label="Opções">
+				
+					<p:menuitem value="Encerrar" id="botaoEncerrar"
+						icon="ui-icon-check" update="@form" process="@form"
+						disabled="#{not caixaBean.caixa.podeEncerrar}"
+						action="#{caixaBean.encerrar}">
+						<p:confirm icon="ui-icon-alert" header="Confirma"
+							message="Encerrar o caixa atual na data #{caixaBean.dataDiario}" />
+					</p:menuitem>
+					
+					<p:menuitem id="botaoEncerrarNaData" value="Encerrar na data"
+						icon="ui-icon-calendar" update="@form" process="@form"
+						disabled="#{not caixaBean.caixa.podeEncerrar}"
+						oncomplete="PF('dlgEncerramento').show()" />
+						
+					<p:menuitem value="Excluir" icon="ui-icon-trash" update="@form"
+						process="@form" disabled="#{not caixaBean.caixa.podeEncerrar}"
+						action="#{caixaBean.excluirCaixaAtual}">
+						<p:confirm icon="ui-icon-alert" header="Confirma"
+							message="Excluir o movimento atual?" />
+					</p:menuitem>
+					<p:menuitem id="botaoEstornar" value="Estornar"
+						title="estorno da operação"
+						disabled="#{not caixaBean.caixa.podeEstornar}"
+						action="#{caixaBean.estornar}" icon="ui-icon-shuffle "
+						update="@form" process="@form">
+						<p:confirm icon="ui-icon-alert" header="Confirma"
+							message="Estornar o caixa atual?" />
+					</p:menuitem>
+
+					<p:menuitem value="Reposicionar encerramento" update="@form"
+						process="@form" disabled="#{not caixaBean.caixa.podeReposicionar}"
+						oncomplete="PF('dlgReposicionamento').show()" />
+
+				</p:submenu>
+
+			</p:splitButton>
+
+		</p:toolbarGroup>
+
+		<p:toolbarGroup align="right">
+			<p:splitButton value="Pesquisa" update="@form"
+				action="#{caixaBean.setCaixa(null)}">
+				<p:menuitem value="Pesquisa por código" icon="ui-icon-search"
+					update="@form" process="@form"
+					oncomplete="PF('dlgPesquisaCodigo').show()" />
+
+				<p:menuitem disabled="#{not caixaBean.caixa.diario.existe}"
+					value="Ir para o diário financeiro"
+					outcome="/financeiro/CadastroDiario" process="@form">
+					<f:param name="diario" value="#{caixaBean.caixa.diario.id}" />
+				</p:menuitem>
+
+			</p:splitButton>
+		</p:toolbarGroup>
+
+	</p:toolbar>
+
+	<p:blockUI block="formCadastro"
+		trigger="botaoEncerrar botaoEncerrarNaData" />
+
+</ui:composition>

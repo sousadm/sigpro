@@ -1,0 +1,96 @@
+<ui:composition template="/WEB-INF/template/LayoutPadrao.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui" xmlns:o="http://omnifaces.org/ui">
+
+	<f:metadata>
+		<o:viewParam name="horario" value="#{clinicaHorarioBean.horario}" />
+		<f:event listener="#{clinicaHorarioBean.inicializar}"
+			type="preRenderView"></f:event>
+	</f:metadata>
+
+	<ui:define name="titulo">Horário</ui:define>
+
+	<ui:define name="corpo">
+
+		<h1 style="margin-top: 65px">Cadastro de Horário</h1>
+
+		<h:form id="formCadastro">
+
+			<p:toolbar style="margin-top: 05px">
+
+				<p:toolbarGroup>
+					<p:button value="Novo" icon="ui-icon-document"
+						outcome="/clinica/CadastroHorario" />
+
+					<p:commandButton id="botaoSalvar" value="Salvar"
+						icon="ui-icon-disk" action="#{clinicaHorarioBean.salvar}"
+						update="@form" />
+
+				</p:toolbarGroup>
+
+				<p:toolbarGroup align="right">
+					<p:button value="Pesquisa" icon="ui-icon-search"
+						outcome="/clinica/PesquisaHorario" />
+				</p:toolbarGroup>
+
+			</p:toolbar>
+
+			<p:messages autoUpdate="true" closable="true" />
+
+			<div class="ui-fluid">
+				<div class="ui-g">
+					<div class="ui-g-12">
+						<p:outputLabel value="Profissional" />
+						<p:selectOneMenu autoWidth="false"
+							value="#{clinicaHorarioBean.horario.consultor}">
+							<f:selectItem itemLabel="selecione" />
+							<f:selectItems value="#{clinicaHorarioBean.colaboradores}"
+								var="p" itemValue="#{p.colaborador}"
+								itemLabel="#{p.nome}" />
+						</p:selectOneMenu>
+					</div>
+					<div class="ui-g-12 ui-md-6 ui-lg-3">
+						<h:outputText value="Início" for="txtInicio" />
+						<p:calendar id="txtInicio"
+							value="#{clinicaHorarioBean.horario.inicio}" locale="pt_BR"
+							pattern="HH:mm:ss" timeOnly="true" />
+					</div>
+					<div class="ui-g-12 ui-md-6 ui-lg-3">
+						<h:outputText value="Intervalo" />
+						<p:calendar value="#{clinicaHorarioBean.horario.intervalo}"
+							locale="pt_BR" pattern="HH:mm:ss" timeOnly="true" />
+					</div>
+					<div class="ui-g-12 ui-md-6 ui-lg-3">
+						<h:outputText value="Reinício" />
+						<p:calendar value="#{clinicaHorarioBean.horario.reinicio}"
+							locale="pt_BR" pattern="HH:mm:ss" timeOnly="true" />
+					</div>
+					<div class="ui-g-12 ui-md-6 ui-lg-3">
+						<h:outputText value="Encerramento" for="txtEncerramento" />
+						<p:calendar id="txtEncerramento"
+							value="#{clinicaHorarioBean.horario.encerramento}" locale="pt_BR"
+							pattern="HH:mm:ss" timeOnly="true" />
+					</div>
+					<div class="ui-g-12">
+						<p:outputLabel value="Dias da Semana" for="txtDiasSemana" />
+						<p:selectManyCheckbox id="txtDiasSemana" layout="responsive" columns="3"
+							converter="enumConverter"
+							value="#{clinicaHorarioBean.horario.dias}">
+							<f:attribute name="collectionType" value="java.util.ArrayList" />
+							<f:selectItems value="#{listaTipoBean.tipoDiaSemana}" var="dia"
+								itemLabel="#{dia.descricao}" itemValue="#{dia}" />
+						</p:selectManyCheckbox>
+					</div>
+				</div>
+			</div>
+
+			<p:blockUI block="formCadastro" trigger="botaoSalvar" />
+
+		</h:form>
+
+	</ui:define>
+
+</ui:composition>

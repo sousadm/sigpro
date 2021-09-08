@@ -1,0 +1,28 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<p:dialog id="dlgExpedicao" header="Expedição" widgetVar="dlgExpedicao"
+		closeOnEscape="true" modal="true" maximizable="false" height="90"
+		width="350">
+		<h:form id="formCadastroExpedicao">
+
+			<p:panelGrid columns="2" styleClass="ui-noborder">
+
+				<p:outputLabel value="Número" for="expedicao" />
+				<p:outputLabel />
+
+				<p:inputText id="expedicao" value="#{caixaBean.codigoPesquisa}"
+					disabled="#{not caixaBean.caixa.podeGravar}" required="true" />
+				<p:commandButton value="Confirma" icon="ui-icon-check"
+					process="dlgExpedicao" disabled="#{not caixaBean.caixa.podeGravar}"
+					update="@all" action="#{caixaBean.gravarExpedicao}"
+					oncomplete="if(!args.validationFailed) PF('dlgExpedicao').hide()" />
+
+			</p:panelGrid>
+		</h:form>
+	</p:dialog>
+
+</ui:composition>

@@ -1,0 +1,54 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<div align="right">
+		<p:commandButton value="Add Pagamento" icon="ui-icon-tag"
+			disabled="#{not notaFiscalBean.nota.podeEditar}" process="@this"
+			update="dlgPagamento" actionListener="#{notaFiscalBean.addPagamento}"
+			oncomplete="PF('dlgPagamento').show()" />
+	</div>
+
+	<p:dataTable id="tabPagamento" value="#{notaFiscalBean.nota.pgtos}"
+		var="pgto" style="margin-top: 5px" rowIndexVar="linha"
+		emptyMessage="Nenhum item encontrado." rows="10" paginator="true"
+		paginatorAlwaysVisible="false" paginatorPosition="bottom">
+
+		<p:column headerText="Meio Pgto">
+			<h:outputText value="#{pgto.meioPgto.toString()}" />
+		</p:column>
+		<p:column headerText="Operadora">
+			<h:outputText value="#{pgto.operadora.toString()}" />
+		</p:column>
+		<p:column headerText="Vencimento" style="width: 80px" priority="5">
+			<h:outputText value="#{pgto.vencimento}">
+				<f:convertDateTime pattern="dd/MM/yyyy" />
+			</h:outputText>
+		</p:column>
+		<p:column headerText="Valor" style="width: 90px" priority="3">
+			<h:outputText value="#{pgto.valor}">
+				<f:convertNumber type="currency" />
+			</h:outputText>
+		</p:column>
+
+		<p:column style="width: 80px; text-align: center">
+
+			<p:commandButton icon="ui-icon-pencil" class="button-grid"
+				title="editar" process="formCadastro:tabView:tabPagamento"
+				update="dlgPagamento"
+				actionListener="#{notaFiscalBean.setPagamento(pgto)}"
+				oncomplete="PF('dlgPagamento').show()" />
+
+			<p:commandButton title="remover" icon="ui-icon-trash"
+				actionListener="#{notaFiscalBean.removerPgto(linha)}"
+				disabled="#{not notaFiscalBean.nota.podeEditar}" update="@form">
+				<p:confirm icon="ui-icon-alert" header="Remover"
+					message="Remover item atual?" />
+			</p:commandButton>
+		</p:column>
+
+	</p:dataTable>
+
+</ui:composition>

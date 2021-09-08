@@ -1,0 +1,46 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<p:dialog id="dlgModuloFiscal" header="Módulo Fiscal"
+		widgetVar="dlgModuloFiscal" closeOnEscape="true" modal="true">
+
+		<h:form id="formModuloFiscal">
+			<div class="ui-fluid">
+				<div class="ui-g">
+					<div class="ui-g-6">
+						<p:outputLabel value="Instalado em:" />
+						<p:outputLabel class="negrito"
+							value="#{unidadeProdutivaBean.moduloFiscal.pessoa.unidadeProdutiva.nomeDaLoja}" />
+					</div>
+					<div class="ui-g-6">
+						<p:outputLabel value="Número de Série" />
+						<p:inputText maxlength="30"
+							value="#{unidadeProdutivaBean.moduloFiscal.numeroSerie}" />
+					</div>
+					<div class="ui-g-12">
+						<p:outputLabel value="Descrição" />
+						<p:inputText maxlength="100"
+							value="#{unidadeProdutivaBean.moduloFiscal.descricao}" />
+					</div>
+					<div class="ui-g-12">
+						<p:outputLabel value="Fabricante" />
+						<p:inputText maxlength="100"
+							value="#{unidadeProdutivaBean.moduloFiscal.nomeFabricante}" />
+					</div>
+				</div>
+			</div>
+
+			<div align="right">
+				<p:commandButton value="Ok" icon="ui-icon-check"
+					style="width: 100px;" process="@form"
+					action="#{unidadeProdutivaBean.salvarModuloFiscal}" update="@form"
+					oncomplete="if(!args.validationFailed) PF('dlgModuloFiscal').hide()" />
+			</div>
+		</h:form>
+
+	</p:dialog>
+
+</ui:composition>

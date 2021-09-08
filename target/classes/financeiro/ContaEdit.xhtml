@@ -1,0 +1,163 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<h1 style="margin-top: 65px">Conta Bancária</h1>
+
+	<p:toolbar style="margin-top: 05px">
+		<p:toolbarGroup>
+			<p:splitButton id="botaoSalvar" value="Salvar" icon="ui-icon-disk"
+				update="@form" process="@form" action="#{contaBean.salvar}">
+				<p:menuitem value="Nova conta bancária" icon="ui-icon-document"
+					actionListener="#{contaBean.novo}" process="@this" update="@form" />
+				<p:separator />
+				<p:menuitem value="Ajuste saldo" process="@this" update="dlgAjuste"
+					actionListener="#{contaBean.preparaAjusteSaldo}"
+					disabled="#{contaBean.conta.cancelado}"
+					oncomplete="PF('dlgAjuste').show()" />
+
+				<p:menuitem value="Cancelar conta"
+					disabled="#{contaBean.conta.cancelado}"
+					actionListener="#{contaBean.cancelar}" process="@this"
+					update="@form">
+					<p:confirm icon="ui-icon-alert" header="Confirma"
+						message="Cancelar conta corrente atual?" />
+				</p:menuitem>
+
+			</p:splitButton>
+			<p:separator rendered="#{contaBean.permiteConciliacaoBancaria}" />
+			<p:commandButton value="Conciliação"
+				rendered="#{contaBean.permiteConciliacaoBancaria}"
+				disabled="#{contaBean.conta == null}"
+				actionListener="#{contaBean.setConciliacao(true)}" process="@this"
+				update="@form" />
+		</p:toolbarGroup>
+		<p:toolbarGroup align="right">
+			<p:commandButton value="Pesquisa" icon="ui-icon-search"
+				actionListener="#{contaBean.setConta(null)}" process="@this"
+				update="@form" />
+		</p:toolbarGroup>
+	</p:toolbar>
+
+	<p:messages autoUpdate="true" closable="true" />
+
+	<div class="ui-fluid">
+		<div class="ui-g" style="margin-top: 5px; border: 1px solid silver;">
+
+			<div class="ui-g-8 ui-md-4">
+				<p:outputLabel value="Número" for="numero" />
+				<p:inputNumber id="numero" minValue="0" decimalSeparator=""
+					required="true" requiredMessage="informe o número da conta"
+					thousandSeparator="" readonly="#{contaBean.conta.cancelado}"
+					decimalPlaces="0" value="#{contaBean.conta.numero}" />
+			</div>
+			<div class="ui-g-4 ui-md-2">
+				<p:outputLabel value="DV" />
+				<p:inputNumber minValue="0" maxValue="9" decimalSeparator=""
+					thousandSeparator="" decimalPlaces="0"
+					readonly="#{contaBean.conta.cancelado}"
+					value="#{contaBean.conta.contaDV}" />
+			</div>
+			<div class="ui-g-8 ui-md-4">
+				<p:outputLabel value="Agência" for="txtAgencia" />
+				<p:inputNumber id="txtAgencia" minValue="0" decimalSeparator=""
+					thousandSeparator="" decimalPlaces="0"
+					readonly="#{contaBean.conta.cancelado}" required="true"
+					requiredMessage="informe a agência"
+					value="#{contaBean.conta.agencia}" />
+			</div>
+			<div class="ui-g-4 ui-md-2">
+				<p:outputLabel value="DV" />
+				<p:inputNumber minValue="0" maxValue="9" decimalSeparator=""
+					thousandSeparator="" decimalPlaces="0"
+					readonly="#{contaBean.conta.cancelado}"
+					value="#{contaBean.conta.agenciaDV}" />
+			</div>
+
+			<div class="ui-g-5">
+				<p:outputLabel value="Banco" for="txtDescBanco" />
+				<div class="ui-inputgroup">
+					<p:commandButton icon="ui-icon-search" title="Pesquisar banco"
+						process="@this" update="@none" ignoreAutoUpdate="true"
+						styleClass="button-grid"
+						rendered="#{not contaBean.conta.cancelado}"
+						action="#{selecionaBean.banco}">
+						<p:ajax event="dialogReturn" listener="#{contaBean.onBancoChosen}"
+							update="txtDescBanco" />
+					</p:commandButton>
+					<p:inputText id="txtDescBanco" required="true"
+						requiredMessage="informe o banco"
+						value="#{contaBean.conta.banco.descricao}" readonly="true" />
+				</div>
+			</div>
+			<div class="ui-g-4">
+				<p:outputLabel value="Gerente" for="gerente" />
+				<p:inputText id="gerente" readonly="#{contaBean.conta.cancelado}"
+					value="#{contaBean.conta.gerente}" maxlength="100" />
+			</div>
+			<div class="ui-g-3">
+				<p:outputLabel for="phone" value="Telefone" />
+				<p:inputMask id="phone" value="#{contaBean.conta.fone}"
+					readonly="#{contaBean.conta.cancelado}" mask="(99) 9999-9999" />
+			</div>
+
+			<div class="ui-g-3">
+				<p:outputLabel value="Saldo Atual" />
+				<p:inputText value="#{contaBean.conta.saldo}" readonly="true"
+					class="bloqueado">
+					<f:convertNumber type="currency" />
+				</p:inputText>
+			</div>
+			<div class="ui-g-3">
+				<p:outputLabel value="Saldo Inicial" />
+				<h:panelGroup>
+					<p:inputNumber minValue="0" decimalSeparator=","
+						thousandSeparator="." decimalPlaces="2"
+						value="#{contaBean.conta.saldoInicial}"
+						rendered="#{contaBean.conta.dataInicio == null}" />
+					<p:inputText value="#{contaBean.conta.saldoInicial}"
+						class="bloqueado" readonly="true"
+						rendered="#{contaBean.conta.dataInicio != null}">
+						<f:convertNumber type="currency" />
+					</p:inputText>
+				</h:panelGroup>
+			</div>
+			<div class="ui-g-3">
+				<p:outputLabel value="Data Inicial" for="txtDataInicial" />
+				<h:panelGroup>
+					<p:calendar id="txtDataInicial" navigator="true" mask="99/99/9999"
+						pattern="dd/MM/yyyy" showOn="button"
+						value="#{contaBean.conta.dataInicio}" required="true"
+						requiredMessage="defina a da inicial da conta"
+						rendered="#{contaBean.conta.dataInicio == null}" />
+					<p:inputText value="#{contaBean.conta.dataInicio}" readonly="true"
+						class="bloqueado" rendered="#{contaBean.conta.dataInicio != null}">
+						<f:convertDateTime pattern="dd/MM/yyyy" />
+					</p:inputText>
+				</h:panelGroup>
+			</div>
+			<div class="ui-g-3">
+				<p:outputLabel value="Cancelamento" />
+				<p:inputText value="#{contaBean.conta.dataCancelamento}"
+					readonly="true" class="bloqueado">
+					<f:convertDateTime pattern="dd/MM/yyyy" />
+				</p:inputText>
+			</div>
+
+			<div class="ui-g-12">
+				<p:selectBooleanCheckbox value="#{contaBean.conta.permiteCheque}"
+					readonly="#{contaBean.conta.cancelado}"
+					itemLabel="Permite controlar e emitir cheque" />
+				<p:selectBooleanCheckbox value="#{contaBean.conta.permiteDebito}"
+					readonly="#{contaBean.conta.cancelado}"
+					itemLabel="Permite pagamento com débito em conta" />
+			</div>
+
+		</div>
+	</div>
+
+	<p:blockUI block="formCadastro" trigger="botaoSalvar" />
+
+</ui:composition>

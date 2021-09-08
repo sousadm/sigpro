@@ -1,0 +1,131 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<ui:include src="/WEB-INF/template/expedicao/MargemNegociacao.xhtml" />
+
+	<p:toolbar style="margin-top: 05px">
+
+		<p:toolbarGroup>
+
+			<p:splitButton id="botaoSalvar" action="#{expedicaoBean.salvar}"
+				process="@form" update="@form" value="Salvar" title="Salvar"
+				icon="ui-icon-disk">
+
+				<p:menuitem value="Novo" icon="ui-icon-document" process="@this"
+					disabled="#{seguranca.bloqueioValidade}"
+					action="#{expedicaoBean.novo}" update="@form" />
+
+				<p:menuitem icon="ui-icon-calculator" value="margem de negociação"
+					process="@this" rendered="#{expedicaoBean.expedicao.existe}"
+					actionListener="#{expedicaoBean.expedicao.calcular}"
+					oncomplete="PF('dlgMargem').show()" />
+
+				<p:menuitem id="menuEncerrar" value="Encerrar" update="@form"
+					icon="ui-icon-disk" actionListener="#{expedicaoBean.emitirPedido}"
+					disabled="#{expedicaoBean.expedicao.naoEmissivel or expedicaoBean.somenteLeitura}">
+					<p:confirm icon="ui-icon-alert" header="Expedição"
+						message="Emitir o pedido atual?" />
+				</p:menuitem>
+
+				<p:menuitem id="menuEncerrarNoDia" value="Encerrar na data"
+					icon="ui-icon-calendar" process="@form"
+					disabled="#{expedicaoBean.expedicao.naoEmissivel or expedicaoBean.somenteLeitura}"
+					oncomplete="PF('dlgEncerramento').show()" />
+
+				<p:menuitem value="Reabrir" update="@form" icon="ui-icon-disk"
+					process="@this" actionListener="#{expedicaoBean.reabrirPedido}"
+					disabled="#{expedicaoBean.expedicao.naoPodeReabrir or expedicaoBean.somenteLeitura}">
+					<p:confirm icon="ui-icon-alert" header="Expedição"
+						message="Reabrir o pedido atual?" />
+				</p:menuitem>
+
+				<p:menuitem id="menuCancelar" value="Cancelar"
+					actionListener="#{expedicaoCancelaBean.cancelarExpedicao}"
+					disabled="#{expedicaoBean.expedicao.naoCancelavel or expedicaoBean.somenteLeitura}"
+					update="@form" icon="ui-icon-alert">
+					<p:confirm icon="ui-icon-alert" header="Expedição"
+						message="Cancelar o pedido atual?" />
+				</p:menuitem>
+
+				<p:menuitem icon="ui-icon-note" value="Eventos" process="@this"
+					update="dlgEventos" rendered="#{expedicaoBean.expedicao.existe}"
+					actionListener="#{listaEventoBean.preparar(expedicaoBean.expedicao)}"
+					oncomplete="PF('dlgEventos').show()" />
+
+				<p:submenu label="Ordem de serviços mecânicos"
+					rendered="#{expedicaoBean.oficinaMecanica}">
+					<p:menuitem ajax="false" icon="ui-icon-search"
+						value="Gerar Ordem de Serviço"
+						disabled="#{not expedicaoBean.expedicao.podeGerarOS or expedicaoBean.somenteLeitura}"
+						outcome="/expedicao/CadastroOrdemServico">
+						<f:param name="expedicao" value="#{expedicaoBean.expedicao.id}" />
+					</p:menuitem>
+					<p:menuitem value="Lista de ordens" process="@this"
+						update="dlgOrdemServico"
+						rendered="#{expedicaoBean.expedicao.existe}"
+						actionListener="#{ordemServicoBean.preparaListaOrdemServico(expedicaoBean.expedicao)}"
+						oncomplete="PF('dlgOrdemServico').show()" />
+				</p:submenu>
+
+			</p:splitButton>
+
+			<p:commandButton value="Produto" icon="ui-icon-search"
+				title="Pesquisa produto" process="@this"
+				actionListener="#{selecionaBean.produtoServico}"
+				rendered="#{expedicaoBean.expedicao.podeEditar and not expedicaoBean.somenteLeitura}">
+				<p:ajax event="dialogReturn"
+					listener="#{expedicaoBean.onProdutoChosen}"
+					update="formCadastro:view:tabelaItens :formCadastro:totalPedido :formCadastro:subtotal" />
+			</p:commandButton>
+
+			<p:separator />
+
+			<p:splitButton value="Imprimir" ajax="false"
+				disabled="#{not expedicaoBean.expedicao.existe or expedicaoBean.somenteLeitura}"
+				actionListener="#{expedicaoBean.imprimirOrcamento}" update="@form"
+				icon="ui-icon-print" onclick="this.form.target='_blank'">
+
+				<p:menuitem value="Recibo" icon="ui-icon-print" ajax="false"
+					action="#{expedicaoBean.imprimirRecibo}" update="formCadastro:msg"
+					disabled="#{not expedicaoBean.expedicao.emitido}" target="_blank" />
+
+				<p:menuitem value="Enviar por e-mail" icon="ui-icon-mail-closed"
+					disabled="#{not expedicaoBean.expedicao.existe}" process="@this"
+					update="dlgSendMail"
+					actionListener="#{expedicaoBean.GerarArquivoPdf}"
+					action="#{sendMailBean.setEmail(expedicaoBean.email)}"
+					oncomplete="PF('dlgSendMail').show()" />
+
+				<p:menuitem value="Enviar SMS"
+					disabled="#{not expedicaoBean.expedicao.existe}" process="@this"
+					actionListener="#{expedicaoBean.preparaSms}"
+					action="#{sendSMSBean.setSms(pessoaBean.sms)}" update="dlgSendSMS"
+					oncomplete="PF('dlgSendSMS').show()" />
+				<p:separator />
+
+				<p:menuitem value="Modificar preços" icon="ui-icon-document-b"
+					update="formCadastro:view:tabelaItens formCadastro:msg"
+					disabled="#{expedicaoBean.expedicao.naoEmissivel or expedicaoBean.somenteLeitura}"
+					actionListener="#{expedicaoBean.permiteModificarPreco}" />
+
+				<p:menuitem icon="ui-icon-transferthick-e-w" value="Gerar boleto"
+					process="@this" rendered="#{expedicaoBean.expedicao.emitido}"
+					action="#{selecionaBean.boletoDigital(expedicaoBean.expedicao)}" />
+
+			</p:splitButton>
+
+		</p:toolbarGroup>
+
+		<p:toolbarGroup align="right">
+			<p:splitButton value="Pesquisa" update="@form" icon="ui-icon-search"
+				process="@this" actionListener="#{expedicaoBean.setExpedicao(null)}">
+				<p:menuitem value="Pesquisa por código" update="@form"
+					process="@form" oncomplete="PF('dlgPesquisaCodigo').show()" />
+			</p:splitButton>
+		</p:toolbarGroup>
+	</p:toolbar>
+
+</ui:composition>

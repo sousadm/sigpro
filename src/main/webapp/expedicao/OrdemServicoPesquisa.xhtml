@@ -1,0 +1,112 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<p:toolbar style="margin-top: 05px">
+		<p:toolbarGroup>
+			<p:splitButton id="botaoPesquisa" value="Pesquisar"
+				icon="ui-icon-search"
+				action="#{ordemServicoBean.pesquisarOrdemServico}" update="@form">
+				<p:menuitem value="Imprimir lista" icon="ui-icon-print" ajax="false"
+					process="@form" action="#{ordemServicoBean.imprimir_lista}"
+					target="_blank" />
+			</p:splitButton>
+		</p:toolbarGroup>
+	</p:toolbar>
+
+	<div class="ui-fluid">
+		<div class="ui-g" style="margin-top: 5px; border: 1px solid silver;">
+			<div class="ui-g-12 ui-md-9">
+				<p:outputLabel value="Condição do Serviço" />
+				<p:selectOneRadio value="#{ordemServicoBean.filtro.tipo}">
+					<f:selectItem itemLabel="Todos" itemValue="-1" />
+					<f:selectItem itemLabel="Não iniciado" itemValue="0" />
+					<f:selectItem itemLabel="Liberado" itemValue="1" />
+					<f:selectItem itemLabel="Iniciado" itemValue="2" />
+					<f:selectItem itemLabel="Concluído" itemValue="3" />
+				</p:selectOneRadio>
+			</div>
+			<div class="ui-g-12 ui-md-3">
+				<p:outputLabel value="Placa do veículo" />
+				<p:inputText value="#{ordemServicoBean.filtro.placa}"
+					style="text-transform: uppercase" />
+			</div>
+
+			<div class="ui-g-6 ui-md-3">
+				<p:outputLabel value="Período" />
+				<p:calendar navigator="true" showOn="button" mask="99/99/9999"
+					pattern="dd/MM/yyyy" value="#{ordemServicoBean.filtro.inicio}" />
+			</div>
+			<div class="ui-g-6 ui-md-3">
+				<p:outputLabel value="Término" />
+				<p:calendar navigator="true" showOn="button" mask="99/99/9999"
+					pattern="dd/MM/yyyy" value="#{ordemServicoBean.filtro.termino}" />
+			</div>
+			<div class="ui-g-12 ui-md-6">
+				<p:outputLabel value="Nome do cliente" />
+				<p:inputText value="#{ordemServicoBean.filtro.nome}" />
+			</div>
+
+		</div>
+	</div>
+
+	<p:dataTable scrollable="true"
+		value="#{ordemServicoBean.listaOrdemServico}" var="item" lazy="true"
+		style="margin-top: 5px" emptyMessage="Nenhum registro encontrado."
+		rows="8" paginator="true" paginatorAlwaysVisible="false"
+		paginatorPosition="bottom">
+
+		<p:column headerText="Número" sortBy="#{item.id}" width="60">
+			<h:outputText value="#{item.id}">
+				<f:convertNumber pattern="000000" />
+			</h:outputText>
+		</p:column>
+		<p:column headerText="Placa" width="60"
+			sortBy="#{item.servico.veiculo.placa}">
+			<p:link value="#{item.veiculo.placa}"
+				outcome="/equipamento/CadastroVeiculo"
+				title="ir para cadastro do veículo #{item.veiculo.placa}">
+				<f:param name="veiculo" value="#{item.veiculo.id}" />
+			</p:link>
+		</p:column>
+		<p:column headerText="Nome do Cliente"
+			sortBy="#{item.responsavel.nome}">
+			<h:outputText value="" />
+			<p:link value="#{item.responsavel.nome}"
+				outcome="/cadastros/CadastroPessoa"
+				title="ir para cadastro #{item.responsavel.nome}">
+				<f:param name="pessoa" value="#{item.responsavel.id}" />
+			</p:link>
+		</p:column>
+		<p:column headerText="Liberado" width="140"
+			sortBy="#{item.dataLiberaProducao}">
+			<h:outputText value="#{item.dataLiberaProducao}">
+				<f:convertDateTime pattern="dd/MM/yyyy HH:mm" />
+			</h:outputText>
+		</p:column>
+
+		<p:column headerText="Início" width="140"
+			sortBy="#{item.cronologia.inicio}">
+			<h:outputText value="#{item.cronologia.inicio}">
+				<f:convertDateTime pattern="dd/MM/yyyy HH:mm" />
+			</h:outputText>
+		</p:column>
+		<p:column headerText="Término" width="140"
+			sortBy="#{item.cronologia.termino}">
+			<h:outputText value="#{item.cronologia.termino}">
+				<f:convertDateTime pattern="dd/MM/yyyy HH:mm" />
+			</h:outputText>
+		</p:column>
+
+		<p:column width="40">
+			<p:commandButton title="Editar" icon="ui-icon-pencil"
+				class="button-grid" update="@form" process="@this"
+				actionListener="#{ordemServicoBean.setOrdem(item)}" />
+		</p:column>
+
+	</p:dataTable>
+
+	<p:blockUI block="formCadastro" trigger="botaoPesquisa" />
+</ui:composition>

@@ -1,0 +1,18 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<h:panelGroup layout="block" style="padding-right: 10px">
+		<p:editor value="#{expedicaoBean.expedicao.observacao}"
+			disabled="#{expedicaoBean.expedicao.naoAlteravel}"
+			controls="#{expedicaoBean.editorControl}" height="200"
+			styleClass="naoaceitarenter" />
+	</h:panelGroup>
+
+</ui:composition>
+
+<!-- <p:inputTextarea rows="10" style="width: 100%" -->
+<!-- 	value="#{expedicaoBean.expedicao.observacao}" -->
+<!-- 	disabled="#{expedicaoBean.expedicao.naoAlteravel}" /> -->

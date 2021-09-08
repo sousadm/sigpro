@@ -1,0 +1,80 @@
+<ui:composition template="/WEB-INF/template/LayoutPadrao.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<ui:define name="conta">Balanço Patrimonial</ui:define>
+
+	<ui:define name="corpo">
+
+		<h:form id="frmPesquisa">
+
+			<p:focus />
+
+			<h1 style="margin-top: 65px">Balanço Patrimonial</h1>
+
+			<p:messages autoUpdate="true" closable="true" />
+
+			<p:toolbar style="margin-top: 05px">
+				<p:toolbarGroup>
+					<p:commandButton value="Pesquisar" icon="ui-icon-search"
+						action="#{balancoBean.pesquisar}" update="@form"
+						onclick="jQuery(this).addClass('ui-state-disabled')" />
+				</p:toolbarGroup>
+				<p:toolbarGroup align="right">
+					<p:button value="Novo" icon="ui-icon-document"
+						outcome="/financeiro/CadastroBalanco" />
+				</p:toolbarGroup>
+			</p:toolbar>
+
+			<p:dataTable id="tabela" value="#{balancoBean.lista}" var="balanco"
+				rowIndexVar="item" style="margin-top: 5px" scrollable="true"
+				emptyMessage="Nenhum registro encontrado." rows="10"
+				paginator="true" paginatorAlwaysVisible="false"
+				paginatorPosition="bottom">
+
+				<p:column headerText="Data" style="width: 115px">
+					<h:outputText value="#{balanco.dataApuracao}">
+						<f:convertDateTime pattern="dd/MM/yyyy" />
+					</h:outputText>
+				</p:column>
+				<p:column headerText="Valor do Ativo"
+					style="text-align: right; width: 65px">
+					<h:outputText value="#{balanco.valorAtivoPatrimonial}">
+						<f:convertNumber type="currency" currencySymbol="" />
+					</h:outputText>
+				</p:column>
+				<p:column headerText="Valor do Passivo"
+					style="text-align: right; width: 65px">
+					<h:outputText value="#{balanco.valorPassivoPatrimonial}">
+						<f:convertNumber type="currency" currencySymbol="" />
+					</h:outputText>
+				</p:column>
+				<p:column headerText="Patrimonio Liquido"
+					style="text-align: right; width: 65px">
+					<h:outputText value="#{balanco.valorPatrimonioLiquido}">
+						<f:convertNumber type="currency" currencySymbol="" />
+					</h:outputText>
+				</p:column>
+
+				<p:column style="width: 35px; text-align: center">
+					<p:button icon="ui-icon-pencil" title="Editar"
+						outcome="/financeiro/CadastroBalanco">
+						<f:param name="balanco" value="#{balanco.id}" />
+					</p:button>
+					<p:commandButton icon="ui-icon-trash" process="@this"
+						class="button-grid" title="Excluir" update="@form"
+						action="#{balancoBean.excluir(balanco)}">
+						<p:confirm icon="ui-icon-alert" header="Confirma"
+							message="Confirma exclusão do balanço?" />
+					</p:commandButton>
+				</p:column>
+
+			</p:dataTable>
+
+		</h:form>
+	</ui:define>
+
+</ui:composition>

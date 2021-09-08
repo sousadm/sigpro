@@ -1,0 +1,127 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<p:focus for="txtDataCadastro" />
+
+	<h1 style="margin-top: 65px">Pesquisa de pedidos</h1>
+
+	<p:toolbar style="margin-top: 05px">
+
+		<p:toolbarGroup>
+			<p:splitButton id="botaoPesquisa" value="Pesquisar" update="@form"
+				icon="ui-icon-search" action="#{expedicaoPesquisaBean.pesquisar}">
+				<p:menuitem value="Pesquisa por código" update="@form"
+					process="@form" oncomplete="PF('dlgPesquisaCodigo').show()" />
+				<p:separator />
+				<p:menuitem value="Imprimir lista" icon="ui-icon-print" ajax="false"
+					process="@form" action="#{expedicaoPesquisaBean.imprimir_lista}"
+					target="_blank" />
+			</p:splitButton>
+		</p:toolbarGroup>
+
+		<p:toolbarGroup align="right">
+			<p:commandButton value="Novo" icon="ui-icon-document"
+				disabled="#{expedicaoBean.somenteLeitura or seguranca.bloqueioValidade}"
+				action="#{expedicaoBean.novo}" update="@form" />
+		</p:toolbarGroup>
+
+	</p:toolbar>
+
+	<div class="ui-fluid">
+		<div class="ui-g" style="margin-top: 5px; border: 1px solid gray;">
+			<div class="ui-g-6 ui-md-3">
+				<p:outputLabel value="Cadastro" />
+				<p:calendar id="txtDataCadastro" navigator="true" showOn="button"
+					mask="99/99/9999" pattern="dd/MM/yyyy"
+					value="#{expedicaoPesquisaBean.filtro.inicio}" />
+			</div>
+			<div class="ui-g-6 ui-md-3">
+				<p:outputLabel value="Término" />
+				<p:calendar navigator="true" showOn="button" mask="99/99/9999"
+					pattern="dd/MM/yyyy"
+					value="#{expedicaoPesquisaBean.filtro.termino}" />
+			</div>
+			<div class="ui-g-12 ui-md-6">
+				<p:outputLabel value="Nome do cliente" />
+				<p:inputText value="#{expedicaoPesquisaBean.filtro.nomeCliente}" />
+			</div>
+
+			<div class="ui-g-6 ui-md-3">
+				<p:outputLabel value="Emissão" />
+				<p:calendar navigator="true" showOn="button" mask="99/99/9999"
+					pattern="dd/MM/yyyy"
+					value="#{expedicaoPesquisaBean.filtro.emissaoInicial}" />
+			</div>
+			<div class="ui-g-6 ui-md-3">
+				<p:outputLabel value="Término" />
+				<p:calendar navigator="true" showOn="button" mask="99/99/9999"
+					pattern="dd/MM/yyyy"
+					value="#{expedicaoPesquisaBean.filtro.emissaoFinal}" />
+			</div>
+
+			<div class="ui-g-12 ui-md-6">
+				<p:outputLabel value="Status" />
+				<p:selectManyCheckbox
+					value="#{expedicaoPesquisaBean.filtro.expedicaoTipos}">
+					<f:selectItems value="#{expedicaoPesquisaBean.tipos}" var="tipo"
+						itemValue="#{tipo}" itemLabel="#{tipo.descricao}" />
+				</p:selectManyCheckbox>
+			</div>
+
+		</div>
+	</div>
+
+	<p:dataTable id="pedidosTable" value="#{expedicaoPesquisaBean.model}"
+		var="pedido" style="margin-top: 5px; width: 100%" rows="8"
+		scrollable="true" paginator="true" paginatorAlwaysVisible="false"
+		paginatorPosition="bottom" emptyMessage="Nenhum pedido encontrado."
+		lazy="true">
+
+		<p:column headerText="ID" sortBy="#{pedido.id}" width="50">
+			<h:outputText value="#{pedido.id}">
+				<f:convertNumber pattern="00000" />
+			</h:outputText>
+		</p:column>
+		<p:column headerText="Nome do Cliente" sortBy="#{pedido.cliente.nome}">
+			<p:link value="#{pedido.cliente.nome}"
+				outcome="/cadastros/CadastroPessoa"
+				title="ir para cadastro #{pedido.cliente.nome}">
+				<f:param name="cliente" value="#{pedido.cliente.id}" />
+			</p:link>
+		</p:column>
+		<p:column headerText="Cadastro" sortBy="#{pedido.dataCadastro}"
+			width="100">
+			<h:outputText value="#{pedido.dataCadastro}">
+				<f:convertDateTime pattern="dd/MM/yyyy" />
+			</h:outputText>
+		</p:column>
+		<p:column headerText="Emissão" sortBy="#{pedido.dataEmissao}"
+			width="100">
+			<h:outputText value="#{pedido.dataEmissao}">
+				<f:convertDateTime pattern="dd/MM/yyyy" />
+			</h:outputText>
+		</p:column>
+		<p:column headerText="Valor" width="80">
+			<h:outputText value="#{pedido.valorTotal}">
+				<f:convertNumber type="currency" />
+			</h:outputText>
+		</p:column>
+		<p:column headerText="Status" width="80">
+			<h:outputText value="#{pedido.tipo.descricao}" />
+		</p:column>
+
+		<p:column width="30">
+			<p:commandButton title="Editar" icon="ui-icon-pencil"
+				class="button-grid" update="@form"
+				actionListener="#{expedicaoBean.setExpedicao(pedido)}"
+				process="@this" />
+		</p:column>
+
+	</p:dataTable>
+
+	<p:blockUI block="formCadastro" trigger="botaoPesquisa" />
+
+</ui:composition>

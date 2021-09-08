@@ -1,0 +1,54 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<p:dialog id="dlgProducao"
+		header="#{ordemServicoBean.producao.ordemItemProducao.servico.veiculo.placa}"
+		widgetVar="dlgProducao" closeOnEscape="true" dynamic="true"
+		modal="true" width="500">
+
+		<h:form>
+
+			<div class="ui-fluid">
+				<div class="ui-g">
+					<div class="ui-g-7">
+						<p:calendar id="dataStart" mode="inline"
+							pattern="dd/MM/yyyy HH:mm"
+							value="#{ordemServicoBean.producao.cronologia.inicio}" />
+					</div>
+					<div class="ui-g-5">
+						<div class="ui-g-12">
+							<p:outputLabel value="Operador" />
+							<p:selectOneMenu value="#{ordemServicoBean.producao.operador}"
+								autoWidth="false">
+								<f:selectItems value="#{ordemServicoBean.listaOperadores}"
+									var="operador" itemValue="#{operador}"
+									itemLabel="#{operador.nome}" />
+							</p:selectOneMenu>
+						</div>
+						<div class="ui-g-12">
+							<p:outputLabel value="Comando" />
+							<p:selectOneMenu id="comandoStart" autoWidth="false"
+								value="#{ordemServicoBean.producao.comando}">
+								<f:selectItems value="#{ordemServicoBean.listaComandos}"
+									var="operador" itemValue="#{operador}"
+									itemLabel="#{operador.descricao}" />
+							</p:selectOneMenu>
+						</div>
+						<div align="right" class="ui-g-12" style="margin-top: 5px">
+							<p:commandButton value="Confirma" icon="ui-icon-check"
+								process="@form" class="botao-dialogo" update="frmPesquisa"
+								action="#{ordemServicoBean.salvarProducao}"
+								oncomplete="if(!args.validationFailed) PF('dlgProducao').hide()" />
+						</div>
+					</div>
+				</div>
+			</div>
+
+		</h:form>
+
+	</p:dialog>   
+
+</ui:composition>

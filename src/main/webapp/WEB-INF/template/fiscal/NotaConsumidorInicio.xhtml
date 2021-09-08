@@ -1,0 +1,89 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<p:dialog id="dlgInicio" header="Iniciar Venda" widgetVar="dlgInicio"
+		closeOnEscape="true" modal="true" maximizable="false" width="600"
+		responsive="true">
+
+		<p:focus context="frmInicio:txtNome" />
+
+		<h:form id="frmInicio">
+
+			<p:messages autoUpdate="true" closable="true" />
+
+			<div class="ui-fluid">
+				<p:panelGrid columns="2" style="margin-top: 5px" layout="grid"
+					columnClasses="ui-grid-col-4, ui-grid-col-8"
+					styleClass="panelgrid-noborder">
+
+					<p:outputLabel value="Operação Fiscal" />
+					<p:selectOneMenu autoWidth="false"
+						value="#{notaConsumidorBean.operacao }">
+						<f:selectItems value="#{notaConsumidorBean.listaOperacaoFiscal}"
+							var="operacao" itemValue="#{operacao}"
+							itemLabel="#{operacao.descricao}" />
+					</p:selectOneMenu>
+
+					<h:outputLabel value="Tipo de Consumidor" />
+					<p:selectOneMenu value="#{notaConsumidorBean.clienteNovo.tipo}"
+						autoWidth="false">
+						<f:selectItems value="#{notaConsumidorBean.tipos}" var="a"
+							itemValue="#{a}" itemLabel="#{a.descricao}" />
+						<f:ajax render="@form" update="@form" />
+					</p:selectOneMenu>
+
+					<p:outputLabel
+						value="#{notaConsumidorBean.clienteNovo.pessoaJuridica ? 'CNPJ' : 'CPF'}"
+						rendered="#{!notaConsumidorBean.clienteNovo.pessoaIndefinida}" />
+					<p:inputMask value="#{notaConsumidorBean.codigo}"
+						mask="#{notaConsumidorBean.clienteNovo.pessoaJuridica ? '99.999.999/9999-99' : '999.999.999-99' } "
+						rendered="#{!notaConsumidorBean.clienteNovo.pessoaIndefinida}">
+						<f:ajax render="@form"
+							listener="#{notaConsumidorBean.verificaCadastroNovo}"
+							update="dlgInicio" />
+					</p:inputMask>
+
+					<p:outputLabel for="txtNome"
+						value="#{notaConsumidorBean.clienteNovo.pessoaJuridica ? 'Razão Social' : 'Nome'}"
+						rendered="#{!notaConsumidorBean.clienteNovo.pessoaIndefinida}" />
+					<p:inputText id="txtNome"
+						value="#{notaConsumidorBean.clienteNovo.nome}" required="true"
+						requiredMessage="defina  o nome do cliente"
+						rendered="#{!notaConsumidorBean.clienteNovo.pessoaIndefinida}" />
+
+					<h:outputLabel value="Sexo"
+						rendered="#{notaConsumidorBean.clienteNovo.pessoaFisica}" />
+					<p:selectOneMenu value="#{notaConsumidorBean.clienteNovo.PF.sexo}"
+						autoWidth="false"
+						rendered="#{notaConsumidorBean.clienteNovo.pessoaFisica}">
+						<f:selectItems value="#{listaTipoBean.tipoSexo}" var="sexo"
+							itemValue="#{sexo}" itemLabel="#{sexo.descricao}" />
+					</p:selectOneMenu>
+
+
+					<p:outputLabel for="txtEmail" value="E-mail"
+						rendered="#{!notaConsumidorBean.clienteNovo.existe}" />
+					<p:inputText id="txtEmail" maxlength="150"
+						style="text-transform: lowercase"
+						value="#{notaConsumidorBean.clienteNovo.email}" required="true"
+						requiredMessage="defina o e-mail do cliente"
+						rendered="#{!notaConsumidorBean.clienteNovo.existe}" />
+
+				</p:panelGrid>
+			</div>
+
+			<div align="right" style="margin-top: 5px">
+				<p:commandButton value="Confirma" icon="ui-icon-check"
+					process="dlgInicio" update="formCadastro"
+					action="#{notaConsumidorBean.iniciarVenda}"
+					oncomplete="if(!args.validationFailed) PF('dlgInicio').hide()" />
+
+			</div>
+
+		</h:form>
+	</p:dialog>
+
+</ui:composition>

@@ -1,0 +1,150 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui" xmlns:o="http://omnifaces.org/ui">
+
+	<p:toolbar style="margin-top: 5px">
+		<p:toolbarGroup>
+			<p:splitButton id="botaoSalvar" value="Salvar" icon="ui-icon-disk"
+				update="@form" process="@form"
+				action="#{ordemServicoBean.salvarOrdemServico}">
+			</p:splitButton>
+
+			<span class="ui-separator"> <span
+				class="ui-icon ui-icon-grip-dotted-vertical" />
+			</span>
+
+			<p:commandButton value="Liberar" update="@form" process="@form"
+				rendered="#{not ordemServicoBean.ordem.liberado}"
+				action="#{ordemServicoBean.liberarParaProducao}">
+				<p:confirm icon="ui-icon-alert" header="Confirma"
+					message="Liberar ordem de serviço atual para produção?" />
+			</p:commandButton>
+
+			<p:commandButton value="Imprimir" icon="ui-icon-print"
+				rendered="#{ordemServicoBean.ordem.liberado}"
+				actionListener="#{ordemServicoBean.imprimirOrdemServico}"
+				ajax="false" update="@form" onclick="this.form.target='_blank'" />
+
+		</p:toolbarGroup>
+
+		<p:toolbarGroup align="right">
+			<p:commandButton value="Pesquisa" icon="ui-icon-search"
+				update="@form" process="@this"
+				actionListener="#{ordemServicoBean.setOrdem(null)}" />
+		</p:toolbarGroup>
+	</p:toolbar>
+
+	<div class="ui-fluid">
+		<div class="ui-g" style="margin-top: 5px; border: 1px solid silver;">
+			<div class="ui-g-12 ui-md-3">
+				<p:outputLabel value="Seguência" />
+				<p:inputText value="#{ordemServicoBean.ordem.id}"
+					styleClass="bloqueado" readonly="true">
+					<f:convertNumber pattern="#####0" minIntegerDigits="6" />
+				</p:inputText>
+			</div>
+			<div class="ui-g-12 ui-md-6">
+				<p:outputLabel value="Responsavel" />
+				<p:inputText styleClass="bloqueado" readonly="true"
+					value="#{ordemServicoBean.ordem.responsavel.nome}" />
+			</div>
+			<div class="ui-g-12 ui-md-3">
+				<p:outputLabel value="Data de liberação" />
+				<p:inputText styleClass="bloqueado" readonly="true"
+					value="#{ordemServicoBean.ordem.dataLiberaProducao}">
+					<f:convertDateTime pattern="dd/MM/yyyy HH:mm" />
+				</p:inputText>
+			</div>
+
+			<div class="ui-g-12 ui-md-3">
+				<p:outputLabel value="Data prevista para conclusão" for="previsao" />
+				<p:calendar id="previsao"
+					rendered="#{not ordemServicoBean.ordem.liberado}"
+					value="#{ordemServicoBean.ordem.dataPrevisao}"
+					pattern="MM/dd/yyyy HH:mm" />
+				<p:inputText styleClass="bloqueado" readonly="true"
+					rendered="#{ordemServicoBean.ordem.liberado}"
+					value="#{ordemServicoBean.ordem.dataPrevisao}">
+					<f:convertDateTime pattern="dd/MM/yyyy HH:mm" />
+				</p:inputText>
+			</div>
+			<div class="ui-g-12 ui-md-6">
+				<p:outputLabel value="Placa veicular" for="txtVeiculo" />
+				<div class="ui-inputgroup">
+					<p:commandButton icon="ui-icon-search" title="Pesquisar veículo"
+						disabled="#{ordemServicoBean.ordem.encerrado}" process="@this"
+						update="@none" ignoreAutoUpdate="true" styleClass="button-grid"
+						action="#{selecionaBean.veiculo}">
+						<p:ajax event="dialogReturn"
+							update="txtVeiculo txtPlaca txtOdometro"
+							listener="#{ordemServicoBean.onVeiculoChosen}"
+							ignoreAutoUpdate="true" />
+					</p:commandButton>
+					<p:inputText id="txtPlaca"
+						value="#{ordemServicoBean.ordem.veiculo.placa}" readonly="true" />
+					<p:inputText id="txtVeiculo"
+						value="#{ordemServicoBean.ordem.veiculo.descricao}"
+						readonly="true" />
+				</div>
+			</div>
+			<div class="ui-g-12 ui-md-3">
+				<p:outputLabel value="Odômetro atual" for="txtOdometro" />
+				<p:spinner id="txtOdometro"
+					min="#{ordemServicoBean.ordem.veiculo.odometroFinal}"
+					value="#{ordemServicoBean.ordem.odometro}" />
+			</div>
+
+			<div class="ui-g-12">
+				<p:outputLabel value="Observação" />
+				<p:inputTextarea rows="3" style="width: 100%"
+					value="#{ordemServicoBean.ordem.observacao}" />
+			</div>
+		</div>
+	</div>
+
+	<p:dataTable id="tabela" value="#{ordemServicoBean.ordem.items}"
+		var="item" rowIndexVar="linha"
+		emptyMessage="Nenhum registro encontrado." rows="10" paginator="true"
+		paginatorAlwaysVisible="false" paginatorPosition="bottom">
+
+		<p:column headerText="Produto / Serviço">
+			<h:outputText value="#{item.produto.nome}" />
+		</p:column>
+		<p:column headerText="Fator de Reposição" style="width: 120px">
+			<h:outputText value="#{item.produto.fatorReposicao}">
+				<f:convertNumber pattern="###0" />
+			</h:outputText>
+		</p:column>
+		<p:column headerText="Unidade" style="width: 120px">
+			<h:outputText value="#{item.produto.tipoReposicao.descricao}" />
+		</p:column>
+		<p:column headerText="Quant." style="text-align: right; width: 120px">
+			<h:outputText value="#{item.quantidade}">
+				<f:convertNumber pattern="###0" />
+			</h:outputText>
+		</p:column>
+
+		<p:column style="width: 100px; text-align: center">
+
+			<p:button title="Ir para pedido de vendas"
+				icon="ui-icon-arrowreturnthick-1-w"
+				outcome="/expedicao/CadastroExpedicao" process="@form">
+				<f:param name="expedicao" value="#{item.expedicao.id}" />
+			</p:button>
+
+			<p:commandButton icon="ui-icon-trash" title="remover" update="@form"
+				disabled="#{ordemServicoBean.ordem.encerrado}"
+				action="#{ordemServicoBean.excluirItemOrdem(linha)}">
+				<p:confirm icon="ui-icon-alert" header="Confirmação de exclusão"
+					message="Excluir #{item.produto.nome}  ?" />
+			</p:commandButton>
+
+		</p:column>
+
+	</p:dataTable>
+
+	<p:blockUI block="formCadastro" trigger="botaoSalvar" />
+
+</ui:composition>

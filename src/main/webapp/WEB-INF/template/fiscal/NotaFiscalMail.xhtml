@@ -1,0 +1,45 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<p:dialog id="dlgEnvioEmail" header="Envio de e-mail"
+		widgetVar="dlgEnvioEmail" closeOnEscape="true" modal="true"
+		maximizable="false" width="500">
+
+		<p:dataTable id="listaMail" value="#{notaFiscalBean.listaEmail}"
+			styleClass="panelgrid-noborder" var="email"
+			paginatorAlwaysVisible="false" rowIndexVar="linha"
+			paginatorPosition="bottom">
+			<p:column headerText="e-mail">
+				<p:inputText maxlength="150" placeholder="digite um e-mail válido"
+					style="text-transform: lowercase; width: 100%"
+					value="#{email.emailExtraPrimeiro}" />
+			</p:column>
+			<p:column width="35">
+				<p:commandButton icon="ui-icon-trash" process="@this"
+					actionListener="#{notaFiscalBean.removerEmail(linha)}"
+					update="listaMail" />
+			</p:column>
+		</p:dataTable>
+
+		<div align="right" style="margin-top: 5px">
+
+			<p:commandButton value="Add Mail"
+				actionListener="#{notaFiscalBean.addMailLista}" update="listaMail" />
+
+			<p:commandButton value="Confirma" icon="ui-icon-check"
+				process="dlgEnvioEmail"
+				disabled="#{empty notaFiscalBean.listaEmail}"
+				actionListener="#{notaFiscalBean.enviarEmail}"
+				oncomplete="if(!args.validationFailed) PF('dlgEnvioEmail').hide()">
+				<p:confirm icon="ui-icon-alert" header="Envio de email"
+					message="Confirma envio de email?" />
+			</p:commandButton>
+
+		</div>
+
+	</p:dialog>
+
+</ui:composition>

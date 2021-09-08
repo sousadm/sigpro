@@ -1,0 +1,38 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<p:panelGrid id="capaCNH" columns="2" layout="grid"
+		styleClass="panelgrid-noborder">
+
+		<p:outputLabel value="Categoria" />
+		<p:selectOneMenu value="#{pessoaBean.pessoa.motorista.cnhCategoria}">
+			<f:selectItems value="#{listaTipoBean.tipoCategoriaHabilitacao}"
+				var="cnh" itemValue="#{cnh}" itemLabel="#{cnh.descricao}" />
+		</p:selectOneMenu>
+
+		<p:outputLabel value="Número" />
+		<p:inputText value="#{pessoaBean.pessoa.motorista.cnhNumero}"
+			maxlength="20" />
+
+		<p:outputLabel value="Órgão" />
+		<p:inputText value="#{pessoaBean.pessoa.motorista.cnhOrgao}"
+			maxlength="20" />
+
+		<p:outputLabel value="Data de Validade" />
+		<p:calendar showOn="button" mask="99/99/9999" pattern="dd/MM/yyyy"
+			value="#{pessoaBean.pessoa.motorista.cnhValidade}" />
+
+		<p:outputLabel value="Data de Emissão" />
+		<p:calendar showOn="button" mask="99/99/9999" pattern="dd/MM/yyyy"
+			value="#{pessoaBean.pessoa.motorista.cnhEmissao}" />
+
+		<p:outputLabel value="Data Primeira Emissão" />
+		<p:calendar showOn="button" mask="99/99/9999" pattern="dd/MM/yyyy"
+			value="#{pessoaBean.pessoa.motorista.cnhPrimeira}" />
+
+	</p:panelGrid>
+
+</ui:composition>

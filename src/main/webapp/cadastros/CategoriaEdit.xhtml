@@ -1,0 +1,71 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui" xmlns:o="http://omnifaces.org/ui">
+
+	<p:toolbar style="margin-top: 05px">
+		<p:toolbarGroup>
+			<p:commandButton value="Novo" icon="ui-icon-document"
+				actionListener="#{categoriaBean.novo}" update="@form" />
+			<p:commandButton value="Salvar" icon="ui-icon-disk" id="botaoSalvar"
+				action="#{categoriaBean.salvar}" update="@form" />
+		</p:toolbarGroup>
+		<p:toolbarGroup align="right">
+			<p:commandButton value="Pesquisa" icon="ui-icon-search"
+				update="@form" actionListener="#{categoriaBean.setCategoria(null)}"
+				process="@this" />
+		</p:toolbarGroup>
+	</p:toolbar>
+
+	<div class="ui-fluid">
+		<div class="ui-g" style="margin-top: 5px; border: 1px solid silver;">
+			<div class="ui-g-12 ui-md-8">
+				<p:outputLabel value="Descrição da categoria" for="txtDescricao" />
+				<p:inputText id="txtDescricao" maxlength="60"
+					value="#{categoriaBean.categoria.descricao}" />
+			</div>
+			<div class="ui-g-12 ui-md-4">
+				<p:outputLabel value="Tipo de cadastro" for="tipoProduto" />
+				<p:selectOneMenu id="tipoProduto" autoWidth="false"
+					value="#{categoriaBean.categoria.tipoProduto}">
+					<f:selectItem itemLabel="Selecione" />
+					<f:selectItems value="#{listaTipoBean.tipoProduto}"
+						var="tipoProduto" itemValue="#{tipoProduto}"
+						itemLabel="#{tipoProduto.descricao}" />
+				</p:selectOneMenu>
+			</div>
+			<div class="ui-g-12" align="right">
+				<p:commandButton value="Add Subcategoria" process="@this"
+					update="dlgSubCategoria" styleClass="botao-dialogo"
+					actionListener="#{categoriaBean.addSubcategoria}"
+					oncomplete="PF('dlgSubCategoria').show()" />
+			</div>
+		</div>
+	</div>
+
+	<p:dataTable id="tabelaSubCategoria"
+		value="#{categoriaBean.categoria.subcategorias}" var="item"
+		style="margin-top: 5px" rowIndexVar="linha"
+		emptyMessage="Nenhum registro encontrado." rows="10" paginator="true"
+		paginatorAlwaysVisible="false" paginatorPosition="bottom">
+
+		<p:column headerText="Descrição da subcategoria">
+			<h:outputText value="#{item.descricao}" />
+		</p:column>
+
+		<p:column width="80">
+			<p:commandButton icon="ui-icon-pencil" title="Editar subcategoria"
+				class="button-grid" action="#{categoriaBean.setSubCategoria(item)}"
+				update="dlgSubCategoria" process="tabelaSubCategoria"
+				oncomplete="PF('dlgSubCategoria').show()" />
+			<p:commandButton icon="ui-icon-trash" process="@this" title="Excluir"
+				update="tabelaSubCategoria" class="button-grid"
+				action="#{categoriaBean.excluirSubCategoria(linha)}" />
+		</p:column>
+
+	</p:dataTable>
+
+	<p:blockUI block="formCadastro" trigger="botaoSalvar" />
+
+</ui:composition>

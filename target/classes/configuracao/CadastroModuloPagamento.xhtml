@@ -1,0 +1,58 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<p:dialog id="dlgModulo" header="Módulo de Pagamento"
+		widgetVar="dlgModulo" closeOnEscape="true" modal="true" width="800">
+
+		<h:form id="formModulo">
+			<div class="ui-fluid" style="margin-top: 5px">
+				<div class="ui-g">
+					<div class="ui-g-6">
+						<p:outputLabel value="Instalado em:" />
+						<p:outputLabel class="negrito"
+							value="#{unidadeProdutivaBean.modulo.pessoa.unidadeProdutiva.nomeDaLoja}" />
+					</div>
+					<div class="ui-g-6">
+						<p:outputLabel value="Número de Série" for="txtSerie" />
+						<p:inputText id="txtSerie" size="30"
+							value="#{unidadeProdutivaBean.modulo.numeroSerie}" />
+					</div>
+					<div class="ui-g-12">
+						<p:outputLabel value="Descrição" for="txtDescricao" />
+						<p:inputText id="txtDescricao" maxlength="100"
+							value="#{unidadeProdutivaBean.modulo.descricao}" />
+					</div>
+					<div class="ui-g-12">
+						<p:outputLabel value="Fabricante" for="txtFabricante" />
+						<p:inputText id="txtFabricante" maxlength="100"
+							value="#{unidadeProdutivaBean.modulo.nomeFabricante}" />
+					</div>
+					<div class="ui-g-6">
+						<p:outputLabel value="Código de Validação" for="txtValidacao" />
+						<p:inputText id="txtValidacao" maxlength="30"
+							value="#{unidadeProdutivaBean.modulo.codigoValidacao}" />
+					</div>
+					<div class="ui-g-6">
+						<p:outputLabel value="Código de Requisição" for="txtRequisicao" />
+						<p:inputText id="txtRequisicao" maxlength="30"
+							value="#{unidadeProdutivaBean.modulo.codigoRequisicao}" />
+					</div>
+				</div>
+			</div>
+
+			<div align="right">
+				<p:commandButton value="Ok" icon="ui-icon-check"
+					style="width: 100px;" process="@all"
+					action="#{unidadeProdutivaBean.salvarModulo}"
+					update="formCadastro:tabView:listaModulo"
+					oncomplete="if(!args.validationFailed) PF('dlgModulo').hide()" />
+			</div>
+			
+		</h:form>
+
+	</p:dialog>
+
+</ui:composition>

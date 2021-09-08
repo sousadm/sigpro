@@ -1,0 +1,37 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<p:dialog id="dlgMovimentoProduto" header="Evento Financeiro"
+		widgetVar="dlgMovimentoProduto" closeOnEscape="true" modal="true"
+		maximizable="false" height="270" width="450" responsive="true">
+
+		<h:form id="formEvento">
+			<p:panelGrid columns="2" styleClass="ui-noborder">
+
+				<p:outputLabel value="Início" />
+				<p:calendar locale="pt_BR" mask="99/99/9999" pattern="dd/MM/yyyy"
+					navigator="true" showOn="button"
+					value="#{cadastroProdutoBean.filtro.inicio}" />
+
+				<p:outputLabel value="Término" />
+				<p:calendar locale="pt_BR" mask="99/99/9999" pattern="dd/MM/yyyy"
+					navigator="true" showOn="button"
+					value="#{cadastroProdutoBean.filtro.termino}" />
+
+			</p:panelGrid>
+
+			<div align="right">
+				<p:commandButton value="Confirma" icon="ui-icon-check"
+					process="dlgMovimentoProduto"
+					actionListener="#{parametroBean.gravarMail}"
+					oncomplete="if(!args.validationFailed) PF('dlgMovimentoProduto').hide()" />
+			</div>
+			
+		</h:form>
+
+	</p:dialog>
+
+</ui:composition>

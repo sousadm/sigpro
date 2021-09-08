@@ -1,0 +1,44 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:c="http://java.sun.com/jstl/core">
+
+	<p:dialog id="dlgFiltro" header="Lista" widgetVar="dlgFiltro"
+		closeOnEscape="true" modal="true" maximizable="false">
+		<h:form id="formFiltro">
+
+			<p:selectBooleanCheckbox
+				value="#{formacaoDePrecoBean.filtro.semPrecoCompra}" />
+			<p:outputLabel value="preço de compra indefinido" />
+
+			<br />
+			<p:selectBooleanCheckbox
+				value="#{formacaoDePrecoBean.filtro.semPrecoVenda}" />
+			<p:outputLabel value="preço de venda indefinido" />
+
+			<br />
+			<p:selectBooleanCheckbox
+				value="#{formacaoDePrecoBean.filtro.comPrecoInferior}" />
+			<p:outputLabel value="preço de venda inferior ao sugerido" />
+
+			<br />
+			<p:selectOneMenu autoWidth="false"
+				value="#{formacaoDePrecoBean.opcao}">
+				<f:selectItem itemLabel="todos os itens" />
+				<f:selectItem itemLabel="Produtos" itemValue="1" />
+				<f:selectItem itemLabel="Serviços" itemValue="2" />
+			</p:selectOneMenu>
+
+			<div align="right">
+				<p:commandButton value="Aplicar" icon="ui-icon-check"
+					process="dlgFiltro" update="form:tabela form:barra"
+					actionListener="#{formacaoDePrecoBean.listarProdutosComFiltro}"
+					oncomplete="if(!args.validationFailed) PF('dlgFiltro').hide()" />
+			</div>
+
+		</h:form>
+	</p:dialog>
+
+</ui:composition>

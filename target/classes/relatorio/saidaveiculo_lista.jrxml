@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="aquisicao_lista" language="groovy" pageWidth="595" pageHeight="842" columnWidth="565" leftMargin="20" rightMargin="10" topMargin="20" bottomMargin="10" uuid="1c016bf3-f303-4e27-9e17-3d97d0ccb737">
+	<property name="ireport.zoom" value="3.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="empresa" class="java.lang.Object"/>
+	<field name="veiculo" class="java.lang.Object"/>
+	<field name="motorista" class="java.lang.Object"/>
+	<field name="dataSaida" class="java.util.Date"/>
+	<field name="dataRetorno" class="java.util.Date"/>
+	<field name="observacao" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<pageHeader>
+		<band height="52" splitType="Stretch">
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="464" y="4" width="100" height="14" uuid="fb99856e-6d73-4b7d-a5bc-bd18dadee079"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="464" y="33" width="100" height="14" uuid="0a4a2349-c1c6-4734-9e2f-7c841400a289"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA["Pág. "+$V{PAGE_NUMBER}+" de  " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="1" y="4" width="441" height="20" uuid="283015b6-e3a4-4d68-a9a3-6ff678cc2150"/>
+				<textElement>
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Lista Saida de Veículo]]></text>
+			</staticText>
+			<textField pattern="HH.mm.ss">
+				<reportElement x="464" y="19" width="100" height="14" uuid="c147259f-f078-4f8b-ad2f-af0a75bb8f31"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="1" y="28" width="446" height="14" uuid="ce33e95a-379b-4d75-ba6d-718788b9b9f8"/>
+				<textFieldExpression><![CDATA[$P{empresa}.getUnidadeProdutiva().getNomeDaLoja()]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="20" splitType="Stretch">
+			<line>
+				<reportElement x="0" y="1" width="565" height="1" uuid="5fa77e33-9802-4eba-ac89-e1fe6f0a4a94"/>
+			</line>
+			<line>
+				<reportElement x="0" y="18" width="565" height="1" uuid="19ab9cad-6aee-487e-9214-0e1e8a531044"/>
+			</line>
+			<staticText>
+				<reportElement x="1" y="1" width="90" height="15" uuid="051c7d6f-03cc-4a09-be26-16cecf3fee2d"/>
+				<text><![CDATA[Saída]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="93" y="1" width="90" height="15" uuid="404bd68c-44aa-4b5c-8113-e6f4350b570b"/>
+				<text><![CDATA[Retorno]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="186" y="1" width="115" height="15" uuid="7a429759-0245-442d-a3cf-e3adc758bc03"/>
+				<text><![CDATA[Motorista]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="476" y="1" width="50" height="15" uuid="57ad9c91-698a-4a0a-a6e8-6fde967624a3"/>
+				<text><![CDATA[CNH]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="529" y="1" width="35" height="15" uuid="8dddd845-6735-45a3-8f3e-48b36820c9ea"/>
+				<text><![CDATA[Categ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="303" y="1" width="170" height="15" uuid="9def2237-8b55-4e41-8617-f169d285c183"/>
+				<text><![CDATA[Observação]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="17" splitType="Stretch">
+			<textField pattern="dd/MM/yyyy HH.mm" isBlankWhenNull="true">
+				<reportElement x="1" y="1" width="90" height="15" uuid="32228d6d-0a91-4bfa-aa95-5eb6ee18029e"/>
+				<textFieldExpression><![CDATA[$F{dataSaida}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy HH.mm" isBlankWhenNull="true">
+				<reportElement x="93" y="1" width="90" height="15" uuid="f309aa99-1faf-4e42-b559-30e4ca986320"/>
+				<textFieldExpression><![CDATA[$F{dataRetorno}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="186" y="1" width="115" height="15" uuid="0edd24ca-f78c-43c4-bc94-8aaff2c1ee54"/>
+				<textFieldExpression><![CDATA[$F{motorista}.getNome()]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="476" y="1" width="50" height="15" uuid="6c5584f5-48eb-4d13-8103-a74a90c81cbb"/>
+				<textFieldExpression><![CDATA[$F{motorista}.getCnhNumero()]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="529" y="1" width="35" height="15" uuid="ec8e7c6f-a525-41d5-bc3a-7a33a8d34982"/>
+				<textFieldExpression><![CDATA[$F{motorista}.getCnhCategoria().getDescricao()]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="303" y="1" width="170" height="15" uuid="81320803-2772-4448-bfa7-4f6218081b3c"/>
+				<textFieldExpression><![CDATA[$F{observacao}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="recibo" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="d93885fd-b0a2-4ec3-9f47-6aafbcc44475">
+	<property name="ireport.zoom" value="1.5"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="339"/>
+	<parameter name="empresa" class="java.lang.Object"/>
+	<parameter name="logo" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="titulos" class="java.lang.Object"/>
+	<parameter name="pagamentos" class="java.lang.Object"/>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="detalhado" class="java.lang.Boolean"/>
+	<parameter name="empresa_endereco" class="java.lang.String"/>
+	<parameter name="tipo_documento" class="java.lang.String"/>
+	<field name="id" class="java.lang.Long"/>
+	<field name="valorLiquido" class="java.lang.Double"/>
+	<field name="pessoa" class="java.lang.Object"/>
+	<field name="valorPorExtenso" class="java.lang.String"/>
+	<field name="observacao" class="java.lang.String"/>
+	<field name="emissao" class="java.util.Date"/>
+	<group name="sequencia">
+		<groupExpression><![CDATA[$F{id}]]></groupExpression>
+		<groupHeader>
+			<band height="89">
+				<rectangle radius="5">
+					<reportElement x="364" y="0" width="190" height="87" uuid="b50ba040-25e3-4e2f-afaf-05f994c64392"/>
+				</rectangle>
+				<rectangle radius="5">
+					<reportElement x="1" y="0" width="360" height="87" uuid="e3479b90-d1be-4f1c-ae3e-79b3ea52f0f8"/>
+				</rectangle>
+				<image onErrorType="Blank">
+					<reportElement x="12" y="7" width="120" height="51" uuid="6b5ea12a-aca1-4ce1-a650-5447ff410d16"/>
+					<imageExpression><![CDATA[$P{logo}]]></imageExpression>
+				</image>
+				<staticText>
+					<reportElement x="143" y="6" width="167" height="37" uuid="78c72ac1-105c-49a6-99b4-f684b57240a5"/>
+					<textElement textAlignment="Center" markup="html">
+						<font fontName="Arial" size="28" isBold="true" isPdfEmbedded="true"/>
+					</textElement>
+					<text><![CDATA[RECIBO]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="369" y="6" width="100" height="20" uuid="3b3fa68f-a42e-4ecf-aa81-eb69ba5bb3f5"/>
+					<textElement markup="html">
+						<font fontName="Times New Roman" size="14" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Valor:]]></text>
+				</staticText>
+				<textField isBlankWhenNull="true">
+					<reportElement x="11" y="64" width="300" height="16" uuid="1a127239-14ae-4fda-93c9-d1ff12786d87"/>
+					<textFieldExpression><![CDATA[$P{empresa_endereco}.toString()]]></textFieldExpression>
+				</textField>
+				<textField pattern="¤ #,##0.00">
+					<reportElement x="367" y="43" width="184" height="34" uuid="5b3cbbfd-841a-412f-9ad6-0a182001f1a7"/>
+					<textElement textAlignment="Center" markup="html">
+						<font fontName="Arial" size="18" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{valorLiquido}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupHeader>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<detail>
+		<band height="134" splitType="Stretch">
+			<staticText>
+				<reportElement x="4" y="8" width="100" height="20" uuid="a4d60aeb-0413-41c2-bd45-d82e39ca6469"/>
+				<textElement>
+					<font fontName="Times New Roman" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Recebemos de:]]></text>
+			</staticText>
+			<rectangle radius="5">
+				<reportElement x="120" y="3" width="434" height="26" uuid="5853acc9-558f-4971-bdd5-1109e7f86cf2"/>
+			</rectangle>
+			<textField isBlankWhenNull="true">
+				<reportElement x="128" y="9" width="420" height="16" uuid="23fba09f-c2d7-4950-bcab-51bc3ff20d9e"/>
+				<textElement>
+					<font fontName="Courier New"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{pessoa}.getNome()]]></textFieldExpression>
+			</textField>
+			<rectangle radius="5">
+				<reportElement x="120" y="35" width="434" height="40" uuid="1731ce06-37d7-48b4-a9c0-ee55e2e308e6"/>
+			</rectangle>
+			<textField isBlankWhenNull="true">
+				<reportElement x="129" y="39" width="420" height="32" uuid="7714e67d-608f-4bad-b89d-dd3372eb166a"/>
+				<textElement>
+					<font fontName="Courier New"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{valorPorExtenso}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="5" y="40" width="110" height="14" uuid="5ff6ab61-9d81-4257-95eb-5b7cfc18d163"/>
+				<textElement>
+					<font fontName="Times New Roman" isBold="false"/>
+				</textElement>
+				<text><![CDATA[A importância de:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="6" y="84" width="110" height="14" uuid="11bef1ed-6d7b-4cc3-9ce4-ac38f7193174"/>
+				<textElement>
+					<font fontName="Times New Roman" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Referente a:]]></text>
+			</staticText>
+			<rectangle radius="5">
+				<reportElement x="120" y="79" width="434" height="51" uuid="52bddc99-049f-428e-b6c6-7dae0c1182a2"/>
+			</rectangle>
+			<textField isBlankWhenNull="true">
+				<reportElement x="129" y="84" width="420" height="46" uuid="764650fe-8fb3-4c38-988a-736cbb5e6c60"/>
+				<textElement>
+					<font fontName="Courier New"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{observacao}]]></textFieldExpression>
+			</textField>
+		</band>
+		<band height="114">
+			<printWhenExpression><![CDATA[$P{detalhado}]]></printWhenExpression>
+			<rectangle radius="5">
+				<reportElement x="2" y="2" width="264" height="110" uuid="e4f9b56c-961e-4e42-9675-962e10e9879d"/>
+			</rectangle>
+			<rectangle radius="5">
+				<reportElement x="269" y="2" width="285" height="110" uuid="20e82583-b4bd-4172-a073-5e9f57cf0eee"/>
+			</rectangle>
+			<subreport>
+				<reportElement x="6" y="6" width="257" height="100" uuid="7d2c9d27-fdde-4bb2-8ce6-e6c7613b67e1"/>
+				<dataSourceExpression><![CDATA[$P{pagamentos}]]></dataSourceExpression>
+				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "reciboPagamento.jasper"]]></subreportExpression>
+			</subreport>
+			<subreport>
+				<reportElement x="274" y="7" width="274" height="100" uuid="3e3938bf-a213-4acd-a5ea-1181047b7b82"/>
+				<dataSourceExpression><![CDATA[$P{pagamentos}]]></dataSourceExpression>
+				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "reciboTitulo.jasper"]]></subreportExpression>
+			</subreport>
+		</band>
+		<band height="80">
+			<rectangle radius="5">
+				<reportElement x="1" y="2" width="553" height="76" uuid="4d616f6e-91b1-4461-bebc-23f83842a40e"/>
+			</rectangle>
+			<textField pattern="" isBlankWhenNull="true">
+				<reportElement x="165" y="51" width="382" height="16" uuid="c0dc9cf2-f58a-4372-9bb1-6cd0ed3181ce"/>
+				<textElement textAlignment="Center">
+					<font fontName="Courier New"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{empresa}.getNome()]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd &apos;de&apos; MMMMM &apos;de&apos; yyyy" isBlankWhenNull="true">
+				<reportElement x="341" y="33" width="207" height="16" uuid="03bf0ba3-d1e9-4df5-ac2f-d8f3f2261ca1"/>
+				<textElement>
+					<font fontName="Courier New" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{emissao}]]></textFieldExpression>
+			</textField>
+			<textField pattern="" isBlankWhenNull="true">
+				<reportElement x="166" y="33" width="170" height="16" uuid="67ba6508-4a7d-421f-a041-6b155a77b948"/>
+				<textElement textAlignment="Right">
+					<font fontName="Courier New" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{empresa}.getEndereco().getMunicipio().getDescricao()+" - "+$P{empresa}.getEndereco().getMunicipio().getUf().getCodigo()+","]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<summary>
+		<band height="18">
+			<textField pattern="dd/MM/yyyy HH.mm.ss">
+				<reportElement x="451" y="2" width="100" height="16" uuid="da75dfbf-27b1-454c-b8a9-4fd31e5dba3f"/>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="6" y="2" width="216" height="14" uuid="1c9808d2-04f0-46ce-9e93-06c6e06888b6"/>
+				<textFieldExpression><![CDATA[($P{tipo_documento} + String.format("%06d", $F{id})]]></textFieldExpression>
+			</textField>
+		</band>
+	</summary>
+</jasperReport>

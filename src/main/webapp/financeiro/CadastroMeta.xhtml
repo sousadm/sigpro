@@ -1,0 +1,70 @@
+<ui:composition template="/WEB-INF/template/LayoutPadrao.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui" xmlns:o="http://omnifaces.org/ui">
+
+	<f:metadata>
+		<!-- 		<o:viewParam name="caixa" value="#{caixaBean.caixa}" /> -->
+		<f:event listener="#{metaBean.inicializar}" type="preRenderView"></f:event>
+	</f:metadata>
+
+	<ui:define name="titulo">Metas</ui:define>
+
+	<ui:define name="corpo">
+
+		<p:focus context="formCadastro" />
+
+		<h1 style="margin-top: 65px">Cadastro de Metas</h1>
+
+		<h:form id="formCadastro">
+
+			<p:messages autoUpdate="true" closable="true" />
+
+			<p:panelGrid columns="4" style="width: 100%; margin-top: 5px"
+				columnClasses="rotulo, campo">
+
+				<p:outputLabel value="Ano previsto" />
+				<p:outputLabel value="Tipo de Meta" />
+				<p:outputLabel value="Pessoa" />
+				<p:commandButton value="Consultar" action="#{metaBean.consultar}"
+					style="width:100px;" ajax="false" update="tabela" />
+
+				<p:spinner value="#{metaBean.ano}" min="2017" max="2018">
+					<p:ajax event="change" process="@this" update="@form"
+						listener="#{metaBean.consultar}" />
+				</p:spinner>
+				<p:selectOneMenu value="#{metaBean.tipo}" autoWidth="false" >
+					<f:selectItems value="#{listaTipoBean.tipoMeta}" var="tipo"
+						itemValue="#{tipo}" itemLabel="#{tipo.descricao}" />
+					<p:ajax event="change" process="@this" update="@form"
+						listener="#{metaBean.consultar}" />
+				</p:selectOneMenu>
+				<p:inputText value="#{metaBean.pessoa}" style="width:98%;"
+					disabled="true" />
+				<p:commandButton value="Gravar" action="#{metaBean.salvar}"
+					style="width:100px;" update="@form" />
+
+			</p:panelGrid>
+
+			<p:dataTable value="#{metaBean.lista}" var="item" rowIndexVar="linha"
+				id="tabela" emptyMessage="Nenhum registro encontrado."
+				paginator="true" paginatorAlwaysVisible="false"
+				paginatorPosition="bottom">
+
+				<p:column headerText="Mês" style="text-align: center; width: 100px">
+					<h:outputText value="#{item.nomeMes}" />
+				</p:column>
+				<p:column headerText="Meta" style="text-align: center; width: 100px">
+					<p:inputText value="#{item.valor}" required="true">
+						<f:validateDoubleRange minimum="0" />
+						<f:convertNumber pattern="#0.00" />
+					</p:inputText>
+				</p:column>
+
+			</p:dataTable>
+		</h:form>
+
+	</ui:define>
+</ui:composition>

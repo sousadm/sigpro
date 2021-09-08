@@ -1,0 +1,90 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<p:panelGrid id="gridPessoaAgente" columns="2" layout="grid"
+		rendered="#{pessoaBean.pessoa.defineAgente}" style="margin-top: 20px"
+		styleClass="panelgrid-noborder">
+
+		<p:outputLabel value="Data de cadastro" for="txtDataCadAgente" />
+		<h:outputText id="txtDataCadAgente" class="negrito"
+			value="#{pessoaBean.pessoa.agente.dataCadastro}">
+			<f:convertDateTime pattern="dd/MM/yyyy HH:mm" timeZone="GMT-03:00" />
+		</h:outputText>
+
+		<p:outputLabel value="Percentual de desconto" for="txtDesconto" />
+		<p:inputNumber id="txtDesconto" minValue="0" decimalSeparator=","
+			thousandSeparator="." decimalPlaces="2"
+			value="#{pessoaBean.pessoa.agente.desconto}" />
+
+		<p:outputLabel value="Percentual de Ad.Valorem" for="txtAdValorem" />
+		<p:inputNumber id="txtAdValorem" minValue="0" decimalSeparator=","
+			thousandSeparator="." decimalPlaces="2"
+			value="#{pessoaBean.pessoa.agente.advalorem}" />
+
+		<p:outputLabel value="Tarifa de abertura de crédito" for="txtTac" />
+		<p:inputNumber id="txtTac" minValue="0" decimalSeparator=","
+			thousandSeparator="." decimalPlaces="2"
+			value="#{pessoaBean.pessoa.agente.tac}" />
+
+		<p:outputLabel value="Tarifa de cobrança" for="txtCobranca" />
+		<p:inputNumber id="txtCobranca" minValue="0" decimalSeparator=","
+			thousandSeparator="." decimalPlaces="2"
+			value="#{pessoaBean.pessoa.agente.cobranca}" />
+
+		<p:outputLabel value="Tarifa de postagem" for="txtPostagem" />
+		<p:inputNumber id="txtPostagem" minValue="0" decimalSeparator=","
+			thousandSeparator="." decimalPlaces="2"
+			value="#{pessoaBean.pessoa.agente.postagem}" />
+
+		<p:outputLabel value="Percentual de juros" for="txtJuro" />
+		<p:inputNumber id="txtJuro" minValue="0" decimalSeparator=","
+			thousandSeparator="." decimalPlaces="2"
+			value="#{pessoaBean.pessoa.agente.juro}" />
+
+		<p:outputLabel value="Percentual de Multa" for="txtMulta" />
+		<p:inputNumber id="txtMulta" minValue="0" decimalSeparator=","
+			thousandSeparator="." decimalPlaces="2"
+			value="#{pessoaBean.pessoa.agente.multa}" />
+
+		<p:outputLabel value="Valor mínimo do boleto" for="txtMinimo" />
+		<p:inputNumber id="txtMinimo" minValue="0" decimalSeparator=","
+			thousandSeparator="." decimalPlaces="2"
+			value="#{pessoaBean.pessoa.agente.valorMinimo}" />
+
+		<p:outputLabel value="Tempo para compensação" />
+		<p:spinner value="#{pessoaBean.pessoa.agente.tempoParaCompensacao}" />
+
+		<p:outputLabel value="Tempo para desconto até vencimento" />
+		<p:spinner value="#{pessoaBean.pessoa.agente.tempoParaDesconto}" />
+
+		<p:outputLabel value="API de cobrança" for="txtApiCobranca" />
+		<p:selectOneMenu id="txtApiCobranca" autoWidth="false"
+			value="#{pessoaBean.pessoa.agente.apiDeCobranca}">
+			<f:selectItem itemLabel="sem api de cobrança" />
+			<f:selectItems value="#{listaTipoBean.tipoApiCobranca}" var="api"
+				itemValue="#{api}" itemLabel="#{api.descricao}" />
+			<p:ajax process="@this" event="change"
+				update="formCadastro:tabGrupo:tabCadastro:gridPessoaAgente" />
+		</p:selectOneMenu>
+
+		<p:outputLabel value="Ambiente"
+			rendered="#{pessoaBean.pessoa.agente.apiDeCobranca != null}" />
+		<p:selectOneMenu value="#{pessoaBean.pessoa.agente.ambiente}"
+			rendered="#{pessoaBean.pessoa.agente.apiDeCobranca != null}"
+			autoWidth="false" style="width:100%">
+			<f:selectItems value="#{listaTipoBean.NFAmbiente}" var="ambiente"
+				itemValue="#{ambiente}" itemLabel="#{ambiente}" />
+		</p:selectOneMenu>
+
+		<p:outputLabel value="Token de acesso"
+			rendered="#{pessoaBean.pessoa.agente.apiDeCobranca != null}" />
+		<p:inputText maxlength="150" style="width: 100%"
+			value="#{pessoaBean.pessoa.agente.tokenDeCobranca}"
+			rendered="#{pessoaBean.pessoa.agente.apiDeCobranca != null}" />
+
+	</p:panelGrid>
+
+</ui:composition>

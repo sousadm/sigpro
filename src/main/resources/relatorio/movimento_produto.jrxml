@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="extrato" language="groovy" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="565" leftMargin="20" rightMargin="10" topMargin="20" bottomMargin="10" uuid="18bb8ecd-497c-4e18-9436-d52f911ec5e4">
+	<property name="ireport.zoom" value="1.7715610000000022"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="saldoInicial" class="java.lang.Double"/>
+	<parameter name="totalEntrada" class="java.lang.Double"/>
+	<parameter name="totalSaida" class="java.lang.Double"/>
+	<parameter name="saldoFinal" class="java.lang.Double"/>
+	<parameter name="titulo" class="java.lang.String"/>
+	<field name="data" class="java.sql.Timestamp"/>
+	<field name="memorando" class="java.lang.String"/>
+	<field name="documento" class="java.lang.String"/>
+	<field name="valor" class="java.lang.Double"/>
+	<variable name="valor_1" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$F{valor}]]></variableExpression>
+	</variable>
+	<pageHeader>
+		<band height="53" splitType="Stretch">
+			<staticText>
+				<reportElement x="2" y="3" width="445" height="18" uuid="677d6e87-5871-4d73-9b80-2c3f227b5dab"/>
+				<textElement>
+					<font fontName="Times New Roman" size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[MOVIMENTAÇÃO DE PRODUTO]]></text>
+			</staticText>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="462" y="0" width="100" height="14" uuid="1d59589c-6a5b-436c-8d41-43fc9dbbed8a"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<textField pattern="hh.mm.ss a">
+				<reportElement x="462" y="15" width="100" height="14" uuid="3624bc62-ba4e-4e5f-9ae8-2c4f7829656f"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="462" y="29" width="100" height="14" uuid="03a2bd18-d04a-4bc4-8f52-79b4b79f4af0"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA["Pág. "+$V{PAGE_NUMBER}+" de  " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="1" y="23" width="446" height="14" uuid="8ef121b6-913a-4f6e-9abd-113ac103df2c"/>
+				<textFieldExpression><![CDATA[$P{titulo}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="17">
+			<staticText>
+				<reportElement mode="Opaque" x="0" y="1" width="565" height="14" backcolor="#CCCCCC" uuid="47ff2376-fadc-46e9-9d1f-4838ecbee4b5"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Data/Hora]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="72" y="2" width="354" height="14" uuid="170903a7-f208-4d29-ac74-aae2fc9cdb45"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Memorando]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="431" y="1" width="41" height="14" uuid="4e129af5-77d5-4e35-a2b0-77eeb2bc9e94"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Docto]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="477" y="1" width="82" height="14" uuid="77d624d7-c78c-4c2a-b8fc-291e7adb6fb0"/>
+				<textElement textAlignment="Right">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[valor]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="16">
+			<textField pattern="dd/MM/yyyy HH.mm.ss" isBlankWhenNull="true">
+				<reportElement x="0" y="1" width="72" height="14" uuid="178956fa-c323-46be-b84f-99db1bebf37c"/>
+				<textFieldExpression><![CDATA[$F{data}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="72" y="2" width="354" height="14" uuid="259caf83-5917-4b48-8eb2-cd54a88d26a8"/>
+				<textFieldExpression><![CDATA[$F{memorando}]]></textFieldExpression>
+			</textField>
+			<textField pattern="" isBlankWhenNull="true">
+				<reportElement x="431" y="1" width="41" height="14" uuid="d38755bb-1bb9-4925-891a-1e5adfd667b6"/>
+				<textFieldExpression><![CDATA[$F{documento}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="477" y="1" width="82" height="14" uuid="2cc1c7d4-5c0a-43ff-8511-2cae3d045bd6"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{valor}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<summary>
+		<band height="41">
+			<rectangle>
+				<reportElement x="0" y="0" width="565" height="40" uuid="bb10c614-ef7e-4aa6-9155-087ba4d7e818"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="4" y="2" width="80" height="14" uuid="7aef1a1a-5621-4a4e-8887-fd6c3ec8a2cc"/>
+				<text><![CDATA[Saldo Inicial:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="129" y="2" width="80" height="14" uuid="7459e531-4921-43a3-b11e-4f8950db2718"/>
+				<text><![CDATA[Total Entrada]]></text>
+			</staticText>
+			<textField pattern="R$ #,##0.00" isBlankWhenNull="true">
+				<reportElement x="164" y="21" width="80" height="14" uuid="3861aab1-2d9b-4b0c-8741-d55dfd7c93c5"/>
+				<textFieldExpression><![CDATA[$P{totalEntrada}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="434" y="2" width="80" height="14" uuid="8cda037f-f6e0-4010-8a1c-f652a03b029e"/>
+				<text><![CDATA[Saldo Final]]></text>
+			</staticText>
+			<textField pattern="R$ #,##0.00" isBlankWhenNull="true">
+				<reportElement x="17" y="21" width="80" height="14" uuid="d2584553-a13c-46bb-a4a8-223e08f49831"/>
+				<textFieldExpression><![CDATA[$P{saldoInicial}]]></textFieldExpression>
+			</textField>
+			<textField pattern="R$ #,##0.00" isBlankWhenNull="true">
+				<reportElement x="464" y="21" width="80" height="14" uuid="4b25b8ed-889a-49b1-b404-acff51591131"/>
+				<textFieldExpression><![CDATA[$P{saldoFinal}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="279" y="2" width="80" height="14" uuid="cee9160e-761a-4dfb-97b9-d1b315547321"/>
+				<text><![CDATA[Total Saída]]></text>
+			</staticText>
+			<textField pattern="R$ #,##0.00" isBlankWhenNull="true">
+				<reportElement x="316" y="21" width="80" height="14" uuid="3ff739fb-b38e-4368-82ca-5cca5e0d08c6"/>
+				<textFieldExpression><![CDATA[$P{totalSaida}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="125" y="0" width="1" height="40" uuid="e1cd7a46-6dd2-44c4-be46-d5c07616ec5f"/>
+			</line>
+			<line>
+				<reportElement x="275" y="0" width="1" height="40" uuid="82bbe773-d181-44cc-9093-8ed8bf6d0af2"/>
+			</line>
+			<line>
+				<reportElement x="426" y="0" width="1" height="40" uuid="3203baf5-6232-47b2-8619-1b24197fc143"/>
+			</line>
+		</band>
+	</summary>
+</jasperReport>

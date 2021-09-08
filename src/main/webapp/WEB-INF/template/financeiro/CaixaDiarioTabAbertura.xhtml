@@ -1,0 +1,95 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<p:splitButton id="botaoCalcular" value="Calcular"
+		disabled="#{not caixaDiarioBean.diario.podeSalvar or not caixaDiarioBean.diario.existe}"
+		actionListener="#{caixaDiarioBean.calcularCaixaDiario}"
+		update="formCadastro">
+
+		<p:menuitem id="botaoEncerrar" value="Encerrar caixa diário"
+			disabled="#{not caixaDiarioBean.diario.podeSalvar}"
+			update="formCadastro" actionListener="#{caixaDiarioBean.encerrar}">
+			<p:confirm icon="ui-icon-alert" header="Confirma"
+				message="Encerrar o diário atual?" />
+		</p:menuitem>
+
+	</p:splitButton>
+
+	<p:panelGrid columns="2" id="gridAberturaDiario"
+		styleClass="ui-noborder" style="width: 100%; margin-top: 5px">
+
+		<p:outputLabel value="Data de movimento" for="txtData" />
+		<h:panelGroup>
+			<p:calendar id="txtData" showOn="button" mask="99/99/9999"
+				pattern="dd/MM/yyyy"
+				rendered="#{not caixaDiarioBean.diario.jaGravado}"
+				value="#{caixaDiarioBean.diario.dataMov}">
+				<p:ajax event="dateSelect" update="@form"
+					listener="#{caixaDiarioBean.calcularPrevisao}" />
+			</p:calendar>
+			<h:outputText value="#{caixaDiarioBean.diario.dataMov}"
+				rendered="#{caixaDiarioBean.diario.jaGravado}" class="negrito">
+				<f:convertDateTime pattern="dd/MM/yyyy" />
+			</h:outputText>
+		</h:panelGroup>
+
+		<p:outputLabel value="(+) Saldo inicial em dinheiro" />
+		<h:inputText class="bloqueado" readonly="true"
+			value="#{caixaDiarioBean.diario.inicialDinheiro}">
+			<p:ajax event="change" process="@this"
+				update="txtSaldoContingente formCadastro:tabView:gridEncerramento" />
+			<f:convertNumber minFractionDigits="2" />
+		</h:inputText>
+
+		<p:outputLabel value="(+) Saldo inicial em cheque" />
+		<h:inputText class="bloqueado" readonly="true"
+			value="#{caixaDiarioBean.diario.inicialCheque}">
+			<p:ajax event="change" process="@this"
+				update="txtSaldoContingente formCadastro:tabView:gridEncerramento" />
+			<f:convertNumber minFractionDigits="2" />
+		</h:inputText>
+
+		<p:outputLabel value="(+) Saldo inicial em banco" />
+		<h:inputText class="bloqueado" readonly="true"
+			value="#{caixaDiarioBean.diario.inicialBanco}">
+			<p:ajax event="change" process="@this"
+				update="txtSaldoContingente formCadastro:tabView:gridEncerramento" />
+			<f:convertNumber minFractionDigits="2" />
+		</h:inputText>
+
+		<p:outputLabel value="(=) Capacidade de Pagamento"
+			styleClass="negrito" />
+		<h:outputText id="txtCapacidadePgto" styleClass="negrito"
+			value="#{caixaDiarioBean.diario.saldoInicial}">
+			<f:convertNumber type="currency" />
+		</h:outputText>
+
+		<p:outputLabel value="(+) Previsão de recebimentos (30dias)" />
+		<p:inputNumber id="txtPrevisaoRecebimento" minValue="0"
+			decimalSeparator="," thousandSeparator="." decimalPlaces="2"
+			disabled="#{not caixaDiarioBean.diario.podeSalvar}"
+			value="#{caixaDiarioBean.diario.previsaoRecebimento}"
+			title="somente títulos associados ao agente financeiro atual">
+		</p:inputNumber>
+
+		<p:outputLabel value="(-) Previsão de pagamentos (30dias)" />
+		<p:inputNumber id="txtPrevisaoPagamento" minValue="0"
+			decimalSeparator="," thousandSeparator="." decimalPlaces="2"
+			disabled="#{not caixaDiarioBean.diario.podeSalvar}"
+			value="#{caixaDiarioBean.diario.previsaoPagamento}"
+			title="somente títulos associados ao agente financeiro atual">
+		</p:inputNumber>
+
+		<p:outputLabel value="(=) Total do Saldo contingencial"
+			styleClass="negrito" />
+		<h:outputText id="txtSaldoContingente" styleClass="negrito"
+			value="#{caixaDiarioBean.diario.saldoContingente}">
+			<f:convertNumber type="currency" />
+		</h:outputText>
+
+	</p:panelGrid>
+
+</ui:composition>

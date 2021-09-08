@@ -1,0 +1,283 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="balanco" language="groovy" pageWidth="595" pageHeight="842" columnWidth="575" leftMargin="10" rightMargin="10" topMargin="10" bottomMargin="10" uuid="396ba416-17b2-4c23-af53-1fd1c79b191e">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="11"/>
+	<parameter name="empresa" class="java.lang.Object"/>
+	<parameter name="titulo" class="java.lang.String"/>
+	<parameter name="empresa_endereco" class="java.lang.String"/>
+	<field name="ativoDisponivel" class="java.lang.Double"/>
+	<field name="ativoInvestimento" class="java.lang.Double"/>
+	<field name="ativoContaReceber" class="java.lang.Double"/>
+	<field name="ativoEstoque" class="java.lang.Double"/>
+	<field name="ativoImobilizado" class="java.lang.Double"/>
+	<field name="passivoTrabalhista" class="java.lang.Double"/>
+	<field name="passivoContaPagar" class="java.lang.Double"/>
+	<field name="passivoOutros" class="java.lang.Double"/>
+	<field name="passivoProvisionado" class="java.lang.Double"/>
+	<field name="valorAtivoPatrimonial" class="java.lang.Double"/>
+	<field name="valorPassivoPatrimonial" class="java.lang.Double"/>
+	<field name="valorPatrimonioLiquido" class="java.lang.Double"/>
+	<field name="indiceDeAtivacao" class="java.lang.Double"/>
+	<field name="prazoCompra" class="java.lang.Double"/>
+	<field name="prazoNegociacao" class="java.lang.Double"/>
+	<field name="prazoPagamento" class="java.lang.Double"/>
+	<field name="prazoRecebimento" class="java.lang.Double"/>
+	<field name="ticketMedio" class="java.lang.Double"/>
+	<field name="inadimplencia30dia" class="java.lang.Double"/>
+	<field name="inadimplencia60dia" class="java.lang.Double"/>
+	<field name="variacao" class="java.lang.Double"/>
+	<field name="giroDeEstoque" class="java.lang.Double"/>
+	<pageHeader>
+		<band height="64" splitType="Stretch">
+			<textField>
+				<reportElement x="3" y="23" width="407" height="15" uuid="a008df31-ad00-4f3e-b0f3-9cf95e545635"/>
+				<textFieldExpression><![CDATA[$P{empresa_endereco}.toString()]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="82" y="39" width="390" height="19" uuid="af72c30b-a3e5-4856-9c8a-b4a19efe6a1f"/>
+				<textElement textAlignment="Center">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{titulo}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="472" y="32" width="100" height="14" uuid="d2ac7a88-cf54-4405-9896-2376ab07128a"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA["Página: "+$V{PAGE_NUMBER}+"/ " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField pattern="HH.mm.ss">
+				<reportElement x="472" y="17" width="100" height="14" uuid="256e50ff-7333-44bd-b665-0008ca1af678"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="472" y="2" width="100" height="14" uuid="983057b2-5f53-4677-a5bc-92e7615e9b9f"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="3" y="2" width="407" height="20" uuid="b5dd0be9-89ad-435b-a646-137eeb59ce70"/>
+				<textElement markup="html">
+					<font fontName="Arial" size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{empresa}.getNome()]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<detail>
+		<band height="472" splitType="Stretch">
+			<rectangle radius="0">
+				<reportElement x="0" y="1" width="575" height="170" uuid="d8998998-26db-4842-aa0d-2db18eda698a"/>
+			</rectangle>
+			<textField pattern="R$ #,##0.00" isBlankWhenNull="true">
+				<reportElement x="209" y="26" width="72" height="20" uuid="1151bf06-e3d5-4e64-a0db-5852a9cc6e30"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{ativoDisponivel}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="4" y="26" width="205" height="20" uuid="ad58eb13-b667-4bec-9250-b5d5343328e6"/>
+				<text><![CDATA[Valor disponível em caixa]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="70" y="5" width="159" height="14" uuid="409b561f-2ed4-4498-9e9d-c0a125d4e3ea"/>
+				<textElement textAlignment="Center">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[ATIVO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="339" y="5" width="159" height="14" uuid="c8bde81f-6446-489c-9925-a25129123ccc"/>
+				<textElement textAlignment="Center">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[PASSIVO]]></text>
+			</staticText>
+			<line>
+				<reportElement x="0" y="21" width="575" height="1" uuid="2073a4da-5810-40ab-a020-2c2fe22b19e0"/>
+			</line>
+			<staticText>
+				<reportElement x="4" y="46" width="205" height="20" uuid="1bccde3d-4dc0-46cc-b7ea-123d29f5823e"/>
+				<text><![CDATA[Valor de investimento]]></text>
+			</staticText>
+			<textField pattern="R$ #,##0.00" isBlankWhenNull="true">
+				<reportElement x="209" y="46" width="72" height="20" uuid="c3626998-4f0e-4c15-9425-ab25f450d6ca"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{ativoInvestimento}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="4" y="66" width="205" height="20" uuid="f2a636de-eda2-469f-9aca-b0b8a04c3f23"/>
+				<text><![CDATA[Contas a receber]]></text>
+			</staticText>
+			<textField pattern="R$ #,##0.00" isBlankWhenNull="true">
+				<reportElement x="209" y="66" width="72" height="20" uuid="b1c84469-d161-4a47-8667-23c3444be0ad"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{ativoContaReceber}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="4" y="86" width="205" height="20" uuid="b586d80a-3e66-4adc-95f1-9b42dbd4c2d9"/>
+				<text><![CDATA[Valor de estoque]]></text>
+			</staticText>
+			<textField pattern="R$ #,##0.00" isBlankWhenNull="true">
+				<reportElement x="209" y="86" width="72" height="20" uuid="5c3f9787-1b1f-493b-89e8-aca0c5ba481a"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{ativoEstoque}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="4" y="106" width="205" height="20" uuid="309a0091-2daf-4cdf-a8d2-faa0563b9311"/>
+				<text><![CDATA[Imobilizado (imóvel, máquinas, veículos)]]></text>
+			</staticText>
+			<textField pattern="R$ #,##0.00" isBlankWhenNull="true">
+				<reportElement x="209" y="106" width="72" height="20" uuid="3061461b-c1e7-492b-80cf-4ea150227e96"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{ativoImobilizado}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="298" y="26" width="200" height="20" uuid="c2fc34c7-0a6c-4b53-852a-c6fcbc675bc5"/>
+				<text><![CDATA[Passivo Trabalhista]]></text>
+			</staticText>
+			<textField pattern="R$ #,##0.00" isBlankWhenNull="true">
+				<reportElement x="498" y="26" width="72" height="20" uuid="904f5b4e-26af-40f9-a445-1b04637fb314"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{passivoTrabalhista}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="288" y="1" width="1" height="170" uuid="4e0391d3-ddcd-4b40-a25b-92457fc3eb86"/>
+			</line>
+			<staticText>
+				<reportElement x="298" y="66" width="200" height="20" uuid="1154e183-646d-4663-846d-9625d294cee1"/>
+				<text><![CDATA[Passivo Contas a Pagar]]></text>
+			</staticText>
+			<textField pattern="R$ #,##0.00">
+				<reportElement x="498" y="66" width="72" height="20" uuid="783a84fd-c9f0-47d5-822b-7489501a4a65"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{passivoContaPagar}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="298" y="86" width="200" height="20" uuid="389737ac-2431-4abd-b460-a16a0dc18830"/>
+				<text><![CDATA[Outros Passivos]]></text>
+			</staticText>
+			<textField pattern="R$ #,##0.00">
+				<reportElement x="498" y="86" width="72" height="20" uuid="08c44a9c-1731-4883-b015-f2f877d7e5ca"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{passivoOutros}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="298" y="46" width="200" height="20" uuid="da134a3c-8105-4e44-80d4-784f31ce75a7"/>
+				<text><![CDATA[Passivo Provisionado]]></text>
+			</staticText>
+			<textField pattern="R$ #,##0.00">
+				<reportElement x="498" y="46" width="72" height="20" uuid="b97ed942-ce9c-49e5-8c9b-459386bd9016"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{passivoProvisionado}]]></textFieldExpression>
+			</textField>
+			<textField pattern="R$ #,##0.00">
+				<reportElement x="181" y="141" width="100" height="20" uuid="9356092b-1395-4df1-a7e4-eb95d4e15431"/>
+				<textElement textAlignment="Right">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{valorAtivoPatrimonial}]]></textFieldExpression>
+			</textField>
+			<textField pattern="R$ #,##0.00">
+				<reportElement x="470" y="141" width="100" height="20" uuid="309ae561-a6ad-4381-99da-a2e0aed22b45"/>
+				<textElement textAlignment="Right">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{valorPassivoPatrimonial}]]></textFieldExpression>
+			</textField>
+			<rectangle>
+				<reportElement x="0" y="171" width="575" height="229" uuid="956bdd26-9af0-4981-8af1-41cdfb0a170d"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="4" y="232" width="285" height="20" uuid="893e31d8-4f3f-42fb-85b0-8cfebd3fd815"/>
+				<text><![CDATA[Indice de ativação da carteira de clientes]]></text>
+			</staticText>
+			<textField pattern="#,##0.00 %">
+				<reportElement x="289" y="232" width="100" height="20" uuid="1b84190a-47c5-494f-ae8b-f9f2d8984624"/>
+				<textFieldExpression><![CDATA[$F{indiceDeAtivacao}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="4" y="255" width="284" height="20" uuid="af20a081-2517-4fa5-bc02-d93f3bc0096e"/>
+				<text><![CDATA[Prazo médio de compra]]></text>
+			</staticText>
+			<textField pattern="#,##0.00">
+				<reportElement x="288" y="255" width="100" height="20" uuid="06362104-3864-4480-82c1-55bcf94e034a"/>
+				<textFieldExpression><![CDATA[$F{prazoCompra}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="4" y="279" width="285" height="20" uuid="16dc6e87-1a3a-4193-b0fd-ff7dfe717366"/>
+				<text><![CDATA[Prazo médio de venda]]></text>
+			</staticText>
+			<textField pattern="#,##0.00">
+				<reportElement x="289" y="279" width="100" height="20" uuid="5d0814cc-b401-45c6-ac9c-a266c273365f"/>
+				<textFieldExpression><![CDATA[$F{prazoNegociacao}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="4" y="303" width="284" height="20" uuid="68b3ee2a-b396-422c-9fb1-93d2220de359"/>
+				<text><![CDATA[Prazo médio de pagamento]]></text>
+			</staticText>
+			<textField pattern="#,##0.00">
+				<reportElement x="288" y="303" width="100" height="20" uuid="c015aa72-2d50-4aac-890d-429eb3fe083c"/>
+				<textFieldExpression><![CDATA[$F{prazoPagamento}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="4" y="326" width="285" height="20" uuid="5e756a54-896e-46b3-9fb1-13e3bd0c6893"/>
+				<text><![CDATA[Prazo médio de recebimento]]></text>
+			</staticText>
+			<textField pattern="#,##0.00">
+				<reportElement x="289" y="326" width="100" height="20" uuid="890d9bf7-09aa-4904-837a-21bc45404846"/>
+				<textFieldExpression><![CDATA[$F{prazoRecebimento}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="4" y="207" width="284" height="20" uuid="0dce9de3-5a6f-430d-aae3-2f2e6ff0c5cf"/>
+				<text><![CDATA[Valor do ticket médio de venda]]></text>
+			</staticText>
+			<textField pattern="R$ #,##0.00">
+				<reportElement x="288" y="207" width="100" height="20" uuid="b6d84f50-7447-4ff3-8b97-39952de7c107"/>
+				<textFieldExpression><![CDATA[$F{ticketMedio}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="4" y="350" width="285" height="20" uuid="1329cd4e-4e1a-4fa4-91a6-f39800d12fd4"/>
+				<text><![CDATA[Inadimplência até 30 dias]]></text>
+			</staticText>
+			<textField pattern="#,##0.00 %">
+				<reportElement x="289" y="350" width="100" height="20" uuid="6180a59e-a6a6-412b-a952-23657110fcec"/>
+				<textFieldExpression><![CDATA[$F{inadimplencia30dia}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="4" y="374" width="285" height="20" uuid="955ab1d2-1471-44e8-bb86-38f55f716a08"/>
+				<text><![CDATA[Inadimplência de 30 a 60 dias]]></text>
+			</staticText>
+			<textField pattern="#,##0.00 %">
+				<reportElement x="289" y="374" width="100" height="20" uuid="a50dddd2-b230-4f49-9a02-6fa401bfa650"/>
+				<textFieldExpression><![CDATA[$F{inadimplencia60dia}]]></textFieldExpression>
+			</textField>
+			<rectangle>
+				<reportElement x="0" y="400" width="575" height="44" uuid="ed42f68d-b3d6-410f-835e-fb6ebba3a416"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="4" y="411" width="285" height="20" uuid="afd02735-8986-41d7-b327-b5bb4ecbb53a"/>
+				<text><![CDATA[Valor do Patrimônio Líquido]]></text>
+			</staticText>
+			<textField pattern="R$ #,##0.00">
+				<reportElement x="292" y="411" width="121" height="20" uuid="58aca011-f9c5-4473-b262-13cd62222bb8"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{valorPatrimonioLiquido}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00 %">
+				<reportElement x="432" y="411" width="100" height="20" uuid="28eefff9-6430-4d87-b449-1377192eb00b"/>
+				<textFieldExpression><![CDATA[$F{variacao}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="4" y="182" width="288" height="20" uuid="c1af0d28-06b5-4448-823c-be16932b43cd"/>
+				<text><![CDATA[Giro do estoque de produtos]]></text>
+			</staticText>
+			<textField pattern="#,##0.00">
+				<reportElement x="292" y="182" width="100" height="20" uuid="c8b1108a-7d02-40a0-a15b-b564c8472efa"/>
+				<textFieldExpression><![CDATA[$F{giroDeEstoque}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

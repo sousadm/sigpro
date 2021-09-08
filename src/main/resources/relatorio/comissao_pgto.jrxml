@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="comissao_pgto" language="groovy" pageWidth="595" pageHeight="842" columnWidth="575" leftMargin="10" rightMargin="10" topMargin="10" bottomMargin="10" uuid="9df3a163-980d-45ca-83c1-bb9880724d98">
+	<property name="ireport.zoom" value="1.2100000000000002"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="empresa" class="java.lang.Object"/>
+	<parameter name="subtitulo" class="java.lang.String"/>
+	<field name="id" class="java.lang.Long"/>
+	<field name="operador" class="java.lang.Object"/>
+	<field name="ordemItemProducao" class="java.lang.Object"/>
+	<variable name="ordemItemProducao_1" class="java.lang.Integer" resetType="Group" resetGroup="operador" calculation="DistinctCount">
+		<variableExpression><![CDATA[$F{ordemItemProducao}]]></variableExpression>
+	</variable>
+	<variable name="TT_VALOR" class="java.lang.String" resetType="Group" resetGroup="operador" calculation="Sum">
+		<variableExpression><![CDATA[$F{ordemItemProducao}.getValorComissao()]]></variableExpression>
+		<initialValueExpression><![CDATA[0]]></initialValueExpression>
+	</variable>
+	<group name="operador">
+		<groupExpression><![CDATA[$F{operador}]]></groupExpression>
+		<groupHeader>
+			<band height="24">
+				<textField>
+					<reportElement x="5" y="3" width="205" height="17" uuid="cda65b9e-71e6-4a14-849f-6d4df4b5779f"/>
+					<textFieldExpression><![CDATA[$F{operador}.getNome()]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band height="23">
+				<textField pattern="#,##0.00" isBlankWhenNull="true">
+					<reportElement x="457" y="2" width="94" height="14" uuid="f521d42f-69a8-43e3-8ae9-6697d28a06b5"/>
+					<textElement textAlignment="Right">
+						<font isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{TT_VALOR}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupFooter>
+	</group>
+	<pageHeader>
+		<band height="58">
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="472" y="4" width="100" height="18" uuid="1ccbf661-f6b8-487f-846b-5a3db836d4d5"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<textField pattern="HH.mm">
+				<reportElement x="472" y="21" width="100" height="20" uuid="f98d8d4c-e82a-4f81-bf4d-35d141f9917d"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="3" y="5" width="401" height="23" uuid="260b8b13-ad60-4c78-ac85-6717f2c98898"/>
+				<textElement>
+					<font size="16" isBold="true"/>
+				</textElement>
+				<text><![CDATA[RELATÓRIO DE COMISSÃO]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="3" y="30" width="401" height="20" uuid="0e9ca70d-ac8f-441f-a03f-c42ecdcfa87f"/>
+				<textFieldExpression><![CDATA[$P{subtitulo}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="467" y="40" width="68" height="17" uuid="e0f5846c-0644-4be1-87dc-ee484359fa94"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA["Page "+$V{PAGE_NUMBER}+" of"]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement x="535" y="40" width="40" height="17" uuid="ac855cfe-ae7d-4fa3-8aa5-6c336997aa64"/>
+				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="22">
+			<staticText>
+				<reportElement x="3" y="3" width="52" height="15" uuid="902a5cde-1b7f-439a-b6b2-245fd2050e60"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[O.S]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="58" y="3" width="50" height="15" uuid="ca734d3d-c25f-459c-b690-0246bb46e9f5"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Placa]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="112" y="3" width="237" height="15" uuid="3e299be8-7b24-4ac5-9561-b3cf549952a5"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Descrição do Serviço]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="356" y="3" width="66" height="15" uuid="e113b7a7-27c5-4d30-8848-e6cbd6bd6846"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Início]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="425" y="3" width="65" height="15" uuid="e62c9ce3-3b6e-4a35-ab69-b4b70d60b249"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Término]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="494" y="3" width="58" height="15" uuid="cb5ea5c3-1382-44d2-a4f5-1e5b555e36bd"/>
+				<textElement textAlignment="Right">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Valor]]></text>
+			</staticText>
+			<line>
+				<reportElement x="2" y="1" width="572" height="1" uuid="03e96b03-1694-436a-baf0-aade09adb307"/>
+			</line>
+			<line>
+				<reportElement x="2" y="20" width="572" height="1" uuid="91168453-fddf-45ad-81ba-cd0b0eefd999"/>
+			</line>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="21" splitType="Stretch">
+			<textField pattern="000000" isBlankWhenNull="true">
+				<reportElement x="3" y="2" width="52" height="17" uuid="62a83591-3772-4487-b3fb-98042b7ba639"/>
+				<textFieldExpression><![CDATA[$F{ordemItemProducao}.getServico().getId()]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="58" y="2" width="50" height="17" uuid="4919c209-55f0-4e87-a16a-b63fb8bd131a"/>
+				<textFieldExpression><![CDATA[$F{ordemItemProducao}.getServico().getVeiculo().getPlaca()]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="112" y="2" width="237" height="17" uuid="1a058648-f043-42df-97d8-18d0b73b3dd1"/>
+				<textFieldExpression><![CDATA[$F{ordemItemProducao}.getProduto().getNome()]]></textFieldExpression>
+			</textField>
+			<textField pattern="HH.mm.ss" isBlankWhenNull="false">
+				<reportElement x="356" y="2" width="66" height="17" uuid="b667c31a-547f-4172-8c61-3a3e6595fbd0"/>
+				<textFieldExpression><![CDATA[$F{ordemItemProducao}.getServico().getCronologia().getInicio()]]></textFieldExpression>
+			</textField>
+			<textField pattern="HH.mm.ss" isBlankWhenNull="false">
+				<reportElement x="425" y="2" width="65" height="17" uuid="f6f904fa-71db-4360-9dd3-261cb838752f"/>
+				<textFieldExpression><![CDATA[$F{ordemItemProducao}.getServico().getCronologia().getTermino()]]></textFieldExpression>
+			</textField>
+			<textField pattern="¤ #,##0.00" isBlankWhenNull="true">
+				<reportElement x="494" y="2" width="58" height="17" uuid="a9c59bea-4aad-46a5-bd29-08c421defc95"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{ordemItemProducao}.getValorComissao()]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

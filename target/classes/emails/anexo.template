@@ -1,0 +1,18 @@
+<html>
+<head>
+  <meta content="text/html; charset=ISO-8859-1" http-equiv="content-type">
+  <title></title>
+</head>
+<body>
+Att: <span style="color: #993366;"><strong>$pessoa</strong></span>
+<p>&nbsp;</p>
+Segue arquivo em anexo.
+<br/>
+<br/>
+Atenciosamente
+<br/>
+<span style="color: #0000ff;">$empresa</span>
+<br/>
+$telefone
+</body>
+</html>

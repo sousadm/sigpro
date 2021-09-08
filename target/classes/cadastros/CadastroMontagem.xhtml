@@ -1,0 +1,44 @@
+<ui:composition template="/WEB-INF/template/LayoutPadrao.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui" xmlns:o="http://omnifaces.org/ui">
+
+	<f:metadata>
+		<f:param name="dummy" />
+		<o:viewParam name="montagem" value="#{montagemBean.montagem}" />
+		<f:event listener="#{montagemBean.inicializar}" type="preRenderView"></f:event>
+	</f:metadata>
+
+	<ui:define name="titulo">Montagem</ui:define>
+
+	<ui:define name="dialogo">
+		<ui:include src="/dialogos/ListaEventos.xhtml" />
+	</ui:define>
+
+	<ui:define name="corpo">
+
+		<p:focus context="formCadastro" />
+
+		<h:form id="formCadastro">
+
+			<p:growl />
+
+			<h1 style="margin-top: 65px">Montagem de Produtos</h1>
+
+			<h:panelGroup rendered="#{montagemBean.montagem == null}">
+				<ui:include src="/cadastros/MontagemPesquisa.xhtml" />
+			</h:panelGroup>
+
+			<h:panelGroup rendered="#{montagemBean.montagem != null}">
+				<ui:include src="/cadastros/MontagemEdit.xhtml" />
+			</h:panelGroup>
+
+		</h:form>
+		
+		<ui:include src="/producao/MontagemComandoProducao.xhtml" />
+
+	</ui:define>
+
+</ui:composition>

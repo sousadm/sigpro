@@ -1,0 +1,81 @@
+<ui:composition template="/WEB-INF/template/LayoutPadrao.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<f:metadata>
+		<f:event listener="#{operacaoFiscalBean.inicializar}"
+			type="preRenderView"></f:event>
+		<f:event listener="#{operacaoFiscalBean.pesquisar}"
+			type="preRenderView"></f:event>
+	</f:metadata>
+
+	<ui:define name="titulo">Operação Fiscal</ui:define>
+
+	<ui:define name="corpo">
+
+		<ui:include src="/WEB-INF/template/fiscal/OperacaoFiscal.xhtml" />
+
+		<h:form id="frmPesquisa">
+
+			<p:focus />
+
+			<h1 style="margin-top: 65px">Operação Fiscal</h1>
+
+			<p:growl id="msg" />
+
+			<p:toolbar style="margin-top: 05px">
+				<p:toolbarGroup>
+					<p:commandButton value="Pesquisar"
+						action="#{operacaoFiscalBean.pesquisar}" update="@form"
+						onclick="jQuery(this).addClass('ui-state-disabled')" />
+				</p:toolbarGroup>
+				<p:toolbarGroup align="right">
+					<p:commandButton value="Novo" action="#{operacaoFiscalBean.novo}"
+						process="@this" update="dlgCfop" oncomplete="PF('dlgCfop').show()" />
+				</p:toolbarGroup>
+			</p:toolbar>
+
+			<p:dataTable id="tabela" value="#{operacaoFiscalBean.lista}"
+				scrollable="true" var="item" rowIndexVar="linha"
+				style="margin-top: 5px" emptyMessage="Nenhum item encontrado."
+				rows="10" paginator="true" paginatorAlwaysVisible="false"
+				paginatorPosition="bottom">
+
+				<p:column headerText="Código" style="width: 40px">
+					<h:outputText value="#{item.cfop.id}" />
+				</p:column>
+				<p:column headerText="Descrição">
+					<h:outputText value="#{item.descricao}" />
+				</p:column>
+				<p:column headerText="Tipo" style="width: 120px">
+					<h:outputText value="#{item.tipo.descricao}" />
+				</p:column>
+				<p:column headerText="Ambiente" style="width: 120px">
+					<h:outputText value="#{item.ambiente.toString()}" />
+				</p:column>
+
+				<p:column style="width: 100px; text-align: center">
+
+					<p:commandButton icon="ui-icon-pencil" title="Editar"
+						actionListener="#{operacaoFiscalBean.setOperacao(item)}"
+						process="@this" update="dlgCfop" oncomplete="PF('dlgCfop').show()" />
+
+					<p:commandButton icon="ui-icon-trash" process="@this"
+						title="Excluir" update="@form"
+						action="#{operacaoFiscalBean.excluir(linha)}">
+						<p:confirm icon="ui-icon-alert" header="Confirmação de exclusão"
+							message="Excluir o registro atual?" />
+					</p:commandButton>
+
+				</p:column>
+
+			</p:dataTable>
+
+		</h:form>
+
+	</ui:define>
+
+</ui:composition>

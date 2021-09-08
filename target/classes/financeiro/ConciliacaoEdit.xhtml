@@ -1,0 +1,92 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<ui:define name="titulo">Conciliação</ui:define>
+
+	<h1 style="margin-top: 65px">Evento Financeiro</h1>
+
+	<p:messages autoUpdate="true" closable="true" />
+
+	<p:toolbar style="margin-top: 05px">
+		<p:toolbarGroup>
+			<p:commandButton value="Voltar" icon="ui-icon-arrowreturnthick-1-w"
+				actionListener="#{contaBean.setTitulo(null)}" process="@this"
+				update="@form" />
+		</p:toolbarGroup>
+		<p:toolbarGroup align="right">
+			<p:splitButton value="Salvar" icon="ui-icon-disk"
+				disabled="#{contaBean.conta.cancelado}"
+				action="#{contaBean.gravarEvento}" update="@form">
+				<p:menuitem value="Novo evento financeiro" icon="ui-icon-document"
+					disabled="#{contaBean.conta.cancelado}" ajax="false"
+					process="@form" action="#{contaBean.novoEvento}" />
+			</p:splitButton>
+		</p:toolbarGroup>
+	</p:toolbar>
+
+	<div class="ui-fluid">
+		<div class="ui-g">
+			<div class="ui-g-6">
+				<p:outputLabel value="Banco/Agência/Conta" />
+				<div
+					class="ui-inputfield ui-inputtext ui-widget ui-state-default ui-corner-all bloqueado ui-state-focus">
+					<h:outputText value="#{contaBean.conta.toString()}" />
+				</div>
+			</div>
+			<div class="ui-g-6">
+				<p:outputLabel value="Tipo de Operação" />
+				<p:selectOneMenu value="#{contaBean.titulo.tipoDC}"
+					autoWidth="false" rendered="#{not contaBean.titulo.existe}">
+					<f:selectItems value="#{listaTipoBean.tiposDebitoCredito}" var="t"
+						itemValue="#{t}" itemLabel="#{t.titulo}" />
+				</p:selectOneMenu>
+				<h:panelGroup rendered="#{contaBean.titulo.existe}">
+					<div
+						class="ui-inputfield ui-inputtext ui-widget ui-state-default ui-corner-all bloqueado ui-state-focus">
+						<p:outputLabel value="#{contaBean.titulo.tipoDC.titulo}" />
+					</div>
+				</h:panelGroup>
+			</div>
+
+			<div class="ui-g-6">
+				<p:outputLabel value="Participante" />
+				<div class="ui-inputgroup">
+					<p:commandButton icon="ui-icon-person" title="Pesquisar pessoa"
+						disabled="#{contaBean.conta.cancelado or contaBean.emitidoNoCaixa}"
+						process="@this" update="@none" ignoreAutoUpdate="true"
+						class="button-grid" action="#{selecionaBean.pessoa}">
+						<p:ajax event="dialogReturn"
+							listener="#{contaBean.onPessoaChosen}" update="txtCliente"
+							ignoreAutoUpdate="true" />
+					</p:commandButton>
+					<p:inputText id="txtCliente" value="#{contaBean.titulo.nominal}"
+						readonly="true" class="bloqueado" />
+				</div>
+			</div>
+			<div class="ui-g-3">
+				<p:outputLabel value="Valor" />
+				<p:inputText value="#{contaBean.titulo.valor}"
+					disabled="#{contaBean.conta.cancelado or contaBean.emitidoNoCaixa}">
+					<f:convertNumber pattern="#0.00" />
+				</p:inputText>
+			</div>
+			<div class="ui-g-3">
+				<p:outputLabel value="Data" />
+				<p:calendar navigator="true" showOn="button" mask="99/99/9999"
+					disabled="#{contaBean.conta.cancelado or contaBean.emitidoNoCaixa}"
+					pattern="dd/MM/yyyy" value="#{contaBean.titulo.dataBaixa}" />
+			</div>
+
+			<div class="ui-g-12">
+				<p:outputLabel value="Descrição" />
+				<p:inputTextarea value="#{contaBean.titulo.descricao}"
+					disabled="#{contaBean.conta.cancelado or contaBean.emitidoNoCaixa}"
+					rows="2" />
+			</div>
+		</div>
+	</div>
+
+</ui:composition>

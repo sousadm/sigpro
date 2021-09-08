@@ -1,0 +1,65 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<p:dialog id="dlgCompensa" header="Compensação no Banco"
+		widgetVar="dlgCompensa" closeOnEscape="true" modal="true"
+		maximizable="false" width="600">
+		<h:form id="formCompensa">
+
+			<div class="ui-fluid">
+				<div class="ui-g">
+
+					<div class="ui-g-8">
+						<p:outputLabel value="Participante" />
+						<p:inputText readonly="true" styleClass="bloqueado"
+							value="#{tituloBean.titulo.responsavel.nome}" />
+					</div>
+					<div class="ui-g-4">
+						<p:outputLabel value="Emissão" />
+						<p:inputText value="#{tituloBean.titulo.emissao}" readonly="true"
+							styleClass="bloqueado">
+							<f:convertDateTime pattern="dd/MM/yyyy" />
+						</p:inputText>
+					</div>
+
+					<div class="ui-g-4">
+						<p:outputLabel value="Vencimento" />
+						<p:inputText value="#{tituloBean.titulo.vencimento}"
+							readonly="true" styleClass="bloqueado">
+							<f:convertDateTime pattern="dd/MM/yyyy" />
+						</p:inputText>
+					</div>
+					<div class="ui-g-4">
+						<p:outputLabel value="Valor" for="txtDinheiro" />
+						<p:inputNumber id="txtDinheiro" minValue="0" decimalSeparator=","
+							thousandSeparator="." decimalPlaces="2" required="true"
+							readonly="#{tituloBean.titulo.pago}"
+							value="#{tituloBean.titulo.valor}" />
+					</div>
+					<div class="ui-g-4">
+						<p:outputLabel value="Data" for="txtDataBaixa" />
+						<p:calendar id="txtDataBaixa" readonly="#{tituloBean.titulo.pago}"
+							locale="pt_BR" mask="99/99/9999" pattern="dd/MM/yyyy"
+							navigator="true" showOn="button"
+							mindate="#{tituloBean.titulo.emissao}"
+							value="#{tituloBean.titulo.previsao}" />
+					</div>
+
+				</div>
+			</div>
+
+			<div align="right" style="margin-top: 5px">
+				<p:commandButton value="Confirma" icon="ui-icon-check"
+					update="formCadastro" process="dlgCompensa"
+					disabled="#{tituloBean.titulo.pago}"
+					action="#{tituloBean.gravarCompensacao}"
+					oncomplete="if(!args.validationFailed) PF('dlgCompensa').hide()" />
+			</div>
+
+		</h:form>
+	</p:dialog>
+
+</ui:composition>

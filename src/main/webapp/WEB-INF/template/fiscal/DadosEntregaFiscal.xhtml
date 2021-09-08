@@ -1,0 +1,128 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<p:panel id="gridEndereco" header="Entrega">
+
+		<div align="right">
+			<p:commandButton icon="ui-icon-search" value="Pesquisar endereço"
+				disabled="#{notaServicoBean.nota.fiscal.cliente == null}"
+				process="@this" update="@none" ignoreAutoUpdate="true"
+				actionListener="#{notaFiscalBean.preparaPesquisaEndereco}"
+				action="#{selecionaBean.enderecoPessoa}">
+				<p:ajax event="dialogReturn" update="gridEndereco"
+					listener="#{notaFiscalBean.onEnderecoChosen}"
+					ignoreAutoUpdate="true" />
+			</p:commandButton>
+			<p:commandButton icon="ui-icon-document-b" value="Limpar Endereco"
+				process="@this" update="gridEndereco"
+				action="#{notaFiscalBean.limparEnderecoEntrega}" />
+		</div>
+
+		<div class="ui-g ui-fluid">
+			<div class="ui-g">
+				<div class="ui-g-12 ui-md-2">
+					<p:commandLink update="@none" action="#{selecionaBean.endereco}"
+						process="@this" title="pesquisa endereço postal">
+						<h:outputText value="CEP" />
+						<p:ajax event="dialogReturn" ignoreAutoUpdate="true"
+							listener="#{notaFiscalBean.carregarPesquisaEndereco}"
+							update="gridEndereco" />
+					</p:commandLink>
+					<p:inputMask mask="99.999-999" id="cep"
+						styleClass="#{notaFiscalBean.nota.podeEditar ? '' : 'bloqueado'}"
+						readonly="#{not notaFiscalBean.nota.podeEditar}"
+						value="#{notaFiscalBean.nota.fiscal.enderecoEntrega.cep}">
+						<p:ajax event="change" update="gridEndereco"
+							listener="#{notaFiscalBean.carregarEndereco}" />
+					</p:inputMask>
+				</div>
+				<div class="ui-g-12 ui-md-8">
+					<p:outputLabel value="Logradouro" for="entregaLogradouro" />
+					<p:inputText id="entregaLogradouro"
+						styleClass="#{notaFiscalBean.nota.podeEditar ? '' : 'bloqueado'}"
+						readonly="#{not notaFiscalBean.nota.podeEditar}"
+						value="#{notaFiscalBean.nota.fiscal.enderecoEntrega.logradouro}" />
+				</div>
+				<div class="ui-g-12 ui-md-2">
+					<p:outputLabel value="Número" for="entregaNumero" />
+					<p:inputText styleClass="bloqueado" readonly="true"
+						rendered="#{not notaFiscalBean.nota.podeEditar}"
+						value="#{notaFiscalBean.nota.fiscal.enderecoEntrega.numero}" />
+					<p:inputNumber id="entregaNumero" decimalSeparator=""
+						decimalPlaces="0" rendered="#{notaFiscalBean.nota.podeEditar}"
+						value="#{notaFiscalBean.nota.fiscal.enderecoEntrega.numero}"
+						thousandSeparator="" />
+				</div>
+
+				<div class="ui-g-4">
+					<p:outputLabel value="UF" for="txtUF" />
+					<p:inputText styleClass="bloqueado" readonly="true"
+						rendered="#{not notaFiscalBean.nota.podeEditar}"
+						value="#{notaFiscalBean.nota.fiscal.enderecoEntrega.municipio.uf.descricao}" />
+					<p:selectOneMenu id="txtUF" autoWidth="false"
+						rendered="#{notaFiscalBean.nota.podeEditar}"
+						value="#{notaFiscalBean.xUf}">
+						<f:selectItem itemLabel="" />
+						<f:selectItems value="#{listaTipoBean.unidadeFederativa}"
+							var="estado" itemValue="#{estado}" itemLabel="#{estado.codigo}" />
+						<f:ajax render="txtMunicipios"
+							listener="#{notaFiscalBean.carregaMunicipios}"
+							update="txtMunicipios" />
+					</p:selectOneMenu>
+				</div>
+
+				<div class="ui-g-8">
+					<p:outputLabel value="Município" />
+					<p:inputText styleClass="bloqueado" readonly="true"
+						rendered="#{not notaFiscalBean.nota.podeEditar}"
+						value="#{notaFiscalBean.nota.fiscal.enderecoEntrega.municipio.descricao}" />
+					<p:selectOneMenu id="txtMunicipios" autoWidth="false"
+						rendered="#{notaFiscalBean.nota.podeEditar}"
+						value="#{notaFiscalBean.nota.fiscal.enderecoEntrega.municipio}">
+						<f:selectItem itemLabel="Selecione" />
+						<f:selectItems value="#{notaFiscalBean.listaMunicipio}"
+							var="municipio" itemValue="#{municipio}"
+							itemLabel="#{municipio.descricao}" />
+					</p:selectOneMenu>
+				</div>
+
+				<div class="ui-g-12 ui-md-6">
+					<p:outputLabel value="Bairro" for="txtBairro" />
+					<p:inputText id="txtBairro"
+						styleClass="#{notaFiscalBean.nota.podeEditar ? '' : 'bloqueado'}"
+						readonly="#{not notaFiscalBean.nota.podeEditar}"
+						value="#{notaFiscalBean.nota.fiscal.enderecoEntrega.bairro}" />
+				</div>
+				<div class="ui-g-12 ui-md-6">
+					<p:outputLabel value="Complemento" for="entregaComplemento" />
+					<p:inputText id="entregaComplemento"
+						styleClass="#{notaFiscalBean.nota.podeEditar ? '' : 'bloqueado'}"
+						readonly="#{not notaFiscalBean.nota.podeEditar}"
+						value="#{notaFiscalBean.nota.fiscal.enderecoEntrega.complemento}" />
+				</div>
+
+				<div class="ui-g-12">
+					<p:outputLabel value="Transportador" />
+					<div class="ui-inputgroup">
+						<p:commandButton icon="ui-icon-person" class="button-grid"
+							disabled="#{not notaFiscalBean.nota.podeEditar or notaFiscalBean.nota.notaDevolucao}"
+							process="@this" update="@none" ignoreAutoUpdate="true"
+							action="#{selecionaBean.transportador}">
+							<p:ajax event="dialogReturn"
+								listener="#{notaFiscalBean.onTransportadorChosen}"
+								ignoreAutoUpdate="true" update="txtTransportador" />
+						</p:commandButton>
+						<p:inputText id="txtTransportador" readonly="true"
+							styleClass="#{notaFiscalBean.nota.podeEditar ? '' : 'bloqueado'}"
+							value="#{notaFiscalBean.nota.transportador.nome}" />
+					</div>
+				</div>
+			</div>
+		</div>
+
+	</p:panel>
+
+</ui:composition>

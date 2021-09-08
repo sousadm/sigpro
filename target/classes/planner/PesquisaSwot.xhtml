@@ -1,0 +1,96 @@
+<ui:composition template="/WEB-INF/template/LayoutPadrao.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<ui:define name="titulo">swot</ui:define>
+
+	<f:metadata>
+		<f:event listener="#{swotBean.inicializar}" type="preRenderView"></f:event>
+	</f:metadata>
+
+	<ui:define name="corpo">
+
+		<h:form id="frmPesquisa">
+
+			<p:focus />
+
+			<h1 style="margin-top: 65px">Análise SWOT</h1>
+
+			<p:toolbar style="margin-top: 05px">
+				<p:toolbarGroup>
+
+					<p:commandButton value="Todos" action="#{swotBean.pesquisar}"
+						update="@form" />
+
+					<p:commandButton value="Forças" action="#{swotBean.forca}"
+						update="@form" />
+
+					<p:commandButton value="Fraqueza" action="#{swotBean.fraqueza}"
+						update="@form" />
+
+					<p:commandButton value="Ameaça" action="#{swotBean.ameaca}"
+						update="@form" />
+
+					<p:commandButton value="Oportunidade"
+						action="#{swotBean.oportunidade}" update="@form" />
+
+				</p:toolbarGroup>
+				<p:toolbarGroup align="right">
+					<p:button value="Novo" outcome="/planner/CadastroSwot" />
+				</p:toolbarGroup>
+			</p:toolbar>
+
+			<p:dataTable id="tabela" value="#{swotBean.lista}" var="swot"
+				scrollable="true" style="margin-top: 20px"
+				emptyMessage="Nenhum registro encontrado." rows="10"
+				paginator="true" paginatorAlwaysVisible="false"
+				paginatorPosition="bottom">
+
+				<p:column headerText="Descrição">
+					<h:outputText value="#{swot.descricao}" />
+				</p:column>
+
+				<p:column headerText="Tipo" width="5%">
+					<h:outputText value="#{swot.tipo.descricao}" />
+				</p:column>
+
+				<p:column headerText="Probabilidade" width="10%">
+					<h:outputText value="#{swot.probabilidade.descricao}" />
+				</p:column>
+
+				<p:column headerText="Importância" width="10%">
+					<h:outputText value="#{swot.importancia.descricao}" />
+				</p:column>
+
+				<p:column headerText="Peso" width="5%">
+					<h:outputText value="#{swot.pontuacao}">
+						<f:convertNumber locale="pt_BR" />
+					</h:outputText>
+				</p:column>
+
+				<p:column style="width: 100px; text-align: center">
+
+					<p:column style="text-align: center; width: 50px">
+						<p:button icon="ui-icon-pencil" title="Editar"
+							outcome="/planner/CadastroSwot">
+							<f:param name="swot" value="#{swot.id}" />
+						</p:button>
+					</p:column>
+
+					<p:commandButton icon="ui-icon-trash" process="@this"
+						title="Excluir" update="tabela" action="#{swotBean.excluir(swot)}">
+						<p:confirm icon="ui-icon-alert" header="Confirmação de exclusão"
+							message="Excluir o registro atual?" />
+					</p:commandButton>
+
+				</p:column>
+
+			</p:dataTable>
+
+		</h:form>
+	</ui:define>
+
+</ui:composition>

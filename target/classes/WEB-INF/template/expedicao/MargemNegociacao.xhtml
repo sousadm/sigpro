@@ -1,0 +1,49 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<p:dialog id="dlgMargem" header="Margem de Negociação"
+		widgetVar="dlgMargem" closeOnEscape="true" modal="true" 
+		maximizable="false" width="450" >
+		<p:panelGrid columns="2" layout="grid"
+			columnClasses="ui-grid-col-8, ui-grid-col-4">
+
+			<p:outputLabel value="(+) Valor total da negociação" />
+			<p:outputLabel value="#{expedicaoBean.expedicao.valorTotal}">
+				<f:convertNumber type="currency" currencySymbol="R$" />
+			</p:outputLabel>
+
+			<p:outputLabel value="(-) Total de margem de contribuição" />
+			<p:outputLabel
+				value="#{expedicaoBean.expedicao.totalMargemContribuicao}">
+				<f:convertNumber type="currency" currencySymbol="R$" />
+			</p:outputLabel>
+
+			<p:outputLabel value="(-) Total da carga tributária" />
+			<p:outputLabel
+				value="#{expedicaoBean.expedicao.totalCargaTributaria}">
+				<f:convertNumber type="currency" currencySymbol="R$" />
+			</p:outputLabel>
+
+			<p:outputLabel value="(-) Valor total de reposição" />
+			<p:outputLabel value="#{expedicaoBean.expedicao.totalCustoReposicao}">
+				<f:convertNumber type="currency" currencySymbol="R$" />
+			</p:outputLabel>
+
+			<p:outputLabel value="(-) Valor comissão de vendas" />
+			<p:outputLabel value="#{expedicaoBean.expedicao.valorComissaoVenda}">
+				<f:convertNumber type="currency" currencySymbol="R$" />
+			</p:outputLabel>
+
+			<p:outputLabel value="(=) Total do Lucro líquido" />
+			<p:outputLabel value="#{expedicaoBean.expedicao.totalLucroLiquido}"
+				styleClass="#{expedicaoBean.expedicao.temLucro ? 'lucro negrito' : 'prejuizo negrito'}">
+				<f:convertNumber type="currency" currencySymbol="R$" />
+			</p:outputLabel>
+			
+		</p:panelGrid>
+	</p:dialog>
+
+</ui:composition>

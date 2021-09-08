@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+<h:head>
+	<title>Pesquisa (produto montagem)</title>
+	<h:outputStylesheet library="sigpro" name="styles/custom.css" />
+	<style>
+body {
+	margin: 10px
+}
+</style>
+</h:head>
+<h:body>
+
+	<h:form id="frmSelecao">
+
+		<p:focus for="nome" />
+
+		<div class="ui-fluid">
+
+			<p:panelGrid columns="3" style="margin-top: 5px; width: 100%"
+				layout="grid" styleClass="panelgrid-noborder"
+				columnClasses="ui-grid-col-6, ui-grid-col-4, ui-grid-col-2">
+				<p:inputText id="nome" value="#{selecaoProdutoBean.filtro.nome}"
+					placeholder="descrição do produto" />
+				<p:inputText id="codigo" value="#{selecaoProdutoBean.filtro.sku}"
+					placeholder="código" />
+				<p:commandButton id="botaoPesquisa" value="Pesquisar"
+					action="#{selecaoProdutoBean.pesquisarProdutoMontagem}"
+					update="@form" />
+			</p:panelGrid>
+
+			<p:dataTable value="#{selecaoProdutoBean.model}" var="item"
+				scrollable="true" style="margin-top: 5px"
+				emptyMessage="Nenhum item encontrado." rows="8" paginator="true"
+				paginatorAlwaysVisible="false" paginatorPosition="top" lazy="true">
+				<p:column headerText="Código" sortBy="#{item.sku}" width="80">
+					<h:outputText value="#{item.sku}" />
+				</p:column>
+				<p:column headerText="Descrição" sortBy="#{item.nome}">
+					<h:outputText value="#{item.nome}" />
+				</p:column>
+				<p:column headerText="Tipo" width="80">
+					<h:outputText
+						value="#{item.categoria.categoriaPai.tipoProduto.reduzido}" />
+				</p:column>
+				<p:column headerText="Estoque" width="50">
+					<h:outputText value="#{item.quantidadeEstoque}" />
+				</p:column>
+				<p:column headerText="Unitário" width="50">
+					<h:outputText value="#{item.valorUnitario}">
+						<f:convertNumber pattern="#0.00" />
+					</h:outputText>
+				</p:column>
+
+				<p:column width="80">
+					<p:commandButton icon="ui-icon-image" class="button-grid"
+						disabled="#{not item.existeImagem}" title="imagem"
+						action="#{selecaoProdutoBean.defineImagem(item)}"
+						oncomplete="PF('dlgGraphicImagem').show()"
+						update="dlgGraphicImagem" />
+					<p:commandButton icon="ui-icon-check" class="button-grid"
+						title="Selecionar" process="@this"
+						action="#{selecaoProdutoBean.selecionar(item)}" />
+				</p:column>
+
+			</p:dataTable>
+		</div>
+
+		<p:blockUI block="frmSelecao" trigger="botaoPesquisa" />
+
+	</h:form>
+
+	<ui:include src="/WEB-INF/template/produto/GraphicImagem.xhtml" />
+
+</h:body>
+
+</html>

@@ -1,0 +1,112 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<p:panelGrid columns="2" layout="grid" styleClass="ui-panelgrid-blank"
+		columnClasses="ui-grid-col-4,ui-grid-col-8">
+
+		<p:outputLabel value="Data de Referência" />
+		<h:panelGroup>
+			<p:outputLabel value="#{balancoBean.balanco.dataApuracao}"
+				rendered="#{balancoBean.balanco.existe}" class="negrito">
+				<f:convertDateTime type="date" pattern="dd/MM/yyyy" />
+			</p:outputLabel>
+			<p:calendar id="txtData" showOn="button" mask="99/99/9999"
+				required="true" requiredMessage="digite a data de apuração"
+				rendered="#{not balancoBean.balanco.existe}" pattern="dd/MM/yyyy"
+				value="#{balancoBean.balanco.dataApuracao}" />
+		</h:panelGroup>
+
+	</p:panelGrid>
+
+	<p:panelGrid styleClass="ui-noborder" style="width: 100%">
+
+		<p:row>
+			<p:column style="width: 50%">
+				<p:panel header="Ativo">
+					<p:panelGrid columns="2" style="width: 100%; margin-top: 5px"
+						columnClasses="rotulo, campo">
+
+						<p:outputLabel value="Disponibilidade" />
+						<p:inputNumber value="#{balancoBean.balanco.ativoDisponivel}"
+							size="5" />
+
+						<p:outputLabel value="Investimento" />
+						<p:inputNumber value="#{balancoBean.balanco.ativoInvestimento}"
+							size="5" />
+							
+						<p:outputLabel value="Contas Receber" />
+						<p:outputLabel value="#{balancoBean.balanco.ativoContaReceber}"
+							class="negrito">
+							<f:convertNumber type="currency" />
+						</p:outputLabel>
+
+						<p:outputLabel value="Estoque" />
+						<p:outputLabel value="#{balancoBean.balanco.ativoEstoque}"
+							class="negrito">
+							<f:convertNumber type="currency" />
+						</p:outputLabel>
+
+						<p:outputLabel value="Imobilizado" />
+						<p:outputLabel value="#{balancoBean.balanco.ativoImobilizado}"
+							class="negrito">
+							<f:convertNumber type="currency" />
+						</p:outputLabel>
+
+					</p:panelGrid>
+				</p:panel>
+			</p:column>
+			<p:column style="width: 50%">
+				<p:panel header="Passivo">
+					<p:panelGrid columns="2" style="width: 100%; margin-top: 5px"
+						columnClasses="rotulo, campo">
+
+						<p:outputLabel value="Trabalhista" />
+						<p:inputNumber value="#{balancoBean.balanco.passivoTrabalhista}"
+							size="5" />
+
+						<p:outputLabel value="Provisionado" />
+						<p:inputNumber value="#{balancoBean.balanco.passivoProvisionado}"
+							size="5" />
+
+						<p:outputLabel value="Outros" />
+						<p:inputNumber value="#{balancoBean.balanco.passivoOutros}"
+							size="5" />
+
+						<p:outputLabel value="Contas Pagar" />
+						<p:outputLabel value="#{balancoBean.balanco.passivoContaPagar}"
+							class="negrito">
+							<f:convertNumber type="currency" />
+						</p:outputLabel>
+
+						<p:outputLabel value="Impostos" />
+						<p:inputNumber value="0" size="5" disabled="true" />
+
+					</p:panelGrid>
+				</p:panel>
+			</p:column>
+		</p:row>
+
+		<p:row>
+			<p:column>
+				<p:panel header="Patrimônio Líquido" />
+			</p:column>
+			<p:column>
+				<p:outputLabel value="#{balancoBean.balanco.valorPatrimonioLiquido}"
+					class="negrito">
+					<f:convertNumber type="currency" />
+				</p:outputLabel>
+			</p:column>
+			<p:column>
+				<p:outputLabel value="#{balancoBean.balanco.variacao}"
+					class="negrito" style="text-align: left;">
+					<f:convertNumber type="percent" />
+				</p:outputLabel>
+			</p:column>
+		</p:row>
+
+	</p:panelGrid>
+
+</ui:composition>

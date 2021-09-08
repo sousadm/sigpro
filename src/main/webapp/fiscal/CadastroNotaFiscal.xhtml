@@ -1,0 +1,52 @@
+<ui:composition template="/WEB-INF/template/LayoutPadrao.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui" xmlns:o="http://omnifaces.org/ui">
+
+	<ui:define name="titulo">NFe</ui:define>
+
+	<f:metadata>
+		<f:param name="dummy" />
+		<o:viewParam name="nota" value="#{notaFiscalBean.nota}" />
+		<f:event listener="#{notaFiscalBean.inicializar}" type="preRenderView"></f:event>
+	</f:metadata>
+
+	<ui:define name="corpo">
+
+		<ui:include src="/WEB-INF/template/fiscal/ImportaCompra.xhtml" />
+
+		<p:focus context="formCadastro" />
+
+		<h:form id="formCadastro">
+
+			<p:growl id="msg" />
+
+			<h1 style="margin-top: 65px;">NFe - Nota Fiscal Eletrônica</h1>
+
+			<h:panelGroup rendered="#{notaFiscalBean.nota == null}">
+				<ui:include src="/fiscal/NotaFiscalPesquisa.xhtml" />
+			</h:panelGroup>
+
+			<h:panelGroup rendered="#{notaFiscalBean.nota != null}">
+				<ui:include src="/fiscal/NotaFiscalEdit.xhtml" />
+				<ui:include src="/WEB-INF/template/fiscal/NotaFiscalMail.xhtml" />
+			</h:panelGroup>
+
+		</h:form>
+
+		<ui:include src="/WEB-INF/template/fiscal/CorrecaoNotaFiscal.xhtml" />
+		<ui:include src="/WEB-INF/template/fiscal/NotaProdutoFiscal.xhtml" />
+		<ui:include src="/WEB-INF/template/fiscal/NotaFiscalFiltro.xhtml" />
+		<ui:include
+			src="/WEB-INF/template/fiscal/DadosNFeCartaDeCorrecao.xhtml" />
+		<ui:include
+			src="/WEB-INF/template/fiscal/DadosNFeJustificativaCancelamento.xhtml" />
+		<ui:include src="/WEB-INF/template/fiscal/NotaFiscalPagamento.xhtml" />
+		<ui:include src="/WEB-INF/template/fiscal/NotaFiscalVolume.xhtml" />
+
+	</ui:define>
+
+</ui:composition>
+

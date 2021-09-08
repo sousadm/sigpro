@@ -1,0 +1,112 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<p:dialog id="dlgCheque"
+		header="#{caixaBean.caixa.temCaixaPagar? 'Emissão de Cheque' : 'Cheque'}"
+		widgetVar="dlgCheque" closeOnEscape="true" modal="true"
+		maximizable="false" width="600">
+		<h:form id="formCadastroCheque">
+
+			<div class="ui-fluid">
+				<div class="ui-g">
+
+					<h:panelGroup rendered="#{caixaBean.caixa.temCaixaPagar}">
+						<div class="ui-g-12">
+							<p:outputLabel value="Conta bancária" for="txtContaBancaria" />
+							<p:selectOneMenu id="txtContaBancaria" icon="ui-icon-search"
+								autoWidth="false" required="true"
+								value="#{caixaBean.caixaValor.titulo.contaBancaria}"
+								rendered="#{caixaBean.caixa.temCaixaPagar}"
+								disabled="#{not caixaBean.caixa.podeGravar}">
+								<f:selectItems value="#{caixaBean.listaContaBancaria}"
+									var="contacheque" itemValue="#{contacheque}"
+									itemLabel="#{contacheque.descricao}" />
+							</p:selectOneMenu>
+						</div>
+					</h:panelGroup>
+
+					<div class="ui-g-4">
+						<p:outputLabel value="Número" for="txtChequeNumero" />
+						<p:inputMask id="txtChequeNumero" required="true"
+							value="#{caixaBean.caixaValor.titulo.documento}" mask="?999999"
+							placeholder="" converter="zerosEsquerdaConverter">
+							<p:ajax update="@this" />
+						</p:inputMask>
+					</div>
+					<div class="ui-g-4">
+						<p:outputLabel value="Vencimento" for="vencimento" />
+						<p:calendar id="vencimento" locale="br" required="true"
+							class="#{caixaBean.caixa.podeGravar ? '' : 'bloqueado'}"
+							readonly="#{not caixaBean.caixa.podeGravar}" mask="99/99/9999"
+							pattern="dd/MM/yyyy" navigator="true" showOn="button"
+							value="#{caixaBean.caixaValor.titulo.vencimento}" />
+					</div>
+					<div class="ui-g-4">
+						<p:outputLabel value="Valor" for="chequeValor" />
+						<p:inputNumber id="chequeValor" minValue="0" decimalSeparator=","
+							thousandSeparator="." decimalPlaces="2"
+							class="#{caixaBean.caixa.podeGravar ? '' : 'bloqueado'}"
+							readonly="#{not caixaBean.caixa.podeGravar}" required="true"
+							value="#{caixaBean.caixaValor.valor}" />
+					</div>
+
+					<div class="ui-g-12">
+						<p:outputLabel value="Nominal" for="txtChequeNominal" />
+						<p:inputText id="txtChequeNominal" maxlength="100" required="true"
+							readonly="#{not caixaBean.caixa.podeGravar}"
+							value="#{caixaBean.caixaValor.titulo.nominal}" />
+					</div>
+
+
+					<h:panelGroup rendered="#{caixaBean.caixa.temCaixaReceber}">
+
+						<div class="ui-g-6">
+							<p:outputLabel value="Banco" for="txtBancoCheque" />
+							<div class="ui-inputgroup">
+								<p:commandButton rendered="#{caixaBean.caixa.temCaixaReceber}"
+									disabled="#{not caixaBean.caixa.podeGravar}"
+									icon="ui-icon-search" process="@this"
+									actionListener="#{selecionaBean.banco}">
+									<p:ajax event="dialogReturn"
+										listener="#{caixaBean.onBancoChosen}" update="txtBancoCheque" />
+								</p:commandButton>
+								<p:inputText id="txtBancoCheque" readonly="true" required="true"
+									disabled="#{not caixaBean.caixa.podeGravar}"
+									value="#{caixaBean.caixaValor.titulo.banco.descricao}"
+									styleClass="bloqueado" />
+							</div>
+						</div>
+						<div class="ui-g-3">
+							<p:outputLabel value="Agência" for="txtAgenciaCheque" />
+							<p:inputText id="txtAgenciaCheque" maxlength="20" required="true"
+								readonly="#{not caixaBean.caixa.podeGravar or caixaBean.caixa.temCaixaPagar}"
+								value="#{caixaBean.caixaValor.titulo.agencia}" />
+						</div>
+						<div class="ui-g-3">
+							<p:outputLabel value="Conta Corrente" for="txtContaCheque" />
+							<p:inputText id="txtContaCheque" maxlength="20"
+								readonly="#{not caixaBean.caixa.podeGravar or caixaBean.caixa.temCaixaPagar}"
+								required="true" value="#{caixaBean.caixaValor.titulo.conta}" />
+						</div>
+
+					</h:panelGroup>
+
+				</div>
+			</div>
+
+			<div align="right" style="margin-top: 5px">
+				<p:commandButton value="Confirma" icon="ui-icon-check"
+					disabled="#{not caixaBean.caixa.podeGravar}" process="@form"
+					update="@form formCadastro:tabView:gridCompensacao  formCadastro:txtValorNegociado formCadastro:txtValorFinal"
+					action="#{caixaBean.gravarCompensacao}"
+					oncomplete="if(!args.validationFailed) PF('dlgCheque').hide()" />
+			</div>
+
+		</h:form>
+	</p:dialog>
+
+
+</ui:composition>

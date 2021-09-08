@@ -1,0 +1,41 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<p:dataTable id="tabelaItems" value="#{caixaDiarioBean.listaMovimento}"
+		var="item" rowKey="#{item.id}" style="margin-top: 5px"
+		emptyMessage="Nenhum registro encontrado." rows="10" paginator="true"
+		paginatorAlwaysVisible="false" paginatorPosition="bottom">
+
+		<p:column headerText="Data" width="90">
+			<h:outputText value="#{item.data}">
+				<f:convertDateTime pattern="dd/MM/yyyy" />
+			</h:outputText>
+		</p:column>
+		<p:column headerText="Histórico">
+			<h:outputText value="#{item.descricao}" />
+		</p:column>
+		<p:column headerText="Nominal">
+			<h:outputText value="#{item.nominal}" />
+		</p:column>
+		<p:column headerText="Meio" width="50">
+			<h:outputText value="#{item.tipo.descricao}" />
+		</p:column>
+		<p:column headerText="Valor" style="text-align: right" width="90">
+			<h:outputText value="#{item.valor}"  style="color: #{item.statusCor}">
+				<f:convertNumber type="currency" />
+			</h:outputText>
+		</p:column>
+
+		<p:column style="text-align: center" width="40">
+			<p:button disabled="#{item.id == null}" icon="ui-icon-pencil"
+				title="Visualizar" outcome="/financeiro/CadastroCaixa">
+				<f:param name="caixa" value="#{item.id}" />
+			</p:button>
+		</p:column>
+
+	</p:dataTable>
+
+</ui:composition>

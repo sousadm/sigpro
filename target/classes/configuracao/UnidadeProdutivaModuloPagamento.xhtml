@@ -1,0 +1,56 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<p:commandButton value="Add Modulo" icon="ui-icon-document"
+		action="#{unidadeProdutivaBean.addModuloPagamento}" update="dlgModulo"
+		oncomplete="PF('dlgModulo').show()" />
+	<p:commandButton value="atualizar" icon="ui-icon-arrowrefresh-1-w"
+		process="@form" actionListener="#{unidadeProdutivaBean.mostraModulos}"
+		update="listaModulo" />
+
+	<p:dataTable id="listaModulo"
+		value="#{unidadeProdutivaBean.listaModulo}" var="modulo"
+		style="margin-top: 5px" emptyMessage="Nenhum item encontrado."
+		rows="20" paginator="true" paginatorAlwaysVisible="false"
+		paginatorPosition="bottom">
+
+		<p:column headerText="Núm.Série">
+			<h:outputText value="#{modulo.numeroSerie}" />
+		</p:column>
+		<p:column headerText="Descrição">
+			<h:outputText value="#{modulo.descricao}" />
+		</p:column>
+		<p:column headerText="Fabricante">
+			<h:outputText value="#{modulo.nomeFabricante}" />
+		</p:column>
+		<p:column headerText="Cód. Validação">
+			<h:outputText value="#{modulo.codigoValidacao}" />
+		</p:column>
+
+		<p:column style="width: 100px; text-align: center">
+			<p:column style="text-align: center; width: 50px">
+				<p:commandButton icon="ui-icon-pencil" title="Editar"
+					class="button-grid"
+					action="#{unidadeProdutivaBean.setModulo(modulo)}"
+					update="dlgModulo" oncomplete="PF('dlgModulo').show()" />
+			</p:column>
+			<p:commandButton icon="ui-icon-trash" process="@this"
+				class="button-grid" title="Excluir"
+				update="formCadastro:tabView:listaModulo"
+				action="#{unidadeProdutivaBean.excluirModulo(modulo)}">
+				<p:confirm icon="ui-icon-alert" header="Confirma"
+					message="Excluir o registro atual?" />
+			</p:commandButton>
+			<p:commandButton icon="ui-icon-shuffle" process="@this"
+				update="dlgTransfereModulo"
+				title="movimenta módulo para outra unidade"
+				action="#{unidadeProdutivaBean.preparaTransferencia(modulo)}"
+				oncomplete="PF('dlgTransfereModulo').show()" />
+		</p:column>
+
+	</p:dataTable>
+
+</ui:composition>

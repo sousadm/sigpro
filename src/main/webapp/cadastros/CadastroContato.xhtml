@@ -1,0 +1,98 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:o="http://omnifaces.org/ui" xmlns:p="http://primefaces.org/ui">
+
+	<p:dialog id="dlgContato" header="#{contatoBean.pessoa.nome}"
+		widgetVar="dlgContato" closeOnEscape="true" modal="true"
+		maximizable="false" height="300" width="600">
+
+		<h:form id="formCadastroContato">
+
+			<p:focus />
+
+			<p:growl />
+
+			<div align="right">
+				<p:commandButton value="Add Contato" update="@form tabView"
+					actionListener="#{contatoBean.addContato}" />
+			</div>
+
+			<p:tabView id="tabView" rendered="#{not empty contatoBean.lista}"
+				value="#{contatoBean.lista}" var="contato" tabindex="index"
+				orientation="left" activeIndex="#{contatoBean.activeTab}"
+				style="margin-top: 5px;">
+
+				<p:ajax event="tabChange" listener="#{contatoBean.onTabChange}" />
+
+				<p:tab title="#{contato.nome}">
+
+					<div class="ui-fluid">
+						<p:panelGrid columns="2" layout="grid"
+							styleClass="panelgrid-noborder"
+							columnClasses="ui-grid-col-5, ui-grid-col-7"
+							style="width: 100%; margin-top: 5px">
+
+							<h:outputLabel value="Nome" />
+							<p:inputText id="contatoNome" value="#{contato.nome}"
+								required="true" requiredMessage="nome inválido" maxlength="100" />
+
+							<h:outputLabel value="Cargo/Função" />
+							<p:inputText value="#{contato.cargo}" maxlength="100" />
+
+							<h:outputLabel value="E-mail" />
+							<p:inputText value="#{contato.email}" maxlength="100"
+								style="text-transform: lowercase" />
+
+							<h:outputLabel value="Celular" />
+							<p:inputText value="#{contato.celular}" maxlength="20"
+								required="true" requiredMessage="defina o celular" />
+
+							<h:outputLabel value="Fone" />
+							<p:inputText value="#{contato.fone}" maxlength="20" />
+
+						</p:panelGrid>
+					</div>
+
+					<div style="margin-top: 10px;">
+						<div align="left" style="float: left; width: 50%;">
+							<p:commandButton value="Aplicar" update="@form"
+								action="#{contatoBean.gravarContato}"
+								oncomplete="if(!args.validationFailed) PF('dlgContato').hide()" />
+						</div>
+						<div align="right" style="float: left; width: 50%;">
+
+							<p:commandButton value="Excluir" process="@this"
+								onclick="PF('dlgConfirma').show();" />
+
+							<p:dialog header="Confirma" name="dlgConfirma"
+								widgetVar="dlgConfirma" height="100">
+								<br />
+								<h:outputLabel value="Excluir contato: #{contato.nome} ?" />
+								<br />
+								<br />
+								<div align="left">
+									<p:commandButton value="Sim" styleClass="ui-confirmdialog-yes"
+										actionListener="#{contatoBean.removerContato}" process="@this"
+										icon="ui-icon-check" update="@form"
+										onclick="PF('dlgConfirma').hide();" />
+									<p:commandButton value="Não" type="button"
+										styleClass="ui-confirmdialog-no" icon="ui-icon-close"
+										onclick="PF('dlgConfirma').hide();" />
+								</div>
+							</p:dialog>
+
+
+						</div>
+					</div>
+
+				</p:tab>
+
+			</p:tabView>
+
+		</h:form>
+
+	</p:dialog>
+
+</ui:composition>

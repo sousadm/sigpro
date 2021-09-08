@@ -1,0 +1,27 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<h1 style="margin-top: 65px">Cadastro Pessoa</h1>
+
+	<ui:include src="/WEB-INF/template/pessoa/PessoaBotoes.xhtml" />
+
+	<p:tabView id="tabGrupo" style="margin-top: 05px"
+		activeIndex="#{pessoaBean.tabIndex}">
+		<p:tab id="tabDados" title="Dados">
+			<ui:include src="/WEB-INF/template/pessoa/PessoaDados.xhtml" />
+		</p:tab>
+		<p:tab title="Endereço">
+			<ui:include src="/WEB-INF/template/pessoa/PessoaEndereco.xhtml" />
+		</p:tab>
+		<p:tab id="tabComplemento" title="Complemento"
+			rendered="#{pessoaBean.pessoa.existeAlgumComplemento}">
+			<ui:include src="/WEB-INF/template/pessoa/PessoaDerivado.xhtml" />
+		</p:tab>
+	</p:tabView>
+
+	<p:blockUI block="formCadastro" trigger="botaoSalvar" />
+
+</ui:composition>

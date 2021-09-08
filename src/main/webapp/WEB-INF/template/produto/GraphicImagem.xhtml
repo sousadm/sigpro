@@ -1,0 +1,16 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<p:dialog id="dlgGraphicImagem" header="Imagem"
+		widgetVar="dlgGraphicImagem" closeOnEscape="true" modal="true"
+		maximizable="false">
+
+		<p:graphicImage value="#{graphicImageBean.imagem}"
+			style="width:50%; height:40%;" cache="false" />
+
+	</p:dialog>
+
+</ui:composition>

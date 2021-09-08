@@ -1,0 +1,88 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<div class="ui-fluid">
+		<div class="ui-g" style="margin-top: 5px; border: 1px solid silver;">
+
+			<div class="ui-g-12 ui-md-2">
+				<p:outputLabel styleClass="negrito"
+					value="#{notaServicoBean.nota.fiscal.numero == null ? 'Identificação' : 'RPS' }" />
+				<p:inputText styleClass="negrito"
+					rendered="#{notaServicoBean.nota.fiscal.numero == null}"
+					value="#{notaServicoBean.nota.id}">
+					<f:convertNumber pattern="000000" />
+				</p:inputText>
+				<p:inputText styleClass="negrito"
+					rendered="#{notaServicoBean.nota.fiscal.numero != null}"
+					value="#{notaServicoBean.nota.fiscal.numero}">
+					<f:convertNumber pattern="000000" />
+				</p:inputText>
+			</div>
+			<div class="ui-g-12 ui-md-5">
+				<p:outputLabel value="Cliente" />
+				<div class="ui-inputgroup">
+					<p:commandButton icon="ui-icon-person" title="Pesquisar cliente"
+						disabled="#{not notaServicoBean.nota.podeEditar or notaServicoBean.nota.notaDevolucao}"
+						process="@this" update="@none" ignoreAutoUpdate="true"
+						class="button-grid" action="#{selecionaBean.cliente}">
+						<p:ajax event="dialogReturn"
+							listener="#{notaServicoBean.onPessoaChosen}"
+							ignoreAutoUpdate="true"
+							update="txtCliente formCadastro:tabView:gridEndereco" />
+					</p:commandButton>
+					<p:inputText id="txtCliente" readonly="true"
+						value="#{notaServicoBean.nota.fiscal.cliente.nome}" />
+				</div>
+			</div>
+			<div class="ui-g-12 ui-md-2">
+				<p:outputLabel value="Data de Cadastro" />
+				<p:inputText readonly="true"
+					value="#{notaServicoBean.nota.dataCadastro}">
+					<f:convertDateTime pattern="dd/MM/yyyy" />
+				</p:inputText>
+			</div>
+			<div class="ui-g-12 ui-md-3">
+				<p:outputLabel
+					value="#{notaServicoBean.nota.fiscal.documentoCancelado ? 'Data de Cancelamento' : 'Data de Emissão' }" />
+				<p:inputText readonly="true"
+					rendered="#{notaServicoBean.nota.fiscal.documentoCancelado}"
+					value="#{notaServicoBean.nota.fiscal.dataCancelamento}">
+					<f:convertDateTime pattern="dd/MM/yyyy hh:mm" />
+				</p:inputText>
+				<p:inputText readonly="true"
+					rendered="#{not notaServicoBean.nota.fiscal.documentoCancelado}"
+					value="#{notaServicoBean.nota.fiscal.dataEmissao}">
+					<f:convertDateTime pattern="dd/MM/yyyy hh:mm" />
+				</p:inputText>
+			</div>
+
+			<div class="ui-g-12 ui-md-6">
+				<p:outputLabel value="Operação" />
+				<div
+					class="ui-inputfield ui-inputtext ui-widget ui-state-default ui-corner-all bloqueado ui-state-focus">
+					<p:outputLabel id="txtOpercaoFiscal"
+						value="#{notaServicoBean.nota.fiscal.operacao.toString()}" />
+				</div>
+			</div>
+			<div class="ui-g-12 ui-md-4">
+				<p:outputLabel value="Código de verificação" />
+				<p:inputText
+					value="#{notaServicoBean.nota.fiscal.codigoVerificacao}"
+					class="bloqueado" readonly="true" />
+			</div>
+			<div class="ui-g-12 ui-md-2">
+				<p:outputLabel value="Status" />
+				<div
+					class="ui-inputfield ui-inputtext ui-widget ui-state-default ui-corner-all bloqueado ui-state-focus">
+					<p:outputLabel
+						value="#{notaServicoBean.nota.fiscal.status.descricao}" />
+				</div>
+			</div>
+
+		</div>
+	</div>
+
+</ui:composition>

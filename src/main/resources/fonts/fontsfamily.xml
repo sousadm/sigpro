@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<fontFamilies>
+
+   <fontFamily name="Arial">
+       <normal><![CDATA[fonts/Arial.ttf]]></normal>
+       <bold><![CDATA[fonts/Arial_Bold.ttf]]></bold>
+       <italic><![CDATA[fonts/Arial_Italic.ttf]]></italic>
+       <boldItalic><![CDATA[fonts/Arial_Bold_Italic.ttf]]></boldItalic>
+       <pdfEmbedded><![CDATA[true]]></pdfEmbedded>
+   </fontFamily>
+
+
+   <fontFamily name="Courier New">
+       <normal><![CDATA[fonts/Courier_New.ttf]]></normal>
+       <bold><![CDATA[fonts/Courier_New_Bold.ttf]]></bold>
+       <italic><![CDATA[fonts/Courier_New_Italic.ttf]]></italic>
+       <boldItalic><![CDATA[fonts/Courier_New_Bold_Italic.ttf]]></boldItalic>
+       <pdfEmbedded><![CDATA[true]]></pdfEmbedded>
+   </fontFamily>
+
+
+   <fontFamily name="DejaVu Serif">
+       <normal><![CDATA[fonts/DejaVuSerif.ttf]]></normal>
+       <bold><![CDATA[fonts/DejaVuSerif-Bold.ttf]]></bold>
+       <italic><![CDATA[fonts/DejaVuSerif-Italic.ttf]]></italic>
+       <boldItalic><![CDATA[fonts/DejaVuSerif-BoldItalic.ttf]]></boldItalic>
+       <pdfEmbedded><![CDATA[true]]></pdfEmbedded>
+   </fontFamily>
+
+
+   <fontFamily name="Times New Roman">
+       <normal><![CDATA[fonts/Times_New_Roman.ttf]]></normal>
+       <bold><![CDATA[fonts/Times_New_Roman_Bold.ttf]]></bold>
+       <italic><![CDATA[fonts/Times_New_Roman_Italic.ttf]]></italic>
+       <boldItalic><![CDATA[fonts/Times_New_Roman_Bold_Italic.ttf]]></boldItalic>
+       <pdfEmbedded><![CDATA[true]]></pdfEmbedded>
+   </fontFamily>
+
+
+   <fontFamily name="Verdana">
+       <normal><![CDATA[fonts/Verdana.ttf]]></normal>
+       <bold><![CDATA[fonts/Verdana_Bold.ttf]]></bold>
+       <italic><![CDATA[fonts/Verdana_Italic.ttf]]></italic>
+       <boldItalic><![CDATA[fonts/Verdana_Bold_Italic.ttf]]></boldItalic>
+       <pdfEmbedded><![CDATA[true]]></pdfEmbedded>
+   </fontFamily>
+
+
+</fontFamilies>

@@ -1,0 +1,86 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui" xmlns:o="http://omnifaces.org/ui">
+
+	<ui:define name="titulo">Conciliação</ui:define>
+
+	<h1 style="margin-top: 65px">Conciliação Bancária</h1>
+
+	<p:messages autoUpdate="true" closable="true" />
+
+	<p:toolbar id="toolbar" style="margin-top: 05px">
+		<p:toolbarGroup>
+			<p:splitButton value="Pesquisar" icon="ui-icon-search" update="@form"
+				process="@form" action="#{contaBean.pesquisarConciliacao}">
+				<p:menuitem value="Imprimir movimentação" icon="ui-icon-print"
+					ajax="false" process="@form" action="#{contaBean.imprimirExtrato}"
+					target="_blank" />
+			</p:splitButton>
+			<p:separator />
+			<p:commandButton value="Voltar" icon="ui-icon-arrowreturnthick-1-w"
+				actionListener="#{contaBean.setConciliacao(false)}" process="@this"
+				update="@form" />
+		</p:toolbarGroup>
+		<p:toolbarGroup align="right">
+			<p:commandButton value="Novo" icon="ui-icon-document" update="@form"
+				title="incluir evento financeiro"
+				disabled="#{contaBean.conta.cancelado}"
+				action="#{contaBean.novoEvento}" />
+		</p:toolbarGroup>
+	</p:toolbar>
+
+	<div class="ui-fluid">
+		<div class="ui-g" style="margin-top: 5px; border: 1px solid silver;">
+			<div class="ui-g-6">
+				<p:outputLabel value="Banco/Agência/Conta" />
+				<div
+					class="ui-inputfield ui-inputtext ui-widget ui-state-default ui-corner-all bloqueado ui-state-focus">
+					<h:outputText value="#{contaBean.conta.toString()}" />
+				</div>
+			</div>
+			<div class="ui-g-3">
+				<p:outputLabel value="Período" />
+				<p:calendar navigator="true" showOn="button" mask="99/99/9999"
+					required="true" requiredMessage="informe data inicial"
+					pattern="dd/MM/yyyy" value="#{contaBean.filtro.inicio}" />
+			</div>
+			<div class="ui-g-3">
+				<p:outputLabel value="Final" />
+				<p:calendar navigator="true" showOn="button" mask="99/99/9999"
+					required="true" requiredMessage="informe data final"
+					pattern="dd/MM/yyyy" value="#{contaBean.filtro.termino}" />
+			</div>
+		</div>
+	</div>
+
+	<p:dataTable id="tabelaTitulo" value="#{contaBean.listaTitulo}"
+		var="titulo" rowIndexVar="item" style="margin-top: 5px"
+		emptyMessage="Nenhum registro encontrado." rows="10" paginator="true"
+		paginatorAlwaysVisible="false" paginatorPosition="bottom">
+		<p:column headerText="Data" style="width: 115px;">
+			<h:outputText value="#{titulo.dataBaixa}">
+				<f:convertDateTime pattern="dd/MM/yyyy" />
+			</h:outputText>
+		</p:column>
+		<p:column headerText="Histórico">
+			<h:outputText value="#{titulo.descricao}" />
+		</p:column>
+		<p:column headerText="Valor" style="text-align: right; width: 100px">
+			<h:outputText value="#{titulo.valorExtrato}">
+				<f:convertNumber pattern="#0.00" />
+			</h:outputText>
+		</p:column>
+
+		<p:column style="width: 100px; text-align: center">
+			<p:commandButton icon="ui-icon-pencil" title="Editar"
+				action="#{contaBean.setTitulo(titulo)}" update="@form" />
+			<p:commandButton icon="ui-icon-trash" process="@this" title="Excluir"
+				update="@form" action="#{contaBean.excluirEvento(item)}">
+				<p:confirm icon="ui-icon-alert" header="Confirma exclusão"
+					message="Excluir o registro atual?" />
+			</p:commandButton>
+		</p:column>
+	</p:dataTable>
+</ui:composition>

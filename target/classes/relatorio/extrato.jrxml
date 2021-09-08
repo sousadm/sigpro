@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="extrato" language="groovy" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="565" leftMargin="20" rightMargin="10" topMargin="20" bottomMargin="10" uuid="18bb8ecd-497c-4e18-9436-d52f911ec5e4">
+	<property name="ireport.zoom" value="1.4641000000000015"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="empresa" class="java.lang.Object"/>
+	<parameter name="saldoInicial" class="java.lang.Double"/>
+	<parameter name="saldoFinal" class="java.lang.Double"/>
+	<parameter name="valorTotal" class="java.lang.Double"/>
+	<field name="id" class="java.lang.Long"/>
+	<field name="tipoDC" class="java.lang.Object"/>
+	<field name="valor" class="java.lang.Double"/>
+	<field name="dataBaixa" class="java.sql.Timestamp"/>
+	<field name="documento" class="java.lang.String"/>
+	<field name="descricao" class="java.lang.String"/>
+	<field name="nominal" class="java.lang.String"/>
+	<field name="contaBancaria" class="java.lang.Object"/>
+	<group name="anoMes">
+		<groupExpression><![CDATA[new java.text.SimpleDateFormat("yyyyMM").format($F{dataBaixa})]]></groupExpression>
+		<groupHeader>
+			<band height="18">
+				<textField pattern="MMMMM/yyyy" isBlankWhenNull="true">
+					<reportElement x="6" y="2" width="261" height="12" uuid="be3c7c46-9ec1-443f-9412-c97d3e96ac03"/>
+					<textElement>
+						<font fontName="Times New Roman"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{dataBaixa}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupHeader>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<pageHeader>
+		<band height="49" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="3" width="251" height="18" uuid="677d6e87-5871-4d73-9b80-2c3f227b5dab"/>
+				<textElement>
+					<font fontName="Times New Roman" size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Extrato de Conta]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="0" y="21" width="324" height="16" uuid="d1f0cc81-d877-4e1a-9485-7d053466a1d4"/>
+				<textFieldExpression><![CDATA[$F{contaBancaria}.toString()]]></textFieldExpression>
+			</textField>
+			<textField pattern="HH:mm:ss">
+				<reportElement x="465" y="18" width="100" height="14" uuid="4be6d0fb-4448-4624-95bf-2805f7cb4fed"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="465" y="3" width="100" height="14" uuid="5fb228bc-a4f1-44f3-b9d3-2e734ae33c2b"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="465" y="32" width="100" height="14" uuid="f026b699-2850-42b3-bad2-bfce8a39996e"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA["Pág. "+$V{PAGE_NUMBER}+" de  " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="20" splitType="Stretch">
+			<staticText>
+				<reportElement x="3" y="4" width="22" height="12" uuid="8e91897e-3bf5-4c5b-8694-147529c9f8bb"/>
+				<textElement>
+					<font fontName="Times New Roman" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Dia]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="30" y="4" width="61" height="12" uuid="671af9e9-f6ce-47ed-a719-9b7056af13ca"/>
+				<textElement>
+					<font fontName="Times New Roman" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Documento]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="93" y="4" width="335" height="12" uuid="aba98e96-1951-455c-badf-831e5b716aec"/>
+				<textElement>
+					<font fontName="Times New Roman" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Descrição]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="439" y="4" width="100" height="12" uuid="9ae99fb5-6c59-4533-b0e9-dd38338d497d"/>
+				<textElement textAlignment="Right">
+					<font fontName="Times New Roman" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Valor]]></text>
+			</staticText>
+			<line>
+				<reportElement x="0" y="1" width="565" height="1" uuid="de87fba7-6865-4525-ba00-295196b14327"/>
+			</line>
+			<line>
+				<reportElement x="0" y="18" width="565" height="1" uuid="b38d4f5e-0abc-479f-9bc0-e311bbedcd41"/>
+			</line>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="16" splitType="Stretch">
+			<textField pattern="dd">
+				<reportElement x="3" y="2" width="22" height="12" uuid="db8f86b7-06f8-4c42-b3c5-7ece95a50c76"/>
+				<textElement>
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{dataBaixa}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="30" y="2" width="63" height="12" uuid="c52fbf6a-6a6e-43b3-9fd6-a500daab8102"/>
+				<textElement>
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{documento}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="93" y="2" width="335" height="12" uuid="4e60103f-2d03-48e9-8ff0-9e7a378b1e2f"/>
+				<textElement>
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{nominal}+"/"+$F{descricao}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="439" y="2" width="100" height="12" uuid="71f6594d-6249-4df4-ac47-4000b3807b9c"/>
+				<textElement textAlignment="Right">
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{valor}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="544" y="2" width="16" height="12" uuid="98fd4a12-0fd2-4419-ae15-1413f31c69c0"/>
+				<textElement>
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{tipoDC}.getSigla()]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<lastPageFooter>
+		<band height="18">
+			<textField pattern="R$ #,##0.00">
+				<reportElement x="439" y="3" width="121" height="14" uuid="c0e08457-f0f8-4715-9403-eb3d25312861"/>
+				<textElement textAlignment="Right">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{valor}]]></textFieldExpression>
+			</textField>
+		</band>
+	</lastPageFooter>
+	<summary>
+		<band height="60" splitType="Stretch">
+			<textField pattern="R$ #,##0.00">
+				<reportElement x="119" y="10" width="79" height="12" uuid="8b5a591b-a2e7-45d3-8c11-61c5c441d58d"/>
+				<textElement>
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{saldoInicial}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="4" y="10" width="106" height="12" uuid="ed926c95-3866-4de5-b921-b1e0e4d72153"/>
+				<textElement textAlignment="Right">
+					<font fontName="Times New Roman" isBold="false" isItalic="true"/>
+				</textElement>
+				<text><![CDATA[Saldo inicial:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="4" y="24" width="106" height="12" uuid="8e86f8e8-5e41-40d6-b57f-f99b0bf25fd8"/>
+				<textElement textAlignment="Right">
+					<font fontName="Times New Roman" isBold="false" isItalic="true"/>
+				</textElement>
+				<text><![CDATA[Saldo Movimentação:]]></text>
+			</staticText>
+			<textField pattern="R$ #,##0.00">
+				<reportElement x="119" y="24" width="79" height="12" uuid="559f0a0b-65dd-4a3c-bc70-fd7ea575154c"/>
+				<textElement>
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{valorTotal}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="4" y="38" width="106" height="12" uuid="924fd351-611b-484d-b4ea-b27b3054ecce"/>
+				<textElement textAlignment="Right">
+					<font fontName="Times New Roman" isBold="false" isItalic="true"/>
+				</textElement>
+				<text><![CDATA[Saldo final:]]></text>
+			</staticText>
+			<textField pattern="R$ #,##0.00">
+				<reportElement x="119" y="38" width="79" height="12" uuid="bae2f1f6-0134-48b9-b7a1-dc5560a1ecf4"/>
+				<textElement>
+					<font fontName="Times New Roman" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{saldoFinal}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="0" y="2" width="565" height="1" uuid="086ec3e1-4217-48e9-8ce9-f2ae0fbc20a7"/>
+			</line>
+		</band>
+	</summary>
+</jasperReport>

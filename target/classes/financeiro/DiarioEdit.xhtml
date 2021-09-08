@@ -1,0 +1,91 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<p:toolbar style="margin-top: 5px">
+		<p:toolbarGroup>
+
+			<p:splitButton id="botaoSalvar" value="Salvar" icon="ui-icon-disk"
+				action="#{caixaDiarioBean.salvar}" update="@form">
+
+				<p:menuitem value="Encerrar" id="botaoEncerrar"
+					rendered="#{caixaDiarioBean.diario.podeEncerrar}"
+					action="#{caixaDiarioBean.encerrar(false)}" update="@form">
+					<p:confirm icon="ui-icon-alert" header="Confirma"
+						message="Encerrar o diário atual?" />
+				</p:menuitem>
+
+				<p:menuitem value="Encerrar todos" id="botaoEncerrarTodos"
+					rendered="#{caixaDiarioBean.diario.podeEncerrar}"
+					action="#{caixaDiarioBean.encerrar(true)}" update="@form">
+					<p:confirm icon="ui-icon-alert" header="Confirma"
+						message="Encerrar todos os diários em aberto?" />
+				</p:menuitem>
+
+				<p:menuitem value="Reabrir" id="botaoReabrir"
+					icon="ui-icon-folder-open"
+					rendered="#{caixaDiarioBean.diario.podeReabrir}"
+					action="#{caixaDiarioBean.reabrir}" update="@form botaoSalvar">
+					<p:confirm icon="ui-icon-alert" header="Confirma"
+						message="Reabrir o diário atual e posteriores" />
+				</p:menuitem>
+
+				<p:menuitem value="Novo" icon="ui-icon-document" update="@form"
+					actionListener="#{caixaDiarioBean.novo}" process="@this" />
+
+				<p:submenu label="Impressão" icon="ui-icon-print">
+					<p:menuitem value="Imprimir caixa"
+						actionListener="#{caixaDiarioBean.imprimir}" update="@form"
+						disabled="#{not caixaDiarioBean.diario.existe}" ajax="false" />
+					<p:menuitem ajax="false" value="Movimentação"
+						disabled="#{not caixaDiarioBean.diario.existe}"
+						actionListener="#{caixaDiarioBean.imprimirMovimentacao}" />
+				</p:submenu>
+
+				<p:separator />
+
+				<p:commandButton id="btnMover" icon="ui-icon-scissors"
+					value="Mover Selecionados" process="@this"
+					oncomplete="PF('dlgMoveCaixa').show()" />
+
+			</p:splitButton>
+
+		</p:toolbarGroup>
+
+		<p:toolbarGroup align="right">
+			<p:commandButton value="Pesquisa" icon="ui-icon-search"
+				actionListener="#{caixaDiarioBean.setDiario(null)}" process="@this"
+				update="@form" />
+		</p:toolbarGroup>
+
+	</p:toolbar>
+
+
+	<div class="card">
+		<p:tabView id="tabView" multiViewState="true" orientation="left" style="margin-top: 05px">
+
+			<p:tab title="Abertura">
+				<ui:include
+					src="/WEB-INF/template/financeiro/CaixaDiarioTabAbertura.xhtml" />
+			</p:tab>
+
+			<p:tab title="Contingenciamento">
+				<ui:include
+					src="/WEB-INF/template/financeiro/CaixaDiarioTabContingencia.xhtml" />
+			</p:tab>
+
+			<p:tab title="Movimento">
+				<ui:include
+					src="/WEB-INF/template/financeiro/CaixaDiarioTabMovimento.xhtml" />
+			</p:tab>
+			<p:tab title="Encerramento">
+				<ui:include
+					src="/WEB-INF/template/financeiro/CaixaDiarioEncerramento.xhtml" />
+			</p:tab>
+		</p:tabView>
+	</div>
+
+
+</ui:composition>

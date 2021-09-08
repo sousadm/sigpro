@@ -1,0 +1,102 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<h1 style="margin-top: 65px">Pesquisa de aquisição</h1>
+
+	<p:toolbar style="margin-top: 05px">
+		<p:toolbarGroup>
+			<p:splitButton value="Pesquisar" icon="ui-icon-search"
+				action="#{aquisicaoBean.pesquisar}" update="@form">
+				<p:menuitem value="Imprimir lista" icon="ui-icon-print" ajax="false"
+					process="@form" action="#{aquisicaoBean.imprimir_lista}"
+					target="_blank" />
+			</p:splitButton>
+		</p:toolbarGroup>
+		<p:toolbarGroup align="right">
+			<p:commandButton value="Novo" icon="ui-icon-document"
+				disabled="#{seguranca.bloqueioValidade}"
+				action="#{aquisicaoBean.novo}" update="@form" />
+		</p:toolbarGroup>
+	</p:toolbar>
+
+	<div class="ui-fluid">
+		<div class="ui-g" style="margin-top: 5px; border: 1px solid silver;">
+			<div class="ui-g-12 ui-md-6">
+				<p:outputLabel value="Período de cadastro" />
+				<br />
+				<div class="ui-g-6">
+					<p:calendar navigator="true" showOn="button" mask="99/99/9999"
+						pattern="dd/MM/yyyy"
+						value="#{aquisicaoBean.filtro.emissaoInicial}" />
+				</div>
+				<div class="ui-g-6">
+					<p:calendar navigator="true" showOn="button" mask="99/99/9999"
+						pattern="dd/MM/yyyy" value="#{aquisicaoBean.filtro.emissaoFinal}" />
+				</div>
+			</div>
+			<div class="ui-g-12 ui-md-6">
+				<p:outputLabel value="Nome do fornecedor" />
+				<div class="ui-g-12">
+					<p:inputText value="#{aquisicaoBean.filtro.nome}"
+						style="width: 95%" />
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<p:dataTable id="pedidosTable" value="#{aquisicaoBean.lista}"
+		var="aquisicao" style="margin-top: 5px" lazy="true" scrollable="true"
+		emptyMessage="Nenhum pedido encontrado." rows="8" paginator="true"
+		paginatorAlwaysVisible="false" paginatorPosition="bottom">
+
+		<p:column headerText="Número" sortBy="#{aquisicao.id}" width="80"
+			priority="1">
+			<h:outputText value="#{aquisicao.id}"
+				style="color: #{aquisicao.statusCor}">
+				<f:convertNumber pattern="00000" />
+			</h:outputText>
+		</p:column>
+		<p:column headerText="Data" sortBy="#{aquisicao.dataCadastro}"
+			width="100">
+			<h:outputText value="#{aquisicao.dataCadastro}"
+				style="color: #{aquisicao.statusCor}">
+				<f:convertDateTime pattern="dd/MM/yyyy" />
+			</h:outputText>
+		</p:column>
+		<p:column headerText="Documento" width="80">
+			<h:outputText style="color: #{aquisicao.statusCor}"
+				value="#{aquisicao.nota.numeroNota == 0 ? '' : aquisicao.nota.numeroNota}" />
+		</p:column>
+		<p:column headerText="Status" width="70">
+			<h:outputText value="#{aquisicao.status}"
+				style="color: #{aquisicao.statusCor}" />
+		</p:column>
+		<p:column headerText="Fornecedor"
+			sortBy="#{aquisicao.fornecedor.nome}">
+			<p:link value="#{aquisicao.fornecedor.nome}"
+				style="color: #{aquisicao.statusCor}"
+				outcome="/cadastros/CadastroPessoa"
+				title="ir para cadastro #{aquisicao.fornecedor.nome}">
+				<f:param name="fornecedor" value="#{aquisicao.fornecedor.id}" />
+			</p:link>
+		</p:column>
+		<p:column headerText="Valor" style="text-align: right; width: 90px">
+			<h:outputText value="#{aquisicao.valorTotal}"
+				style="color: #{aquisicao.statusCor}">
+				<f:convertNumber type="currency" currencySymbol="" />
+			</h:outputText>
+		</p:column>
+
+		<p:column width="40">
+			<p:commandButton title="Editar" icon="ui-icon-pencil"
+				class="button-grid" update="@form"
+				actionListener="#{aquisicaoBean.setAquisicao(aquisicao)}"
+				process="@this" />
+		</p:column>
+
+	</p:dataTable>
+
+</ui:composition>

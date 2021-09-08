@@ -1,0 +1,122 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<h1 style="margin-top: 65px">Pesquisa de pessoa</h1>
+
+	<p:toolbar style="margin-top: 05px">
+		<p:toolbarGroup>
+			<p:splitButton id="botaoPesquisa" value="Pesquisar"
+				icon="ui-icon-search" action="#{pessoaBean.pesquisar('', 'Pessoa')}"
+				update="@form">
+				<p:menuitem value="Cliente" ajax="false"
+					action="#{pessoaBean.pesquisar('p.defineCliente = true', 'Cliente')}"
+					update="@form" />
+				<p:menuitem value="Vendedor" ajax="false"
+					action="#{pessoaBean.pesquisar('p.defineVendedor = true', 'Vendedor')}"
+					update="@form" />
+				<p:menuitem value="Usuário" ajax="false"
+					action="#{pessoaBean.pesquisar('p.defineUsuario = true', 'Usuário')}"
+					update="@form" />
+				<p:menuitem value="Agente" ajax="false"
+					action="#{pessoaBean.pesquisar('p.defineAgente = true', 'Agente Financeiro')}"
+					update="@form" />
+				<p:menuitem value="fornecedor" ajax="false"
+					action="#{pessoaBean.pesquisar('p.defineFornecedor = true', 'Fornecedor')}"
+					update="@form" />
+				<p:menuitem value="Transportador" ajax="false"
+					action="#{pessoaBean.pesquisar('p.defineTransportador = true', 'Transportador')}"
+					update="@form" />
+				<p:menuitem value="Colaborador" ajax="false"
+					action="#{pessoaBean.pesquisar('p.defineColaborador = true', 'Colaborador')}"
+					update="@form" />
+				<p:menuitem value="Motorista" ajax="false"
+					action="#{pessoaBean.pesquisar('p.defineMotorista = true', 'Motorista')}"
+					update="@form" />
+
+				<p:separator />
+
+				<p:menuitem value="Imprimir lista" icon="ui-icon-print" ajax="false"
+					process="@form" action="#{pessoaBean.imprimir}" target="_blank" />
+
+			</p:splitButton>
+		</p:toolbarGroup>
+		<p:toolbarGroup align="right">
+			<p:splitButton value="Novo" icon="ui-icon-document"
+				disabled="#{pessoaBean.somenteLeitura}"
+				actionListener="#{pessoaBean.novo('cliente')}" update="@form">
+				<p:menuitem value="Novo cliente" ajax="false"
+					actionListener="#{pessoaBean.novo('cliente')}" update="@form" />
+				<p:menuitem value="Novo vendedor" ajax="false"
+					actionListener="#{pessoaBean.novo('vendedor')}" update="@form" />
+				<p:menuitem value="Novo fornecedor" ajax="false"
+					actionListener="#{pessoaBean.novo('fornecedor')}" update="@form" />
+				<p:menuitem value="Novo transportador" ajax="false"
+					actionListener="#{pessoaBean.novo('transportador')}" update="@form" />
+				<p:menuitem value="Novo agente financeiro" ajax="false"
+					actionListener="#{pessoaBean.novo('agente')}" update="@form" />
+				<p:menuitem value="Novo colaborador" ajax="false"
+					actionListener="#{pessoaBean.novo('colaborador')}" update="@form" />
+			</p:splitButton>
+		</p:toolbarGroup>
+	</p:toolbar>
+
+	<div class="ui-fluid">
+		<div class="ui-g" style="margin-top: 5px; border: 1px solid silver;">
+			<div class="ui-g-12 ui-md-5">
+				<p:outputLabel value="Nome" for="nome" />
+				<p:inputText id="nome" value="#{pessoaBean.filtro.nome}" />
+			</div>
+			<div class="ui-g-12 ui-md-2">
+				<p:outputLabel value="CNPJ / CPF" />
+				<p:inputText value="#{pessoaBean.filtro.codigo}" />
+			</div>
+			<div class="ui-g-12 ui-md-5">
+				<p:outputLabel value="Tipo de pessoa" />
+				<p:selectManyCheckbox value="#{pessoaBean.filtro.tipoPessoa}">
+					<f:selectItems value="#{listaTipoBean.tipoPessoa}" var="tipo"
+						itemValue="#{tipo}" itemLabel="#{tipo.descricao}" />
+				</p:selectManyCheckbox>
+			</div>
+		</div>
+	</div>
+
+	<p:dataTable id="tableDados" scrollable="true"
+		value="#{pessoaBean.model}" var="pessoa" styleClass="grid-dados"
+		lazy="true" emptyMessage="Nenhum registro encontrado." rows="8"
+		paginator="true" paginatorAlwaysVisible="false"
+		paginatorPosition="bottom" reflow="true">
+
+		<p:column headerText="Nome" sortBy="#{pessoa.nome}">
+			<h:outputText value="#{pessoa.nome}" />
+		</p:column>
+		<p:column headerText="Tipo">
+			<h:outputText value="#{pessoa.tipo.descricao}" />
+		</p:column>
+		<p:column headerText="Celular">
+			<h:outputText value="#{pessoa.celular}" />
+		</p:column>
+		<p:column headerText="Telefone">
+			<h:outputText value="#{pessoa.fone}" />
+		</p:column>
+
+		<p:column style="text-align: center" width="70">
+			<p:commandButton title="Editar" icon="ui-icon-pencil"
+				class="button-grid" update="@form"
+				actionListener="#{pessoaBean.setPessoa(pessoa)}" process="@this" />
+			<p:commandButton title="Ficha cadastral" icon="ui-icon-print"
+				ajax="false" disabled="#{not pessoa.existe}" class="button-grid"
+				action="#{pessoaBean.imprimirFicha(pessoa)}" />
+		</p:column>
+
+	</p:dataTable>
+
+	<p:blockUI block="formCadastro" trigger="botaoPesquisa" />
+
+</ui:composition>
+
+<!--
+onclick="this.form.target='_blank'" 
+ -->

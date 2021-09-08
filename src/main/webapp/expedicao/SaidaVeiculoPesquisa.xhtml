@@ -1,0 +1,93 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<h1 style="margin-top: 65px">Controle de Saída de Veículos</h1>
+
+	<p:messages autoUpdate="true" closable="true" />
+
+	<p:toolbar style="margin-top: 05px">
+		<p:toolbarGroup>
+			<p:splitButton id="botaoPesquisa" value="Pesquisar" update="@form"
+				icon="ui-icon-search" action="#{saidaVeiculoBean.pesquisar}">
+				<p:menuitem value="Imprimir lista" icon="ui-icon-print" ajax="false"
+					process="@form" action="#{saidaVeiculoBean.imprimir}"
+					target="_blank" />
+			</p:splitButton>												
+		</p:toolbarGroup>
+		<p:toolbarGroup align="right">
+			<p:commandButton value="Novo" update="@form" icon="ui-icon-document"
+				actionListener="#{saidaVeiculoBean.novo}" />
+		</p:toolbarGroup>
+	</p:toolbar>
+
+	<div class="ui-fluid">
+		<div class="ui-g" style="margin-top: 5px; border: 1px solid silver;">
+			<div class="ui-g-12 ui-md-3">
+				<p:outputLabel value="Saída" />
+				<p:calendar navigator="true" showOn="button" mask="99/99/9999"
+					pattern="dd/MM/yyyy" value="#{saidaVeiculoBean.filtro.inicio}" />
+			</div>
+			<div class="ui-g-12 ui-md-3">
+				<p:outputLabel value="Término" />
+				<p:calendar navigator="true" showOn="button" mask="99/99/9999"
+					pattern="dd/MM/yyyy" value="#{saidaVeiculoBean.filtro.termino}" />
+			</div>
+			<div class="ui-g-12 ui-md-2">
+				<p:outputLabel value="Placa" />
+				<p:inputText value="#{saidaVeiculoBean.filtro.codigo}"
+					style="text-transform: uppercase" />
+			</div>
+			<div class="ui-g-12 ui-md-4">
+				<p:outputLabel value="Nome do motorista" />
+				<p:inputText value="#{saidaVeiculoBean.filtro.nome}"
+					style="text-transform: uppercase" />
+			</div>
+		</div>
+	</div>
+
+	<p:dataTable id="tabela" value="#{saidaVeiculoBean.lista}" var="saida"
+		rowIndexVar="item" style="margin-top: 5px" lazy="true"
+		emptyMessage="Nenhum registro encontrado." rows="10" paginator="true"
+		paginatorAlwaysVisible="false" paginatorPosition="bottom"
+		scrollable="true">
+
+		<p:column headerText="ID" sortBy="#{saida.id}" width="50">
+			<p:outputLabel value="#{saida.id}">
+				<f:convertNumber pattern="00000" />
+			</p:outputLabel>
+		</p:column>
+		<p:column headerText="Saída" sortBy="#{saida.dataSaida}" width="120">
+			<p:outputLabel value="#{saida.dataSaida}">
+				<f:convertDateTime pattern="dd/MM/yyyy HH:mm" />
+			</p:outputLabel>
+		</p:column>
+		<p:column headerText="Retorno" sortBy="#{saida.dataRetorno}"
+			width="120">
+			<p:outputLabel value="#{saida.dataRetorno}">
+				<f:convertDateTime pattern="dd/MM/yyyy HH:mm" />
+			</p:outputLabel>
+		</p:column>
+		<p:column headerText="Motorista" sortBy="#{saida.motorista.nome}">
+			<p:outputLabel value="#{saida.motorista.nome}" />
+		</p:column>
+		<p:column headerText="Placa" width="100"
+			sortBy="#{saida.veiculo.placa}">
+			<p:outputLabel value="#{saida.veiculo.placa}" />
+		</p:column>
+
+		<p:column style="width: 70px; text-align: center">
+			<p:commandButton title="Editar" icon="ui-icon-pencil"
+				class="button-grid" update="@form"
+				actionListener="#{saidaVeiculoBean.setSaida(saida)}" process="@this" />
+			<p:commandButton title="retorno do veículo" icon="ui-icon-close"
+				class="button-grid" process="@this" update="dlgSaida"
+				disabled="#{saida.encerrado}" oncomplete="PF('dlgSaida').show()"
+				actionListener="#{saidaVeiculoBean.preparaEncerramento(saida)}" />
+		</p:column>
+
+	</p:dataTable>
+
+</ui:composition>

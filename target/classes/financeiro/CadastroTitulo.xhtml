@@ -1,0 +1,129 @@
+<ui:composition template="/WEB-INF/template/LayoutPadrao.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui" xmlns:o="http://omnifaces.org/ui">
+
+	<f:metadata>
+		<f:param name="dummy" />
+		<o:viewParam name="titulo" value="#{tituloBean.titulo}" />
+		<f:event listener="#{tituloBean.inicializar}" type="preRenderView"></f:event>
+	</f:metadata>
+
+	<ui:define name="titulo">Financeiro</ui:define>
+
+	<ui:define name="dialogo">
+		<ui:include src="/WEB-INF/template/financeiro/TituloHistorico.xhtml" />
+		<ui:include src="/dialogos/ListaEventos.xhtml" />
+	</ui:define>
+
+	<ui:define name="corpo">
+
+		<p:focus context="formCadastro" />
+
+		<h:form id="formCadastro">
+
+			<p:growl id="msg" />
+
+			<h:panelGroup rendered="#{tituloBean.titulo == null}">
+				<ui:include src="/WEB-INF/template/financeiro/TituloPesquisa.xhtml" />
+			</h:panelGroup>
+
+			<h:panelGroup rendered="#{tituloBean.titulo != null}">
+				<ui:include src="/WEB-INF/template/financeiro/TituloEdit.xhtml" />
+			</h:panelGroup>
+
+		</h:form>
+
+		<p:dialog id="dlgTituloOrigem" header="Títulos associados"
+			widgetVar="dlgTituloOrigem" closeOnEscape="true" modal="true"
+			maximizable="false" width="800" height="400">
+			<h:form id="formTituloOrigem">
+
+				<div align="right">
+					<p:commandButton value="transferir" icon="ui-icon-closethick"
+						disabled="#{empty tituloBean.selecionados and not tituloBean.titulo.podeEditar}"
+						update="dlgParcelaOrigem" process="@this"
+						actionListener="#{tituloBean.transferirParcelaTitulo}"
+						oncomplete="PF('dlgParcelaOrigem').show()" />
+				</div>
+
+				<p:dataTable selection="#{tituloBean.selecionados}"
+					selectionMode="multiple" var="titulo" rowKey="#{titulo.id}"
+					value="#{tituloBean.listaTitulo}" rowIndexVar="linha"
+					style="margin-top: 5px" scrollable="true">
+
+					<p:ajax event="rowSelect" update="@form" />
+
+					<p:column headerText="Data" sortBy="#{titulo.vencimento}"
+						style="width: 80px">
+						<h:outputText value="#{titulo.emissao}"
+							style="color: #{titulo.statusCor}">
+							<f:convertDateTime pattern="dd/MM/yyyy" />
+						</h:outputText>
+					</p:column>
+					<p:column headerText="Participante">
+						<h:outputText value="#{titulo.responsavel.nome}" />
+					</p:column>
+					<p:column headerText="Histórico">
+						<h:outputText value="#{titulo.descricao}" />
+					</p:column>
+					<p:column headerText="Valor" style="text-align: right; width: 65px">
+						<h:outputText value="#{titulo.valor}">
+							<f:convertNumber type="currency" currencySymbol="" />
+						</h:outputText>
+					</p:column>
+
+				</p:dataTable>
+
+			</h:form>
+		</p:dialog>
+
+		<p:dialog id="dlgParcelaOrigem" header="Faturas"
+			widgetVar="dlgParcelaOrigem" closeOnEscape="true" modal="true"
+			maximizable="false" width="500" height="400">
+
+			<div align="right">
+				<p:commandButton id="botaoConfirmaParcela" value="Confirmar"
+					icon="ui-icon-check"
+					disabled="#{tituloBean.tituloDeCartao == null}"
+					action="#{tituloBean.transferirTituloCartao}"
+					update="dlgParcelaOrigem formCadastro" process="@this"
+					oncomplete="PF('dlgTituloOrigem').hide()" />
+			</div>
+
+			<h:form id="formParcelaOrigem">
+
+				<p:dataTable selection="#{tituloBean.tituloDeCartao}"
+					selectionMode="single" var="titulo" rowKey="#{titulo.id}"
+					value="#{tituloBean.listaParcelaTitulo}" rowIndexVar="linha"
+					style="margin-top: 5px" scrollable="true">
+
+					<p:ajax event="rowSelect" update="botaoConfirmaParcela" />
+
+					<p:column headerText="Docto" style="width: 55px">
+						<h:outputText value="#{titulo.documento}"
+							title="#{titulo.documento}" />
+					</p:column>
+					<p:column headerText="Vencto" sortBy="#{titulo.vencimento}"
+						style="width: 80px">
+						<h:outputText value="#{titulo.vencimento}">
+							<f:convertDateTime pattern="dd/MM/yyyy" />
+						</h:outputText>
+					</p:column>
+					<p:column headerText="Valor" style="text-align: right; width: 65px">
+						<h:outputText value="#{titulo.valor}">
+							<f:convertNumber type="currency" currencySymbol="" />
+						</h:outputText>
+					</p:column>
+				</p:dataTable>
+
+			</h:form>
+		</p:dialog>
+
+		<ui:include src="/WEB-INF/template/financeiro/TituloCompensa.xhtml" />
+
+	</ui:define>
+
+</ui:composition>

@@ -1,0 +1,105 @@
+<ui:composition template="/WEB-INF/template/LayoutPadrao.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<f:metadata>
+		<f:event listener="#{comandoBean.pesquisar}" type="preRenderView"></f:event>
+	</f:metadata>
+
+	<ui:define name="titulo">Pesquisa de Comando</ui:define>
+
+	<ui:define name="corpo">
+
+		<h:form id="frmPesquisa">
+
+			<p:focus />
+
+			<h1 style="margin-top: 65px">Pesquisa de Comando</h1>
+
+			<p:messages autoUpdate="true" closable="true" />
+
+			<p:toolbar style="margin-top: 05px">
+				<p:toolbarGroup>
+					<p:commandButton value="Pesquisar" icon="ui-icon-search"
+						action="#{comandoBean.pesquisar}" update="@form"
+						onclick="jQuery(this).addClass('ui-state-disabled')" />
+				</p:toolbarGroup>
+				<p:toolbarGroup align="right">
+					<p:commandButton value="Novo" icon="ui-icon-document"
+						action="#{comandoBean.novo}" update="dlgProducao"
+						oncomplete="PF('dlgProducao').show()" />
+				</p:toolbarGroup>
+			</p:toolbar>
+
+			<p:panelGrid columns="2" id="painel"
+				style="width: 100%; margin-top: 5px" columnClasses="rotulo, campo">
+
+				<p:outputLabel value="Descrição" for="nome" />
+				<p:inputText id="nome" size="60" value="#{comandoBean.descricao}" />
+
+			</p:panelGrid>
+
+			<p:dataTable id="tabela" value="#{comandoBean.lista}" var="comando"
+				rowIndexVar="linha" style="margin-top: 5px" scrollable="true"
+				emptyMessage="Nenhum item encontrado." rows="20" paginator="true"
+				paginatorAlwaysVisible="false" paginatorPosition="bottom">
+
+				<p:column headerText="Descrição">
+					<h:outputText value="#{comando.descricao}" />
+				</p:column>
+
+				<p:column headerText="Tipo">
+					<h:outputText value="#{comando.tipo}" />
+				</p:column>
+
+				<p:column style="width: 100px; text-align: center">
+
+					<p:commandButton icon="ui-icon-pencil" title="Editar"
+						action="#{comandoBean.editar(linha)}" update="dlgProducao"
+						oncomplete="PF('dlgProducao').show()" />
+
+					<p:commandButton icon="ui-icon-trash" process="@this"
+						title="Excluir" update="tabela"
+						action="#{comandoBean.excluir(comando)}">
+						<p:confirm icon="ui-icon-alert" header="Exclusão"
+							message="Excluir o registro atual?" />
+					</p:commandButton>
+
+				</p:column>
+
+			</p:dataTable>
+		</h:form>
+
+		<p:dialog id="dlgProducao" header="Comando" widgetVar="dlgProducao"
+			closeOnEscape="true" resizable="false" modal="true" height="150"
+			width="450">
+			<h:form id="form-cadastro">
+				<p:panelGrid columns="2" id="gridStart"
+					style="width: 100%; margin-top: 5px" columnClasses="rotulo, campo">
+
+					<p:outputLabel value="Descrição" for="descricao" />
+					<p:inputMask id="descricao" style="width: 95%;"
+						value="#{comandoBean.comando.descricao}" maxlength="100" size="60" />
+
+					<h:outputLabel value="Tipo" />
+					<p:selectOneMenu value="#{comandoBean.comando.tipo}"
+						autoWidth="false" style="width: 85%;">
+						<f:selectItems value="#{listaTipoBean.comando}" var="tipo"
+							itemValue="#{tipo}" itemLabel="#{tipo}" />
+					</p:selectOneMenu>
+
+					<p:outputLabel />
+					<p:commandButton value="Ok" icon="ui-icon-check" process="@all"
+						style="width: 100px;" update="form-cadastro frmPesquisa"
+						action="#{comandoBean.salvar}"
+						oncomplete="if(!args.validationFailed) PF('dlgProducao').hide()" />
+
+				</p:panelGrid>
+			</h:form>
+		</p:dialog>
+
+	</ui:define>
+</ui:composition>

@@ -1,0 +1,102 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<p:dialog id="dlgManutencao" header="manutencao"
+		widgetVar="dlgManutencao" closeOnEscape="true" modal="true"
+		maximizable="false" width="600">
+		<h:form id="formManutencao">
+
+			<p:panelGrid columns="2" style="margin-top: 5px" layout="grid"
+				columnClasses="ui-grid-col-4, ui-grid-col-8"
+				styleClass="panelgrid-noborder">
+
+				<p:outputLabel value="Fornecedor" />
+				<h:panelGroup>
+					<p:commandButton icon="ui-icon-person" title="Pesquisar pessoa"
+						class="button-grid" process="@this" update="@none"
+						ignoreAutoUpdate="true" action="#{selecionaBean.pessoa}"
+						disabled="#{not veiculoManutencaoBean.manutencao.podeEditar}">
+						<p:ajax event="dialogReturn"
+							listener="#{veiculoManutencaoBean.onPessoaChosen}"
+							update="txtCliente ccusto" ignoreAutoUpdate="true" />
+					</p:commandButton>
+					<p:outputLabel id="txtCliente"
+						value="#{veiculoManutencaoBean.manutencao.titulo.responsavel.nome}" />
+				</h:panelGroup>
+
+				<p:outputLabel value="Veículo" for="veiculo" />
+				<h:panelGroup>
+					<p:commandButton icon="ui-icon-search" process="@this"
+						actionListener="#{selecionaBean.veiculo}"
+						disabled="#{not veiculoManutencaoBean.manutencao.podeEditar}">
+						<p:ajax event="dialogReturn"
+							listener="#{veiculoManutencaoBean.onVeiculoChosen}"
+							update="@form" />
+					</p:commandButton>
+					<p:outputLabel id="veiculo" size="20"
+						value="#{veiculoManutencaoBean.manutencao.veiculo.placa}" />
+				</h:panelGroup>
+
+				<p:outputLabel value="Centro de custo" for="ccusto" />
+				<p:selectOneMenu id="ccusto" autoWidth="false" style="width:90%"
+					value="#{veiculoManutencaoBean.manutencao.titulo.centroDeCusto}"
+					disabled="#{not veiculoManutencaoBean.manutencao.podeEditar}">
+					<f:selectItem itemLabel="Selecione..." />
+					<f:selectItems value="#{veiculoManutencaoBean.listaCusto}" var="a"
+						itemValue="#{a}" itemLabel="#{a.descricao}" />
+				</p:selectOneMenu>
+
+				<p:outputLabel value="Documento" for="documento" />
+				<p:inputText id="documento" maxlength="20"
+					value="#{veiculoManutencaoBean.manutencao.titulo.documento}"
+					disabled="#{not veiculoManutencaoBean.manutencao.podeEditar}" />
+
+				<p:outputLabel value="Data de manutencao" />
+				<p:calendar showOn="button" mask="99/99/9999" pattern="dd/MM/yyyy"
+					value="#{veiculoManutencaoBean.manutencao.titulo.vencimento}"
+					disabled="#{not veiculoManutencaoBean.manutencao.podeEditar}" />
+
+				<p:outputLabel value="Odômetro" />
+				<p:inputNumber decimalPlaces="0" thousandSeparator=""
+					value="#{veiculoManutencaoBean.manutencao.odometro}"
+					disabled="#{not veiculoManutencaoBean.manutencao.podeEditar}" />
+
+				<!-- 				<p:outputLabel value="Classificação" /> -->
+				<!-- 				<p:selectOneMenu -->
+				<!-- 					value="#{veiculoManutencaoBean.manutencao.tipoManutencao}" -->
+				<!-- 					autoWidth="false" style="width:90%" -->
+				<!-- 					disabled="#{not veiculoManutencaoBean.manutencao.podeEditar}"> -->
+				<!-- 					<f:selectItem itemLabel="Selecione" /> -->
+				<!-- 					<f:selectItems value="#{listaTipoBean.tipoVeiculoManutencao}" -->
+				<!-- 						var="tipo" itemValue="#{tipo}" itemLabel="#{tipo}" /> -->
+				<!-- 				</p:selectOneMenu> -->
+
+				<p:outputLabel value="Valor" />
+				<p:inputNumber minValue="0" decimalSeparator=","
+					thousandSeparator="." decimalPlaces="2"
+					value="#{veiculoManutencaoBean.manutencao.titulo.valor}"
+					disabled="#{not veiculoManutencaoBean.manutencao.podeEditar}" />
+
+				<p:outputLabel value="Descritivo" for="descricao" />
+				<p:inputTextarea id="descricao" maxlength="100" rows="2"
+					style="width: 100%"
+					value="#{veiculoManutencaoBean.manutencao.titulo.descricao}"
+					disabled="#{not veiculoManutencaoBean.manutencao.podeEditar}" />
+
+			</p:panelGrid>
+
+			<div align="right" style="margin-top: 5px">
+				<p:commandButton value="Confirma" icon="ui-icon-check"
+					process="dlgManutencao" update="@form"
+					action="#{veiculoManutencaoBean.salvar}"
+					disabled="#{not veiculoManutencaoBean.manutencao.podeEditar}"
+					oncomplete="if(!args.validationFailed) PF('dlgManutencao').hide()" />
+			</div>
+
+		</h:form>
+	</p:dialog>
+
+</ui:composition>

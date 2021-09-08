@@ -1,0 +1,27 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<h1 style="margin-top: 65px">Aquisição de produtos</h1>
+
+	<ui:include src="/WEB-INF/template/aquisicao/AquisicaoBotao.xhtml" />
+
+	<ui:include src="/WEB-INF/template/aquisicao/AquisicaoCapa.xhtml" />
+
+	<p:tabView id="tabView" orientation="left" style="margin-top: 5px">
+		<p:tab title="Itens">
+			<ui:include src="/WEB-INF/template/aquisicao/AquisicaoItems.xhtml" />
+		</p:tab>
+		<p:tab title="Pagamentos">
+			<ui:include src="/WEB-INF/template/aquisicao/AquisicaoPgtos.xhtml" />
+		</p:tab>
+		<p:tab title="Nota"
+			rendered="#{aquisicaoBean.aquisicao.temNotaFiscal}">
+			<ui:include
+				src="/WEB-INF/template/aquisicao/AquisicaoNotaFiscal.xhtml" />
+		</p:tab>
+	</p:tabView>
+
+</ui:composition>

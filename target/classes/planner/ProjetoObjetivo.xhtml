@@ -1,0 +1,113 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<h:panelGroup rendered="#{projetoBean.objetivo == null}">
+
+		<div align="right">
+			<p:commandButton value="Add Objetivo" process="@this" update="@form"
+				disabled="#{projetoBean.projeto.encerrado}"
+				actionListener="#{projetoBean.addObjetivo}" />
+		</div>
+
+		<p:dataTable id="tableProjetoObjetivo" 
+			value="#{projetoBean.projeto.objetivos}" var="objetivo"
+			rowIndexVar="objetivoLinha" style="margin-top: 5px"
+			emptyMessage="Nenhum item encontrado." rows="10" paginator="true"
+			paginatorAlwaysVisible="false" paginatorPosition="bottom">
+
+			<p:column headerText="Objetivo específico">
+				<h:outputText value="#{objetivo.porque}" title="#{objetivo.porque}" />
+			</p:column>
+			<p:column headerText="Indicador Associado">
+				<h:outputText value="#{objetivo.como}" title="#{objetivo.como}" />
+			</p:column>
+			<p:column headerText="Meta">
+				<h:outputText value="#{objetivo.que}" title="#{objetivo.que}" />
+			</p:column>
+			<p:column headerText="Previsão" style="width: 115px">
+				<h:outputText value="#{objetivo.quando}">
+					<f:convertDateTime pattern="dd/MM/yyyy" />
+				</h:outputText>
+			</p:column>
+			<p:column headerText="Fonte">
+				<h:outputText value="#{objetivo.onde}" title="#{objetivo.onde}" />
+			</p:column>
+
+			<p:column style="width: 80px; text-align: center">
+				<p:commandButton icon="ui-icon-pencil" process="@this"
+					title="Editar" update="@form"
+					actionListener="#{projetoBean.setObjetivo(objetivo)}" />
+				<p:commandButton icon="ui-icon-closethick" process="@this"
+					disabled="#{projetoBean.projeto.encerrado}"
+					title="remover objetivo" update="@form"
+					actionListener="#{projetoBean.removerObjetivo(objetivoLinha)}">
+					<p:confirm icon="ui-icon-alert" header="Confirmação"
+						message="Remover o registro atual?" />
+				</p:commandButton>
+			</p:column>
+
+		</p:dataTable>
+
+	</h:panelGroup>
+
+	<h:panelGroup rendered="#{projetoBean.objetivo != null}">
+
+		<div align="right">
+			<p:commandButton value="Voltar" process="@this"
+				actionListener="#{projetoBean.setObjetivo(null)}" update="@form" />
+			<p:splitButton value="Aplicar" process="@form" update="@form"
+				disabled="#{projetoBean.projeto.encerrado}"
+				actionListener="#{projetoBean.aplicar_objetivo}">
+				<p:menuitem value="Add Objetivo" process="@this"
+					actionListener="#{projetoBean.addObjetivo}" update="@form" />
+			</p:splitButton>
+		</div>
+
+		<div class="ui-fluid">
+			<div class="ui-g" style="margin-top: 5px; border: 1px solid silver;">
+				<div class="ui-g-12">
+					<p:outputLabel value="Objetivo estratégico do projeto" />
+					<p:inputText value="#{projetoBean.objetivo.que}"
+						readonly="#{projetoBean.projeto.encerrado}" />
+				</div>
+
+				<div class="ui-g-12">
+					<p:outputLabel
+						value="Porque este objetivo é importante para o projeto" />
+					<p:inputText value="#{projetoBean.objetivo.porque}"
+						readonly="#{projetoBean.projeto.encerrado}" />
+				</div>
+
+				<div class="ui-g-12">
+					<p:outputLabel value="Como este objetivo pode ser acompanhado" />
+					<p:inputText value="#{projetoBean.objetivo.como}"
+						readonly="#{projetoBean.projeto.encerrado}" />
+				</div>
+
+				<div class="ui-g-12 ui-md-9">
+					<p:outputLabel value="Fonte" title="fonte de verificação" />
+					<p:inputText value="#{projetoBean.objetivo.onde}"
+						readonly="#{projetoBean.projeto.encerrado}" />
+				</div>
+				<div class="ui-g-12 ui-md-3">
+					<p:outputLabel value="Data limite" />
+					<p:calendar showOn="button" mask="99/99/9999" pattern="dd/MM/yyyy"
+						value="#{projetoBean.objetivo.quando}"
+						mindate="#{projetoBean.projeto.abertura.dataAbertura}"
+						maxdate="#{projetoBean.projeto.abertura.dataPrevistaTermino}"
+						rendered="#{not projetoBean.projeto.encerrado}" />
+					<p:inputText value="#{projetoBean.objetivo.quando}" readonly="true"
+						rendered="#{projetoBean.projeto.encerrado}">
+						<f:convertDateTime pattern="dd/MM/yyyy" />
+					</p:inputText>
+				</div>
+
+			</div>
+		</div>
+
+	</h:panelGroup>
+
+</ui:composition>

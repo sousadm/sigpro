@@ -1,0 +1,151 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<p:dialog id="dlgComando" header="comandos" widgetVar="dlgComando"
+		closeOnEscape="true" modal="true" maximizable="false">
+
+		<p:commandButton value="Add questionário" icon="ui-icon-search"
+			process="@this" rendered="#{not projetoBean.projeto.temQuestionario}"
+			oncomplete="PF('dlgComando').hide()"
+			actionListener="#{selecionaBean.questionario}">
+			<p:ajax event="dialogReturn"
+				listener="#{projetoBean.onQuestionarioChosen}" update="@form" />
+		</p:commandButton>
+
+		<p:commandButton value="Remover Tudo" update="@form"
+			rendered="#{projetoBean.projeto.temQuestionario}"
+			actionListener="#{projetoBean.removerRespostas}"
+			oncomplete="PF('dlgComando').hide()">
+			<p:confirm icon="ui-icon-alert" header="Confirma"
+				message="Remover todas as respostas?" />
+		</p:commandButton>
+
+	</p:dialog>
+
+	<p:toolbar style="margin-top: 05px">
+		<p:toolbarGroup>
+			<p:splitButton id="botaoSalvar" value="Salvar" icon="ui-icon-disk"
+				disabled="#{not projetoBean.podeGravar}" update="@form"
+				process="@form" action="#{projetoBean.salvar}">
+				<p:menuitem value="Novo projeto" icon="ui-icon-document"
+					update="@form" action="#{projetoBean.novo}" />
+				<p:menuitem value="Comandos" oncomplete="PF('dlgComando').show()"
+					update="dlgComando" />
+
+				<p:submenu label="eventos"
+					rendered="#{projetoBean.projeto.existe and !projetoBean.projeto.encerrado}">
+					<p:menuitem value="Modificar previsão" process="@this"
+						oncomplete="PF('dlgModificaData').show()" update="dlgModificaData" />
+					<p:menuitem value="Modificar orçamento" process="@this"
+						oncomplete="PF('dlgModificaValor').show()" />
+				</p:submenu>
+
+				<p:submenu label="relatório"
+					rendered="#{projetoBean.projeto.existe}">
+					<p:menuitem value="Termo de Abertura" ajax="false"
+						icon="ui-icon-print" target="_blank"
+						actionListener="#{projetoBean.imprimirTermoDeAbertura}" />
+					<p:menuitem value="Termo de Compromisso" disabled="false" />
+					<p:menuitem value="Questionário"
+						rendered="#{projetoBean.projeto.temQuestionario}" />
+					<p:menuitem value="Avaliação de Satisfação" disabled="false" />
+					<p:menuitem value="Termo de Encerramento" disabled="false" />
+					<p:menuitem icon="ui-icon-note" value="Eventos"
+						actionListener="#{listaEventoBean.projeto(projetoBean.projeto)}"
+						process="@this" update="dlgEventos"
+						oncomplete="PF('dlgEventos').show()" />
+				</p:submenu>
+			</p:splitButton>
+
+			<p:menuButton value="Definição" rendered="#{projetoBean.projeto.existe}">
+				<p:menuitem value="Entrega" process="@this"
+					actionListener="#{projetoBean.setDefinicaoTitulo('Definição de Entrega')}"
+					action="#{projetoBean.setDefinicao(projetoBean.projeto.definicao.sobreEntrega)}"
+					oncomplete="PF('definicaoDialog').show()" update="definicaoDialog" />
+				<p:menuitem value="Premissa" process="@this"
+					actionListener="#{projetoBean.setDefinicaoTitulo('Definição de Premissa')}"
+					action="#{projetoBean.setDefinicao(projetoBean.projeto.definicao.sobrePremissa)}"
+					oncomplete="PF('definicaoDialog').show()" update="definicaoDialog" />
+				<p:menuitem value="Restrição" process="@this"
+					actionListener="#{projetoBean.setDefinicaoTitulo('Definição de Restrição')}"
+					action="#{projetoBean.setDefinicao(projetoBean.projeto.definicao.sobreRestricao)}"
+					oncomplete="PF('definicaoDialog').show()" update="definicaoDialog" />
+				<p:menuitem value="Marco" process="@this"
+					actionListener="#{projetoBean.setDefinicaoTitulo('Definição de Marco')}"
+					action="#{projetoBean.setDefinicao(projetoBean.projeto.definicao.sobreMarco)}"
+					oncomplete="PF('definicaoDialog').show()" update="definicaoDialog" />
+				<p:menuitem value="Participante" process="@this"
+					actionListener="#{projetoBean.setDefinicaoTitulo('Definição de Participante')}"
+					action="#{projetoBean.setDefinicao(projetoBean.projeto.definicao.sobreParticipante)}"
+					oncomplete="PF('definicaoDialog').show()" update="definicaoDialog" />
+				<p:menuitem value="Risco" process="@this"
+					actionListener="#{projetoBean.setDefinicaoTitulo('Definição de Risco')}"
+					action="#{projetoBean.setDefinicao(projetoBean.projeto.definicao.sobreRisco)}"
+					oncomplete="PF('definicaoDialog').show()" update="definicaoDialog" />
+			</p:menuButton>
+
+		</p:toolbarGroup>
+
+		<p:toolbarGroup align="right">
+			<p:commandButton value="Pesquisa" icon="ui-icon-search"
+				process="@this" update="@form"
+				actionListener="#{projetoBean.setProjeto(null)}" />
+		</p:toolbarGroup>
+	</p:toolbar>
+
+	<p:messages autoUpdate="true" closable="true" />
+
+	<p:tabView id="tabView" orientation="top"
+		activeIndex="#{projetoBean.activeIndex}"
+		style="width: 100%; margin-top: 5px">
+
+		<p:ajax event="tabChange" listener="#{projetoBean.onTabChange}"
+			update="@form" />
+
+		<p:tab title="Abertura" titletip="abertura do projeto">
+			<ui:include src="/planner/ProjetoAbertura.xhtml" />
+		</p:tab>
+		<p:tab id="tabParticipante" title="Participantes"
+			disabled="#{not projetoBean.projeto.existe}">
+			<ui:include src="/planner/ProjetoParticipante.xhtml" />
+		</p:tab>
+		<p:tab title="Objetivos" titletip="objetivos específicos do projeto"
+			disabled="#{not projetoBean.projeto.existe}">
+			<ui:include src="/planner/ProjetoObjetivo.xhtml" />
+		</p:tab>
+		<p:tab title="EAP" titletip="Estrutura Analítica do Projeto"
+			disabled="#{not projetoBean.projeto.temObjetivo}">
+			<ui:include src="/planner/ProjetoEAP.xhtml" />
+		</p:tab>
+		<p:tab title="Requisito" disabled="#{not projetoBean.temEntrega}"
+			titletip="requisitos do projeto (produto, projeto, não-escopo, premissas, restições)">
+			<ui:include src="/planner/ProjetoRequisito.xhtml" />
+		</p:tab>
+		<p:tab title="Riscos" titletip="definição de riscos do projeto"
+			disabled="#{not projetoBean.temEntrega}">
+			<ui:include src="/planner/ProjetoRisco.xhtml" />
+		</p:tab>
+
+		<p:tab title="Financeiro" titletip="Gerenciamento do custos"
+			disabled="#{not projetoBean.temPacote}">
+			<ui:include src="/planner/ProjetoFinanceiro.xhtml" />
+		</p:tab>
+
+		<p:tab title="Questionário" titletip="questionário de avaliação"
+			disabled="#{not projetoBean.projeto.temQuestionario}">
+			<ui:include src="/planner/ProjetoQuestionario.xhtml" />
+		</p:tab>
+		<p:tab title="Encerramento"
+			titletip="grupo de processos de encerramento"
+			disabled="#{not projetoBean.projeto.autorizado}">
+			<ui:include src="/planner/ProjetoEncerramento.xhtml" />
+		</p:tab>
+
+	</p:tabView>
+
+	<p:blockUI block="formCadastro" trigger="botaoSalvar" />
+
+</ui:composition>

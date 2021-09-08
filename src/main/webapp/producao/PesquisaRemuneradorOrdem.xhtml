@@ -1,0 +1,136 @@
+<ui:composition template="/WEB-INF/template/LayoutPadrao.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<f:metadata>
+		<f:event listener="#{remuneradorOrdemBean.inicializar}"
+			type="preRenderView"></f:event>
+	</f:metadata>
+
+	<ui:define name="titulo">Remunerador</ui:define>
+
+	<ui:define name="corpo">
+
+		<h:form id="frmPesquisa">
+
+			<p:focus />
+
+			<p:growl />
+
+			<h1 style="margin-top: 65px">Gerador de Remuneração</h1>
+
+			<p:toolbar style="margin-top: 05px">
+				<p:toolbarGroup>
+					<p:commandButton id="botaoPesquisar" value="Pesquisar"
+						icon="ui-icon-search" action="#{remuneradorOrdemBean.pesquisar}"
+						update="@form"
+						onclick="jQuery(this).addClass('ui-state-disabled')" />
+					<p:commandButton value="Imprimir" icon="ui-icon-print"
+						oncomplete="PF('dlgImpressao').show()" />
+				</p:toolbarGroup>
+
+				<p:toolbarGroup align="right">
+					<p:commandButton id="botaoEncerrar" icon="ui-icon-pencil"
+						value="Encerrar"
+						disabled="#{not remuneradorOrdemBean.podeEncerrar}"
+						action="#{remuneradorOrdemBean.financeiro}" update="dlgFinanceiro"
+						oncomplete="PF('dlgFinanceiro').show()" />
+				</p:toolbarGroup>
+			</p:toolbar>
+
+			<div class="ui-fluid">
+				<div class="ui-g" style="margin-top: 5px; border: 1px solid silver;">
+					<div class="ui-g-12 ui-md-3">
+						<h:outputLabel value="Colaborador" />
+						<p:selectOneMenu
+							value="#{remuneradorOrdemBean.filtro.colaborador}"
+							autoWidth="false">
+							<f:selectItems value="#{remuneradorOrdemBean.listaColaboradores}"
+								var="pessoa" itemValue="#{pessoa.colaborador}"
+								itemLabel="#{pessoa.nome}" />
+						</p:selectOneMenu>
+					</div>
+					<div class="ui-g-12 ui-md-3">
+						<p:outputLabel value="Placa do veículo" for="placa" />
+						<p:inputText id="placa" maxlength="7"
+							value="#{remuneradorOrdemBean.filtro.placa}"
+							style="text-transform: uppercase" />
+					</div>
+					<div class="ui-g-12 ui-md-3">
+						<p:outputLabel value="Data de Conclusão" for="txtInicio" />
+						<p:calendar id="txtInicio" navigator="true" showOn="button"
+							mask="99/99/9999" pattern="dd/MM/yyyy" locale="br"
+							required="true" requiredMessage="informe a data inicial"
+							value="#{remuneradorOrdemBean.filtro.inicio}" />
+					</div>
+					<div class="ui-g-12 ui-md-3">
+						<p:outputLabel value="Término" for="txtTermino" />
+						<p:calendar id="txtTermino" navigator="true" showOn="button"
+							mask="99/99/9999" pattern="dd/MM/yyyy" locale="br"
+							required="true" requiredMessage="informe a data final"
+							value="#{remuneradorOrdemBean.filtro.termino}" />
+					</div>
+				</div>
+			</div>
+
+			<p:dataTable id="tabela" value="#{remuneradorOrdemBean.lista}"
+				scrollable="true" rowIndexVar="linha" var="item"
+				style="margin-top: 5px" emptyMessage="Nenhum item encontrado."
+				rows="10" paginator="true" paginatorAlwaysVisible="false"
+				paginatorPosition="bottom">
+
+				<p:column headerText="Ordem" width="8%">
+					<h:outputText value="#{item.servico.id}">
+						<f:convertNumber pattern="000000" />
+					</h:outputText>
+				</p:column>
+				<p:column headerText="Placa" width="10%">
+					<h:outputText value="#{item.servico.veiculo.placa}" />
+				</p:column>
+				<p:column headerText="Serviço">
+					<h:outputText value="#{item.produto.nome}" />
+				</p:column>
+				<p:column headerText="Método" width="15%">
+					<h:outputText value="#{item.produto.custo.metodo.descricao}" />
+				</p:column>
+				<p:column headerText="Valor" width="10%">
+					<h:outputText value="#{item.valorTotal}">
+						<f:convertNumber pattern="#0.00" />
+					</h:outputText>
+				</p:column>
+				<p:column headerText="Comissão" width="10%">
+					<h:outputText value="#{item.valorComissao}">
+						<f:convertNumber pattern="#0.00" />
+					</h:outputText>
+				</p:column>
+				<p:column headerText="Tempo" width="10%">
+					<h:outputText value="#{item.tempoToStr}" />
+				</p:column>
+
+				<p:column style="width: 80px; text-align: center">
+
+					<p:commandButton icon="ui-icon-pencil" title="Editar"
+						action="#{remuneradorOrdemBean.setExpedicaoItem(item)}"
+						update="dlgProducao" oncomplete="PF('dlgProducao').show()" />
+
+					<p:commandButton icon="ui-icon-close" process="@this"
+						title="Remover" update="tabela frmPesquisa:botaoEncerrar"
+						action="#{remuneradorOrdemBean.remover(linha)}" />
+
+				</p:column>
+
+			</p:dataTable>
+
+			<p:blockUI block="frmPesquisa" trigger="botaoPesquisar" />
+
+		</h:form>
+
+		<ui:include src="/WEB-INF/template/producao/ProducaoImpressao.xhtml" />
+		<ui:include src="/WEB-INF/template/producao/Comissao.xhtml" />
+		<ui:include src="/WEB-INF/template/producao/ComissaoFinal.xhtml" />
+
+	</ui:define>
+</ui:composition>

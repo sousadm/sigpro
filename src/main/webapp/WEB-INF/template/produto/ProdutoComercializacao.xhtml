@@ -1,0 +1,40 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:c="http://java.sun.com/jstl/core">
+
+	<p:outputLabel class="negrito" value="#{produtoBean.produto.nome}"
+		style="margin-left: 10px" />
+
+	<div align="right">
+		<p:commandButton value="Add Unidade" class="botao-dialogo"
+			actionListener="#{produtoBean.addUnidadeMedida}"
+			oncomplete="PF('dlgProdutoUnidade').show()"
+			update="dlgProdutoUnidade" />
+	</div>
+
+	<p:dataTable id="listaUnidade" value="#{produtoBean.produto.unidades}"
+		var="produtoUnidade" paginatorAlwaysVisible="false"
+		rowIndexVar="linhaUnidade">
+		<p:column headerText="Unidade">
+			<p:outputLabel value="#{produtoUnidade.unidade.descricao}" />
+		</p:column>
+		<p:column headerText="Fator" style="width: 50px">
+			<h:outputText value="#{produtoUnidade.fatorEstoque}">
+				<f:convertNumber />
+			</h:outputText>
+		</p:column>
+		<p:column style="width: 65px;">
+			<p:commandButton icon="ui-icon-pencil" process="@this" title="Editar"
+				class="button-grid" update="dlgProdutoUnidade"
+				actionListener="#{produtoBean.setUnidade(produtoUnidade)}"
+				oncomplete="PF('dlgProdutoUnidade').show()" />
+			<p:commandButton icon="ui-icon-trash" process="@this"
+				actionListener="#{produtoBean.removerUnidade(linhaUnidade)}"
+				title="Remover" class="button-grid" update="listaUnidade" />
+		</p:column>
+	</p:dataTable>
+
+</ui:composition>

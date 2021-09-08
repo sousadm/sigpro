@@ -1,0 +1,30 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<h1 style="margin-top: 65px">Atendimento</h1>
+
+	<ui:include
+		src="/WEB-INF/template/clinica/ClinicaAtendimentoBotoes.xhtml" />
+
+	<ui:include
+		src="/WEB-INF/template/clinica/ClinicaAtendimentoPaciente.xhtml" />
+
+	<p:tabView style="height: 100%" orientation="left">
+		<p:tab title="Anamnese">
+			<ui:include
+				src="/WEB-INF/template/clinica/ClinicaAtendimentoAnamnese.xhtml" />
+		</p:tab>
+		<p:tab title="Exames">
+			<ui:include
+				src="/WEB-INF/template/clinica/ClinicaAtendimentoExame.xhtml" />
+		</p:tab>
+		<p:tab title="Medicamentos">
+			<ui:include
+				src="/WEB-INF/template/clinica/ClinicaAtendimentoMedicamento.xhtml" />
+		</p:tab>
+	</p:tabView>
+
+</ui:composition>

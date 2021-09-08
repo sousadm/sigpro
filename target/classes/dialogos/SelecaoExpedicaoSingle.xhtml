@@ -1,0 +1,37 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<p:dataTable selection="#{selecaoExpedicaoBean.selecionado}"
+		selectionMode="single" value="#{selecaoExpedicaoBean.lista}"
+		var="item" rowKey="#{item.id}" style="margin-top: 5px"
+		emptyMessage="Nenhum registro encontrado." rows="10" paginator="true"
+		paginatorAlwaysVisible="false" paginatorPosition="bottom" lazy="true">
+
+		<p:ajax event="rowSelect" update="@form" />
+
+		<p:column headerText="Número" sortBy="#{item.id}" width="50">
+			<h:outputText value="#{item.id}">
+				<f:convertNumber pattern="00000" />
+			</h:outputText>
+		</p:column>
+		<p:column headerText="Nome do Cliente" sortBy="#{item.cliente.nome}">
+			<h:outputText value="#{item.cliente.nome}" />
+		</p:column>
+		<p:column headerText="Emissão" sortBy="#{item.dataEmissao}"
+			width="100">
+			<h:outputText value="#{item.dataEmissao}">
+				<f:convertDateTime pattern="dd/MM/yyyy" />
+			</h:outputText>
+		</p:column>
+		<p:column headerText="Valor" width="80">
+			<h:outputText value="#{item.valorTotal}">
+				<f:convertNumber type="currency" />
+			</h:outputText>
+		</p:column>
+
+	</p:dataTable>
+
+</ui:composition>

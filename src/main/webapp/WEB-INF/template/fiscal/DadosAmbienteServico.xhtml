@@ -1,0 +1,120 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<p:panel header="Ambiente">
+
+		<div class="ui-fluid">
+
+			<p:panelGrid columns="2" layout="grid"
+				styleClass="panelgrid-noborder">
+
+				<p:outputLabel value="Ambiente" />
+				<p:selectOneMenu value="#{notaServicoBean.nota.fiscal.ambiente}"
+					disabled="#{not notaServicoBean.nota.podeEditar}" autoWidth="false">
+					<f:selectItems value="#{listaTipoBean.NFAmbiente}" var="ambiente"
+						itemValue="#{ambiente}" itemLabel="#{ambiente}" />
+				</p:selectOneMenu>
+
+				<p:outputLabel value="Tributação RPS"
+					rendered="#{not notaServicoBean.somenteSaoPaulo}" />
+				<p:selectOneMenu value="#{notaServicoBean.nota.issqn.tributacaoRPS}"
+					autoWidth="false" rendered="#{not notaServicoBean.somenteSaoPaulo}"
+					disabled="#{not notaServicoBean.nota.podeEditar}">
+					<f:selectItems value="#{listaTipoBean.tipoTributacaoRps}"
+						var="tributacao" itemValue="#{tributacao}"
+						itemLabel="#{tributacao.descricao}" />
+				</p:selectOneMenu>
+
+				<p:outputLabel value="Município do serviço"
+					title="código IBGE do município de prestação do serviço"
+					for="txtUFemissao" />
+				<h:panelGroup>
+					<div class="ui-inputgroup">
+						<p:selectOneMenu id="txtUFemissao" style="width:100px"
+							autoWidth="false"
+							disabled="#{not notaServicoBean.nota.podeEditar}"
+							value="#{notaServicoBean.xUfEmissao}">
+							<f:selectItem itemLabel="" />
+							<f:selectItems value="#{listaTipoBean.unidadeFederativa}"
+								var="estadoEmissao" itemValue="#{estadoEmissao}"
+								itemLabel="#{estadoEmissao.codigo}" />
+
+							<f:ajax render="txtMunicipiosEmissao"
+								listener="#{notaServicoBean.carregaMunicipiosEmissao}"
+								update="txtMunicipiosEmissao" />
+
+						</p:selectOneMenu>
+						<p:selectOneMenu id="txtMunicipiosEmissao" autoWidth="false"
+							disabled="#{not notaServicoBean.nota.podeEditar}"
+							value="#{notaServicoBean.nota.issqn.codigoMunicipio}">
+							<f:selectItem itemLabel="Selecione" />
+							<f:selectItems value="#{notaServicoBean.listaMunicipioEmissao}"
+								var="municipioEmissao" itemValue="#{municipioEmissao}"
+								itemLabel="#{municipioEmissao.descricao}" />
+						</p:selectOneMenu>
+					</div>
+				</h:panelGroup>
+
+				<p:outputLabel value="Natureza da operação"
+					rendered="#{not notaServicoBean.somenteSaoPaulo}" />
+				<p:selectOneMenu rendered="#{not notaServicoBean.somenteSaoPaulo}"
+					disabled="#{not notaServicoBean.nota.podeEditar}" autoWidth="false"
+					value="#{notaServicoBean.nota.issqn.naturezaOperacaoNFSe}"
+					style="width:100%">
+					<f:selectItems value="#{listaTipoBean.tipoNaturezaOperacaoNFSe}"
+						var="natureza" itemValue="#{natureza}"
+						itemLabel="#{natureza.descricao}" />
+				</p:selectOneMenu>
+
+				<p:outputLabel value="Regime de Tributação"
+					rendered="#{not notaServicoBean.somenteSaoPaulo}" />
+				<p:selectOneMenu
+					value="#{notaServicoBean.nota.issqn.regimeEspecial}"
+					disabled="#{not notaServicoBean.nota.podeEditar}" autoWidth="false"
+					rendered="#{not notaServicoBean.somenteSaoPaulo}"
+					style="width:100%">
+					<f:selectItems value="#{listaTipoBean.tipoRegimeEspecial}"
+						var="regime" itemValue="#{regime}" itemLabel="#{regime.descricao}" />
+				</p:selectOneMenu>
+
+				<p:outputLabel value="Incentivador Cultural"
+					rendered="#{not notaServicoBean.somenteSaoPaulo}" />
+				<p:selectOneMenu
+					value="#{notaServicoBean.nota.issqn.incentivadorCultural}"
+					disabled="#{not notaServicoBean.nota.podeEditar}" autoWidth="false"
+					rendered="#{not notaServicoBean.somenteSaoPaulo}"
+					style="width:100%">
+					<f:selectItems value="#{listaTipoBean.tipoSimNao}"
+						var="incentivador" itemValue="#{incentivador.valor}"
+						itemLabel="#{incentivador}" />
+				</p:selectOneMenu>
+
+				<p:outputLabel value="Código CNAE"
+					rendered="#{not notaServicoBean.somenteSaoPaulo}" />
+				<p:inputText maxlength="20" onKeyPress="validateInput('[0-9]*')"
+					value="#{notaServicoBean.nota.issqn.codigoCnae}"
+					disabled="#{not notaServicoBean.nota.podeEditar}"
+					rendered="#{not notaServicoBean.somenteSaoPaulo}" />
+
+				<p:outputLabel value="Código de Tributação"
+					rendered="#{not notaServicoBean.somenteSaoPaulo}" />
+				<p:inputText maxlength="20" onKeyPress="validateInput('[0-9]*')"
+					value="#{notaServicoBean.nota.issqn.codigoTributarioMunicipio}"
+					disabled="#{not notaServicoBean.nota.podeEditar}"
+					rendered="#{not notaServicoBean.somenteSaoPaulo}" />
+
+				<p:outputLabel value="Item Lista Serviço" />
+				<p:inputText maxlength="20" onKeyPress="validateInput('[0-9]*')"
+					disabled="#{not notaServicoBean.nota.podeEditar}"
+					value="#{notaServicoBean.nota.issqn.itemListaServicos}" />
+
+			</p:panelGrid>
+
+		</div>
+
+	</p:panel>
+
+</ui:composition>

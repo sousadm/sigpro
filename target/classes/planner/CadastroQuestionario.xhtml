@@ -1,0 +1,35 @@
+<ui:composition template="/WEB-INF/template/LayoutPadrao.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui" xmlns:o="http://omnifaces.org/ui">
+
+	<f:metadata>
+		<o:viewParam name="questionario"
+			value="#{questionarioBean.questionario}" />
+		<f:event listener="#{questionarioBean.inicializar}"
+			type="preRenderView"></f:event>
+	</f:metadata>
+
+	<ui:define name="titulo">Questionário</ui:define>
+
+	<ui:define name="corpo">
+
+		<h:form id="formCadastro">
+
+			<h:panelGroup rendered="#{questionarioBean.questionario == null}">
+				<ui:include src="/planner/QuestionarioPesquisa.xhtml" />
+			</h:panelGroup>
+
+			<h:panelGroup rendered="#{questionarioBean.questionario != null}">
+				<ui:include src="/planner/QuestionarioEdit.xhtml" />
+			</h:panelGroup>
+
+		</h:form>
+
+		<ui:include src="/planner/QuestionarioPergunta.xhtml" />
+
+	</ui:define>
+
+</ui:composition>

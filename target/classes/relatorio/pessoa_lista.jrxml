@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="pessoa_lista" language="groovy" pageWidth="595" pageHeight="842" columnWidth="565" leftMargin="20" rightMargin="10" topMargin="20" bottomMargin="10" uuid="f7216044-6bef-4a21-9cf4-e0016d076e71">
+	<property name="ireport.zoom" value="2.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="titulo_relatorio" class="java.lang.String"/>
+	<parameter name="empresa" class="java.lang.Object"/>
+	<field name="nome" class="java.lang.String"/>
+	<field name="ddd" class="java.lang.String"/>
+	<field name="fone" class="java.lang.String"/>
+	<field name="celular" class="java.lang.String"/>
+	<field name="cpfCnpjToString" class="java.lang.String"/>
+	<field name="endereco" class="java.lang.Object"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<pageHeader>
+		<band height="59" splitType="Stretch">
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="462" y="5" width="100" height="14" uuid="ea4e6abe-ba3e-4b47-ae59-fd2970b7431d"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="1" y="28" width="446" height="14" uuid="b1de2662-dbf5-4e30-94ee-1a5ba20c5b67"/>
+				<textFieldExpression><![CDATA[$P{empresa}.getNome()]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="462" y="34" width="100" height="14" uuid="55392592-68ab-479e-8746-ec7059b3ac61"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA["Pág. "+$V{PAGE_NUMBER}+" de  " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField pattern="hh.mm.ss a">
+				<reportElement x="462" y="20" width="100" height="14" uuid="3345fd7f-6417-417d-8be3-aea7a76f0662"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="2" y="5" width="383" height="20" uuid="0432c196-0b5f-4dd3-a169-d81dfa2034ed"/>
+				<textElement>
+					<font size="14" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{titulo_relatorio}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="19" splitType="Stretch">
+			<staticText>
+				<reportElement x="2" y="2" width="170" height="14" uuid="d07f6a03-e56b-464b-a4b8-5f84ff44fc4a"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Nome]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="175" y="2" width="77" height="14" uuid="db18eb89-9540-4c82-b6ec-5b202d8acc16"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Celular]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="253" y="2" width="50" height="14" uuid="d0c5de91-5d52-43c9-8735-6c53252d5593"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Fone]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="312" y="2" width="99" height="14" uuid="053c61fe-ff0e-4b72-a99f-c4929e34ce0c"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[CPF / CNPJ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="547" y="2" width="18" height="14" uuid="0e6da87b-c9a8-4335-ba4e-c617b03d7dab"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[UF]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="413" y="2" width="130" height="14" uuid="ff6e7a04-0385-4f81-9744-5fcd18aa41e5"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Cidade]]></text>
+			</staticText>
+			<line>
+				<reportElement x="0" y="0" width="565" height="1" uuid="3b9efa4d-ccf6-4e74-958e-6b02ec82fd9d"/>
+			</line>
+			<line>
+				<reportElement x="0" y="17" width="565" height="1" uuid="b40aceba-b501-4b56-983b-49230368e117"/>
+			</line>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="17" splitType="Stretch">
+			<textField isBlankWhenNull="true">
+				<reportElement x="2" y="1" width="170" height="14" uuid="5761881f-c63e-4616-b782-5c125203acab"/>
+				<textFieldExpression><![CDATA[$F{nome}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="175" y="1" width="15" height="14" uuid="96d651b4-01f4-442f-8fb5-55dbd6079927"/>
+				<textFieldExpression><![CDATA[$F{ddd}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="191" y="1" width="60" height="14" uuid="71b19042-ae12-4ceb-81d7-7d9ff84b4581"/>
+				<textFieldExpression><![CDATA[$F{celular}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="251" y="1" width="60" height="14" uuid="40e3ca86-40d2-4360-b7e4-26e16ed01e28"/>
+				<textFieldExpression><![CDATA[$F{fone}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="312" y="1" width="99" height="14" uuid="b0e5d406-6b56-4d02-aeb5-de4d3b5c2c5a"/>
+				<textFieldExpression><![CDATA[$F{cpfCnpjToString}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="547" y="1" width="18" height="14" uuid="50a7e949-6056-49b7-baac-ebae829269bc"/>
+				<textFieldExpression><![CDATA[$F{endereco}.getMunicipio().getUf().getCodigo()]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="413" y="1" width="130" height="14" uuid="aaa109c3-ca76-4a2e-a800-042db741e7c5"/>
+				<textFieldExpression><![CDATA[$F{endereco}.getMunicipio().getDescricao()]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

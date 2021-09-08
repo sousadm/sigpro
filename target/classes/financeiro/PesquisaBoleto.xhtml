@@ -1,0 +1,230 @@
+<ui:composition template="/WEB-INF/template/LayoutPadrao.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui" xmlns:o="http://omnifaces.org/ui">
+
+	<f:metadata>
+		<f:event listener="#{boletoDigitalBean.inicializar}"
+			type="preRenderView"></f:event>
+	</f:metadata>
+
+	<ui:define name="titulo">Boleto Eletrônico</ui:define>
+
+	<ui:define name="corpo">
+
+		<p:focus context="formCadastro" />
+
+		<h:form id="formCadastro">
+
+			<p:growl id="msg" />
+
+			<h1 style="margin-top: 65px">Boleto eletrônico</h1>
+
+			<p:toolbar id="barra" style="margin-top: 05px">
+				<p:toolbarGroup>
+
+					<p:commandButton id="botaoPesquisar" value="Pesquisar"
+						icon="ui-icon-search" update="@form"
+						actionListener="#{boletoDigitalBean.pesquisar}" />
+
+					<p:menuButton value="Opções"
+						disabled="#{boletoDigitalBean.boletoDigital == null}">
+
+						<p:menuitem value="Atualizar" update="dlgAtualizaBoleto"
+							oncomplete="PF('dlgAtualizaBoleto').show()"
+							icon="ui-icon-arrowrefresh-1-w" />
+
+						<p:menuitem value="Remover cobrança" update="@form"
+							action="#{boletoDigitalBean.removerBoleto}">
+							<p:confirm icon="ui-icon-alert" header="Remover boleto"
+								message="Deseja remover boleto da plataforma?" />
+						</p:menuitem>
+
+						<p:menuitem value="Confirmar recebimento em dinheiro"
+							action="#{boletoDigitalBean.confirmaPagamentoBoleto}">
+							<p:confirm icon="ui-icon-alert" header="Restaurar boleto"
+								message="Confirma o recebimento em dinheiro deste boleto na plataforma?" />
+						</p:menuitem>
+
+					</p:menuButton>
+
+				</p:toolbarGroup>
+				<p:toolbarGroup align="right">
+					<p:commandButton value="Limpar pesquisa" icon="ui-icon-document-b"
+						update="@form" actionListener="#{boletoDigitalBean.limpar}" />
+				</p:toolbarGroup>
+			</p:toolbar>
+
+			<div class="ui-fluid">
+				<div class="ui-g" style="margin-top: 5px; border: 1px solid gray;">
+
+					<div class="ui-g-6 ui-md-4">
+						<p:outputLabel value="Plataforma" />
+						<p:selectOneMenu value="#{boletoDigitalBean.agenteCobrancaAPI}">
+							<f:selectItem itemLabel="selecione..." />
+							<f:selectItems value="#{boletoDigitalBean.listaAgenteAPI}"
+								var="a" itemValue="#{a}" itemLabel="#{a.nome}" />
+							<p:ajax event="change" update="@form" />
+						</p:selectOneMenu>
+					</div>
+
+					<div class="ui-g-6 ui-md-2">
+						<p:outputLabel value="Vencimento" />
+						<p:calendar navigator="true" showOn="button" mask="99/99/9999"
+							pattern="dd/MM/yyyy"
+							value="#{boletoDigitalBean.filtro.vencimentoInicial}" />
+					</div>
+					<div class="ui-g-6 ui-md-2">
+						<p:outputLabel value="Término" />
+						<p:calendar navigator="true" showOn="button" mask="99/99/9999"
+							pattern="dd/MM/yyyy"
+							value="#{boletoDigitalBean.filtro.vencimentoFinal}" />
+					</div>
+					<div class="ui-g-6 ui-md-2">
+						<p:outputLabel value="Pagamento" />
+						<p:calendar navigator="true" showOn="button" mask="99/99/9999"
+							pattern="dd/MM/yyyy"
+							value="#{boletoDigitalBean.filtro.pagamentoInicial}" />
+					</div>
+					<div class="ui-g-6 ui-md-2">
+						<p:outputLabel value="Término" />
+						<p:calendar navigator="true" showOn="button" mask="99/99/9999"
+							pattern="dd/MM/yyyy"
+							value="#{boletoDigitalBean.filtro.pagamentoFinal}" />
+					</div>
+
+				</div>
+
+			</div>
+
+			<p:dataTable id="tabela" style="margin-top: 5px"
+				selectionMode="single" rowKey="#{boleto.id}"
+				selection="#{boletoDigitalBean.boletoDigital}"
+				value="#{boletoDigitalBean.listaBoletoDigital}" var="boleto"
+				rowIndexVar="linha" lazy="true" scrollable="true"
+				emptyMessage="Nenhum registro encontrado." rows="10"
+				paginator="true" paginatorAlwaysVisible="false"
+				paginatorPosition="bottom">
+
+				<p:ajax event="rowSelect" update="@form" />
+
+				<p:column headerText="Vencimento" width="90">
+					<h:outputText value="#{boleto.titulo.vencimento}">
+						<f:convertDateTime pattern="dd/MM/yyyy" />
+					</h:outputText>
+				</p:column>
+				<p:column headerText="Fatura" width="80">
+					<h:outputText value="#{boleto.numeroDaFatura}" />
+				</p:column>
+				<p:column headerText="Nome do cliente" width="200">
+					<h:outputText value="#{boleto.titulo.responsavel.nome}" />
+				</p:column>
+				<p:column headerText="Histórico" width="200">
+					<h:outputText value="#{boleto.titulo.descricao}" />
+				</p:column>
+				<p:column headerText="Valor" style="text-align: right; width: 100px">
+					<h:outputText value="#{boleto.titulo.valor}">
+						<f:convertNumber type="currency" currencySymbol="" />
+					</h:outputText>
+				</p:column>
+				<p:column headerText="Desconto"
+					style="text-align: right; width: 60px">
+					<h:outputText value="#{boleto.titulo.desconto}">
+						<f:convertNumber type="currency" currencySymbol="" />
+					</h:outputText>
+				</p:column>
+				<p:column headerText="Status" width="100">
+					<h:outputText value="#{boleto.status}" />
+				</p:column>
+
+				<p:column headerText="Data Cadastro" width="90">
+					<h:outputText value="#{boleto.dataCadastro}">
+						<f:convertDateTime pattern="dd/MM/yyyy" />
+					</h:outputText>
+				</p:column>
+				<p:column headerText="Data Pagamento" width="90">
+					<h:outputText value="#{boleto.titulo.dataBaixa}">
+						<f:convertDateTime pattern="dd/MM/yyyy" />
+					</h:outputText>
+				</p:column>
+
+				<p:column width="40">
+
+					<p:button title="Imprimir" href="#{boleto.urlDoArquivo}"
+						icon="ui-icon-print" target="_blank" />
+
+					<p:button icon="ui-icon-note" title="ir para título financeiro"
+						outcome="/financeiro/CadastroTitulo">
+						<f:param name="titulo" value="#{boleto.titulo.id}" />
+					</p:button>
+
+				</p:column>
+
+			</p:dataTable>
+
+			<p:blockUI block="formCadastro" trigger="botaoPesquisar" />
+
+		</h:form>
+
+		<p:dialog id="dlgAtualizaBoleto" header="Atualiza Boleto"
+			widgetVar="dlgAtualizaBoleto" closeOnEscape="true" modal="true"
+			maximizable="false" width="600">
+			<h:form>
+
+				<p:growl />
+
+				<div class="ui-fluid">
+					<div class="ui-g"
+						style="margin-top: 5px; border: 1px solid silver;">
+
+						<div class="ui-g-12">
+							<p:outputLabel value="Nome do cliente" />
+							<p:inputText
+								value="#{boletoDigitalBean.boletoDigital.titulo.responsavel.nome}"
+								readonly="true" class="bloqueado" />
+						</div>
+
+						<div class="ui-g-12">
+							<p:outputLabel value="Descrição" for="txtDescricaoBoleto" />
+							<p:inputText id="txtDescricaoBoleto" required="true"
+								value="#{boletoDigitalBean.boletoDigital.titulo.descricao}" />
+						</div>
+
+						<div class="ui-g-4">
+							<p:outputLabel value="Vencimento" for="txtVencimentoBoleto" />
+							<p:calendar id="txtVencimentoBoleto" locale="pt_BR"
+								mask="99/99/9999" pattern="dd/MM/yyyy" navigator="true"
+								showOn="button" required="true"
+								mindate="#{boletoDigitalBean.boletoDigital.titulo.vencimento}"
+								value="#{boletoDigitalBean.boletoDigital.titulo.vencimento}" />
+						</div>
+						<div class="ui-g-4">
+							<p:outputLabel value="Valor do boleto" for="txtValorBoleto" />
+							<p:inputNumber id="txtValorBoleto" required="true"
+								decimalSeparator="," thousandSeparator="." decimalPlaces="2"
+								value="#{boletoDigitalBean.boletoDigital.titulo.valor}" />
+						</div>
+						<div class="ui-g-4">
+							<p:outputLabel value="Desconto" />
+							<p:inputNumber minValue="0" decimalSeparator=","
+								thousandSeparator="." decimalPlaces="2"
+								value="#{boletoDigitalBean.boletoDigital.titulo.abatimento}" />
+						</div>
+
+					</div>
+				</div>
+
+				<div align="right" style="margin-top: 5px;">
+					<p:commandButton value="Confirmar" process="@form" update="@form"
+						action="#{boletoDigitalBean.atualizarBoleto}"
+						oncomplete="if(!args.validationFailed) PF('dlgAtualizaBoleto').hide()" />
+				</div>
+
+			</h:form>
+		</p:dialog>
+
+	</ui:define>
+
+</ui:composition>

@@ -1,0 +1,183 @@
+@charset "utf-8";
+
+/* TABVIEW */
+.ui-tabs .ui-tabs-nav li.ui-tabs-selected a {
+	color: #555;
+}
+
+@media ( max-width : 640px) {
+	.ui-tabs.ui-tabs-top>.ui-tabs-nav li {
+		width: 100%;
+	}
+}
+
+/* PANELGRID */
+.ui-panelgrid.panelgrid-noborder .ui-grid-responsive {
+	border: none;
+}
+
+@media ( max-width : 640px) {
+	.ui-panelgrid.panelgrid-noborder .ui-grid-responsive .ui-grid-row {
+		border: none;
+	}
+}
+
+header {
+	padding: 5px 0px;
+	margin-bottom: 20px;
+	height: 30px;
+	background-color: #545454;
+	color: #fff;
+	box-shadow: 0px 2px 2px #ccc;
+}
+
+header>div {
+	margin-left: 8px
+}
+
+footer {
+	padding: 0px 8px;
+	margin-bottom: 10px
+}
+
+h1 {
+	font-size: 20px;
+	font-weight: 400;
+	padding: 0px;
+	margin: 0px
+}
+
+/* Menu sistema fim */
+ui-state-dissabled {
+	opacity: .80 !important;
+}
+
+.grid-login {
+	background-color: #f2f2f2;
+	border-radius: 18px;
+	border: 1px solid #ccc;
+	margin-top: 8px;
+	padding: 10px;
+	width: 100%
+}
+
+.ui-selectonemenu {
+	autoWidth: false !important;
+	display: flex !important;
+}
+
+.autoWidthDialog {
+	width: auto !important;
+	height: 40% !important;
+	top: 25% !important;
+	left: 30% !important;
+}
+
+.color-cancelado {
+	color: red;
+}
+
+.color-encerrado {
+	color: blue;
+}
+
+.color-normal {
+	color: black;
+}
+
+.negrito {
+	font-weight: bold;
+}
+
+.desabilitado {
+	background-color: #f3fac8;
+}
+
+.lucro {
+	color: blue;
+}
+
+.prejuizo {
+	color: red;
+}
+
+.bloqueado {
+	background-color: #F5F5F5 !important;
+}
+
+.fiscal-titulo {
+	font-style: normal;
+	font-size: 24pt;
+	font-weight: bold;
+}
+
+.error {
+	margin: auto;
+	width: 60%;
+	border: 3px solid #73AD21;
+	padding: 10px;
+	margin-top: 250px;
+	/* 	background: red; */
+}
+
+.ui-tabs-left>.ui-tabs-nav {
+	height: auto !important;
+}
+
+.linha {
+	height: '' 50px;
+}
+
+/* BASE */
+body {
+	margin: 0;
+	font-size: 13px;
+	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+	background-image: url("#{resource['sigpro/imagens/fundo.jpg']}");
+}
+
+.ui-datatable-header {
+	background-color: #F5F5F5 !important;
+	font-weight: bold !important;
+}
+
+.subtitulo {
+	border-bottom: 2px solid black;
+}
+
+.dados-login {
+	font-size: 8px;
+}
+
+.button-grid {
+	width: 28px !important;
+}
+
+.botao-config {
+	width: 300px !important;
+	height: 40px !important;
+}
+
+.botao-dialogo {
+	width: 150px !important;
+	/* 	height: 40px !important; */
+}
+
+.botao-pesquisa {
+	/*width: 150px !important; */
+	height: 40px !important;
+}
+
+#conteudo {
+	padding: 0px 80px
+}
+
+.calendario {
+	navigator: "true";
+	showOn: "button";
+	mask: "99/99/9999";
+	locale: "br";
+	pattern: "dd/MM/yyyy";
+	mask: "99/99/9999";
+	pattern: "dd/MM/yyyy";
+}

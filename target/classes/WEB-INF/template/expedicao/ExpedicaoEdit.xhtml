@@ -1,0 +1,32 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+
+	<h1 style="margin-top: 65px">#{expedicaoBean.editando ? "Edição de
+		pedido" : "Novo pedido"}</h1>
+
+	<ui:include src="/WEB-INF/template/expedicao/ExpedicaoBotao.xhtml" />
+
+	<ui:include src="/WEB-INF/template/expedicao/ExpedicaoDados.xhtml" />
+
+	<p:tabView id="view" style="margin-top: 05px">
+
+		<p:tab title="Itens">
+			<ui:include src="/WEB-INF/template/expedicao/ItensPedido.xhtml" />
+		</p:tab>
+		<p:tab id="viewTabEntrega" title="Dados de entrega">
+			<ui:include src="/WEB-INF/template/expedicao/ExpedicaoEntrega.xhtml" />
+		</p:tab>
+		<p:tab title="Observação">
+			<ui:include src="/WEB-INF/template/expedicao/ObservacaoPedido.xhtml" />
+		</p:tab>
+
+	</p:tabView>
+
+	<p:blockUI block="formCadastro"
+		trigger="botaoSalvar menuEncerrar menuEncerrarNoDia menuCancelar" />
+
+</ui:composition>

@@ -1,0 +1,53 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<p:dialog id="dlgProducao" header="Serviço" widgetVar="dlgProducao"
+		closeOnEscape="true" resizable="false" modal="true" width="500">
+		<h:form id="formComissao">
+
+			<div class="ui-fluid">
+				<div class="ui-g" style="margin-top: 5px; border: 1px solid silver;">
+					<div class="ui-g-12 ui-md-4">
+						<p:outputLabel value="Ordem" />
+						<p:inputText class="bloqueado" readonly="true"
+							value="#{remuneradorOrdemBean.expedicaoItem.servico.id}">
+							<f:convertNumber pattern="000000" />
+						</p:inputText>
+					</div>
+					<div class="ui-g-12 ui-md-4">
+						<p:outputLabel value="Valor do Serviço" />
+						<p:inputText class="bloqueado" readonly="true"
+							value="#{remuneradorOrdemBean.expedicaoItem.valorTotal}">
+							<f:convertNumber pattern="#0.00" />
+						</p:inputText>
+					</div>
+					<div class="ui-g-12 ui-md-4">
+						<p:outputLabel value="Valor da comissão" />
+						<p:inputNumber minValue="0" decimalSeparator=","
+							thousandSeparator="." decimalPlaces="2" required="true"
+							value="#{remuneradorOrdemBean.expedicaoItem.valorComissao}" />
+					</div>
+					<div class="ui-g-12">
+						<p:outputLabel value="Serviço" />
+						<p:inputTextarea class="bloqueado" rows="2" readonly="true"
+							value="#{remuneradorOrdemBean.expedicaoItem.produto.nome}" />
+					</div>
+				</div>
+			</div>
+
+			<div align="right" style="margin-top: 5px">
+				<p:commandButton value="Confirma" icon="ui-icon-check"
+					process="@form" update="frmPesquisa"
+					action="#{remuneradorOrdemBean.salvar}"
+					oncomplete="if(!args.validationFailed) PF('dlgProducao').hide()" />
+				<p:commandButton value="Cancela" icon="ui-icon-close"
+					process="@form" oncomplete="PF('dlgProducao').hide()" />
+			</div>
+
+		</h:form>
+	</p:dialog>
+
+</ui:composition>

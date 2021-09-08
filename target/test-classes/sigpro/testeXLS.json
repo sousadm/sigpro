@@ -1,0 +1,48 @@
+{
+    "sheet":"dados",
+    "retorno":"C10",
+    "params":[
+        {
+            "sheet":"dados",
+            "titulo":"tempo previsto em dias",
+            "adressCell":"B1",
+            "valor":250
+        },
+        {
+            "sheet":"dados",
+            "titulo":"quantidade de operarios",
+            "adressCell":"B2",
+            "valor":100
+        },
+        {
+            "sheet":"dados",
+            "titulo":"custo de hora homem",
+            "adressCell":"B3",
+            "valor":11.0
+        },
+        {
+            "sheet":"dados",
+            "titulo":"outras despesas",
+            "adressCell":"B4",
+            "valor":1000.0
+        },
+        {
+            "sheet":"dados",
+            "titulo":"custo de material por unidade",
+            "adressCell":"B5",
+            "valor":70000.0
+        },
+        {
+            "sheet":"dados",
+            "titulo":"quantidade de unidades construidas",
+            "adressCell":"B6",
+            "valor":40
+        },
+        {
+            "sheet":"dados",
+            "titulo":"margem de segurança",
+            "adressCell":"B7",
+            "valor":0.15
+        }
+    ]
+}

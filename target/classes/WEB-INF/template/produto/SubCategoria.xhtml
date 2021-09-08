@@ -1,0 +1,44 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<p:dialog id="dlgSubCategoria" header="Subcategoria"
+		widgetVar="dlgSubCategoria" closeOnEscape="true" modal="true"
+		maximizable="false">
+		<h:form id="formCadastroDinheiro">
+
+			<div class="ui-fluid">
+				<div class="ui-g" style="margin-top: 5px; border: 1px solid silver;">
+					<div class="ui-g-12">
+						<p:outputLabel value="Descrição" />
+						<p:inputText id="nome" maxlength="60"
+							value="#{categoriaBean.subCategoria.descricao}" />
+					</div>
+					<div class="ui-g-12">
+						<p:outputLabel value="Especialidade"
+							rendered="#{categoriaBean.subCategoria.categoriaTipoServico}" />
+						<p:selectOneMenu id="subcategoria" autoWidth="false"
+							value="#{categoriaBean.subCategoria.especialidade}"
+							rendered="#{categoriaBean.subCategoria.categoriaTipoServico}">
+							<f:selectItem itemLabel="indefinida" />
+							<f:selectItems value="#{listaTipoBean.tipoEspecialidade}"
+								var="especialidade" itemValue="#{especialidade}"
+								itemLabel="#{especialidade.descricao}" />
+						</p:selectOneMenu>
+					</div>
+				</div>
+			</div>
+
+			<div align="right">
+				<p:commandButton value="Confirma" icon="ui-icon-check"
+					process="dlgSubCategoria" update="formCadastro:tabelaSubCategoria"
+					action="#{categoriaBean.gravarSubCategoria}"
+					oncomplete="if(!args.validationFailed) PF('dlgSubCategoria').hide()" />
+			</div>
+
+		</h:form>
+	</p:dialog>
+
+</ui:composition>

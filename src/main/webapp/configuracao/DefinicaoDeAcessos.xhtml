@@ -1,0 +1,47 @@
+<ui:composition template="/WEB-INF/template/LayoutPadrao.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui" xmlns:o="http://omnifaces.org/ui">
+
+	<ui:define name="acessos"></ui:define>
+
+	<f:metadata>
+		<f:param name="dummy" />
+		<o:viewParam name="pessoa" value="#{definicaoAcessoBean.pessoa}" />
+		<f:event listener="#{definicaoAcessoBean.inicializar}"
+			type="preRenderView"></f:event>
+	</f:metadata>
+
+	<ui:define name="titulo">Acessos</ui:define>
+
+	<ui:define name="corpo">
+
+		<h1 style="margin-top: 65px">Definição de Acessos</h1>
+
+		<h:form id="formCadastro">
+
+			<p:messages id="msg" autoUpdate="true" closable="true" />
+
+			<h3>#{definicaoAcessoBean.pessoa.nome}</h3>
+
+			<p:scrollPanel style="width:100%; height:300px">
+				<p:selectManyCheckbox id="listaRotina"
+					value="#{definicaoAcessoBean.listaRotinas}" layout="pageDirection"
+					columns="1">
+					<f:selectItems value="#{definicaoAcessoBean.cars}" var="car"
+						itemLabel="#{car}" itemValue="#{car}" />
+					<f:attribute name="collectionType" value="java.util.ArrayList" />
+				</p:selectManyCheckbox>
+			</p:scrollPanel>
+			<div style="margin-top: 5px" align="right">
+				<p:commandButton value="Confirma" icon="ui-icon-check"
+					update="@form" action="#{definicaoAcessoBean.gravarAcessos()}" />
+			</div>
+
+		</h:form>
+
+	</ui:define>
+
+</ui:composition>

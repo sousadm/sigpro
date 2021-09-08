@@ -1,0 +1,43 @@
+<ui:composition template="/WEB-INF/template/LayoutPadrao.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui" xmlns:o="http://omnifaces.org/ui">
+
+	<f:metadata>
+		<f:param name="dummy" />
+		<f:event listener="#{contratoAdesaoBean.inicializar}"
+			type="preRenderView"></f:event>
+		<o:viewParam name="contrato" value="#{contratoAdesaoBean.contrato}" />
+	</f:metadata>
+
+	<ui:define name="titulo">contrato</ui:define>
+
+
+	<ui:define name="dialogo">
+		<ui:include src="/dialogos/ListaEventos.xhtml" />
+	</ui:define>
+
+	<ui:define name="corpo">
+
+		<h:form id="formCadastro">
+
+			<h1 style="margin-top: 65px">Contrato de Adesão</h1>
+
+			<h:panelGroup rendered="#{contratoAdesaoBean.contrato == null}">
+				<ui:include src="/configuracao/ContratoAdesaoPesquisa.xhtml" />
+			</h:panelGroup>
+
+			<h:panelGroup rendered="#{contratoAdesaoBean.contrato != null}">
+				<ui:include src="/configuracao/ContratoAdesaoEdit.xhtml" />
+			</h:panelGroup>
+
+		</h:form>
+
+		<ui:include src="/configuracao/ContratoAdesaoLicenca.xhtml" />
+
+	</ui:define>
+
+</ui:composition>
+

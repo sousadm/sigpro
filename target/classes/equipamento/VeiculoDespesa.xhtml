@@ -1,0 +1,110 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<p:dialog id="dlgDespesa" header="despesa" widgetVar="dlgDespesa"
+		closeOnEscape="true" modal="true" maximizable="false" width="700">
+		<h:form id="formCadastrodespesa">
+
+			<div class="ui-fluid">
+				<div class="ui-g" style="margin-top: 5px; border: 1px solid silver;">
+
+					<div class="ui-g-12 ui-md-6">
+						<p:outputLabel value="Fornecedor" />
+						<div class="ui-inputgroup">
+							<p:commandButton icon="ui-icon-person" title="Pesquisar pessoa"
+								process="@this" update="@none" ignoreAutoUpdate="true"
+								rendered="#{veiculoBean.despesa.podeEditar}"
+								styleClass="button-grid" action="#{selecionaBean.fornecedor}">
+								<p:ajax event="dialogReturn" update="txtFornecedor"
+									listener="#{veiculoBean.onFornecedorChosen}"
+									ignoreAutoUpdate="true" />
+							</p:commandButton>
+							<p:inputText id="txtFornecedor" readonly="true" required="true"
+								requiredMessage="informe o proprietário"
+								value="#{veiculoBean.despesa.titulo.responsavel.nome}"
+								styleClass="#{veiculoBean.despesa.podeEditar ? '' : 'bloqueado'}" />
+						</div>
+					</div>
+					<div class="ui-g-12 ui-md-6">
+						<p:outputLabel value="Tipo de despesa" for="ccusto" />
+						<p:selectOneMenu id="ccusto" autoWidth="false"
+							value="#{veiculoBean.despesa.titulo.centroDeCusto}"
+							rendered="#{veiculoBean.despesa.podeEditar}">
+							<f:selectItem itemLabel="Selecione..." />
+							<f:selectItems value="#{veiculoBean.listaCusto}" var="a"
+								itemValue="#{a}" itemLabel="#{a.descricao}" />
+						</p:selectOneMenu>
+						<p:inputText readonly="true"
+							rendered="#{not veiculoBean.despesa.podeEditar}"
+							value="#{veiculoBean.despesa.titulo.centroDeCusto.descricao}"
+							styleClass="bloqueado" />
+					</div>
+
+					<div class="ui-g-12 ui-md-3">
+						<p:outputLabel value="Documento" for="documento" />
+						<p:inputText id="documento" maxlength="20"
+							value="#{veiculoBean.despesa.titulo.documento}"
+							styleClass="#{veiculoBean.despesa.podeEditar ? '' : 'bloqueado'}"
+							readonly="#{not veiculoBean.despesa.podeEditar}" />
+					</div>
+					<div class="ui-g-3">
+						<p:outputLabel value="Odômetro" />
+						<p:inputNumber decimalPlaces="0" thousandSeparator=""
+							value="#{veiculoBean.despesa.odometro}"
+							rendered="#{veiculoBean.despesa.podeEditar}" />
+						<p:inputText readonly="true"
+							rendered="#{not veiculoBean.despesa.podeEditar}"
+							value="#{veiculoBean.despesa.odometro}" styleClass="bloqueado" />
+					</div>
+					<div class="ui-g-12 ui-md-3">
+						<p:outputLabel value="Data" />
+						<p:calendar showOn="button" mask="99/99/9999" pattern="dd/MM/yyyy"
+							value="#{veiculoBean.despesa.titulo.vencimento}"
+							rendered="#{veiculoBean.despesa.podeEditar}" />
+						<p:inputText readonly="true"
+							rendered="#{not veiculoBean.despesa.podeEditar}"
+							value="#{veiculoBean.despesa.titulo.vencimento}"
+							styleClass="bloqueado">
+							<f:convertDateTime pattern="dd/MM/yyyy" />
+						</p:inputText>
+					</div>
+					<div class="ui-g-12 ui-md-3">
+						<p:outputLabel value="Valor" />
+						<p:inputNumber minValue="0" decimalSeparator=","
+							thousandSeparator="." decimalPlaces="2"
+							value="#{veiculoBean.despesa.titulo.valor}"
+							rendered="#{veiculoBean.despesa.podeEditar}" />
+						<p:inputText readonly="true"
+							rendered="#{not veiculoBean.despesa.podeEditar}"
+							value="#{veiculoBean.despesa.titulo.valor}"
+							styleClass="bloqueado">
+							<f:convertNumber type="currency" />
+						</p:inputText>
+					</div>
+
+					<div class="ui-g-12">
+						<p:outputLabel value="Descritivo" for="descricao" />
+						<p:inputTextarea id="descricao" maxlength="100" rows="5"
+							value="#{veiculoBean.despesa.titulo.descricao}"
+							styleClass="#{veiculoBean.despesa.podeEditar ? '' : 'bloqueado'}"
+							readonly="#{not veiculoBean.despesa.podeEditar}" />
+					</div>
+
+				</div>
+			</div>
+
+			<div align="right" style="margin-top: 5px">
+				<p:commandButton value="Confirma" icon="ui-icon-check"
+					process="dlgDespesa" update="formCadastro"
+					action="#{veiculoBean.salvar_despesa}"
+					disabled="#{not veiculoBean.despesa.podeEditar}"
+					oncomplete="if(!args.validationFailed) PF('dlgDespesa').hide()" />
+			</div>
+
+		</h:form>
+	</p:dialog>
+
+</ui:composition>

@@ -1,0 +1,123 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<p:toolbar id="barra" style="margin-top: 0px">
+		<p:toolbarGroup>
+
+			<p:commandButton value="Incluir" icon="ui-icon-document"
+				title="nota de serviço eletrônica" process="@this"
+				disabled="#{seguranca.bloqueioValidade}"
+				actionListener="#{selecionaBean.operacaoFiscalNFSe}" update="@form">
+				<p:ajax event="dialogReturn"
+					listener="#{notaServicoBean.onOperacaoChosen}"
+					ignoreAutoUpdate="true" update="@form" />
+			</p:commandButton>
+
+			<p:commandButton value="Importar pedido"
+				title="importar pedido de venda"
+				rendered="#{notaServicoBean.nota.podeImportarPedido}"
+				process="@this" actionListener="#{selecionaBean.expedicao(true)}">
+				<p:ajax event="dialogReturn"
+					listener="#{notaServicoBean.onExpedicaoChosen}" update="@form" />
+			</p:commandButton>
+
+			<p:splitButton id="botaoSalvar" value="Salvar" icon="ui-icon-disk"
+				rendered="#{notaServicoBean.nota.notaTipoNFSe}" process="@form"
+				action="#{notaServicoBean.salvar}" update="@form">
+
+				<p:menuitem id="botaoAutorizar" value="Autorização"
+					title="enviar nota de serviço"
+					disabled="#{not notaServicoBean.nota.podeEmitirDocumento}"
+					actionListener="#{notaServicoBean.emitir}" update="@form" />
+
+				<p:menuitem id="botaoConsultar" value="Consulta situação"
+					title="consulta status da nota" update="@form"
+					disabled="#{not notaServicoBean.nota.podeConsultarStatus}"
+					actionListener="#{notaServicoBean.consultar}" />
+
+				<p:menuitem id="botaoReenviar" value="Reenvio de e-mail"
+					actionListener="#{notaServicoBean.enviarEmail}" update="@form"
+					title="encaminhar para e-mail"
+					disabled="#{not notaServicoBean.nota.podeEnviarEmail}">
+					<p:confirm icon="ui-icon-alert" header="Envio de email"
+						message="Confirma envio de email?" />
+				</p:menuitem>
+
+				<p:menuitem value="Cancelamento" title="solicitar cancelamento"
+					disabled="#{not notaServicoBean.nota.podeCancelarNota}"
+					update="dlgJustificativa"
+					oncomplete="PF('dlgJustificativa').show()" />
+
+				<p:separator rendered="#{notaServicoBean.nota.podeImprimir}" />
+
+				<p:menuitem value="Imprimir Danfe" title="danfe pdf"
+					rendered="#{notaServicoBean.nota.podeImprimir}"
+					url="#{notaServicoBean.danfeNFe}" target="_blank" />
+
+				<p:menuitem value="Download do Xml" title="xml fiscal"
+					rendered="#{notaServicoBean.nota.podeImprimir}"
+					url="#{notaServicoBean.xmlNFe}" target="_blank" />
+
+				<p:menuitem value="Download do Xml" title="xml fiscal"
+					rendered="#{notaServicoBean.nota.podeImprimirCancelamento}"
+					url="#{notaServicoBean.xmlNFeCancelamento }" target="_blank" />
+
+				<p:menuitem value="Carta Correção PDF" title="pdf carta de correção"
+					rendered="#{notaServicoBean.nota.podeImprimirCorrecao}"
+					url="#{notaServicoBean.danfeCorrecaoNFe}" target="_blank" />
+
+				<p:menuitem value="Carta Correção XML" title="xml carta de correção"
+					rendered="#{notaServicoBean.nota.podeImprimirCorrecao}"
+					url="#{notaServicoBean.xmlCorrecaoNFe}" target="_blank" />
+
+			</p:splitButton>
+
+		</p:toolbarGroup>
+
+		<p:toolbarGroup align="right">
+			<p:commandButton value="Pesquisa" icon="ui-icon-search"
+				actionListener="#{notaServicoBean.setNota(null)}" process="@this"
+				update="@form" />
+		</p:toolbarGroup>
+
+	</p:toolbar>
+
+	<ui:include src="/WEB-INF/template/fiscal/CapaNotaServico.xhtml" />
+
+	<p:tabView id="tabView" orientation="left" style="margin-top: 5px">
+		<p:tab title="Serviço" id="tabProduto">
+			<ui:include src="/WEB-INF/template/fiscal/DadosServicoFiscal.xhtml" />
+		</p:tab>
+		<p:tab title="Endereço" id="tabEntrega">
+			<ui:include src="/WEB-INF/template/fiscal/DadosEntregaServico.xhtml" />
+		</p:tab>
+		<p:tab title="Ambiente" id="tabAmbiente">
+			<ui:include src="/WEB-INF/template/fiscal/DadosAmbienteServico.xhtml" />
+		</p:tab>
+
+
+		<p:tab rendered="false" title="Pagamentos" id="tabPagamento">
+			<p:dataTable value="#{notaServicoBean.nota.pgtos}" var="pgto"
+				style="margin-top: 5px" rowIndexVar="linha"
+				emptyMessage="Nenhum item encontrado." rows="10" paginator="true"
+				paginatorAlwaysVisible="false" paginatorPosition="bottom">
+
+				<p:column headerText="Meio Pgto">
+					<h:outputText value="#{pgto.meioPgto.toString()}" />
+				</p:column>
+
+			</p:dataTable>
+		</p:tab>
+
+	</p:tabView>
+
+	<p:blockUI block="formCadastro"
+		trigger="botaoSalvar botaoAutorizar botaoConsultar botaoReenviar" />
+
+	<ui:include
+		src="/WEB-INF/template/fiscal/DadosNFSeJustificativaCancelamento.xhtml" />
+
+</ui:composition>

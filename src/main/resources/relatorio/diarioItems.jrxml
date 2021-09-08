@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="diarioItems" language="groovy" pageWidth="595" pageHeight="842" whenNoDataType="BlankPage" columnWidth="575" leftMargin="10" rightMargin="10" topMargin="10" bottomMargin="10" uuid="25ebc723-a421-4b51-83f5-46994424f5ca">
+	<property name="ireport.zoom" value="1.5"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<field name="id" class="java.lang.Long"/>
+	<field name="caixa" class="java.lang.Object"/>
+	<field name="tipoPagamento" class="java.lang.Object"/>
+	<field name="valor" class="java.lang.Double"/>
+	<variable name="valor_1" class="java.lang.Double" resetType="Group" resetGroup="agente" calculation="Sum">
+		<variableExpression><![CDATA[$F{valor}]]></variableExpression>
+	</variable>
+	<variable name="id_1" class="java.lang.Integer" resetType="Group" resetGroup="agente" calculation="Count">
+		<variableExpression><![CDATA[$F{id}]]></variableExpression>
+	</variable>
+	<group name="agente">
+		<groupExpression><![CDATA[$F{caixa}.getAgente()]]></groupExpression>
+		<groupHeader>
+			<band height="19">
+				<textField>
+					<reportElement x="1" y="2" width="257" height="16" uuid="884198d3-8c69-4ed9-ad27-ae31a2553f8f"/>
+					<textElement>
+						<font isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{caixa}.getAgente().getNome()]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupHeader>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<pageHeader>
+		<band height="32">
+			<staticText>
+				<reportElement x="2" y="0" width="305" height="22" uuid="31a5adf8-6813-43d6-a4ce-90c10c460918"/>
+				<textElement>
+					<font fontName="Arial" size="16" isBold="true" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[DIÁRIO FINANCEIRO (movimentação)]]></text>
+			</staticText>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="472" y="5" width="99" height="17" uuid="c23daa59-e44d-48f2-a162-4df31b4ee98b"/>
+				<textElement textAlignment="Right">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{caixa}.getDiario().getDataMov()]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="20" splitType="Stretch">
+			<staticText>
+				<reportElement x="2" y="2" width="100" height="15" uuid="809da0b7-b9b9-45dc-abfb-fa285c74e15f"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Histórico]]></text>
+			</staticText>
+			<line>
+				<reportElement x="2" y="18" width="573" height="1" uuid="0465b6fd-959c-496b-a6ee-992ea93a6d8e"/>
+			</line>
+			<staticText>
+				<reportElement x="433" y="2" width="55" height="15" uuid="84de290c-96e2-4199-a488-04176b09e60f"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Pgto]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="498" y="2" width="75" height="15" uuid="9df4af3c-d5bc-478b-b43c-ff8259700aad"/>
+				<textElement textAlignment="Right">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Valor]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="15" splitType="Stretch">
+			<textField>
+				<reportElement x="2" y="0" width="418" height="14" uuid="dea878c6-416b-4ed8-89dc-0ef74a78b21b"/>
+				<textFieldExpression><![CDATA[$F{caixa}.getObservacao()]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="433" y="0" width="55" height="14" uuid="0ca5d6f6-76eb-4b55-9cc9-b945bf135f1d"/>
+				<textFieldExpression><![CDATA[$F{tipoPagamento}.getDescricao()]]></textFieldExpression>
+			</textField>
+			<textField pattern="¤ #,##0.00">
+				<reportElement x="498" y="0" width="75" height="14" uuid="fd48255e-8f73-4645-84e5-0992bf5d6ffe"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{valor}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

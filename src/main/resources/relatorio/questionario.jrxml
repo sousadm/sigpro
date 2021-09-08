@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="questionario" language="groovy" pageWidth="595" pageHeight="842" columnWidth="570" leftMargin="15" rightMargin="10" topMargin="10" bottomMargin="10" uuid="423e72e4-193a-4c80-b0d9-1abcab75571a">
+	<property name="ireport.zoom" value="1.3310000000000004"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="empresa" class="java.lang.Object"/>
+	<field name="id" class="java.lang.Long"/>
+	<field name="descricao" class="java.lang.String"/>
+	<field name="tipo" class="java.lang.Object"/>
+	<field name="area" class="java.lang.Object"/>
+	<field name="questionario" class="java.lang.Object"/>
+	<group name="area">
+		<groupExpression><![CDATA[$F{area}]]></groupExpression>
+		<groupHeader>
+			<band height="20">
+				<textField>
+					<reportElement x="2" y="3" width="289" height="16" uuid="a02df06a-9493-425d-9f8e-b505bd1bdc3e"/>
+					<textElement>
+						<font isBold="true" isItalic="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{area}.getDescricao()]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band height="11"/>
+		</groupFooter>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<pageHeader>
+		<band height="78" splitType="Stretch">
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="468" y="7" width="100" height="14" uuid="53846503-3716-4a37-ac85-d10915945265"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="2" y="3" width="440" height="21" uuid="cfe9a9bc-6407-4bd3-80fa-f6e6f4435613"/>
+				<textElement textAlignment="Center">
+					<font fontName="Arial" isBold="true"/>
+				</textElement>
+				<text><![CDATA[QUESTIONÁRIO]]></text>
+			</staticText>
+			<textField pattern="HH.mm">
+				<reportElement x="469" y="24" width="100" height="14" uuid="df7ca0c3-3fe3-4eb9-aa87-ddcb1b9595eb"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="48" y="57" width="413" height="14" uuid="e7ac5cef-1381-4873-9b0b-bb9cf017d909"/>
+				<textFieldExpression><![CDATA[$F{questionario}.getDescricao()]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement positionType="Float" x="4" y="57" width="38" height="14" uuid="c9f2e3b6-997c-4f9b-b718-929c0e1086d8"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Título:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="2" y="24" width="425" height="16" uuid="7b19ff47-e275-4574-9f80-20b7afafc56c"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$P{empresa}.getPJ().getFantasia()]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<detail>
+		<band height="20" splitType="Stretch">
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToTallestObject" x="2" y="3" width="467" height="14" uuid="216493b3-3adc-4a55-81f8-7f849654a5c8"/>
+				<textFieldExpression><![CDATA[$F{descricao}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="477" y="3" width="91" height="14" uuid="83b0c4b9-1d4f-4f08-8723-bec379ca1e13"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{tipo}.getDescricao()]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

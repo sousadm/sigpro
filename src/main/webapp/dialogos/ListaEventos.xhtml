@@ -1,0 +1,37 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<p:dialog id="dlgEventos" header="Lista de eventos"
+		widgetVar="dlgEventos" closeOnEscape="true" modal="true"
+		maximizable="false" height="400" width="800">
+		<h:form id="formEventos">
+
+			<p:dataTable value="#{listaEventoBean.lista}" var="evento"
+				rowIndexVar="item" style="margin-top: 5px" lazy="true"
+				emptyMessage="Nenhum registro encontrado." rows="10"
+				paginator="true" paginatorAlwaysVisible="false"
+				paginatorPosition="bottom" scrollable="true">
+
+				<p:column headerText="Data" width="120">
+					<h:outputText value="#{evento.data}">
+						<f:convertDateTime pattern="dd/MM/yyyy HH:mm" />
+					</h:outputText>
+				</p:column>
+				<p:column headerText="Documento" width="100"
+					rendered="#{listaEventoBean.mostra_documento}">
+					<h:outputText value="#{evento.documento}" />
+				</p:column>
+				<p:column headerText="Histórico">
+					<h:outputText value="#{evento.descritivo}" />
+				</p:column>
+
+			</p:dataTable>
+
+		</h:form>
+
+	</p:dialog>
+
+</ui:composition>

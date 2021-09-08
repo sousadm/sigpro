@@ -1,0 +1,65 @@
+<ui:composition template="/WEB-INF/template/LayoutPadrao.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<ui:define name="titulo">Lista de Veículos</ui:define>
+
+	<ui:define name="corpo">
+
+		<h:form id="frmPesquisa">
+
+			<p:focus />
+
+			<h1 style="margin-top: 65px">Lista de Veículos</h1>
+
+			<p:messages autoUpdate="true" closable="true" />
+
+			<p:toolbar style="margin-top: 05px">
+				<p:toolbarGroup>
+					<p:commandButton value="Pesquisar" update="@form"
+						action="#{veiculoBean.consultar}" />
+					<span class="ui-separator"> <span
+						class="ui-icon ui-icon-grip-dotted-vertical" />
+					</span>
+					<p:commandButton value="Imprimir" ajax="false"
+						disabled="#{empty veiculoBean.lista}"
+						action="#{veiculoBean.imprimir}" update="@form" />
+				</p:toolbarGroup>
+
+			</p:toolbar>
+
+			<p:dataTable id="tabela" value="#{veiculoBean.lista}" var="item"
+				rowIndexVar="linha" style="margin-top: 5px" scrollable="true"
+				emptyMessage="Nenhum registro encontrado." rows="10"
+				paginator="true" paginatorAlwaysVisible="false"
+				paginatorPosition="bottom">
+
+				<p:column headerText="Placa">
+					<h:outputText value="#{item.placa}" />
+				</p:column>
+				<p:column headerText="Marca">
+					<h:outputText value="#{item.marca.descricao}" />
+				</p:column>
+				<p:column headerText="Categoria">
+					<h:outputText value="#{item.tipoVeiculo.descricao}" />
+				</p:column>
+				<p:column headerText="Cor">
+					<h:outputText value="#{item.cor.descricao}" />
+				</p:column>
+				<p:column headerText="Odômetro atual">
+					<h:outputText value="#{item.odometroFinal}" />
+				</p:column>
+				<p:column headerText="Km/mês">
+					<h:outputText value="#{item.mediaKmMes}" />
+				</p:column>
+
+			</p:dataTable>
+
+		</h:form>
+
+	</ui:define>
+
+</ui:composition>

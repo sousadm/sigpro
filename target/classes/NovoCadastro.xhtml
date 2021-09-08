@@ -1,0 +1,62 @@
+<ui:composition template="/WEB-INF/template/Layout.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui" xmlns:o="http://omnifaces.org/ui">
+
+	<ui:define name="corpo">
+
+		<h1 style="margin-top: 65px">CADASTRO NOVO FORNECEDOR</h1>
+
+		<h:form>
+			<p:messages autoUpdate="true" closable="true" />
+
+			<h:panelGrid columns="2" style="width: 100%; margin-top: 10px"
+				styleClass="grid-login">
+
+				<p:outputLabel value="Razão social" for="nome" />
+				<p:inputText id="nome" size="50" required="true"
+					value="#{pessoaBean.pessoa.nome}" />
+
+				<p:outputLabel value="E-mail" for="email" />
+				<p:inputText id="email" size="50" maxlength="100" required="true"
+					value="#{pessoaBean.pessoa.email}" />
+
+				<p:outputLabel value="Fone" for="fone" />
+				<p:inputText id="fone" size="20" value="#{pessoaBean.pessoa.fone}" />
+
+				<p:outputLabel value="CNPJ" for="txtCnpj" />
+				<p:inputMask id="txtCnpj" mask="99.999.999/9999-99" required="true"
+					value="#{pessoaBean.pessoa.cnpj}" />
+
+				<p:outputLabel value="Nome de Fantasia" for="txtFantasia" />
+				<p:inputText id="txtFantasia" size="50" maxlength="100"
+					value="#{pessoaBean.pessoa.fantasia}" />
+
+				<h:outputLabel value="Tipo de Atividade Principal" />
+				<p:selectOneMenu value="#{pessoaBean.pessoa.atividade}"
+					autoWidth="false">
+					<f:selectItem itemLabel="selecione ..." />
+					<f:selectItems value="#{pessoaBean.atividades}" var="atividade"
+						required="true" itemValue="#{atividade}"
+						itemLabel="#{atividade.descricao}" />
+				</p:selectOneMenu>
+
+				<p:outputLabel value="Representante" for="representante" />
+				<p:inputText id="representante" size="50" maxlength="100"
+					required="true" value="#{pessoaBean.pessoa.representante}" />
+
+				<p:outputLabel />
+				<p:outputPanel>
+					<p:commandButton value="Salvar" ajax="false"
+						action="#{pessoaBean.novoCadastro}" />
+					<p:commandButton value="Voltar" process="@this"
+						action="#{pessoaBean.login}" />
+				</p:outputPanel>
+
+			</h:panelGrid>
+		</h:form>
+
+	</ui:define>
+</ui:composition>

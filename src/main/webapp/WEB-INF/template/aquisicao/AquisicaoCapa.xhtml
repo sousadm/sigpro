@@ -1,0 +1,75 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<div class="ui-fluid">
+		<div class="ui-g" style="margin-top: 5px; border: 1px solid silver;">
+
+			<div class="ui-g-12 ui-md-2">
+				<p:outputLabel value="Identificador" />
+				<p:inputText value="#{aquisicaoBean.aquisicao.id}">
+					<f:convertNumber pattern="000000" />
+				</p:inputText>
+			</div>
+			<div class="ui-g-12 ui-md-4">
+				<p:outputLabel value="Status" />
+				<br />
+				<div
+					class="ui-inputfield ui-inputtext ui-widget ui-state-default ui-corner-all bloqueado ui-state-focus">
+					<p:outputLabel value="#{aquisicaoBean.aquisicao.status}"
+						style="font-weight: bold" />
+				</div>
+			</div>
+
+			<div class="ui-g-12 ui-md-6">
+				<p:outputLabel value="Fornecedor" for="txtFornecedor" />
+				<div class="ui-inputgroup">
+					<p:commandButton icon="ui-icon-search" title="Pesquisar cliente"
+						disabled="#{not aquisicaoBean.aquisicao.podeGravar}"
+						process="@this" update="@none" ignoreAutoUpdate="true"
+						styleClass="button-grid" action="#{selecionaBean.fornecedor}">
+						<p:ajax event="dialogReturn" update="txtFornecedor"
+							listener="#{aquisicaoBean.onFornecedorChosen}"
+							ignoreAutoUpdate="true" />
+					</p:commandButton>
+					<p:inputText id="txtFornecedor" required="true" 
+						value="#{aquisicaoBean.aquisicao.fornecedor.nome}" readonly="true" />
+				</div>
+			</div>
+
+			<div class="ui-g-12 ui-md-2">
+				<p:outputLabel value="Data de Entrada" for="txtData" />
+				<p:calendar id="txtData" showOn="button" mask="99/99/9999"
+					pattern="dd/MM/yyyy" required="true" requiredMessage="informe a data de entrada"
+					disabled="#{not aquisicaoBean.aquisicao.podeGravar}"
+					value="#{aquisicaoBean.aquisicao.nota.dataHoraSaidaOuEntrada}" />
+			</div>
+			<div class="ui-g-12 ui-md-4">
+				<p:outputLabel value="Modal. de frete" />
+				<p:selectOneMenu value="#{aquisicaoBean.aquisicao.modalidadeFrete}"
+					disabled="#{not aquisicaoBean.aquisicao.podeGravar}"
+					autoWidth="false">
+					<f:selectItems value="#{listaTipoBean.tipoModalidadeFrete}"
+						var="frete" itemValue="#{frete}" itemLabel="#{frete}" />
+				</p:selectOneMenu>
+			</div>
+			<div class="ui-g-12 ui-md-3">
+				<p:outputLabel value="Valor do frete" for="txtFrete" />
+				<p:inputNumber id="txtFrete" minValue="0" decimalSeparator=","
+					thousandSeparator="." decimalPlaces="2"
+					readonly="#{not aquisicaoBean.aquisicao.podeGravar}"
+					value="#{aquisicaoBean.aquisicao.valorFrete}" />
+			</div>
+			<div class="ui-g-12 ui-md-3">
+				<p:outputLabel value="Valor Total" />
+				<p:inputText id="totalPedido" readonly="true"
+					value="#{aquisicaoBean.aquisicao.valorTotal}" class="negrito">
+					<f:convertNumber type="currency" />
+				</p:inputText>
+			</div>
+		</div>
+	</div>
+
+</ui:composition>

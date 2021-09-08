@@ -1,0 +1,84 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<h:form id="formProdutoComplemento">
+
+		<p:panelGrid id="gridDadosCompl" columns="2" layout="grid"
+			style="margin-top: 10px" styleClass="panelgrid-noborder"
+			columnClasses="ui-grid-col-4, ui-grid-col-8">
+
+			<p:outputLabel value="Unitário" />
+			<h:outputText styleClass="moeda" value="#{notaCFeBean.item.vUnCom}" />
+
+			<p:outputLabel value="Quantidade" />
+			<p:inputText styleClass="moeda" value="#{notaCFeBean.item.qCom}">
+				<f:convertNumber pattern="#0.00" minIntegerDigits="1" />
+				<p:ajax event="change" process="@this"
+					update="txtValorItem txtValorProduto"
+					listener="#{notaCFeBean.calcularItem}" />
+			</p:inputText>
+
+			<p:outputLabel value="Valor do desconto" />
+			<p:inputText styleClass="moeda" value="#{notaCFeBean.item.vDesc}">
+				<f:convertNumber pattern="#0.00" />
+				<p:ajax event="change" process="@this"
+					update="txtValorItem txtValorProduto"
+					listener="#{notaCFeBean.calcularItem}" />
+			</p:inputText>
+
+			<ui:include src="/WEB-INF/template/cfe/DadosProdutoICMS.xhtml" />
+
+			<p:outputLabel value="Alíquota de PIS (%)"
+				rendered="#{not notaCFeBean.item.icms.produtoIsentoNaoTributado}" />
+			<p:inputText styleClass="moeda"
+				value="#{notaCFeBean.item.pis.aliquotaPIS}"
+				rendered="#{not notaCFeBean.item.icms.produtoIsentoNaoTributado}">
+				<f:convertNumber pattern="#0.00" />
+			</p:inputText>
+
+			<p:outputLabel value="Situação Tributária PIS" for="txtCstPis"
+				rendered="#{not notaCFeBean.item.icms.produtoIsentoNaoTributado}" />
+			<p:selectOneMenu id="txtCstPis" style="width:240px;"
+				value="#{notaCFeBean.item.pis.cstPIS}" autoWidth="false"
+				rendered="#{not notaCFeBean.item.icms.produtoIsentoNaoTributado}">
+				<f:selectItem itemLabel="Selecione" />
+				<f:selectItems value="#{listaTipoBean.cstPIS}" var="cstPis"
+					itemValue="#{cstPis}" itemLabel="#{cstPis}" />
+			</p:selectOneMenu>
+
+			<p:outputLabel value="Alíquota do COFINS (%)"
+				rendered="#{not notaCFeBean.item.icms.produtoIsentoNaoTributado}" />
+			<p:inputText id="txtAliquotaCofins" styleClass="moeda"
+				value="#{notaCFeBean.item.cofins.aliquotaCofins}"
+				rendered="#{not notaCFeBean.item.icms.produtoIsentoNaoTributado}">
+				<f:convertNumber pattern="#0.00" />
+			</p:inputText>
+
+			<p:outputLabel value="Situação Tributária COFINS" for="txtCstCofins"
+				rendered="#{not notaCFeBean.item.icms.produtoIsentoNaoTributado}" />
+			<p:selectOneMenu id="txtCstCofins" style="width:240px;"
+				autoWidth="false" value="#{notaCFeBean.item.cofins.cstCofins}"
+				rendered="#{not notaCFeBean.item.icms.produtoIsentoNaoTributado}">
+				<f:selectItem itemLabel="Selecione" />
+				<f:selectItems value="#{listaTipoBean.cstCofins}" var="cstCofins"
+					itemValue="#{cstCofins}" itemLabel="#{cstCofins}" />
+			</p:selectOneMenu>
+
+			<p:outputLabel value="Valor do Produto" />
+			<h:outputText id="txtValorProduto" value="#{notaCFeBean.item.vProd}"
+				styleClass="moeda">
+				<f:convertNumber pattern="#0.00" />
+			</h:outputText>
+
+			<p:outputLabel value="Valor Total do Item" />
+			<h:outputText id="txtValorItem" value="#{notaCFeBean.item.valor}"
+				styleClass="moeda">
+				<f:convertNumber pattern="#0.00" />
+			</h:outputText>
+		</p:panelGrid>
+	</h:form>
+
+</ui:composition>

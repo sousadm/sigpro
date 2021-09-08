@@ -1,0 +1,63 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<h1 style="margin-top: 65px">Remessa de Títulos</h1>
+
+	<p:toolbar style="margin-top: 5px">
+		<p:toolbarGroup>
+			<p:splitButton id="botaoSalvar" value="Salvar" icon="ui-icon-disk"
+				action="#{remessaBean.salvar}" update="@form">
+				<p:menuitem value="Nova remessa" icon="ui-icon-document"
+					actionListener="#{remessaBean.novo}" update="@form" />
+
+				<p:menuitem value="Imprimir" ajax="false" target="_blank"
+					rendered="#{remessaBean.existe}"
+					actionListener="#{remessaBean.imprimir}" update="@form"
+					icon="ui-icon-print" />
+
+				<p:menuitem value="Emitir" update="@form" process="@form"
+					disabled="#{not remessaBean.remessa.podeEmitir}"
+					rendered="#{remessaBean.existe}" action="#{remessaBean.emitir}">
+					<p:confirm icon="ui-icon-alert" header="Confirma"
+						message="Emitir a remessa atual?" />
+				</p:menuitem>
+
+				<p:menuitem value="Cancelar" update="@form" process="@form"
+					disabled="#{not remessaBean.remessa.podeCancelar}"
+					rendered="#{remessaBean.existe}" action="#{remessaBean.cancelar}">
+					<p:confirm icon="ui-icon-alert" header="Confirma"
+						message="Cancelar a remessa atual?" />
+				</p:menuitem>
+
+			</p:splitButton>
+		</p:toolbarGroup>
+		<p:toolbarGroup align="right">
+			<p:commandButton value="Pesquisa" icon="ui-icon-search"
+				update="@form" actionListener="#{remessaBean.setRemessa(null)}"
+				process="@this" />
+		</p:toolbarGroup>
+	</p:toolbar>
+
+	<p:messages autoUpdate="true" closable="true" />
+
+	<p:tabView id="tabView" orientation="top"
+		activeIndex="#{remessaBean.activeIndex}" style="margin-top: 5px">
+
+		<p:ajax event="tabChange" listener="#{remessaBean.onTabChange}"
+			update="@form" />
+
+		<p:tab title="Dados">
+			<ui:include src="/financeiro/RemessaDados.xhtml" />
+		</p:tab>
+		<p:tab title="Títulos" disabled="#{remessaBean.remessa.destino == null}" >
+			<ui:include src="/financeiro/RemessaTitulos.xhtml" />
+		</p:tab>
+		<p:tab title="Resumo">
+			<ui:include src="/financeiro/RemessaResumo.xhtml" />
+		</p:tab>
+	</p:tabView>
+
+</ui:composition>

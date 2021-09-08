@@ -1,0 +1,59 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<div align="right">
+		<p:commandButton value="Add Volume" icon="ui-icon-tag"
+			disabled="#{not notaFiscalBean.nota.podeEditar}" process="@this"
+			update="dlgVolume" actionListener="#{notaFiscalBean.addVolume}"
+			oncomplete="PF('dlgVolume').show()" />
+	</div>
+
+	<p:dataTable value="#{notaFiscalBean.nota.volumes}" var="volume"
+		style="margin-top: 5px" rowIndexVar="linha"
+		emptyMessage="Nenhum item encontrado." rows="10" paginator="true"
+		paginatorAlwaysVisible="false" paginatorPosition="bottom">
+
+		<p:column headerText="Quantidade">
+			<h:outputText value="#{volume.quantidade}">
+				<f:convertNumber />
+			</h:outputText>
+		</p:column>
+		<p:column headerText="Espécie">
+			<h:outputText value="#{volume.especie}" />
+		</p:column>
+		<p:column headerText="Marca">
+			<h:outputText value="#{volume.marca}" />
+		</p:column>
+		<p:column headerText="Peso Bruto">
+			<h:outputText value="#{volume.pesoBruto}">
+				<f:convertNumber />
+			</h:outputText>
+		</p:column>
+		<p:column headerText="Peso Líq.">
+			<h:outputText value="#{volume.pesoLiquido}">
+				<f:convertNumber />
+			</h:outputText>
+		</p:column>
+
+		<p:column style="width: 80px; text-align: center">
+
+			<p:commandButton icon="ui-icon-pencil" class="button-grid"
+				title="editar" process="formCadastro:tabView:tabVolume"
+				update="dlgVolume"
+				actionListener="#{notaFiscalBean.setNotaVolume(volume)}"
+				oncomplete="PF('dlgVolume').show()" />
+
+			<p:commandButton title="remover" icon="ui-icon-trash"
+				actionListener="#{notaFiscalBean.removerVolume(linha)}"
+				disabled="#{not notaFiscalBean.nota.podeEditar}" update="@form">
+				<p:confirm icon="ui-icon-alert" header="Remover"
+					message="Remover item atual?" />
+			</p:commandButton>
+		</p:column>
+
+	</p:dataTable>
+
+</ui:composition>

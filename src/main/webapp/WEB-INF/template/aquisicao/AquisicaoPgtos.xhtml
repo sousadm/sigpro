@@ -1,0 +1,53 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<div align="right">
+		<p:commandButton value="Add Pagamento"
+			disabled="#{not aquisicaoBean.aquisicao.podeGravar}" process="@this"
+			update="dlgPagamento" actionListener="#{aquisicaoBean.addPagamento}"
+			oncomplete="PF('dlgPagamento').show()" />
+	</div>
+
+	<p:dataTable id="tabelaPagamentos" style="margin-top: 5px"
+		value="#{aquisicaoBean.aquisicao.titulos}" var="titulo"
+		rowIndexVar="linhaPgto" emptyMessage="Nenhum pedido encontrado."
+		rows="8" paginator="true" paginatorAlwaysVisible="false"
+		paginatorPosition="bottom">
+
+		<p:column headerText="Docto" style="width: 35px">
+			<h:outputText value="#{titulo.documento}" />
+		</p:column>
+		<p:column headerText="Vencimento" style="width: 100px">
+			<h:outputText value="#{titulo.vencimento}">
+				<f:convertDateTime pattern="dd/MM/yyyy" />
+			</h:outputText>
+		</p:column>
+		<p:column headerText="Valor" style="text-align: right; width: 65px">
+			<h:outputText value="#{titulo.valor}">
+				<f:convertNumber type="currency" currencySymbol="" />
+			</h:outputText>
+		</p:column>
+
+		<p:column style="width: 50px; text-align: center">
+
+			<p:commandButton icon="ui-icon-pencil" class="button-grid"
+				title="editar" process="formCadastro:tabView:tabelaPagamentos"
+				update="dlgPagamento"
+				actionListener="#{aquisicaoBean.setPagamento(titulo)}"
+				oncomplete="PF('dlgPagamento').show()" />
+
+			<p:commandButton title="remover" icon="ui-icon-trash"
+				actionListener="#{aquisicaoBean.removerPgto(linhaPgto)}"
+				disabled="#{not aquisicaoBean.aquisicao.podeModificarItem}"
+				update="@form">
+				<p:confirm icon="ui-icon-alert" header="Remover"
+					message="Remover item atual?" />
+			</p:commandButton>
+		</p:column>
+
+	</p:dataTable>
+
+</ui:composition>

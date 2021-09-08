@@ -1,0 +1,61 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<div align="right">
+		<p:commandButton value="Medicamento" title="adiciona medicamento"
+			disabled="#{not clinicaAtendimentoBean.agenda.podeSalvarAtendimento}"
+			process="@this tabelaMedicamento"
+			actionListener="#{selecionaBean.medicamento}">
+			<p:ajax event="dialogReturn" update="tabelaMedicamento"
+				listener="#{clinicaAtendimentoBean.onMedicamentoChosen}" />
+		</p:commandButton>
+	</div>
+
+	<p:dataTable id="tabelaMedicamento" var="item" rowIndexVar="linha"
+		value="#{clinicaAtendimentoBean.agenda.medicamentos}"
+		style="margin-top: 5px; width: 100%" rows="8" scrollable="true"
+		paginator="true" paginatorAlwaysVisible="false"
+		paginatorPosition="bottom" emptyMessage="nenhum item encontrado">
+
+		<p:column headerText="Medicamentos / Posologia" resizable="true">
+			<div class="ui-g ui-fluid">
+				<div class="ui-inputgroup">
+					<p:outputLabel value="#{item.medicamento.codigo}" />
+					<p:outputLabel value=": " />
+					<p:outputLabel value="#{item.medicamento.descricao}" />
+				</div>
+				<div class="ui-g-8">
+					<p:outputLabel value="Posologia" />
+					<div class="ui-inputgroup">
+						<p:inputText value="#{item.posologia}" />
+						<p:commandButton icon="ui-icon-trash" process="@this"
+							title="Remover" class="button-grid" update="tabelaMedicamento"
+							disabled="#{not clinicaAtendimentoBean.agenda.podeSalvarAtendimento}"
+							actionListener="#{clinicaAtendimentoBean.removerMedicamento(linha)}">
+							<p:confirm icon="ui-icon-alert" header="Remover"
+								message="Remover ester medicamento?" />
+						</p:commandButton>
+					</div>
+				</div>
+				<div class="ui-g-2">
+					<p:outputLabel value="Quantidade" />
+					<p:inputNumber minValue="0" decimalSeparator=","
+						thousandSeparator="." decimalPlaces="0"
+						class="#{clinicaAtendimentoBean.agenda.podeSalvarAtendimento ? '' : 'bloqueado'}"
+						readonly="#{not clinicaAtendimentoBean.agenda.podeSalvarAtendimento}"
+						value="#{item.quantidade}" />
+				</div>
+				<div class="ui-g-2">
+					<p:outputLabel value="Forma" />
+					<p:inputText value="#{item.medicamento.forma}" style="text-transform: lowercase" readonly="true"
+						class="bloqueado" />
+				</div>
+			</div>
+		</p:column>
+
+	</p:dataTable>
+
+</ui:composition>

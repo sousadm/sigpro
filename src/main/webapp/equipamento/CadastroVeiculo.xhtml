@@ -1,0 +1,52 @@
+<ui:composition template="/WEB-INF/template/LayoutPadrao.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui" xmlns:o="http://omnifaces.org/ui">
+
+	<f:metadata>
+		<f:param name="dummy" />
+		<o:viewParam name="veiculo" value="#{veiculoBean.veiculo}" />
+		<f:event listener="#{veiculoBean.inicializar}" type="preRenderView"></f:event>
+	</f:metadata>
+
+	<ui:define name="titulo">Veículo</ui:define>
+
+	<ui:define name="corpo">
+
+		<p:focus context="formCadastro" />
+
+		<h:form id="formCadastro">
+
+			<p:growl />
+
+			<h:panelGroup
+				rendered="#{veiculoBean.veiculo == null and veiculoBean.mostraVeiculo}">
+				<ui:include src="/equipamento/VeiculoPesquisa.xhtml" />
+			</h:panelGroup>
+
+			<h:panelGroup
+				rendered="#{veiculoBean.veiculo != null and veiculoBean.mostraVeiculo}">
+				<ui:include src="/equipamento/VeiculoEdit.xhtml" />
+			</h:panelGroup>
+
+			<h:panelGroup
+				rendered="#{veiculoBean.veiculo != null and veiculoBean.mostraAbastecimento}">
+				<ui:include src="/equipamento/VeiculoAbastecimentoLista.xhtml" />
+			</h:panelGroup>
+
+			<h:panelGroup
+				rendered="#{veiculoBean.veiculo != null and veiculoBean.mostraDespesa}">
+				<ui:include src="/equipamento/VeiculoDespesaLista.xhtml" />
+			</h:panelGroup>
+
+			<p:blockUI block="formCadastro" trigger="botaoPesquisa" />
+
+		</h:form>
+
+		<ui:include src="/equipamento/VeiculoAbastecimento.xhtml" />
+		<ui:include src="/equipamento/VeiculoDespesa.xhtml" />
+
+	</ui:define>
+</ui:composition>

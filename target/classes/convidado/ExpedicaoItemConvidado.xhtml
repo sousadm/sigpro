@@ -1,0 +1,63 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<p:dialog id="dlgExpedicaoItemConvidado" header="Lista de Itens"
+		widgetVar="dlgExpedicaoItemConvidado" closeOnEscape="true"
+		modal="true" maximizable="false" width="70%">
+		<h:form id="formExpedicaoItemConvidado">
+
+			<p:dataTable value="#{expedicaoPesquisaBean.items}" var="item"
+				rowIndexVar="linha" id="tabelaItens">
+
+				<p:column headerText="Código"
+					style="text-align: center; width: 100px" priority="1">
+					<h:outputText value="#{item.produto.sku}" />
+				</p:column>
+
+				<p:column headerText="Descrição (produto/serviço)" priority="4">
+					<h:outputText value="#{item.produto.nome}" />
+				</p:column>
+
+				<p:column headerText="Vr.Unitário"
+					style="text-align: right; width: 90px" priority="3">
+					<p:outputLabel value="#{item.unitario}">
+						<f:convertNumber type="currency" />
+					</p:outputLabel>
+				</p:column>
+
+				<p:column headerText="Desconto"
+					style="text-align: right; width: 80px" priority="5">
+					<p:outputLabel value="#{item.desconto}">
+						<f:convertNumber type="currency" />
+					</p:outputLabel>
+				</p:column>
+
+				<p:column headerText="Quantidade"
+					style="text-align: center; width: 80px" priority="1">
+					<p:outputLabel value="#{item.quantidade}">
+						<f:convertNumber />
+					</p:outputLabel>
+				</p:column>
+
+				<p:column headerText="Valor total"
+					style="text-align: right; width: 100px;" priority="1">
+					<p:outputLabel value="#{item.valorTotal}">
+						<f:convertNumber type="currency" />
+					</p:outputLabel>
+				</p:column>
+
+			</p:dataTable>
+
+			<div align="center">
+				<p:commandButton value="Confirma" icon="ui-icon-check"
+					process="dlgExpedicaoItemConvidado"
+					oncomplete="if(!args.validationFailed) PF('dlgExpedicaoItemConvidado').hide()" />
+			</div>
+
+		</h:form>
+	</p:dialog>
+
+</ui:composition>

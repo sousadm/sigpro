@@ -1,0 +1,90 @@
+<ui:composition template="/WEB-INF/template/LayoutPadrao.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui" xmlns:o="http://omnifaces.org/ui">
+
+	<f:metadata>
+		<o:viewParam name="balanco" value="#{balancoBean.balanco}" />
+		<!-- 		<f:event listener="#{balancoBean.inicializar}" type="preRenderView"></f:event> -->
+	</f:metadata>
+
+	<ui:define name="titulo">Balanço</ui:define>
+
+	<ui:define name="corpo">
+
+		<p:focus context="formCadastro" />
+
+		<h1 style="margin-top: 65px">Balanço Patrimonial</h1>
+
+		<h:form id="formCadastro">
+
+			<p:toolbar style="margin-top: 05px">
+				<p:toolbarGroup>
+					<p:button value="Novo" icon="ui-icon-document"
+						outcome="/financeiro/CadastroBalanco" />
+					<p:commandButton value="Salvar"
+						rendered="#{balancoBean.balanco.existe}" icon="ui-icon-disk"
+						id="botaoSalvar" action="#{balancoBean.salvar}" update="@form">
+						<p:confirm icon="ui-icon-alert" header="Confirma"
+							message="Confirma gravar balanço patrimonial?" />
+					</p:commandButton>
+					<p:commandButton value="Salvar"
+						rendered="#{not balancoBean.balanco.existe}" icon="ui-icon-disk"
+						id="botaoSalvarNovo" action="#{balancoBean.salvar}" update="@form">
+						<p:confirm icon="ui-icon-alert" header="Confirma"
+							message="Confirma gravar novo balanço patrimonial?" />
+					</p:commandButton>
+
+					<p:splitButton value="Imprimir" ajax="false"
+						disabled="#{not balancoBean.balanco.existe}"
+						actionListener="#{balancoBean.imprimir}" update="@form"
+						icon="ui-icon-print" onclick="this.form.target='_blank'">
+						<p:menuitem ajax="false" value="Registro de Inventário"
+							actionListener="#{balancoBean.imprimirInventario}" />
+						<p:separator title="outros" />
+						<p:menuitem ajax="false" value="Giro de produtos"
+							actionListener="#{balancoBean.imprimirGiroDeEstoque}" />
+						<p:menuitem ajax="false" value="Estoque de Produtos"
+							actionListener="#{balancoBean.imprimirEstoque}" />
+						<p:separator />
+						<p:menuitem ajax="false" value="Contas a Pagar"
+							actionListener="#{balancoBean.imprimirContaPagar}" />
+						<p:menuitem ajax="false" value="Contas a Receber"
+							actionListener="#{balancoBean.imprimirContaReceber}" />
+
+					</p:splitButton>
+
+				</p:toolbarGroup>
+				<p:toolbarGroup align="right">
+					<p:button value="Pesquisa" icon="ui-icon-search"
+						outcome="/financeiro/PesquisaBalanco" />
+				</p:toolbarGroup>
+			</p:toolbar>
+
+			<p:messages autoUpdate="true" closable="true" />
+
+			<p:tabView id="tabView" orientation="left" style="margin-top: 5px">
+				<p:tab title="Resumo" id="tabAnalise">
+					<ui:include src="/WEB-INF/template/financeiro/BalancoResumo.xhtml" />
+				</p:tab>
+				<p:tab title="Produtos">
+					<ui:include src="/WEB-INF/template/financeiro/BalancoProduto.xhtml" />
+				</p:tab>
+				<p:tab title="Títulos">
+					<ui:include src="/WEB-INF/template/financeiro/BalancoTitulo.xhtml" />
+				</p:tab>
+				<p:tab title="Indicadores">
+					<ui:include
+						src="/WEB-INF/template/financeiro/BalancoIndicador.xhtml" />
+				</p:tab>
+			</p:tabView>
+
+			<p:blockUI block="formCadastro" trigger="botaoSalvar botaoSalvarNovo" />
+
+		</h:form>
+
+	</ui:define>
+	
+</ui:composition>

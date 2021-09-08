@@ -1,0 +1,101 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<h1 style="margin-top: 65px">Lista de Abastecimento</h1>
+
+	<p:toolbar style="margin-top: 05px">
+		<p:toolbarGroup>
+			<p:commandButton id="botaoPesquisaAbastecimento" value="Pesquisar"
+				icon="ui-icon-search"
+				action="#{veiculoBean.pesquisar_abastecimento}" update="@form" />
+			<p:commandButton value="Novo" process="@this"
+				actionListener="#{veiculoBean.abastecimentoAdd}"
+				update="dlgAbastecimento" oncomplete="PF('dlgAbastecimento').show()" />
+		</p:toolbarGroup>
+		<p:toolbarGroup align="right">
+			<p:commandButton value="Veículo"
+				actionListener="#{veiculoBean.setVeiculo(veiculoBean.veiculo)}"
+				process="@this" update="@form" />
+		</p:toolbarGroup>
+	</p:toolbar>
+
+	<div class="ui-fluid">
+		<div class="ui-g" style="margin-top: 5px; border: 1px solid silver;">
+			<div class="ui-g-4 ui-md-2">
+				<p:outputLabel value="Placa" for="placa" />
+				<p:inputMask value="#{veiculoBean.veiculo.placa}" mask="aaa-9999"
+					readonly="true" class="bloqueado" />
+			</div>
+			<div class="ui-g-6 ui-md-4">
+				<p:outputLabel value="Descrição" />
+				<p:inputText value="#{veiculoBean.veiculo.descricao}"
+					readonly="true" class="bloqueado" />
+			</div>
+			<div class="ui-g-6 ui-md-3">
+				<p:outputLabel value="Marca" />
+				<p:inputText value="#{veiculoBean.veiculo.marca.descricao}"
+					readonly="true" styleClass="bloqueado" />
+			</div>
+			<div class="ui-g-6 ui-md-3">
+				<p:outputLabel value="Combustível" />
+				<p:inputText value="#{veiculoBean.veiculo.tipoCombustivel}"
+					readonly="true" styleClass="bloqueado" />
+			</div>
+		</div>
+	</div>
+
+	<p:dataTable id="tabAbastecimento"
+		value="#{veiculoBean.listaAbastecimento}" var="abastecimento"
+		style="margin-top: 05px" scrollable="true"
+		emptyMessage="Nenhum registro encontrado." rows="8" paginator="true"
+		paginatorAlwaysVisible="false" lazy="true" paginatorPosition="bottom">
+		<p:column headerText="Vencimento"
+			sortBy="#{abastecimento.titulo.vencimento}" style="width: 80px">
+			<h:outputText value="#{abastecimento.titulo.vencimento}">
+				<f:convertDateTime pattern="dd/MM/yyyy" />
+			</h:outputText>
+		</p:column>
+		<p:column headerText="Data Baixa"
+			sortBy="#{abastecimento.titulo.dataBaixa}" style="width: 80px">
+			<h:outputText value="#{abastecimento.titulo.dataBaixa}">
+				<f:convertDateTime pattern="dd/MM/yyyy" />
+			</h:outputText>
+		</p:column>
+		<p:column headerText="Histórico"
+			sortBy="#{abastecimento.titulo.descricao}">
+			<h:outputText value="#{abastecimento.titulo.descricao}" />
+		</p:column>
+		<p:column headerText="Volume" sortBy="#{abastecimento.volume}"
+			style="width: 70px">
+			<h:outputText value="#{abastecimento.volume}">
+				<f:convertNumber />
+			</h:outputText>
+		</p:column>
+		<p:column headerText="Valor" sortBy="#{abastecimento.titulo.valor}"
+			style="width: 90px">
+			<h:outputText value="#{abastecimento.titulo.valor}">
+				<f:convertNumber type="currency" />
+			</h:outputText>
+		</p:column>
+
+		<p:column style="text-align: center; width: 70px">
+			<p:commandButton title="Editar" icon="ui-icon-pencil"
+				class="button-grid" update="dlgAbastecimento"
+				actionListener="#{veiculoBean.setAbastecimento(abastecimento)}"
+				oncomplete="PF('dlgAbastecimento').show()" process="@this" />
+			<p:commandButton icon="ui-icon-trash" process="@this"
+				class="button-grid" title="Excluir" update="@form"
+				action="#{veiculoBean.excluir(abastecimento)}">
+				<p:confirm icon="ui-icon-alert" header="Confirma"
+					message="Excluir registro atual ?" />
+			</p:commandButton>
+		</p:column>
+
+	</p:dataTable>
+
+	<p:blockUI block="formCadastro" trigger="botaoPesquisaAbastecimento" />
+
+</ui:composition>

@@ -1,0 +1,70 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<p:toolbar style="margin-top: 05px">
+		<p:toolbarGroup>
+			<p:commandButton icon="ui-icon-document" value="Add Unidade"
+				title="adiciona unidade produtiva" process="@this" update="@none"
+				ignoreAutoUpdate="true" action="#{selecionaBean.pessoa}">
+				<p:ajax event="dialogReturn"
+					listener="#{unidadeProdutivaBean.onPessoaChosen}"
+					update="dlgDefine" ignoreAutoUpdate="true"
+					oncomplete="PF('dlgDefine').show()" />
+			</p:commandButton>
+		</p:toolbarGroup>
+		<p:toolbarGroup align="right">
+
+		</p:toolbarGroup>
+	</p:toolbar>
+
+	<p:messages autoUpdate="true" closable="true" />
+
+	<p:dataTable id="tabela" value="#{unidadeProdutivaBean.lista}"
+		var="unidade" rowIndexVar="item" style="margin-top: 5px"
+		emptyMessage="Nenhum registro encontrado." rows="10" paginator="true"
+		paginatorAlwaysVisible="false" paginatorPosition="bottom">
+
+		<p:column headerText="Unidade">
+			<h:outputText value="#{unidade.unidadeProdutiva.nomeDaLoja}" />
+		</p:column>
+		<p:column headerText="Descrição">
+			<h:outputText value="#{unidade.nome}" />
+		</p:column>
+		<p:column headerText="Atividade">
+			<h:outputText value="#{unidade.atividade.descricao}" />
+		</p:column>
+
+		<p:column style="width: 120px; text-align: center">
+
+			<p:commandButton title="Gerenciamento" icon="ui-icon-pencil"
+				class="button-grid" update="@form"
+				actionListener="#{unidadeProdutivaBean.setUnidade(unidade)}"
+				process="@this" />
+
+			<p:commandButton icon="ui-icon-trash" process="@this"
+				class="button-grid" title="remover unidade produtiva"
+				update="tabela"
+				action="#{unidadeProdutivaBean.removerLoja(unidade)}">
+				<p:confirm icon="ui-icon-alert" header="Confirma"
+					message="Remover unidade produtiva?" />
+			</p:commandButton>
+
+		</p:column>
+
+	</p:dataTable>
+
+	<p:dialog id="dlgDefine" header="Definir unidade produtiva"
+		widgetVar="dlgDefine" closeOnEscape="true" modal="true" width="500">
+
+		<p:outputLabel value="#{unidadeProdutivaBean.unidade.nome}" />
+		<br />
+		<p:commandButton value="Confirma" icon="ui-icon-check"
+			update="formCadastro" action="#{unidadeProdutivaBean.addLoja}"
+			oncomplete="if(!args.validationFailed) PF('dlgDefine').hide()" />
+
+	</p:dialog>
+
+</ui:composition>

@@ -1,0 +1,104 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<div class="ui-fluid">
+		<div class="ui-g" style="margin-top: 5px; border: 1px solid silver;">
+			<div class="ui-g-8">
+				<p:outputLabel value="Título do projeto" for="txtTituloProjeto" />
+				<p:inputText id="txtTituloProjeto"
+					readonly="#{projetoBean.projeto.encerrado}"
+					value="#{projetoBean.projeto.titulo}" required="true"
+					requiredMessage="informe o título do projeto" maxlength="100" />
+			</div>
+			<div class="ui-g-4">
+				<p:outputLabel value="Entrega principal" for="txtEntregaPrincipal" />
+				<p:inputText id="txtEntregaPrincipal"
+					readonly="#{projetoBean.projeto.encerrado}"
+					value="#{projetoBean.projeto.entregaPrincipal}" required="true"
+					requiredMessage="defina a entrega principal do projeto"
+					maxlength="100" />
+			</div>
+
+			<div class="ui-g-12 ui-md-3">
+				<p:outputLabel value="Data de Abertura" />
+				<p:commandButton value="Autorizar"
+					rendered="#{not projetoBean.projeto.autorizado}"
+					disabled="#{not projetoBean.projeto.podeAbrirProjeto}"
+					action="#{projetoBean.definirAberturaProjeto}" update="@form">
+					<p:confirm icon="ui-icon-alert" header="Confirma"
+						message="Determinar a abertura do projeto?" />
+				</p:commandButton>
+				<p:inputText value="#{projetoBean.projeto.abertura.dataAbertura}"
+					rendered="#{projetoBean.projeto.autorizado}" readonly="true"
+					class="bloqueado">
+					<f:convertDateTime pattern="dd/MM/yyyy" />
+				</p:inputText>
+			</div>
+			<div class="ui-g-12 ui-md-3">
+				<p:outputLabel
+					value="#{projetoBean.projeto.encerrado == true ? 'Data de Encerramento' : 'Previsão de Encerramento'}"
+					for="txtEncerramento" />
+				<p:calendar id="txtEncerramento" showOn="button" mask="99/99/9999"
+					pattern="dd/MM/yyyy" required="true"
+					title="#{projetoBean.projeto.autorizado ? 'utilize eventos para modificar prazo final' : 'prazo para conclusão do projeto'}"
+					requiredMessage="data prevista para encerramento inválida"
+					rendered="#{not projetoBean.projeto.autorizado}"
+					value="#{projetoBean.projeto.abertura.dataPrevistaTermino}" />
+				<p:inputText
+					value="#{projetoBean.projeto.encerrado == true ? projetoBean.projeto.encerramento.dataEncerramento : projetoBean.projeto.abertura.dataPrevistaTermino}"
+					title="#{projetoBean.projeto.autorizado ? 'utilize eventos para modificar prazo final' : 'prazo para conclusão do projeto'}"
+					rendered="#{projetoBean.projeto.autorizado}" readonly="true"
+					class="bloqueado">
+					<f:convertDateTime pattern="dd/MM/yyyy" />
+				</p:inputText>
+			</div>
+			<div class="ui-g-12 ui-md-3">
+				<p:outputLabel value="Valor Previsto" for="txtValor" />
+				<p:inputNumber id="txtValor" minValue="0" decimalSeparator=","
+					thousandSeparator="." decimalPlaces="2"
+					title="#{projetoBean.projeto.autorizado ? 'utilize eventos para incrementar o orçamento' : 'valor previsto para o projeto'}"
+					rendered="#{not projetoBean.projeto.autorizado}"
+					value="#{projetoBean.projeto.abertura.valorPrevisto}" />
+				<p:inputText value="#{projetoBean.projeto.abertura.valorPrevisto}"
+					rendered="#{projetoBean.projeto.autorizado}" readonly="true"
+					class="bloqueado">
+					<f:convertNumber type="currency" />
+				</p:inputText>
+			</div>
+			<div class="ui-g-12 ui-md-3">
+				<p:outputLabel value="Valor Realizado" />
+				<p:inputText value="#{projetoBean.valorRealizado}" readonly="true"
+					class="bloqueado">
+					<f:convertNumber type="currency" />
+				</p:inputText>
+			</div>
+		</div>
+	</div>
+
+	<p:tabView id="tabObjetivo" orientation="left"
+		style="width: 100%; margin-top: 5px">
+		<p:tab title="Objetivo">
+			<p:editor value="#{projetoBean.projeto.abertura.objetivo}"
+				disabled="#{projetoBean.projeto.encerrado}"
+				controls="#{listaTipoBean.editorControl}" height="150"
+				styleClass="naoaceitarenter" />
+		</p:tab>
+		<p:tab title="Justificativa">
+			<p:editor value="#{projetoBean.projeto.abertura.justificativa}"
+				disabled="#{projetoBean.projeto.encerrado}"
+				controls="#{listaTipoBean.editorControl}" height="150"
+				styleClass="naoaceitarenter" />
+		</p:tab>
+	</p:tabView>
+
+</ui:composition>
+
+
+<!-- 		<p:tab title="Estrutura"> -->
+<!-- 			<p:editor value="#{projetoBean.projeto.abertura.estruturaAnalitica}" -->
+<!-- 				controls="#{listaTipoBean.editorControl}" height="150" -->
+<!-- 				styleClass="naoaceitarenter" /> -->
+<!-- 		</p:tab> -->

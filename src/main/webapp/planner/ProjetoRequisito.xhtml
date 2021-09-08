@@ -1,0 +1,94 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<h:panelGroup rendered="#{projetoBean.requisito == null}">
+
+		<p:blockUI block="@form" trigger="botaoAtualizaRequisito" />
+
+		<div align="right">
+			<p:commandButton id="botaoAtualizaRequisito" value="Atualiza"
+				action="#{projetoBean.atualizaListaRequisito}" update="@form" />
+			<p:commandButton value="Add Requisito" process="@this" update="@form"
+				disabled="#{projetoBean.projeto.encerrado}"
+				actionListener="#{projetoBean.addRequisito}" />
+		</div>
+
+		<p:dataTable id="tableProjetoRequisito"
+			value="#{projetoBean.listaRequisitos}" var="requisito"
+			rowIndexVar="requisitoLinha" style="margin-top: 5px"
+			emptyMessage="Nenhum item encontrado." rows="10" paginator="true"
+			paginatorAlwaysVisible="false" paginatorPosition="bottom">
+
+			<p:column headerText="Tipo">
+				<h:outputText value="#{requisito.tipo.descricao}" />
+			</p:column>
+			<p:column headerText="Descritivo">
+				<h:outputText value="#{requisito.descricao}"
+					title="#{requisito.descricao}" />
+			</p:column>
+
+			<p:column style="width: 80px; text-align: center">
+				<p:commandButton icon="ui-icon-pencil" process="@this"
+					title="Editar" update="@form"
+					actionListener="#{projetoBean.setRequisito(requisito)}" />
+				<p:commandButton icon="ui-icon-closethick" process="@this"
+					disabled="#{projetoBean.projeto.encerrado}"
+					title="remover objetivo" update="@form"
+					actionListener="#{projetoBean.removerRequisito(requisitoLinha)}">
+					<p:confirm icon="ui-icon-alert" header="Confirmação"
+						message="Remover o registro atual?" />
+				</p:commandButton>
+			</p:column>
+
+		</p:dataTable>
+
+	</h:panelGroup>
+
+	<h:panelGroup rendered="#{projetoBean.requisito != null}">
+
+		<div align="right">
+			<p:commandButton value="Voltar" process="@this"
+				actionListener="#{projetoBean.setRequisito(null)}" update="@form" />
+			<p:splitButton value="Gravar" process="@form" update="@form"
+				disabled="#{projetoBean.projeto.encerrado}"
+				actionListener="#{projetoBean.gravar_requisito}">
+				<p:menuitem value="Add Requisito" process="@this"
+					actionListener="#{projetoBean.addRequisito}" update="@form" />
+			</p:splitButton>
+		</div>
+
+		<div class="ui-fluid">
+			<div class="ui-g" style="margin-top: 5px; border: 1px solid silver;">
+				<div class="ui-g-12">
+					<p:outputLabel value="Tipo" />
+					<p:selectOneMenu value="#{projetoBean.requisito.tipo}"
+						rendered="#{not projetoBean.projeto.encerrado}" autoWidth="false">
+						<f:selectItem itemLabel="Selecione" />
+						<f:selectItems value="#{listaTipoBean.tipoRequisito}" var="requi"
+							itemValue="#{requi}" itemLabel="#{requi.descricao}" />
+					</p:selectOneMenu>
+					<p:inputText value="#{projetoBean.requisito.tipo}"
+						rendered="#{projetoBean.projeto.encerrado}" readonly="true" />
+				</div>
+				<div class="ui-g-12">
+					<p:outputLabel value="Descrição" />
+					<p:inputTextarea value="#{projetoBean.requisito.descricao}"
+						readonly="#{projetoBean.projeto.encerrado}" rows="5" />
+				</div>
+				<div class="ui-g-12">
+					<p:outputLabel value="Entrega em análise" />
+					<p:selectOneMenu value="#{projetoBean.requisito.planner}">
+						<f:selectItem itemLabel="Selecione" />
+						<f:selectItems value="#{projetoBean.listaEntregaMenu}" var="pcte"
+							itemValue="#{pcte}" itemLabel="#{pcte.que}" />
+					</p:selectOneMenu>
+				</div>
+			</div>
+		</div>
+
+	</h:panelGroup>
+
+</ui:composition>

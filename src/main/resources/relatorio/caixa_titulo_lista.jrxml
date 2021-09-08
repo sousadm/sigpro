@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="caixa_movimentacao" language="groovy" pageWidth="595" pageHeight="842" columnWidth="565" leftMargin="20" rightMargin="10" topMargin="20" bottomMargin="10" uuid="1c016bf3-f303-4e27-9e17-3d97d0ccb737">
+	<property name="ireport.zoom" value="1.5"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="empresa" class="java.lang.Object"/>
+	<field name="caixa" class="java.lang.Object"/>
+	<field name="titulo" class="java.lang.Object"/>
+	<field name="valor" class="java.lang.Double"/>
+	<field name="valorPago" class="java.lang.Double"/>
+	<field name="dia" class="java.lang.String"/>
+	<field name="valorJuro" class="java.lang.Double"/>
+	<field name="valorMulta" class="java.lang.Double"/>
+	<field name="valorDesconto" class="java.lang.Double"/>
+	<group name="diario">
+		<groupExpression><![CDATA[$F{caixa}.getDiario().getAgente()]]></groupExpression>
+		<groupHeader>
+			<band height="19">
+				<textField isBlankWhenNull="true">
+					<reportElement x="42" y="1" width="235" height="15" uuid="f6d7da40-8fce-4f21-8fd8-4148e4b2790b"/>
+					<textElement>
+						<font isItalic="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{caixa}.getDiario().getAgente().getNome()]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="2" y="1" width="39" height="15" uuid="af693324-0440-4bcc-a048-d80b5a727c95"/>
+					<text><![CDATA[Agente:]]></text>
+				</staticText>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band height="22">
+				<line>
+					<reportElement x="0" y="1" width="565" height="1" uuid="b03fca92-1e49-4592-9b33-2d4ae459c372"/>
+				</line>
+			</band>
+		</groupFooter>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<pageHeader>
+		<band height="52" splitType="Stretch">
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="464" y="4" width="100" height="14" uuid="fb99856e-6d73-4b7d-a5bc-bd18dadee079"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="464" y="33" width="100" height="14" uuid="0a4a2349-c1c6-4734-9e2f-7c841400a289"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA["Pág. "+$V{PAGE_NUMBER}+" de  " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="1" y="4" width="441" height="20" uuid="283015b6-e3a4-4d68-a9a3-6ff678cc2150"/>
+				<textElement>
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Lista Baixa de Títulos]]></text>
+			</staticText>
+			<textField pattern="HH.mm.ss">
+				<reportElement x="464" y="19" width="100" height="14" uuid="c147259f-f078-4f8b-ad2f-af0a75bb8f31"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="1" y="25" width="446" height="14" uuid="ce33e95a-379b-4d75-ba6d-718788b9b9f8"/>
+				<textFieldExpression><![CDATA[$P{empresa}.getUnidadeProdutiva().getNomeDaLoja()]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="20" splitType="Stretch">
+			<line>
+				<reportElement x="0" y="1" width="565" height="1" uuid="5fa77e33-9802-4eba-ac89-e1fe6f0a4a94"/>
+			</line>
+			<line>
+				<reportElement x="0" y="18" width="565" height="1" uuid="19ab9cad-6aee-487e-9214-0e1e8a531044"/>
+			</line>
+			<staticText>
+				<reportElement x="70" y="2" width="224" height="15" uuid="f8e5bbb3-5f54-41fb-bd90-7ea217b205e0"/>
+				<text><![CDATA[Nome]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="297" y="2" width="53" height="15" uuid="b60b7b89-eac9-4c21-9179-513b5222db52"/>
+				<text><![CDATA[Docto]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="439" y="2" width="60" height="15" uuid="bd903737-bf36-4bd5-a223-aaebc004a3ef"/>
+				<textElement textAlignment="Right"/>
+				<text><![CDATA[Valor]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="503" y="2" width="60" height="15" uuid="a0b1631b-8488-4971-9177-72ec1c4135bd"/>
+				<textElement textAlignment="Right"/>
+				<text><![CDATA[Vr.Pago]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="415" y="2" width="20" height="15" uuid="32d3382c-b4af-466a-9dfd-4bbc70e208be"/>
+				<text><![CDATA[Dia]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="352" y="2" width="60" height="15" uuid="00ab51ab-0992-4fb0-a76f-7515e1c577d6"/>
+				<text><![CDATA[Vencimento]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="2" y="2" width="65" height="15" uuid="5e2dcfab-77c2-4320-a00e-0026d217034b"/>
+				<text><![CDATA[Data]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="17" splitType="Stretch">
+			<textField isBlankWhenNull="true">
+				<reportElement x="70" y="1" width="224" height="15" uuid="e194c654-92d5-40bf-a1fc-81525bd9df95"/>
+				<textFieldExpression><![CDATA[$F{titulo}.getResponsavel().getNome()]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="297" y="1" width="53" height="15" uuid="0f1561df-66a1-4224-b53c-10205c84c060"/>
+				<textFieldExpression><![CDATA[$F{titulo}.getDocumento()]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement x="439" y="1" width="60" height="15" uuid="eddac1c9-0b65-4117-8b3f-62a0c1767764"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{valor}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement x="503" y="1" width="60" height="15" uuid="a05db237-fb95-459d-8c9f-f908bb7c672e"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{valorPago}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0" isBlankWhenNull="true">
+				<reportElement x="415" y="1" width="20" height="15" uuid="c991a664-f3c6-4a94-a480-ac83cedcb987"/>
+				<textFieldExpression><![CDATA[$F{dia}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
+				<reportElement x="352" y="1" width="60" height="15" uuid="4b209c3b-6b10-44f8-96dc-5fe39d6c95b6"/>
+				<textFieldExpression><![CDATA[$F{titulo}.getVencimento()]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
+				<reportElement x="2" y="1" width="65" height="15" uuid="a59cb39b-9d54-4c43-8c7b-6c1db56efab9"/>
+				<textFieldExpression><![CDATA[$F{caixa}.getDiario().getDataMov()]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

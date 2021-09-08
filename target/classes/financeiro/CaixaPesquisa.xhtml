@@ -1,0 +1,134 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<h1 style="margin-top: 65px">Movimento de Caixa</h1>
+
+	<p:toolbar style="margin-top: 05px">
+
+		<p:toolbarGroup>
+			<p:splitButton id="botaoPesquisa" value="Pesquisar" update="@form"
+				icon="ui-icon-search" action="#{caixaBean.pesquisar}">
+				<p:menuitem value="Pesquisa por código" update="@form"
+					process="@form" oncomplete="PF('dlgPesquisaCodigo').show()" />
+
+				<p:submenu label="Relatório" icon="ui-icon-print">
+					<p:menuitem value="Lista de compensação" ajax="false"
+						process="@form" action="#{caixaBean.imprimir_movimentacao}"
+						target="_blank" />
+					<p:menuitem value="Lista de títulos" ajax="false" process="@form"
+						action="#{caixaBean.imprimir_titulo}" target="_blank" />
+				</p:submenu>
+
+			</p:splitButton>
+		</p:toolbarGroup>
+
+		<p:toolbarGroup align="right">
+			<p:commandButton value="Recebimento" update="@form"
+				icon="ui-icon-suitcase"
+				actionListener="#{caixaBean.iniciaCaixaRecebimento}" />
+			<p:commandButton value="Pagamento" update="@form"
+				icon="ui-icon-scissors"
+				actionListener="#{caixaBean.iniciaCaixaPagamento}" />
+		</p:toolbarGroup>
+
+	</p:toolbar>
+
+	<div class="ui-fluid">
+		<div class="ui-g" style="margin-top: 5px; border: 1px solid silver;">
+			<div class="ui-g-12 ui-md-3">
+				<p:outputLabel value="Emissão" />
+				<p:calendar navigator="true" showOn="button" mask="99/99/9999" locale="br"
+					pattern="dd/MM/yyyy" value="#{caixaBean.filtro.emissaoInicial}" />
+			</div>
+			<div class="ui-g-12 ui-md-3">
+				<p:outputLabel value="Término" />
+				<p:calendar navigator="true" showOn="button" mask="99/99/9999" locale="br"
+					pattern="dd/MM/yyyy" value="#{caixaBean.filtro.emissaoFinal}" />
+			</div>
+			<div class="ui-g-12 ui-md-6">
+				<p:outputLabel value="Condição" />
+				<p:selectOneMenu value="#{caixaBean.filtro.caixaStatus}">
+					<f:selectItem itemLabel="Selecione..." />
+					<f:selectItems value="#{listaTipoBean.caixaStatus}" var="a"
+						itemValue="#{a}" itemLabel="#{a.descricao}" />
+				</p:selectOneMenu>
+			</div>
+			<div class="ui-g-12 ui-md-6">
+				<p:outputLabel value="Responsável nominal" for="nome" />
+				<p:inputText id="nome" value="#{caixaBean.filtro.nome}"
+					style="text-transform: uppercase" />
+			</div>
+			<div class="ui-g-12 ui-md-6">
+				<p:outputLabel value="Tipo de Titulo" />
+				<p:selectManyCheckbox value="#{caixaBean.filtro.tipoDC}">
+					<f:selectItems value="#{listaTipoBean.tiposDebitoCredito}"
+						var="tipo" itemValue="#{tipo}" itemLabel="#{tipo.descricao}" />
+				</p:selectManyCheckbox>
+			</div>
+		</div>
+	</div>
+
+	<p:dataTable id="tabela" value="#{caixaBean.listaCaixa}" var="caixa"
+		rowIndexVar="item" style="margin-top: 5px" lazy="true"
+		emptyMessage="Nenhum registro encontrado." rows="10" paginator="true"
+		paginatorAlwaysVisible="false" paginatorPosition="bottom"
+		scrollable="true">
+
+		<p:column headerText="ID" sortBy="#{caixa.id}" width="50">
+			<p:outputLabel value="#{caixa.id}">
+				<f:convertNumber pattern="00000" />
+			</p:outputLabel>
+		</p:column>
+		<!-- 		<p:column headerText="Cadastro" sortBy="#{caixa.emissao}" width="115"> -->
+		<!-- 			<p:outputLabel value="#{caixa.emissao}"> -->
+		<!-- 				<f:convertDateTime pattern="dd/MM/yyyy HH:mm" /> -->
+		<!-- 			</p:outputLabel> -->
+		<!-- 		</p:column> -->
+		<p:column headerText="Data" width="115">
+			<p:outputLabel value="#{caixa.dataMovimento}">
+				<f:convertDateTime pattern="dd/MM/yyyy HH:mm" />
+			</p:outputLabel>
+		</p:column>
+		<p:column headerText="Memorando">
+			<p:outputLabel value="#{caixa.observacao}" />
+		</p:column>
+		<p:column headerText="Nominal" sortBy="#{caixa.nominal}">
+			<p:outputLabel value="#{caixa.nominal}" />
+		</p:column>
+		<p:column headerText="" style="width: 5px; text-align: center">
+			<p:outputLabel value="#{caixa.status.letra}" />
+		</p:column>
+		<p:column headerText="Valor" sortBy="#{caixa.valorLiquido}"
+			style="text-align: right; width: 80px">
+			<p:outputLabel value="#{caixa.valorLiquido}">
+				<f:convertNumber type="currency" currencySymbol="" />
+			</p:outputLabel>
+		</p:column>
+		<!-- 		<p:column headerText="Entrada" sortBy="#{caixa.valorEntrada}" -->
+		<!-- 			style="text-align: right; width: 80px"> -->
+		<!-- 			<p:outputLabel value="#{caixa.valorEntrada}"> -->
+		<!-- 				<f:convertNumber type="currency" currencySymbol="" /> -->
+		<!-- 			</p:outputLabel> -->
+		<!-- 		</p:column> -->
+		<!-- 		<p:column headerText="Saída" sortBy="#{caixa.valorSaida}" -->
+		<!-- 			style="text-align: right; width: 80px"> -->
+		<!-- 			<p:outputLabel value="#{caixa.valorSaida}"> -->
+		<!-- 				<f:convertNumber type="currency" currencySymbol="" /> -->
+		<!-- 			</p:outputLabel> -->
+		<!-- 		</p:column> -->
+
+		<p:column style="width: 40px; text-align: center">
+			<p:commandButton title="Editar" icon="ui-icon-pencil"
+				class="button-grid" update="@form"
+				actionListener="#{caixaBean.setCaixa(caixa)}" process="@this" />
+		</p:column>
+
+	</p:dataTable>
+
+</ui:composition>
+
+<!-- 			<p:commandButton id="botaoPesquisa" value="Pesquisar" -->
+<!-- 				icon="ui-icon-search" update="@form" action="#{caixaBean.pesquisar}" /> -->

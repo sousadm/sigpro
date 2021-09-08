@@ -1,0 +1,60 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<p:dialog id="dlgFinanceiro" header="Financeiro"
+		widgetVar="dlgFinanceiro" closeOnEscape="true" resizable="false"
+		modal="true" width="500">
+		<h:form id="formComissaoFinal">
+
+			<div class="ui-fluid">
+				<div class="ui-g" style="margin-top: 5px; border: 1px solid silver;">
+					<div class="ui-g-12 ui-md-6">
+						<p:outputLabel value="Valor da comissão" />
+						<p:inputText value="#{remuneradorOrdemBean.titulo.valor}"
+							readonly="true" styleClass="negrito">
+							<f:convertNumber currencySymbol="R$" type="currency" />
+						</p:inputText>
+					</div>
+					<div class="ui-g-12 ui-md-6">
+						<p:outputLabel value="Previsão" />
+						<p:calendar locale="br" mask="99/99/9999" pattern="dd/MM/yyyy"
+							navigator="true" showOn="button"
+							value="#{remuneradorOrdemBean.titulo.previsao}" />
+					</div>
+					<div class="ui-g-12">
+						<p:outputLabel value="Centro de custo" for="ccusto" />
+						<p:selectOneMenu id="ccusto" required="true" autoWidth="false"
+							requiredMessage="centro de custo indefinido"
+							value="#{remuneradorOrdemBean.titulo.centroDeCusto}">
+							<f:selectItem itemLabel="Selecione..." />
+							<f:selectItems value="#{remuneradorOrdemBean.listaCusto}" var="a"
+								itemValue="#{a}" itemLabel="#{a.descricao}" />
+						</p:selectOneMenu>
+					</div>
+					<div class="ui-g-12">
+						<p:outputLabel value="Descritivo" />
+						<p:inputText maxlength="100"
+							value="#{remuneradorOrdemBean.titulo.descricao}" />
+					</div>
+				</div>
+			</div>
+
+			<div align="right" style="margin-top: 5px">
+				<p:commandButton value="Confirma" icon="ui-icon-check"
+					process="@form" update="frmPesquisa"
+					action="#{remuneradorOrdemBean.encerrar}"
+					oncomplete="if(!args.validationFailed) PF('dlgFinanceiro').hide()">
+					<p:confirm icon="ui-icon-alert" header="Confirma"
+						message="Gerar comissão para #{remuneradorOrdemBean.filtro.colaborador.nome}  ?" />
+				</p:commandButton>
+				<p:commandButton value="Cancela" icon="ui-icon-close"
+					process="@form" oncomplete="PF('dlgFinanceiro').hide()" />
+			</div>
+
+		</h:form>
+	</p:dialog>
+
+</ui:composition>

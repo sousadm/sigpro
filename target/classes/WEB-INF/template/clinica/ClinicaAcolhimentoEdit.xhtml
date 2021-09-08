@@ -1,0 +1,389 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<p:focus />
+
+	<h1 style="margin-top: 65px">#{clinicaAcolhimentoBean.titulo}</h1>
+
+	<p:toolbar style="margin-top: 5px">
+
+		<p:toolbarGroup>
+
+			<p:commandButton value="Novo" icon="ui-icon-document" process="@this"
+				actionListener="#{clinicaAcolhimentoBean.novo}" update="@form" />
+
+			<p:commandButton icon="ui-icon-person" value="Paciente"
+				disabled="#{not clinicaAcolhimentoBean.agenda.podeSalvar}"
+				process="@this" update="@none" ignoreAutoUpdate="true"
+				action="#{selecionaBean.pessoaFisica}">
+				<p:ajax event="dialogReturn"
+					listener="#{clinicaAcolhimentoBean.onClienteChosen}" update="@form"
+					ignoreAutoUpdate="true" />
+			</p:commandButton>
+
+			<span class="ui-separator"> <span
+				class="ui-icon pi pi-ellipsis-v" />
+			</span>
+
+			<p:commandButton value="Salvar" icon="ui-icon-disk"
+				disabled="#{not clinicaAcolhimentoBean.agenda.podeSalvar}"
+				actionListener="#{clinicaAcolhimentoBean.salvar}" update="@form">
+				<p:confirm icon="ui-icon-alert" header="Clínica"
+					message="Confirma cadastro?" />
+			</p:commandButton>
+			<p:commandButton value="Liberar" icon="ui-icon-flag"
+				rendered="#{clinicaAcolhimentoBean.agenda.podeLiberar}"
+				actionListener="#{clinicaAcolhimentoBean.liberar}" update="@form">
+				<p:confirm icon="ui-icon-alert" header="Clínica"
+					message="Liberar para atendimento?" />
+			</p:commandButton>
+			<p:commandButton value="Retornar" icon="ui-icon-flag"
+				rendered="#{clinicaAcolhimentoBean.agenda.podeRetornar}"
+				actionListener="#{clinicaAcolhimentoBean.retornar}" update="@form">
+				<p:confirm icon="ui-icon-alert" header="Clínica"
+					message="Retornar para acolhimento?" />
+			</p:commandButton>
+			<p:commandButton value="Cancelar" icon="ui-icon-close"
+				disabled="#{not clinicaAcolhimentoBean.agenda.podeCancelar}"
+				actionListener="#{clinicaAcolhimentoBean.cancelar}" update="@form">
+				<p:confirm icon="ui-icon-alert" header="Clínica"
+					message="Confirma cancelamento?" />
+			</p:commandButton>
+
+		</p:toolbarGroup>
+
+		<p:toolbarGroup align="right">
+			<p:commandButton value="Pesquisa" icon="ui-icon-search"
+				actionListener="#{clinicaAcolhimentoBean.setAgenda(null)}"
+				process="@this" update="@form" />
+		</p:toolbarGroup>
+	</p:toolbar>
+
+	<div class="ui-fluid"
+		style="margin-top: 5px; border: 1px solid silver;">
+		<div class="ui-g">
+
+			<div class="ui-g-12 ui-md-9">
+
+				<div class="ui-g-12 ui-md-3">
+					<p:outputLabel value="CPF" for="txtCpf" />
+					<p:inputMask mask="999.999.999-99" id="txtCpf"
+						value="#{clinicaAcolhimentoBean.paciente.PF.cpf}"
+						disabled="#{not clinicaAcolhimentoBean.agenda.podeSalvar}">
+						<p:ajax event="change" update="@form"
+							listener="#{clinicaAcolhimentoBean.pesquisaPorCpf}" />
+					</p:inputMask>
+				</div>
+				<div class="ui-g-12 ui-md-6">
+					<p:outputLabel value="Nome" for="nome" />
+					<p:inputText id="nome"
+						value="#{clinicaAcolhimentoBean.paciente.nome}"
+						disabled="#{not clinicaAcolhimentoBean.agenda.podeSalvar}" />
+				</div>
+				<div class="ui-g-12 ui-md-3">
+					<p:outputLabel value="Nascimento" for="txtDataNascimento" />
+					<p:calendar id="txtDataNascimento"
+						value="#{clinicaAcolhimentoBean.paciente.PF.nascimento}"
+						disabled="#{not clinicaAcolhimentoBean.agenda.podeSalvar}"
+						navigator="true" pattern="dd/MM/yyyy" mask="true" />
+				</div>
+
+				<div class="ui-g-12">
+					<p:outputLabel value="Especialidade" />
+					<p:selectOneMenu id="txtProfissao"
+						disabled="#{not clinicaAcolhimentoBean.agenda.podeSalvar}"
+						value="#{clinicaAcolhimentoBean.agenda.profissao}" required="true">
+						<f:selectItem itemLabel="Selecione ..." />
+						<f:selectItems value="#{clinicaAcolhimentoBean.listaProfissao}"
+							var="p" itemValue="#{p}" itemLabel="#{p.descricao}" />
+					</p:selectOneMenu>
+				</div>
+
+				<div class="ui-g-12 ui-md-4">
+					<p:outputLabel value="Atendimento" />
+					<p:selectOneMenu
+						value="#{clinicaAcolhimentoBean.agenda.acolhimento.padrao}"
+						disabled="#{not clinicaAcolhimentoBean.agenda.podeSalvar}">
+						<f:selectItem itemLabel="Selecione" />
+						<f:selectItems value="#{listaTipoBean.tipoAtendimentoPadrao}"
+							var="padrao" itemValue="#{padrao}"
+							itemLabel="#{padrao.descricao}" />
+					</p:selectOneMenu>
+				</div>
+				<div class="ui-g-12 ui-md-4">
+					<p:outputLabel value="Convênio" />
+					<p:selectOneMenu id="txtConvenio"
+						disabled="#{not clinicaAcolhimentoBean.agenda.podeSalvar}"
+						value="#{clinicaAcolhimentoBean.agenda.convenio}" required="true">
+						<f:selectItem itemLabel="Selecione" />
+						<f:selectItems value="#{clinicaAcolhimentoBean.listaConvenio}"
+							var="convenio" itemValue="#{convenio}"
+							itemLabel="#{convenio.descricao}" />
+					</p:selectOneMenu>
+				</div>
+				<div class="ui-g-12 ui-md-4">
+					<p:outputLabel value="Documento" for="documento" />
+					<p:inputText id="documento"
+						value="#{clinicaAcolhimentoBean.agenda.documento}"
+						disabled="#{not clinicaAcolhimentoBean.agenda.podeSalvar}" />
+				</div>
+
+			</div>
+
+			<div class="ui-g-12 ui-md-3" style="border: 1px solid silver;">
+
+				<div class="ui-g-10">
+					<p:graphicImage value="#{graphicImageBean.photo}"
+						rendered="#{graphicImageBean.existePhoto}" cache="false"
+						width="250" height="150" />
+				</div>
+				<div class="ui-g-2">
+					<p:commandButton icon="ui-icon-plus" title="adicionar imagem"
+						disabled="#{not clinicaAcolhimentoBean.agenda.podeSalvar or not graphicImageBean.existePhoto}"
+						process="@this" update="@none" ignoreAutoUpdate="true"
+						action="#{selecionaBean.addImagem}">
+						<p:ajax event="dialogReturn" update="@form"
+							ignoreAutoUpdate="true" />
+					</p:commandButton>
+					<p:commandButton icon="ui-icon-flag"
+						disabled="#{not clinicaAcolhimentoBean.agenda.podeSalvar or not graphicImageBean.existePhoto}"
+						title="adicionar imagem de câmera" process="@this" update="@none"
+						ignoreAutoUpdate="true" action="#{selecionaBean.addCamera}">
+						<p:ajax event="dialogReturn" update="@form"
+							ignoreAutoUpdate="true" />
+					</p:commandButton>
+				</div>
+			</div>
+
+			<p:tabView style="margin-top: 5px" id="tabView">
+
+				<p:tab title="Dados Pessoais">
+
+					<h:panelGroup id="dadosPessoais">
+
+						<div class="ui-g-12 ui-md-6">
+							<p:outputLabel value="Nome do pai" for="txtPai" />
+							<p:inputText id="txtPai"
+								value="#{clinicaAcolhimentoBean.paciente.PF.pai}"
+								disabled="#{not clinicaAcolhimentoBean.agenda.podeSalvar}" />
+						</div>
+						<div class="ui-g-12 ui-md-6">
+							<p:outputLabel value="Nome da Mãe" for="txtMae" />
+							<p:inputText id="txtMae"
+								value="#{clinicaAcolhimentoBean.paciente.PF.mae}"
+								disabled="#{not clinicaAcolhimentoBean.agenda.podeSalvar}" />
+						</div>
+
+						<div class="ui-g-12 ui-md-5">
+							<p:outputLabel value="E-mail" for="email" />
+							<p:inputText id="email" maxlength="150"
+								style="text-transform: lowercase"
+								disabled="#{not clinicaAcolhimentoBean.agenda.podeSalvar}"
+								value="#{clinicaAcolhimentoBean.paciente.email}" />
+						</div>
+						<div class="ui-g-12 ui-md-1">
+							<p:outputLabel value="DDD" for="ddd" />
+							<p:inputText id="ddd" maxlength="2"
+								disabled="#{not clinicaAcolhimentoBean.agenda.podeSalvar}"
+								value="#{clinicaAcolhimentoBean.paciente.ddd}" />
+						</div>
+						<div class="ui-g-12 ui-md-3">
+							<p:outputLabel value="Celular" for="celular" />
+							<p:inputText id="celular" maxlength="20"
+								disabled="#{not clinicaAcolhimentoBean.agenda.podeSalvar}"
+								value="#{clinicaAcolhimentoBean.paciente.celular}" />
+						</div>
+						<div class="ui-g-12 ui-md-3">
+							<p:outputLabel value="Fone" for="fone" />
+							<p:inputText id="fone" maxlength="20"
+								disabled="#{not clinicaAcolhimentoBean.agenda.podeSalvar}"
+								value="#{clinicaAcolhimentoBean.paciente.fone}" />
+						</div>
+
+					</h:panelGroup>
+
+					<h:panelGroup id="dadosEndereco">
+						<div class="ui-g-12 ui-md-6 ui-lg-2">
+							<p:commandLink update="@none" action="#{selecionaBean.endereco}"
+								disabled="#{not clinicaAcolhimentoBean.agenda.podeSalvar}"
+								process="@this" title="pesquisa endereço postal">
+								<h:outputText value="CEP" />
+								<p:ajax event="dialogReturn"
+									listener="#{clinicaAcolhimentoBean.carregarPesquisaEndereco}"
+									update="@form" ignoreAutoUpdate="true" />
+							</p:commandLink>
+							<p:inputMask mask="99.999-999" id="cep"
+								disabled="#{not clinicaAcolhimentoBean.agenda.podeSalvar}"
+								value="#{clinicaAcolhimentoBean.endereco.cep}">
+								<p:ajax event="change" update="dadosEndereco"
+									listener="#{clinicaAcolhimentoBean.carregarEndereco()}" />
+							</p:inputMask>
+						</div>
+						<div class="ui-g-12 ui-md-6 ui-lg-6">
+							<p:outputLabel value="Logradouro" for="logra" />
+							<p:inputText id="logra"
+								disabled="#{not clinicaAcolhimentoBean.agenda.podeSalvar}"
+								value="#{clinicaAcolhimentoBean.endereco.logradouro}" />
+						</div>
+						<div class="ui-g-12 ui-md-6 ui-lg-2">
+							<p:outputLabel value="Número" for="numero" />
+							<p:inputText id="numero"
+								disabled="#{not clinicaAcolhimentoBean.agenda.podeSalvar}"
+								value="#{clinicaAcolhimentoBean.endereco.numero}">
+								<f:convertNumber integerOnly="true" />
+							</p:inputText>
+						</div>
+						<div class="ui-g-12 ui-md-6 ui-lg-2">
+							<p:outputLabel value="Complemento" for="compl" />
+							<p:inputText id="compl"
+								disabled="#{not clinicaAcolhimentoBean.agenda.podeSalvar}"
+								value="#{clinicaAcolhimentoBean.endereco.complemento}" />
+						</div>
+
+						<div class="ui-g-12 ui-md-4">
+							<p:outputLabel value="Bairro" for="bairro" />
+							<p:inputText id="bairro"
+								disabled="#{not clinicaAcolhimentoBean.agenda.podeSalvar}"
+								value="#{clinicaAcolhimentoBean.endereco.bairro}" />
+						</div>
+						<div class="ui-g-12 ui-md-2">
+							<p:outputLabel value="UF" />
+							<p:selectOneMenu id="txtUF" value="#{clinicaAcolhimentoBean.xUf}"
+								disabled="#{not clinicaAcolhimentoBean.agenda.podeSalvar}"
+								autoWidth="false">
+								<f:selectItem itemLabel="Selecione" />
+								<f:selectItems value="#{listaTipoBean.unidadeFederativa}"
+									var="estado" itemValue="#{estado}"
+									itemLabel="#{estado.descricao}" />
+								<f:ajax render="txtMunicipios" event="change"
+									listener="#{clinicaAcolhimentoBean.carregaMunicipios}"
+									update="txtMunicipios" />
+							</p:selectOneMenu>
+						</div>
+						<div class="ui-g-12 ui-md-6">
+							<p:outputLabel value="Município" for="txtMunicipios" />
+							<p:selectOneMenu id="txtMunicipios"
+								disabled="#{not clinicaAcolhimentoBean.agenda.podeSalvar}"
+								value="#{clinicaAcolhimentoBean.endereco.municipio}">
+								<f:selectItem itemLabel="Selecione" />
+								<f:selectItems value="#{clinicaAcolhimentoBean.listaMunicipio}"
+									var="municipio" itemValue="#{municipio}"
+									itemLabel="#{municipio.descricao}" />
+							</p:selectOneMenu>
+						</div>
+					</h:panelGroup>
+
+				</p:tab>
+
+				<p:tab title="Dados Clínicos">
+
+					<div class="ui-g-12 ui-md-4 ui-lg-2">
+						<p:outputLabel value="Batimento" for="txtBatimento" />
+						<p:inputNumber id="txtBatimento" minValue="0" maxValue="200"
+							disabled="#{not clinicaAcolhimentoBean.agenda.podeSalvar}"
+							decimalSeparator="," thousandSeparator="." decimalPlaces="2"
+							required="true"
+							value="#{clinicaAcolhimentoBean.agenda.acolhimento.batimento}" />
+					</div>
+					<div class="ui-g-12 ui-md-4 ui-lg-2">
+						<p:outputLabel value="Pressão" />
+						<p:inputNumber id="txtPressaoSistolica" minValue="0" maxValue="20"
+							disabled="#{not clinicaAcolhimentoBean.agenda.podeSalvar}"
+							decimalSeparator="," thousandSeparator="." decimalPlaces="0"
+							required="true"
+							value="#{clinicaAcolhimentoBean.agenda.acolhimento.pressaoSistolica}" />
+					</div>
+					<div class="ui-g-12 ui-md-4 ui-lg-2">
+						<p:outputLabel value="Por" />
+						<p:inputNumber id="txtPressaoDiastolica" minValue="0"
+							maxValue="20"
+							disabled="#{not clinicaAcolhimentoBean.agenda.podeSalvar}"
+							decimalSeparator="," thousandSeparator="." decimalPlaces="0"
+							required="true"
+							value="#{clinicaAcolhimentoBean.agenda.acolhimento.pressaoDiastolica}" />
+					</div>
+					<div class="ui-g-12 ui-md-4 ui-lg-2">
+						<p:outputLabel value="Temperatura" for="txtTemperatura" />
+						<p:inputNumber id="txtTemperatura" minValue="0" maxValue="50"
+							disabled="#{not clinicaAcolhimentoBean.agenda.podeSalvar}"
+							decimalSeparator="," thousandSeparator="." decimalPlaces="1"
+							required="true"
+							value="#{clinicaAcolhimentoBean.agenda.acolhimento.temperatura}" />
+					</div>
+					<div class="ui-g-12 ui-md-4 ui-lg-2">
+						<p:outputLabel value="Altura" for="txtAltura" />
+						<p:inputNumber id="txtAltura" minValue="0" maxValue="3"
+							disabled="#{not clinicaAcolhimentoBean.agenda.podeSalvar}"
+							decimalSeparator="," thousandSeparator="." decimalPlaces="2"
+							required="true"
+							value="#{clinicaAcolhimentoBean.agenda.acolhimento.altura}" />
+					</div>
+					<div class="ui-g-12 ui-md-4 ui-lg-2">
+						<p:outputLabel value="Peso" for="txtPeso" />
+						<p:inputNumber id="txtPeso" minValue="0" decimalSeparator=","
+							disabled="#{not clinicaAcolhimentoBean.agenda.podeSalvar}"
+							thousandSeparator="." decimalPlaces="2" required="true"
+							value="#{clinicaAcolhimentoBean.agenda.acolhimento.peso}" />
+					</div>
+
+
+					<div class="ui-g-12 ui-md-8">
+
+						<h:panelGroup layout="block" style="padding-right: 10px">
+							<p:editor
+								value="#{clinicaAcolhimentoBean.agenda.acolhimento.sintoma}"
+								disabled="#{not clinicaAcolhimentoBean.agenda.podeSalvar}"
+								controls="#{clinicaAcolhimentoBean.editorControl}" height="150"
+								styleClass="naoaceitarenter" />
+						</h:panelGroup>
+
+					</div>
+					<div class="ui-g-12 ui-md-4">
+						<p:panelGrid columns="2" layout="grid"
+							columnClasses="ui-grid-col-4, ui-grid-col-8"
+							styleClass="panelgrid-noborder">
+
+							<p:outputLabel value="Cadastro" />
+							<p:outputLabel
+								value="#{clinicaAcolhimentoBean.agenda.dataCadastro}">
+								<f:convertDateTime type="both" />
+							</p:outputLabel>
+
+							<p:outputLabel value="Acolhimento" />
+							<p:outputLabel
+								value="#{clinicaAcolhimentoBean.agenda.acolhimento.dataAcolhimento}">
+								<f:convertDateTime type="both" />
+							</p:outputLabel>
+
+							<p:outputLabel value="Liberação" />
+							<p:outputLabel
+								value="#{clinicaAcolhimentoBean.agenda.acolhimento.dataLiberaClinica}">
+								<f:convertDateTime type="both" />
+							</p:outputLabel>
+
+							<p:outputLabel value="Atendimento" />
+							<p:outputLabel
+								value="#{clinicaAcolhimentoBean.agenda.atendimento.dataInicioAtendimento}">
+								<f:convertDateTime type="both" />
+							</p:outputLabel>
+
+							<p:outputLabel value="Cancelamento" />
+							<p:outputLabel
+								value="#{clinicaAcolhimentoBean.agenda.dataCancela}">
+								<f:convertDateTime type="both" />
+							</p:outputLabel>
+
+						</p:panelGrid>
+					</div>
+
+				</p:tab>
+
+			</p:tabView>
+
+		</div>
+	</div>
+
+</ui:composition>

@@ -1,0 +1,46 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<p:dialog id="dlgHistorico" header="Histórico" widgetVar="dlgHistorico"
+		closeOnEscape="true" modal="true" maximizable="false" width="80%"
+		minWidth="400" height="400">
+
+		<h:form id="formHistorico">
+			<p:dataTable value="#{tituloHistoricoBean.historico}" var="histo"
+				emptyMessage="Nenhum registro encontrado." rows="10"
+				paginator="true" paginatorAlwaysVisible="false"
+				paginatorPosition="bottom">
+				<p:column headerText="Pagamento" style="width: 140px">
+					<p:outputLabel value="#{histo.caixa.emissao}">
+						<f:convertDateTime pattern="dd/MM/yyyy HH:mm" />
+					</p:outputLabel>
+				</p:column>
+				<p:column headerText="Caixa" width="40">
+					<p:outputLabel value="#{histo.caixa.id}">
+						<f:convertNumber pattern="00000" />
+					</p:outputLabel>
+				</p:column>
+				<p:column headerText="Histórico">
+					<p:outputLabel value="#{histo.caixa.observacao}" />
+				</p:column>
+				<p:column headerText="Valor" style="text-align: right; width: 100px">
+					<p:outputLabel value="#{histo.valorPago}">
+						<f:convertNumber type="currency" />
+					</p:outputLabel>
+
+					<f:facet name="footer">
+						<p:outputLabel value="#{tituloHistoricoBean.total}">
+							<f:convertNumber type="currency" />
+						</p:outputLabel>
+					</f:facet>
+
+				</p:column>
+			</p:dataTable>
+		</h:form>
+
+	</p:dialog>
+
+</ui:composition>

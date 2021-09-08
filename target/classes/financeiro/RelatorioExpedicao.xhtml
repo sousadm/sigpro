@@ -1,0 +1,98 @@
+<ui:composition template="/WEB-INF/template/LayoutPadrao.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<ui:define name="titulo">Relatório</ui:define>
+
+	<ui:define name="corpo">
+		<h:form id="frmPesquisa">
+
+			<h1 style="margin-top: 65px">Relatório Comercial</h1>
+
+			<p:messages autoUpdate="true" closable="true" />
+
+			<p:toolbar style="margin-top: 05px">
+				<p:toolbarGroup>
+					<p:commandButton value="Limpar" icon="ui-icon-document-b"
+						update="@form" process="@this" ajax="false"
+						action="#{financeiroBean.limparFiltro}" />
+					<p:commandButton value="Imprimir" icon="ui-icon-print"
+						update="@this" ajax="false"
+						action="#{financeiroBean.imprimirAnaliseFaturamento}"
+						onclick="this.form.target='_blank'" />
+				</p:toolbarGroup>
+			</p:toolbar>
+
+			<p:panelGrid columns="2" style="width: 100%; margin-top: 5px"
+				layout="grid" columnClasses="ui-grid-col-4, ui-grid-col-8"
+				styleClass="panelgrid-noborder">
+
+				<p:outputLabel value="Tipo de relatório" />
+				<p:selectOneMenu id="console" autoWidth="false"
+					value="#{financeiroBean.tipoRelatorio}" style="width:250px">
+					<f:selectItem itemLabel="Selecione ..." itemValue="" />
+					<f:selectItem itemLabel="Faturamento geral" itemValue="1" />
+					<f:selectItem itemLabel="Curva de faturamento por produto"
+						itemValue="2" />
+					<f:selectItem itemLabel="Curva de faturamento por cliente"
+						itemValue="3" />
+				</p:selectOneMenu>
+
+				<p:outputLabel value="Data de emissão" />
+				<h:panelGroup>
+					<p:calendar size="8" navigator="true" showOn="button"
+						mask="99/99/9999" pattern="dd/MM/yyyy"
+						value="#{financeiroBean.filtro.emissaoInicial}" />
+					<p:outputLabel value=" a " />
+					<p:calendar size="8" navigator="true" showOn="button"
+						mask="99/99/9999" pattern="dd/MM/yyyy"
+						value="#{financeiroBean.filtro.emissaoFinal}" />
+				</h:panelGroup>
+
+				<p:outputLabel value="Status" />
+				<p:selectManyCheckbox
+					value="#{financeiroBean.filtro.expedicaoTipos}">
+					<f:selectItems value="#{financeiroBean.tipos}" var="tipo"
+						itemValue="#{tipo}" itemLabel="#{tipo.descricao}" />
+				</p:selectManyCheckbox>
+
+				<p:outputLabel value="Cliente" />
+				<h:panelGroup>
+					<p:commandButton icon="ui-icon-search" title="Pesquisar cliente"
+						process="@this" update="@none" ignoreAutoUpdate="true"
+						action="#{selecionaBean.cliente}">
+						<p:ajax event="dialogReturn"
+							listener="#{financeiroBean.clienteSelecionado}" update="cliente"
+							ignoreAutoUpdate="true" />
+					</p:commandButton>
+					<p:outputLabel id="cliente"
+						value="#{financeiroBean.filtro.cliente.nome}" />
+				</h:panelGroup>
+
+				<p:outputLabel value="Placa veicular" for="veiculo" />
+				<h:panelGroup id="pngPlaca">
+					<p:commandButton icon="ui-icon-search" title="Pesquisar veículo"
+						process="@this" update="@none" ignoreAutoUpdate="true"
+						action="#{selecionaBean.veiculo}">
+						<p:ajax event="dialogReturn"
+							listener="#{financeiroBean.veiculoSelecionado}" update="pngPlaca"
+							ignoreAutoUpdate="true" />
+					</p:commandButton>
+					<p:outputLabel id="veiculo" size="20"
+						value="#{financeiroBean.filtro.veiculo.placa}" />
+					<p:outputLabel value="/" />
+					<p:outputLabel
+						value="#{financeiroBean.filtro.veiculo.marca.descricao}" />
+					<p:outputLabel value="-" />
+					<p:outputLabel value="#{financeiroBean.filtro.veiculo.modelo}" />
+				</h:panelGroup>
+
+			</p:panelGrid>
+
+		</h:form>
+	</ui:define>
+
+</ui:composition>

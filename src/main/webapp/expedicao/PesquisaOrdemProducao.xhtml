@@ -1,0 +1,146 @@
+<ui:composition template="/WEB-INF/template/LayoutPadrao.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui" xmlns:o="http://omnifaces.org/ui">
+
+	<ui:define name="titulo">Ordem de Serviços em Produção</ui:define>
+
+	<ui:define name="corpo">
+
+		<h:form id="frmPesquisa">
+
+			<p:focus />
+
+			<p:growl id="msg" />
+
+			<h1 style="margin-top: 65px">SPOOL de Produção</h1>
+
+			<p:toolbar style="margin-top: 05px">
+				<p:toolbarGroup>
+					<p:commandButton id="botaoPesquisa" value="Pesquisar"
+						icon="ui-icon-search"
+						action="#{ordemServicoBean.pesquisarOrdemProducao}" update="@form" />
+				</p:toolbarGroup>
+			</p:toolbar>
+
+			<div class="ui-fluid">
+				<div class="ui-g" style="margin-top: 5px; border: 1px solid silver;">
+
+					<div class="ui-g-12 ui-md-9">
+						<p:outputLabel value="Condição do Serviço" />
+						<p:selectOneRadio value="#{ordemServicoBean.filtro.tipo}">
+							<f:selectItem itemLabel="Todos" itemValue="-1" />
+							<f:selectItem itemLabel="Não iniciado" itemValue="0" />
+							<f:selectItem itemLabel="Em produção" itemValue="1" />
+							<f:selectItem itemLabel="Em pausa" itemValue="2" />
+							<f:selectItem itemLabel="Encerrado" itemValue="3" />
+						</p:selectOneRadio>
+					</div>
+					<div class="ui-g-12 ui-md-3">
+						<p:outputLabel value="Placa do veículo" />
+						<p:inputText value="#{ordemServicoBean.filtro.placa}"
+							style="text-transform: uppercase" />
+					</div>
+
+					<div class="ui-g-6 ui-md-3">
+						<p:outputLabel value="Período" />
+						<p:calendar navigator="true" showOn="button" mask="99/99/9999"
+							pattern="dd/MM/yyyy" value="#{ordemServicoBean.filtro.inicio}" />
+					</div>
+					<div class="ui-g-6 ui-md-3">
+						<p:outputLabel value="Término" />
+						<p:calendar navigator="true" showOn="button" mask="99/99/9999"
+							pattern="dd/MM/yyyy" value="#{ordemServicoBean.filtro.termino}" />
+					</div>
+					<div class="ui-g-12 ui-md-6">
+						<p:outputLabel value="Nome do cliente" />
+						<p:inputText value="#{ordemServicoBean.filtro.nome}" />
+					</div>
+
+				</div>
+			</div>
+
+			<p:dataTable id="tabela" scrollable="true"
+				value="#{ordemServicoBean.listaOrdemProducao}" rowIndexVar="linha"
+				var="item" style="margin-top: 5px" lazy="true" rows="8"
+				emptyMessage="Nenhum registro encontrado." paginator="true"
+				paginatorAlwaysVisible="false" paginatorPosition="bottom">
+				<p:column headerText="Placa" width="60"
+					sortBy="#{item.servico.veiculo.placa}">
+					<p:link value="#{item.servico.veiculo.placa}"
+						outcome="/equipamento/CadastroVeiculo"
+						title="ir para cadastro do veículo #{item.servico.veiculo.placa}">
+						<f:param name="veiculo" value="#{item.servico.veiculo.id}" />
+					</p:link>
+				</p:column>
+				<p:column headerText="Descrição do Serviço">
+					<p:link value="#{item.produto.nome}"
+						outcome="/cadastros/CadastroProduto"
+						title="ir para cadastro #{item.produto.nome}">
+						<f:param name="produto" value="#{item.produto.id}" />
+					</p:link>
+				</p:column>
+				<!-- 				<p:column headerText="Nome do Cliente" -->
+				<!-- 					sortBy="#{item.servico.responsavel.nome}"> -->
+				<!-- 					<p:link value="#{item.servico.responsavel.nome}" -->
+				<!-- 						outcome="/cadastros/CadastroPessoa" -->
+				<!-- 						title="ir para cadastro #{item.servico.responsavel.nome}"> -->
+				<!-- 						<f:param name="pessoa" value="#{item.servico.responsavel.id}" /> -->
+				<!-- 					</p:link> -->
+				<!-- 				</p:column> -->
+				<p:column headerText="Previsão" width="140"
+					sortBy="#{item.servico.dataPrevisao}">
+					<h:outputText value="#{item.servico.dataPrevisao}">
+						<f:convertDateTime pattern="dd/MM/yyyy HH:mm" />
+					</h:outputText>
+				</p:column>
+				<p:column headerText="Início" width="140"
+					sortBy="#{item.servico.cronologia.inicio}">
+					<h:outputText value="#{item.servico.cronologia.inicio}">
+						<f:convertDateTime pattern="dd/MM/yyyy HH:mm" />
+					</h:outputText>
+				</p:column>
+				<p:column headerText="Término" width="140"
+					sortBy="#{item.servico.cronologia.termino}">
+					<h:outputText value="#{item.servico.cronologia.termino}">
+						<f:convertDateTime pattern="dd/MM/yyyy HH:mm" />
+					</h:outputText>
+				</p:column>
+				<!-- 				<p:column headerText="Status" width="60"> -->
+				<!-- 					<h:outputText value="#{item.status.descricao}" /> -->
+				<!-- 				</p:column> -->
+
+				<p:column width="150">
+					<p:commandButton icon="ui-icon-check" title="Start"
+						disabled="#{not item.podeIniciar}"
+						action="#{ordemServicoBean.comandar(item.id, 'INICIAR')}"
+						update="frmPesquisa:msg dlgProducao"
+						oncomplete="PF('dlgProducao').show()" />
+					<p:commandButton icon="ui-icon-pause" title="Pausar"
+						disabled="#{not item.podePausar}"
+						action="#{ordemServicoBean.comandar(item.id, 'PAUSAR')}"
+						update="frmPesquisa:msg dlgProducao"
+						oncomplete="PF('dlgProducao').show()" />
+					<p:commandButton icon="ui-icon-gear" title="Reiniciar"
+						disabled="#{not item.podeReiniciar}"
+						action="#{ordemServicoBean.comandar(item.id, 'REINICIAR')}"
+						update="frmPesquisa:msg dlgProducao"
+						oncomplete="PF('dlgProducao').show()" />
+					<p:commandButton icon="ui-icon-stop" title="Encerrar"
+						disabled="#{not item.podeEncerrar}"
+						action="#{ordemServicoBean.comandar(item.id, 'ENCERRAR')}"
+						update="frmPesquisa:msg dlgProducao"
+						oncomplete="PF('dlgProducao').show()" />
+				</p:column>
+			</p:dataTable>
+
+		</h:form>
+
+		<ui:include
+			src="/WEB-INF/template/producao/OrdemProducaoComando.xhtml" />
+
+	</ui:define>
+
+</ui:composition>

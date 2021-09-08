@@ -1,0 +1,67 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<p:panelGrid columns="2" style="margin-top: 5px" layout="grid"
+		columnClasses="ui-grid-col-8, ui-grid-col-4"
+		styleClass="panelgrid-noborder">
+
+		<p:outputLabel value="Giro do estoque de produtos" />
+		<p:outputLabel value="#{balancoBean.balanco.giroDeEstoque}"
+			class="negrito">
+			<f:convertNumber type="number" maxFractionDigits="2" />
+		</p:outputLabel>
+
+		<p:outputLabel value="Indice de ativação da carteira de clientes" />
+		<p:outputLabel value="#{balancoBean.balanco.indiceDeAtivacao}"
+			class="negrito">
+			<f:convertNumber type="percent" />
+		</p:outputLabel>
+
+		<p:outputLabel value="Valor do ticket médio de venda" />
+		<p:outputLabel value="#{balancoBean.balanco.ticketMedio}"
+			class="negrito">
+			<f:convertNumber type="currency" />
+		</p:outputLabel>
+
+		<p:outputLabel value="Prazo médio de compra" />
+		<p:outputLabel value="#{balancoBean.balanco.prazoCompra}"
+			class="negrito">
+			<f:convertNumber type="number" maxFractionDigits="2" />
+		</p:outputLabel>
+
+		<p:outputLabel value="Prazo médio de venda" />
+		<p:outputLabel value="#{balancoBean.balanco.prazoNegociacao}"
+			class="negrito">
+			<f:convertNumber type="number" maxFractionDigits="2" />
+		</p:outputLabel>
+
+		<p:outputLabel value="Prazo médio de pagamento" />
+		<p:outputLabel value="#{balancoBean.balanco.prazoPagamento}"
+			class="negrito">
+			<f:convertNumber type="number" maxFractionDigits="2" />
+		</p:outputLabel>
+
+		<p:outputLabel value="Prazo médio de recebimento" />
+		<p:outputLabel value="#{balancoBean.balanco.prazoRecebimento}"
+			class="negrito">
+			<f:convertNumber type="number" maxFractionDigits="2" />
+		</p:outputLabel>
+
+		<p:outputLabel value="Inadimplência até 30 dias" />
+		<h:outputText value="#{balancoBean.balanco.inadimplencia30dia}"
+			class="negrito">
+			<f:convertNumber type="percent" minFractionDigits="2" />
+		</h:outputText>
+
+		<p:outputLabel value="Inadimplência de 30 a 60 dias" />
+		<h:outputText value="#{balancoBean.balanco.inadimplencia60dia}"
+			class="negrito">
+			<f:convertNumber type="percent" minFractionDigits="2" />
+		</h:outputText>
+
+	</p:panelGrid>
+
+</ui:composition>

@@ -1,0 +1,46 @@
+<ui:composition template="/WEB-INF/template/LayoutPadrao.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui" xmlns:o="http://omnifaces.org/ui">
+
+	<f:metadata>
+		<o:viewParam name="diario" value="#{caixaDiarioBean.diario}" />
+		<f:event listener="#{caixaDiarioBean.inicializar}"
+			type="preRenderView"></f:event>
+	</f:metadata>
+
+	<ui:define name="titulo">Diario</ui:define>
+
+	<ui:define name="corpo">
+
+		<p:focus context="formCadastro" />
+
+		<h:form id="formCadastro">
+
+			<p:growl id="msg" />
+
+			<h1 style="margin-top: 65px">Diário Financeiro</h1>
+
+			<h:panelGroup rendered="#{caixaDiarioBean.diario == null}">
+				<ui:include src="/financeiro/DiarioPesquisa.xhtml" />
+			</h:panelGroup>
+
+			<h:panelGroup rendered="#{caixaDiarioBean.diario != null}">
+				<ui:include src="/financeiro/DiarioEdit.xhtml" />
+			</h:panelGroup>
+
+			<!-- 			<p:blockUI block="formCadastro" trigger="botaoPesquisa" /> -->
+
+			<p:blockUI block="formCadastro"
+				trigger="tabView:botaoCalcular botaoPesquisa botaoSalvar botaoEncerrar botaoEncerrarTodos botaoReabrir" />
+
+		</h:form>
+
+		<ui:include
+			src="/WEB-INF/template/financeiro/CaixaDiarioContingencia.xhtml" />
+
+	</ui:define>
+
+</ui:composition>
